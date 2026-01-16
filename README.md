@@ -33,28 +33,29 @@ XAMPP: Paquete de servidor local (Apache y MySQL).
 Git: Para la clonación del repositorio.
 
 
-5. GUÍA DE INSTALACIÓN Y CONFIGURACIÓN
+4. GUÍA DE INSTALACIÓN Y CONFIGURACIÓN
 Siga los siguientes pasos secuenciales para configurar el entorno de desarrollo.
-4.1. Configuración de la Base de Datos (XAMPP/MySQL)
-Iniciar XAMPP:
-Abra el Panel de Control de XAMPP e inicie los módulos Apache y MySQL.
-Creación de la Base de Datos:
-Acceda a phpMyAdmin a través de http://localhost/phpmyadmin.
-Cree una nueva base de datos con el nombre base_datos_UniCar.
-La estructura de las tablas será generada automáticamente por Hibernate al iniciar el backend.
-4.2. Instalación del Backend (Spring Boot)
-El backend aloja la lógica de negocio y los servicios REST que consume el frontend.
-Clonar el Repositorio:
-Bash
-git clone https://github.com/Farolita23/Demo-UniCar.git
-cd dondeEstes/backend
+    4.1. Configuración de la Base de Datos (XAMPP/MySQL)
+    Iniciar XAMPP:
+   
+    Abra el Panel de Control de XAMPP e inicie los módulos Apache y MySQL.
+    Creación de la Base de Datos:
+    Acceda a phpMyAdmin a través de http://localhost/phpmyadmin.
+    Cree una nueva base de datos con el nombre base_datos_UniCar.
+    La estructura de las tablas será generada automáticamente por Hibernate al iniciar el backend.
+    4.2. Instalación del Backend (Spring Boot)
+    El backend aloja la lógica de negocio y los servicios REST que consume el frontend.
+    Clonar el Repositorio:
+    Bash
+    git clone https://github.com/Farolita23/Demo-UniCar.git
+    cd dondeEstes/backend
 
 
 Verificación de la Configuración:
 Localice el archivo de configuración (src/main/resources/application.properties o application.yml).
 Asegúrese de que los parámetros de conexión a MySQL sean correctos:
 Properties
-spring.datasource.url=jdbc:mysql://localhost:3306/base_datos_UniCar?useSSL=false&serverTimezone=UTC
+spring.datasource.url=jdbc:mysql://localhost:3306/UniCarDB
 spring.datasource.username=usuario
 spring.datasource.password=usuario
 spring.jpa.hibernate.ddl-auto=update
