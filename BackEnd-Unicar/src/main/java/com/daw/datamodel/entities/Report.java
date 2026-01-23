@@ -1,5 +1,7 @@
 package com.daw.datamodel.entities;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,5 +42,8 @@ public class Report {
         foreignKey = @ForeignKey(name = "fk_user_report")
     )
     private User userReport;
+    
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
 
 }
