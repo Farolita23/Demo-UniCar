@@ -1,7 +1,5 @@
 package com.daw.controller.dto;
 
-import com.daw.datamodel.entities.User;
-
 import lombok.Data;
 
 @Data
@@ -11,9 +9,9 @@ public class RatingDTO {
 	
 	private Integer rating;
 	
-	private User userRate;
+	private UserDTO userRateDTO;
 	
-	private User ratedUser;
+	private UserDTO ratedUserDTO;
 
 
 }

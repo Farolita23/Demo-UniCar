@@ -2,9 +2,6 @@ package com.daw.controller.dto;
 
 import java.time.LocalDate;
 
-import com.daw.datamodel.entities.Campus;
-import com.daw.datamodel.entities.Town;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,6 +10,9 @@ import lombok.Data;
 
 @Data
 public class UserCreateDTO {
+	
+	@NotBlank
+	private String username;
 	
 	@Email
 	private String email;
@@ -35,10 +35,10 @@ public class UserCreateDTO {
 	private Integer drivingLicenseYear;
 	
 	@NotNull
-	private Campus usualCampus;
+	private Long idUsualCampus;
 	
 	@NotNull
-	private Town homeTown;
+	private Long idHomeTown;
 
     private String description;
 

@@ -3,19 +3,14 @@ package com.daw.controller.dto;
 import java.time.LocalDate;
 import java.util.Set;
 
-import com.daw.datamodel.entities.Campus;
-import com.daw.datamodel.entities.Car;
-import com.daw.datamodel.entities.Rating;
-import com.daw.datamodel.entities.Report;
-import com.daw.datamodel.entities.Town;
-import com.daw.datamodel.entities.Trip;
-
 import lombok.Data;
 
 @Data
 public class UserDTO {
 	
 	private Long id;
+	
+	private String username;
 	
 	private String email;
 	
@@ -33,22 +28,22 @@ public class UserDTO {
 	
 	private Integer drivingLicenseYear;
 	
-	private Campus usualCampus;
+	private CampusDTO usualCampusDTO;
 	
-	private Town homeTown;
+	private TownDTO homeTownDTO;
 	
-    private Set<Report> reportsDone;
+    private Set<ReportDTO> reportsDoneDTO;
     
-    private Set<Report> reportsReceived;
+    private Set<ReportDTO> reportsReceivedDTO;
 
-    private Set<Car> cars;
+    private Set<CarDTO> carsDTO;
 
     private String description;
 
-    private Set<Trip> tripsAsAPassenger;
+    private Set<TripDTO> tripsAsAPassengerDTO;
 
-    private Set<Rating> ratingsReceived;
+    private Set<RatingDTO> ratingsReceivedDTO;
 
-    private Set<Rating> ratingsDone;
+    private Set<RatingDTO> ratingsDoneDTO;
 
 }

@@ -1,7 +1,5 @@
 package com.daw.controller.dto;
 
-import com.daw.datamodel.entities.User;
-
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -16,9 +14,9 @@ public class RatingCreateDTO {
 	private Integer rating;
 	
 	@NotNull
-	private User userRate;
+	private Long idUserRate;
 	
 	@NotNull
-	private User ratedUser;
+	private Long idRatedUser;
 
 }

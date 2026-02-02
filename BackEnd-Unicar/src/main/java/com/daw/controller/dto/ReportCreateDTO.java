@@ -2,8 +2,6 @@ package com.daw.controller.dto;
 
 import java.time.LocalDate;
 
-import com.daw.datamodel.entities.User;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -15,10 +13,10 @@ public class ReportCreateDTO {
 	private String reason;
 	
 	@NotNull
-	private User userReport;
+	private Long idUserReport;
 	
 	@NotNull
-	private User reportedUser;
+	private Long idReportedUser;
 	
 	@NotNull
 	private LocalDate date;

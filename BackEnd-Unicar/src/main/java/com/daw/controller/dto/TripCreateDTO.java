@@ -4,10 +4,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import com.daw.datamodel.entities.Campus;
-import com.daw.datamodel.entities.Car;
-import com.daw.datamodel.entities.Town;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -16,13 +12,13 @@ import lombok.Data;
 public class TripCreateDTO {
 	
 	@NotNull
-	private Car car;
+	private Long idCar;
 	
 	@NotNull
-	private Campus campus;
+	private Long idCampus;
 	
 	@NotNull
-	private Town town;
+	private Long idTown;
 	
 	@NotNull
 	private Boolean isToCampus;
