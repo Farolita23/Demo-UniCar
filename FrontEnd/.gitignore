@@ -6,3 +6,6 @@
 
 # Configuración del editor
 *.code-workspace
+
+# Variables de entorno
+/src/environments

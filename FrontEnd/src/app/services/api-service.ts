@@ -1,17 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth-service';
+import { env } from '../../environments/env';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
     
-    readonly URL = "http://KD-52666694Y:3000";
-	
+    readonly URL = env.API_URL;
+    
     constructor(
 		private http: HttpClient,
 		private auth: AuthService
 	) { }
-
+    
 	#post(path: string, body?: any, headers?: HttpHeaders) {
 		headers = headers || new HttpHeaders();
 		const token = this.auth.getToken();
