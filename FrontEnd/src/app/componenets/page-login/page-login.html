@@ -1,0 +1,66 @@
+<main>
+    <section>
+        <div class="content">
+            <form [formGroup]="form" (ngSubmit)="submit()">
+                <div class="head row">
+                    <div class="col-f">
+                        <h1>Acceso</h1>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="row">
+                        <div class="col-f">
+                            <label for>Usuario</label>
+                            <input type="text" formControlName="username" placeholder="Usuario" required>
+                            <div *ngIf="form.get('username')?.touched && form.get('username')?.invalid" class="error">
+                                <p *ngIf="form.get('username')?.errors?.['required']">El usuario es obligatorio</p>
+                                <p *ngIf="form.get('username')?.errors?.['minlength']">Debe tener al menos 3 caracteres</p>
+                                <p *ngIf="form.get('username')?.errors?.['maxlength']">No puede superar los 16 caracteres</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-f">
+                            <label for>Contraseña</label>
+                            <input type="password" formControlName="password" placeholder="Contraseña" required>
+                            <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="error">
+                                <p *ngIf="form.get('password')?.errors?.['required']">La contraseña es obligatoria</p>
+                                <details *ngIf="form.get('password')?.errors?.['pattern']">
+                                    <summary>Formato incorrecto</summary>
+                                    <p>La contraseña debe tener al menos:</p>
+                                    <ul>
+                                        <li>8 caracteres</li>
+                                        <li>Una mayúscula</li>
+                                        <li>Una minúscula</li>
+                                        <li>Un número</li>
+                                    </ul>
+                                </details>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot">
+                    <div class="row" *ngIf="invalidCredentials">
+                        <div class="col-f error">
+                            <p>Credenciales invalidas</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-f">
+                            <p>¿No tienes cuenta? <a routerLink="/signup" [queryParams]="{ refer: appConfig.refer() }">¡Unete!</a></p>
+                            <p>¿No recuerdas tu contraseña? <a routerLink="/recovery-password" [queryParams]="{ refer: appConfig.refer() }">¡Cambiala!</a></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-m">
+                            <button type="reset" (click)="cancel()">Cancelar</button>
+                        </div>
+                        <div class="col-m">
+                            <button type="submit" [disabled]="loading">{{ loading ? 'Accediendo...' : 'Acceder' }}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>

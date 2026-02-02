@@ -1,0 +1,199 @@
+header {
+	--left-color: white;
+	--right-color: var(--emphasis-color);
+	padding: 0;
+	width: 100%;
+	position: sticky;
+	top: 0;
+	z-index: 900;
+	border-bottom: 8px solid white;
+	background: linear-gradient(90deg,
+		rgba(255, 255, 255, 1.0) calc((100% - var(--max-width)) / 2 + 16px + 8px),
+		rgba(255, 255, 255, 0.0) calc((100% - var(--max-width)) / 2 + 16px + 8px),
+		rgba(255, 255, 255, 0.0) calc(var(--max-width) + (100% - var(--max-width)) / 2 - 16px - 8px),
+		var(--emphasis-color) calc(var(--max-width) + (100% - var(--max-width)) / 2 - 16px - 8px)
+	);
+
+}
+header .content {
+	width: calc(var(--max-width) - 16px * 2);
+	max-width: 100%;
+	margin: auto;
+	display: flex;
+	justify-content: space-between;
+	gap: 0;
+}
+header .left {
+	background-color: var(--left-color);
+	display: flex;
+	align-items: center;
+	flex: 0 0 auto;
+	padding: 16px;
+}
+header .left::after {
+	content: '';
+	display: block;
+	height: 64px;
+	width: 32px;
+	margin-top: -16px;
+	margin-bottom: -16px;
+	margin-left: 16px;
+	margin-right: -48px;
+	z-index: 1;
+	background: linear-gradient(116.4deg, var(--left-color) 50%, var(--right-color) 50%);
+}
+header .left img {
+	flex: 0 0 auto;
+	width:  32px;
+	height: 32px;
+}
+header .left h1 {
+	flex: 0 0 auto;
+	width: fit-content;
+	height:      28px;
+	font-size:   28px;
+	line-height: 28px;
+}
+header .right {
+	background-color: var(--right-color);
+	display: flex;
+	width: calc(100%);
+	gap: 8px;
+	padding: 8px 16px;
+	justify-content: end;
+}
+
+header .right .menu {
+	width:  24px;
+	height: 24px;
+	padding: 4px;
+	display: none;
+}
+header .right .nav {
+	display: flex;
+}
+
+header .right .nav .back {
+	display: none;
+}
+header .right .nav a {
+	height:      32px;
+	padding: 8px 16px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: black;
+	border-radius: 16px;
+}
+header .right .nav a:hover {
+	background-color: rgba(255,255,255, 0.25);
+}
+header .right .nav a.active{
+	background-color: white;
+	border-top: 8px solid white;
+	border-radius: 0 0 16px 16px;
+	margin-top: -8px;
+	margin-left: 8px;
+	margin-right: 8px;
+	position: relative;
+}
+header .right .nav a.active::before{
+	content: '';
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	flex: 0 0 auto;
+	top: -8px;
+	left: -16px;
+	background: radial-gradient(circle at 0% 100%, 
+	rgba(255, 255, 255, 0.0) 16px,
+	rgba(255, 255, 255, 1.0) 16px);
+}
+header .right .nav a.active::after{
+	content: '';
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	flex: 0 0 auto;
+	top: -8px;
+	right: -16px;
+	background: radial-gradient(circle at 100% 100%, 
+	rgba(255, 255, 255, 0.0) 16px,
+	rgba(255, 255, 255, 1.0) 16px);
+}
+header .right .nav a.active:hover {
+	background-color: rgb(255,255,255);
+}
+header .right .nav a img{
+	width:  20px;
+	height: 20px;
+}
+header .right .nav a span{
+	height: 12px;
+	width: 100%;
+	font-size:   12px;
+	line-height: 12px;
+}
+@media (max-width: 512px) {
+	header .right {
+		padding: 16px;
+	}
+	header .right .menu {
+		display: block;
+	}
+	header .right .menu:hover {
+		background-color: rgba(255,255,255, 0.25);
+		border-radius: 8px;
+	}
+	header .right .nav {
+		display: none;
+	}
+	header .right .nav.active {
+		display: flex;
+		position: absolute;
+		flex-direction: column;
+		padding: 8px 16px;
+		top: 64px;
+		right: 0;
+		height: calc(100dvh - 64px - 8px * 2);
+		background-color: rgb(128,192,255);
+	}
+	header .right .nav.active a {
+		flex-direction: row;
+		justify-content: flex-start;
+		height: 24px;
+		border-radius: 12px;
+		padding: 4px 8px;
+		gap: 8px;
+	}
+	
+	header .right .nav.active a.active { 
+		margin: 0;
+		border: 0;
+		border-left:   4px solid white;
+		margin-left:  -4px;	
+		border-right:  4px solid white;
+		margin-right: -4px;	
+	}
+	header .right .nav.active a.active::before { display: none; }
+	header .right .nav.active a.active::after { display: none; }
+	header .right .nav.active a img {
+		width: 16px;
+		height: 16px;
+	}
+}
+
+@media (max-width: 256px) {
+	header .left h1 {
+		display: none;
+	}
+	header .right .nav.active {
+		height: fit-content;
+		top: unset;
+		bottom: calc(-100dvh + 64px);
+		left: 8px;
+		border-radius: 16px 16px 0 0;
+		width: calc(100% - 16px * 2 - 8px * 2);
+	}
+}
