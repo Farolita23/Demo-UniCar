@@ -30,24 +30,26 @@ export class AppConfig {
     /*   Rutas   */
     /* ========= */
     readonly routes = {
-        "index"  : { label: 'Inicio'        , route: '/'          , refer: false, icon: '/assets/media/icons/ui-home.png'     },
-        "login"  : { label: 'Acceder'       , route: '/login'     , refer: true , icon: '/assets/media/icons/ui-profile.png'  },
-        "signup" : { label: 'Unirse'        , route: '/signup'    , refer: true , icon: '/assets/media/icons/ui-profile.png'  },
-        "profile": { label: 'Perfil'        , route: '/profile/me', refer: false, icon: '/assets/media/icons/ui-profile.png'  },
-        "logout" : { label: 'Salir'         , route: '/logout'    , refer: false, icon: '/assets/media/icons/ui-profile.png'  },
-        "faq"    : { label: 'FAQ'           , route: '/faq'       , refer: false, icon: '/assets/media/icons/ui-profile.png'  },
-        "about"  : { label: 'Sobre nosotros', route: '/about'     , refer: false, icon: '/assets/media/icons/ui-settings.png' },
+        "index"       : { label: 'Inicio'        , route: '/'            , refer: false, icon: '/assets/media/icons/ui-home.png'     },
+        "search_trip" : { label: 'Viajes'        , route: '/search-trip' , refer: false, icon: '/assets/media/icons/ui-home.png'     },
+        "login"       : { label: 'Acceder'       , route: '/login'       , refer: true , icon: '/assets/media/icons/ui-profile.png'  },
+        "signup"      : { label: 'Unirse'        , route: '/signup'      , refer: true , icon: '/assets/media/icons/ui-profile.png'  },
+        "profile"     : { label: 'Perfil'        , route: '/profile/me'  , refer: false, icon: '/assets/media/icons/ui-profile.png'  },
+        "logout"      : { label: 'Salir'         , route: '/logout'      , refer: false, icon: '/assets/media/icons/ui-profile.png'  },
+        "faq"         : { label: 'FAQ'           , route: '/faq'         , refer: false, icon: '/assets/media/icons/ui-profile.png'  },
+        "about"       : { label: 'Sobre nosotros', route: '/about'       , refer: false, icon: '/assets/media/icons/ui-settings.png' },
     }
 
     /* ========== */
     /*   Header   */
     /* ========== */
     readonly header = [
-        { logged: null , link: this.routes.index   },
-        { logged: false, link: this.routes.login   },
-        { logged: false, link: this.routes.signup  },
-        { logged: true , link: this.routes.profile },
-        { logged: true , link: this.routes.logout  },
+        { logged: null , link: this.routes.index       },
+        { logged: null , link: this.routes.search_trip },
+        { logged: false, link: this.routes.login       },
+        { logged: false, link: this.routes.signup      },
+        { logged: true , link: this.routes.profile     },
+        { logged: true , link: this.routes.logout      },
     ]
     readonly footer = {
         group2: this.header,

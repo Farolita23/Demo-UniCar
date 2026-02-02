@@ -10,11 +10,13 @@ import { PageProfile } from './componenets/page-profile/page-profile';
 import { PageAbout } from './componenets/page-about/page-about';
 import { PageRecoveryPassword } from './componenets/page-recovery-password/page-recovery-password';
 import { PageResetPassword } from './componenets/page-reset-password/page-reset-password';
+import { PageSearchTrip } from './componenets/page-search-trip/page-search-trip';
 
 export const routes: Routes = [
     { path: '', component: PageHome },
     { path: 'faq', component: PageFaq },
     { path: 'about', component: PageAbout },
+    { path: 'search-trip', component: PageSearchTrip },
     { path: '', canActivate: [NoAuthGuard], children: [
         { path: 'login', component: PageLogin },
         { path: 'recovery-password', component: PageRecoveryPassword },
