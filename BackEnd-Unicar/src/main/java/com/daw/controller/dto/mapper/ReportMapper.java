@@ -11,7 +11,8 @@ import com.daw.datamodel.entities.Report;
 @Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface ReportMapper {
 	
-	@Mapping(target = "")
+	@Mapping(target = "userReportDTO", source = "userReport")
+	@Mapping(target = "reportedUserDTO", source = "reportedUser")
 	ReportDTO toDto(Report report);
 	
 	List<ReportDTO> toListDto(List<Report> reports);
