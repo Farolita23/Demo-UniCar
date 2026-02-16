@@ -1,7 +1,7 @@
 package com.daw.controller.dto.mapper;
 
-import com.daw.controller.dto.RatingCreateDTO;
-import com.daw.datamodel.entities.Rating;
+import com.daw.controller.dto.TownCreateDTO;
+import com.daw.datamodel.entities.Town;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
@@ -11,18 +11,21 @@ import org.springframework.stereotype.Component;
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
-public class RatingCreateMapperImpl implements RatingCreateMapper {
+public class TownCreateMapperImpl implements TownCreateMapper {
 
     @Override
-    public Rating toEntity(RatingCreateDTO dto) {
+    public Town toEntity(TownCreateDTO dto) {
         if ( dto == null ) {
             return null;
         }
 
-        Rating rating = new Rating();
+        Town town = new Town();
 
-        rating.setRating( dto.getRating() );
+        town.setName( dto.getName() );
+        if ( dto.getZipCode() != null ) {
+            town.setZipCode( String.valueOf( dto.getZipCode() ) );
+        }
 
-        return rating;
+        return town;
     }
 }

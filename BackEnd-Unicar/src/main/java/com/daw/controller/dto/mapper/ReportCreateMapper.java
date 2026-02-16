@@ -1,33 +1,17 @@
 package com.daw.controller.dto.mapper;
 
-import java.util.Optional;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 
 import com.daw.controller.dto.ReportCreateDTO;
 import com.daw.datamodel.entities.Report;
-import com.daw.datamodel.entities.User;
-import com.daw.exceptions.UserNotFoundException;
-import com.daw.service.UserService;
-
-import lombok.RequiredArgsConstructor;
 
 @Mapper(componentModel = "spring")
-@RequiredArgsConstructor
-public abstract class ReportCreateMapper {
-	
-	private final UserService userService;
-	
+public interface ReportCreateMapper {
+		
 	@Mapping(target = "id", ignore = true)
-	@Mapping(target = "userReport", source = "idUserReport", qualifiedByName = "userById")
-	@Mapping(target = "reportedUser", source = "idReportedUser", qualifiedByName = "userById")
-	public abstract Report toEntity(ReportCreateDTO dto);
-	
-	@Named(value = "userById")
-	public User userById(Long id) {
-		return userService.findEntityById(id);
-	}
+	@Mapping(target = "userReport", ignore = true) //Habrá que crearlo en el servicio
+	@Mapping(target = "reportedUser", ignore = true) //Habrá que crearlo en el servicio
+	Report toEntity(ReportCreateDTO dto);
 
 }

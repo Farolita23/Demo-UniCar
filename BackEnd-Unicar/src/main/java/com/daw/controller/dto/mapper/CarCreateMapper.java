@@ -12,7 +12,7 @@ public interface CarCreateMapper {
 			
 	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "trips", ignore = true)
-	@Mapping(target = "driver", ignore = true) //Habrá que setearla a pelo
+	@Mapping(target = "driver", ignore = true) //Habrá que crearlo en el servicio
 	public abstract Car toEntity(CarCreateDTO dto);
 
 }

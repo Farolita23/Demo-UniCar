@@ -1,14 +1,13 @@
 package com.daw.controller.dto.mapper;
 
 import com.daw.controller.dto.CampusCreateDTO;
-import com.daw.controller.dto.CampusDTO;
 import com.daw.datamodel.entities.Campus;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-02-02T12:08:36+0100",
+    date = "2026-02-16T11:26:13+0100",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
@@ -29,7 +28,7 @@ public class CampusCreateMapperImpl implements CampusCreateMapper {
     }
 
     @Override
-    public Campus toEntity(CampusDTO dto) {
+    public Campus toEntity(CampusCreateDTO dto) {
         if ( dto == null ) {
             return null;
         }

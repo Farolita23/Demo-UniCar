@@ -29,4 +29,7 @@ public class TripDTO {
 	private BigDecimal price;
 	
 	private Set<UserDTO> passengersDTO;
+	
+	private Set<UserDTO> requestersDTO;
+	
 }

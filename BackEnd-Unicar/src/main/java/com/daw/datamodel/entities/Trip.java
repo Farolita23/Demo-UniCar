@@ -74,5 +74,13 @@ public class Trip {
         inverseJoinColumns = @JoinColumn(name = "passenger_id")
     )
     private Set<User> passengers;
+    
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "trip_requester",
+        joinColumns = @JoinColumn(name = "trip_id"),
+        inverseJoinColumns = @JoinColumn(name = "requester_id")
+    )
+    private Set<User> requesters;
+    
 
 }
