@@ -30,5 +30,8 @@ public class Campus {
 
     @OneToMany(mappedBy = "campus", fetch = FetchType.LAZY)
     private Set<Trip> trips;
+    
+    @OneToMany(mappedBy = "usualCampus", fetch = FetchType.LAZY)
+    private Set<User> users;
 
 }

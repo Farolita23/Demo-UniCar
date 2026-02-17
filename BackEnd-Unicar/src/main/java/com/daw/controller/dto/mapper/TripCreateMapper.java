@@ -1,7 +1,9 @@
 package com.daw.controller.dto.mapper;
 
+import org.mapstruct.InheritConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import com.daw.controller.dto.TripCreateDTO;
 import com.daw.datamodel.entities.Trip;
@@ -16,5 +18,8 @@ public interface TripCreateMapper {
 	@Mapping(target = "passengers", ignore = true) //Se crea vacío
 	@Mapping(target = "requesters", ignore = true) //Se crea vacío
 	Trip toEntity(TripCreateDTO dto);
+	
+	@InheritConfiguration
+	void updateEntityFromDto(TripCreateDTO dto, @MappingTarget Trip entity);
 
 }

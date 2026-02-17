@@ -18,6 +18,7 @@ public interface TripMapper {
 	@Mapping(target = "townDTO", source = "town")
 	@Mapping(target = "campusDTO", source = "campus")
 	@Mapping(target = "passengersDTO", source = "passengers")
+	@Mapping(target = "requestersDTO", source = "requesters")
 	TripDTO toDto(Trip trip);
 	
 	List<TripDTO> toListDto(List<Trip> trips);

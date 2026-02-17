@@ -7,5 +7,7 @@ import com.daw.datamodel.entities.Rating;
 
 @Repository
 public interface RatingRepository extends JpaRepository<Rating, Long> {
+	
+	boolean existsByUserRateIdAndRatedUserId(Long userRateId, Long ratedUserId);
 
 }
