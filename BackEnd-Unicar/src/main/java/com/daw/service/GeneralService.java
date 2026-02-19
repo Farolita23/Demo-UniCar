@@ -103,8 +103,16 @@ public class GeneralService {
 		}
 	}
 	
-	public boolean existsSharedTrip(Long idUserRate, Long idRatedUser) {
-		return tripRepository.existsSharedTrip(idUserRate, idRatedUser);
+	public boolean existsSharedTrip(Long idUser1, Long idUser2) {
+		return tripRepository.existsSharedTrip(idUser1, idUser2);
+	}
+	
+	public boolean existsByUsername(String username) {
+		return userRepository.existsByUsername(username);
+	}
+	
+	public boolean existsByEmail(String email) {
+		return userRepository.existsByEmail(email);
 	}
 
 }

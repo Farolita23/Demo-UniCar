@@ -3,6 +3,7 @@ package com.daw.datamodel.entities;
 import java.time.LocalDate;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -73,14 +74,14 @@ public class User {
     )
     private Town homeTown;
 
-    @OneToMany(mappedBy = "reportedUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "reportedUser", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Report> reportsDone;
     
-    @OneToMany(mappedBy = "userReport", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userReport", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Report> reportsReceived;
 
     @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
-    private Set<Car> cars;
+    private Set<Car> cars; //Puedo acceder a los viajes de estos coches
 
     @Column(name = "description", nullable = true)
     private String description;
@@ -88,10 +89,10 @@ public class User {
     @ManyToMany(mappedBy = "passengers", fetch = FetchType.LAZY)
     private Set<Trip> tripsAsAPassenger;
 
-    @OneToMany(mappedBy = "ratedUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "ratedUser", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Rating> ratingsReceived;
 
-    @OneToMany(mappedBy = "userRate", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "userRate", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Rating> ratingsDone;
 
 }

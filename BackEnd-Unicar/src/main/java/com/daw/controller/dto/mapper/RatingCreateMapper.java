@@ -1,9 +1,7 @@
 package com.daw.controller.dto.mapper;
 
-import org.mapstruct.InheritConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 import com.daw.controller.dto.RatingCreateDTO;
 import com.daw.datamodel.entities.Rating;

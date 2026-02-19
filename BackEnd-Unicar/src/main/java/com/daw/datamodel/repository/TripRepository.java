@@ -11,8 +11,8 @@ import com.daw.datamodel.entities.Trip;
 public interface TripRepository extends JpaRepository<Trip, Long> {
 	
 	@Query("SELECT COUNT(t) > 0 FROM Trip t JOIN t.passengers p " + 
-	"WHERE (t.driver.id = :userId1 AND p.id = :userId2) " + 
-	"OR (t.driver.id = :userId2 AND p.id = :userId1)")
-	boolean existsSharedTrip(@Param("userId1") Long userId1, @Param("userId2") Long userId2);
+	"WHERE (t.driver.id = :idUser1 AND p.id = :idUser2) " + 
+	"OR (t.driver.id = :idUser2 AND p.id = :idUser1)")
+	boolean existsSharedTrip(@Param("idUser1") Long idUser1, @Param("idUser2") Long idUser2);
 
 }

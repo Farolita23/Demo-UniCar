@@ -20,8 +20,8 @@ public interface UserCreateMapper {
 	@Mapping(target = "tripsAsAPassenger", ignore = true) //Se crea vacío
 	@Mapping(target = "ratingsReceived", ignore = true) //Se crea vacío
 	@Mapping(target = "ratingsDone", ignore = true) //Se crea vacío
-	@Mapping(target = "banned", ignore = true) //Habrá que crearlo en el servicio (como false en principio)
-	@Mapping(target = "strikes", ignore = true) //Habrá que crearlo en el servicio (como 0 en principio)
+	@Mapping(target = "banned", ignore = true) //Se crea como falso
+	@Mapping(target = "strikes", ignore = true) //Se crea como 0
 	User toEntity(UserCreateDTO dto);
 	
 	@InheritConfiguration

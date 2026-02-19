@@ -22,7 +22,7 @@ public class CarCreateDTO {
 	private String licensePlate;
 	
 	@NotNull
-	@Min(1)
+	@Min(2)
 	@Max(9)
 	private Integer capacity;
 

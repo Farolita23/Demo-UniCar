@@ -1,7 +1,7 @@
 package com.daw.controller.dto.mapper;
 
-import com.daw.controller.dto.RatingUpdateDTO;
-import com.daw.datamodel.entities.Rating;
+import com.daw.controller.dto.ReportUpdateDTO;
+import com.daw.datamodel.entities.Report;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
@@ -11,14 +11,15 @@ import org.springframework.stereotype.Component;
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
-public class RatingUpdateMapperImpl implements RatingUpdateMapper {
+public class ReportUpdateMapperImpl implements ReportUpdateMapper {
 
     @Override
-    public void updateEntityFromDto(RatingUpdateDTO dto, Rating entity) {
+    public void updateEntityFromDto(ReportUpdateDTO dto, Report entity) {
         if ( dto == null ) {
             return;
         }
 
-        entity.setRating( dto.getRating() );
+        entity.setDate( dto.getDate() );
+        entity.setReason( dto.getReason() );
     }
 }
