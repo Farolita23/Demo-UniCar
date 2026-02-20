@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
 
 import com.daw.controller.dto.TripDTO;
 import com.daw.datamodel.entities.Trip;
@@ -22,5 +23,9 @@ public interface TripMapper {
 	TripDTO toDto(Trip trip);
 	
 	List<TripDTO> toListDto(List<Trip> trips);
+	
+	default Page<TripDTO> toPageDto(Page<Trip> trips) {
+        return trips.map(this::toDto);
+    }
 
 }

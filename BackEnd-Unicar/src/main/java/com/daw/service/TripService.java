@@ -1,7 +1,7 @@
 package com.daw.service;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.daw.controller.dto.TripCreateDTO;
@@ -9,6 +9,7 @@ import com.daw.controller.dto.TripDTO;
 import com.daw.controller.dto.mapper.TripCreateMapper;
 import com.daw.controller.dto.mapper.TripMapper;
 import com.daw.datamodel.entities.Trip;
+import com.daw.datamodel.entities.User;
 import com.daw.datamodel.repository.TripRepository;
 import com.daw.exceptions.HasPassengersException;
 
@@ -25,15 +26,20 @@ public class TripService {
 	private final TripCreateMapper tripCreateMapper;
 	private final GeneralService generalService;
 	
-	public List<TripDTO> findAll() {
-		return tripMapper.toListDto(tripRepository.findAll());
+	public Page<TripDTO> findAll(Pageable pageable) {
+		return tripMapper.toPageDto(tripRepository.findAll(pageable));
 	}
 	
 	public TripDTO findById(Long id) {
 		return tripMapper.toDto(generalService.findTripById(id));
 	}
 	
-	//Hay que hacer la búsqueda avanzada aún
+	public Page<TripDTO> findRecommendedTrips(Long idUser, Pageable pageable) {
+		User user = generalService.findUserById(idUser);
+		Long campusId = user.getUsualCampus().getId();
+		Long townId = user.getHomeTown().getId();
+		return tripMapper.toPageDto(tripRepository.findRecommendedTrips(campusId, townId, user, pageable));
+	}
 	
 	public TripDTO create(TripCreateDTO dto) {
 		Trip trip = tripCreateMapper.toEntity(dto);
@@ -54,6 +60,7 @@ public class TripService {
 		return tripMapper.toDto(trip);
 	}
 	
+	// Está hecho de modo que si hay pasajaros asociados no se pueda eliminar.
 	public void delete(Long id) {
 		Trip trip = generalService.findTripById(id);
 		
