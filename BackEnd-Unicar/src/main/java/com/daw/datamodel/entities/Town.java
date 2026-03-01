@@ -32,6 +32,6 @@ public class Town {
     private Set<Trip> trips;
     
     @OneToMany(mappedBy = "homeTown", fetch = FetchType.LAZY)
-    private Set<Trip> users;
+    private Set<User> users;
 
 }
