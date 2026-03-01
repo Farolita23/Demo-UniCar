@@ -23,3 +23,6 @@
 hs_err_pid*
 replay_pid*
 /.metadata/
+
+
+BackEnd-Unicar/src/main/resources/application.properties

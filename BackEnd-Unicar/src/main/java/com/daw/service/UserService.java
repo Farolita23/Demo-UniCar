@@ -2,6 +2,7 @@ package com.daw.service;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.daw.controller.dto.UserCreateDTO;
@@ -26,6 +27,7 @@ public class UserService {
 	private final UserMapper userMapper;
 	private final UserCreateMapper userCreateMapper;
 	private final GeneralService generalService;
+	private final PasswordEncoder passwordEncoder;
 	
 	public List<UserDTO> findAll() {
 		return userMapper.toListDto(userRepository.findAll());
@@ -48,6 +50,7 @@ public class UserService {
 		}
 		
 		User user = userCreateMapper.toEntity(dto);
+		user.setPassword(passwordEncoder.encode(dto.getPassword()));
 		user.setUsualCampus(generalService.findCampusById(dto.getIdUsualCampus()));
 		user.setHomeTown(generalService.findTownById(dto.getIdHomeTown()));
 		userRepository.save(user);
@@ -67,6 +70,10 @@ public class UserService {
 		}
 		
 		userCreateMapper.updateEntityFromDto(dto, user);
+		
+		if(dto.getPassword() != null && !dto.getPassword().isBlank()) {
+			user.setPassword(passwordEncoder.encode(dto.getPassword()));
+		}
 
 		user.setUsualCampus(generalService.findCampusById(dto.getIdUsualCampus()));
 		user.setHomeTown(generalService.findTownById(dto.getIdHomeTown()));
