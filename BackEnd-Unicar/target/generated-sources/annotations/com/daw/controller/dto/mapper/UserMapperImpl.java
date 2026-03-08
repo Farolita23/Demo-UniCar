@@ -3,12 +3,10 @@ package com.daw.controller.dto.mapper;
 import com.daw.controller.dto.CarDTO;
 import com.daw.controller.dto.RatingDTO;
 import com.daw.controller.dto.ReportDTO;
-import com.daw.controller.dto.TripDTO;
 import com.daw.controller.dto.UserDTO;
 import com.daw.datamodel.entities.Car;
 import com.daw.datamodel.entities.Rating;
 import com.daw.datamodel.entities.Report;
-import com.daw.datamodel.entities.Trip;
 import com.daw.datamodel.entities.User;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -20,7 +18,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-03-01T13:26:48+0100",
+    date = "2026-03-08T12:26:59+0100",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
@@ -36,8 +34,6 @@ public class UserMapperImpl implements UserMapper {
     private ReportMapper reportMapper;
     @Autowired
     private RatingMapper ratingMapper;
-    @Autowired
-    private TripMapper tripMapper;
 
     @Override
     public UserDTO toDto(User user) {
@@ -52,7 +48,6 @@ public class UserMapperImpl implements UserMapper {
         userDTO.setReportsDoneDTO( reportSetToReportDTOSet( user.getReportsDone() ) );
         userDTO.setReportsReceivedDTO( reportSetToReportDTOSet( user.getReportsReceived() ) );
         userDTO.setCarsDTO( carSetToCarDTOSet( user.getCars() ) );
-        userDTO.setTripsAsAPassengerDTO( tripSetToTripDTOSet( user.getTripsAsAPassenger() ) );
         userDTO.setRatingsReceivedDTO( ratingSetToRatingDTOSet( user.getRatingsReceived() ) );
         userDTO.setRatingsDoneDTO( ratingSetToRatingDTOSet( user.getRatingsDone() ) );
         userDTO.setBanned( user.getBanned() );
@@ -105,19 +100,6 @@ public class UserMapperImpl implements UserMapper {
         Set<CarDTO> set1 = new LinkedHashSet<CarDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
         for ( Car car : set ) {
             set1.add( carMapper.toDto( car ) );
-        }
-
-        return set1;
-    }
-
-    protected Set<TripDTO> tripSetToTripDTOSet(Set<Trip> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<TripDTO> set1 = new LinkedHashSet<TripDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( Trip trip : set ) {
-            set1.add( tripMapper.toDto( trip ) );
         }
 
         return set1;

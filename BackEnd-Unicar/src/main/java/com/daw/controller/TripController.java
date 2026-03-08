@@ -70,4 +70,27 @@ public class TripController {
         tripService.delete(id);
         return ResponseEntity.noContent().build();
     }
+    
+    /**
+     * Obtiene el historial de viajes donde el usuario ha sido el conductor.
+     * GET /api/trip/as-driver/{idDriver}?page=0&size=10
+     */
+    @GetMapping("/as-driver/{idDriver}")
+    public ResponseEntity<Page<TripDTO>> findTripsAsADriver(
+            @PathVariable Long idDriver,
+            @PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(tripService.getTripsAsADriver(idDriver, pageable));
+    }
+
+    /**
+     * Obtiene el historial de viajes donde el usuario ha sido pasajero.
+     * GET /api/trip/as-passenger/{idPassenger}?page=0&size=10
+     */
+    @GetMapping("/as-passenger/{idPassenger}")
+    public ResponseEntity<Page<TripDTO>> findTripsAsAPassenger(
+            @PathVariable Long idPassenger,
+            @PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(tripService.getTripsAsAPassenger(idPassenger, pageable));
+    }
+    
 }

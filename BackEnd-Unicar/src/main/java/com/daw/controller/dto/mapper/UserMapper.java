@@ -12,8 +12,7 @@ import com.daw.datamodel.entities.User;
 		   								   CampusMapper.class,
 		   								   TownMapper.class,
 		   								   ReportMapper.class,
-		   								   RatingMapper.class,
-		   								   TripMapper.class})
+		   								   RatingMapper.class})
 public interface UserMapper {
 
 	@Mapping(target = "usualCampusDTO", source = "usualCampus")
@@ -21,7 +20,6 @@ public interface UserMapper {
 	@Mapping(target = "reportsDoneDTO", source = "reportsDone")
 	@Mapping(target = "reportsReceivedDTO", source = "reportsReceived")
 	@Mapping(target = "carsDTO", source = "cars")
-	@Mapping(target = "tripsAsAPassengerDTO", source = "tripsAsAPassenger")
 	@Mapping(target = "ratingsReceivedDTO", source = "ratingsReceived")
 	@Mapping(target = "ratingsDoneDTO", source = "ratingsDone")
 	UserDTO toDto(User user);

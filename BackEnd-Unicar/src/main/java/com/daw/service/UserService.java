@@ -95,5 +95,31 @@ public class UserService {
 		userRepository.delete(user);
 	}
 	
+	public UserDTO getCarOwner(Long idCar) {
+		generalService.findCarById(idCar);
+		return userMapper.toDto(userRepository.findByCarsId(idCar));
+	}
+	
+	public UserDTO getRatingAuthor(Long idRating) {
+		generalService.findRatingById(idRating);
+		return userMapper.toDto(userRepository.findByRatingsDoneId(idRating));
+	}
+	
+	public UserDTO getRatedUser(Long idRating) {
+		generalService.findRatingById(idRating);
+		return userMapper.toDto(userRepository.findByRatingsReceivedId(idRating));
+	}
+	
+	public UserDTO getReportAuthor(Long idReport) {
+		generalService.findReportById(idReport);
+		return userMapper.toDto(userRepository.findByReportsDoneId(idReport));
+	}
+	
+	public UserDTO getReportedUser(Long idReport) {
+		generalService.findReportById(idReport);
+		return userMapper.toDto(userRepository.findByReportsReceivedId(idReport));
+	}
+	
+	
 
 }

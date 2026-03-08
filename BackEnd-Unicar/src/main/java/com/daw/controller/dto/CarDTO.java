@@ -6,9 +6,7 @@ import lombok.Data;
 public class CarDTO {
 	
 	private Long id;
-	
-	private UserDTO driverDTO;
-	
+		
 	private String model;
 	
 	private String color;

@@ -11,10 +11,6 @@ public class ReportDTO {
 	
 	private String reason;
 	
-	private UserDTO userReportDTO;
-	
-	private UserDTO reportedUserDTO;
-	
 	private LocalDate date;
 
 }

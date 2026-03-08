@@ -5,19 +5,15 @@ import com.daw.datamodel.entities.Rating;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-03-01T13:26:15+0100",
+    date = "2026-03-08T11:39:41+0100",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.43.0.v20250819-1513, environment: Java 21.0.8 (Eclipse Adoptium)"
 )
 @Component
 public class RatingMapperImpl implements RatingMapper {
-
-    @Autowired
-    private UserMapper userMapper;
 
     @Override
     public RatingDTO toDto(Rating rating) {
@@ -27,8 +23,6 @@ public class RatingMapperImpl implements RatingMapper {
 
         RatingDTO ratingDTO = new RatingDTO();
 
-        ratingDTO.setUserRateDTO( userMapper.toDto( rating.getUserRate() ) );
-        ratingDTO.setRatedUserDTO( userMapper.toDto( rating.getRatedUser() ) );
         ratingDTO.setId( rating.getId() );
         ratingDTO.setRating( rating.getRating() );
 

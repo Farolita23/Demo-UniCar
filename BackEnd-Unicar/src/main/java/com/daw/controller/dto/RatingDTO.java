@@ -8,10 +8,5 @@ public class RatingDTO {
 	private Long id;
 	
 	private Integer rating;
-	
-	private UserDTO userRateDTO;
-	
-	private UserDTO ratedUserDTO;
-
 
 }
