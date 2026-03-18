@@ -1,0 +1,87 @@
+<main>
+    <section>
+        <div class="content">
+            <form [formGroup]="form" (ngSubmit)="submit()">
+                <div class="head">
+                    <div class="row">
+                        <div class="col-f">
+                            <h1>Inscripcion</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="body">
+                    <div class="row">
+                        <div class="col-f">
+                            <label>Usuario</label>
+                            <input type="text" formControlName="username" placeholder="Usuario" required>
+                            <div *ngIf="form.get('username')?.touched && form.get('username')?.invalid" class="error">
+                                <p *ngIf="form.get('username')?.errors?.['required']">El usuario es obligatorio</p>
+                                <p *ngIf="form.get('username')?.errors?.['minlength']">Debe tener al menos 3 caracteres</p>
+                                <p *ngIf="form.get('username')?.errors?.['maxlength']">No puede superar los 16 caracteres</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-f">
+                            <label>Correo</label>
+                            <input type="email" formControlName="email" placeholder="correo@electronico.com" required>
+                            <div *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="error">
+                                <p *ngIf="form.get('email')?.errors?.['required']">El correo es obligatorio</p>
+                                <p *ngIf="form.get('email')?.errors?.['email']">Formato inválido</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-f">
+                            <label for>Contraseña</label>
+                            <input type="password" formControlName="password" name="password" placeholder="Contraseña" required>
+                            <div *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="error">
+                                <p *ngIf="form.get('password')?.errors?.['required']">La contraseña es obligatoria</p>
+                                <details *ngIf="form.get('password')?.errors?.['pattern']">
+                                    <summary>Formato incorrecto</summary>
+                                    <p>La contraseña debe tener al menos:</p>
+                                    <ul>
+                                        <li>8 caracteres</li>
+                                        <li>Una mayúscula</li>
+                                        <li>Una minúscula</li>
+                                        <li>Un número</li>
+                                    </ul>
+                                </details>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-f">
+                            <label for>Confirmar contraseña</label>
+                            <input type="password" formControlName="rePassword" placeholder="Confirmar contraseña" required>
+                            <div class="error">
+                                <p *ngIf="form.get('rePassword')?.touched && form.get('rePassword')?.errors?.['required']">La contraseña es obligatoria</p>
+                                <p *ngIf="!form.get('rePassword')?.errors?.['required'] && form.errors?.['passwordsMismatch']">Las contraseñas no coinciden</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="foot">
+                    <div class="row" *ngIf="userExist">
+                        <div class="col-f error">
+                            <p>{{ userExist }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-f">
+                            <p>¿Ya tienes cuenta? <a routerLink="/login" [queryParams]="{ refer: appConfig.refer() }">¡Accede!</a></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-m">
+                            <button type="button" (click)="cancel()">Cancelar</button>
+                        </div>
+                        <div class="col-m">
+                            <button type="submit" [disabled]="loading">{{ loading ? 'Registrando...' : 'Unirse' }}</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
