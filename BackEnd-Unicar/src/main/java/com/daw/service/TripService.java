@@ -72,5 +72,13 @@ public class TripService {
 		
 		tripRepository.delete(trip);
 	}
+	
+	public Page<TripDTO> getTripsAsADriver(Long idDriver, Pageable pageable) {
+		return tripMapper.toPageDto(tripRepository.findTripsAsADriver(idDriver, pageable));
+	}
+	
+	public Page<TripDTO> getTripsAsAPassenger(Long idPassenger, Pageable pageable) {
+		return tripMapper.toPageDto(tripRepository.findTripsAsAPassenger(idPassenger, pageable));
+	}
 
 }

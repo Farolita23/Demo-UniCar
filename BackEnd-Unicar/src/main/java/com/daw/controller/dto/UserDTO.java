@@ -40,8 +40,6 @@ public class UserDTO {
 
     private String description;
 
-    private Set<TripDTO> tripsAsAPassengerDTO;
-
     private Set<RatingDTO> ratingsReceivedDTO;
 
     private Set<RatingDTO> ratingsDoneDTO;

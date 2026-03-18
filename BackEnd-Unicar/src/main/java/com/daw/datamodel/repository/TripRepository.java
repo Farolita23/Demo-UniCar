@@ -30,5 +30,13 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 		    						@Param("townId") Long townId, 
 		    						@Param("user") User user, 
 		    						Pageable pageable);
+	
+	@Query("SELECT t FROM Trip t WHERE t.car.driver.id = :idDriver AND t.departureDate < CURRENT_DATE " + 
+		   "ORDER BY t.departureDate DESC, t.departureTime DESC")
+	Page<Trip> findTripsAsADriver(@Param("idDriver") Long idDriver, Pageable pageable);
+	
+	@Query("SELECT t FROM Trip t JOIN t.passengers p WHERE p.id = :idPassenger AND t.departureDate < CURRENT_DATE " + 
+			   "ORDER BY t.departureDate DESC, t.departureTime DESC")
+	Page<Trip> findTripsAsAPassenger(@Param("idPassenger") Long idPassenger, Pageable pageable);
 
 }
