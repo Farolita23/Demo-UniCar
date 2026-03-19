@@ -1,54 +1,78 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
-	--emphasis-color: rgb(128,192,255);
-	--max-width: 896px;
+    --emphasis-color: rgb(128, 192, 255);
+    --max-width: 896px;
 }
+
 * {
-	margin: 0;
-	padding: 0;
-	font-family: Arial, Helvetica, sans-serif;
-	text-decoration: none;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    text-decoration: none;
 }
+
 main section {
-	width: 100%;
+    width: 100%;
 }
-main section .content {
-	width: calc(var(--max-width) - 16px * 2);
-	max-width: calc(100% - 16px * 2);
-	margin: auto;
-	padding: 16px;
+
+main section>.content {
+    width: calc(var(--max-width) - 16px * 2);
+    max-width: calc(100% - 16px * 2);
+    margin: auto;
+    padding: 16px;
 }
 
 form {
     width: fit-content;
     padding: 16px;
     border-radius: 8px;
-    background-color: rgba(128,128,128,0.25);
+    background-color: rgba(128, 128, 128, 0.25);
     --gap: 8px;
     margin: auto;
 }
-form > .head h1 {
+
+form>.head h1 {
     text-align: center;
 }
+
 form .row {
     display: flex;
 }
-form .col-l { margin: var(--gap); width: calc(100% / 4 * 1 - var(--gap) * 2); }
-form .col-m { margin: var(--gap); width: calc(100% / 4 * 2 - var(--gap) * 2); }
-form .col-b { margin: var(--gap); width: calc(100% / 4 * 3 - var(--gap) * 2); }
-form .col-f { margin: var(--gap); width: calc(100% / 4 * 4); }
+
+form .col-l {
+    margin: var(--gap);
+    width: calc(100% / 4 * 1 - var(--gap) * 2);
+}
+
+form .col-m {
+    margin: var(--gap);
+    width: calc(100% / 4 * 2 - var(--gap) * 2);
+}
+
+form .col-b {
+    margin: var(--gap);
+    width: calc(100% / 4 * 3 - var(--gap) * 2);
+}
+
+form .col-f {
+    margin: var(--gap);
+    width: calc(100% / 4 * 4);
+}
+
 form input {
     width: calc(100% - 16px * 2);
     border-radius: 8px;
     border: 0;
     padding: 8px 16px;
 }
+
 form label {
     font-size: 16px;
     height: 16px;
     line-height: 16px;
     padding-left: 8px;
 }
+
 form button {
     box-sizing: unset;
     width: calc(100% - 16px * 2);
@@ -56,31 +80,40 @@ form button {
     border-radius: 8px;
     padding: 8px 16px;
 }
+
 form button[type="submit"] {
     color: white;
     background-color: var(--emphasis-color);
 }
+
 form button[type="submit"]:hover {
     color: var(--emphasis-color);
     background-color: white;
 }
+
 form .error {
     color: red;
     padding-left: 8px;
     font-style: italic;
 }
-form .error > p,
+
+form .error>p,
 form .error summary {
     font-weight: bold;
 }
+
 form .error ul {
     padding-left: 16px;
 }
+
 form .success {
-    color:  green;
+    color: green;
     font-weight: bold;
 }
+
 form label:has(+ input[required])::after {
     content: '*';
     color: red;
 }
+
+

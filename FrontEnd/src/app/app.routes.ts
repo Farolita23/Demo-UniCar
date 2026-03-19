@@ -1,30 +1,42 @@
 import { Routes } from '@angular/router';
-import { PageHome } from './componenets/page-home/page-home';
-import { PageLogin } from './componenets/page-login/page-login';
-import { PageSignup } from './componenets/page-signup/page-signup';
-import { PageFaq } from './componenets/page-faq/page-faq';
-import { PageLogout } from './componenets/page-logout/page-logout';
+
+// PAGES
+import { Home } from './componenets/pages/home/home';
+import { Faq } from './componenets/pages/faq/faq';
+import { About } from './componenets/pages/about/about';
+import { Profile } from './componenets/pages/profile/profile';
+import { SearchTrip } from './componenets/pages/search-trip/search-trip';
+
+import { Signup } from './componenets/pages/signup/signup';
+import { Login } from './componenets/pages/login/login';
+import { Logout } from './componenets/pages/logout/logout';
+import { RecoveryPassword } from './componenets/pages/recovery-password/recovery-password';
+import { ResetPassword } from './componenets/pages/reset-password/reset-password';
+
+import { Settings } from './componenets/pages/settings/settings';
+
+
+// GUARDS
 import { NoAuthGuard } from './guards/no-auth-guard';
 import { AuthGuard } from './guards/auth-guard';
-import { PageProfile } from './componenets/page-profile/page-profile';
-import { PageAbout } from './componenets/page-about/page-about';
-import { PageRecoveryPassword } from './componenets/page-recovery-password/page-recovery-password';
-import { PageResetPassword } from './componenets/page-reset-password/page-reset-password';
-import { PageSearchTrip } from './componenets/page-search-trip/page-search-trip';
+import { PageTrip } from './componenets/pages/trip/trip';
+
 
 export const routes: Routes = [
-    { path: '', component: PageHome },
-    { path: 'faq', component: PageFaq },
-    { path: 'about', component: PageAbout },
-    { path: 'search-trip', component: PageSearchTrip },
+    { path: '', component: Home },
+    { path: 'faq', component: Faq },
+    { path: 'about', component: About },
+    { path: 'trip', component: PageTrip },
+    { path: 'settings', component: Settings },
+    { path: 'search-trip', component: SearchTrip },
     { path: '', canActivate: [NoAuthGuard], children: [
-        { path: 'login', component: PageLogin },
-        { path: 'recovery-password', component: PageRecoveryPassword },
-        { path: 'reset-password', component: PageResetPassword },
-        { path: 'signup', component: PageSignup },
+        { path: 'login', component: Login },
+        { path: 'recovery-password', component: RecoveryPassword },
+        { path: 'reset-password', component: ResetPassword },
+        { path: 'signup', component: Signup },
     ]},
     { path: '', canActivate: [AuthGuard], children: [
-        { path: 'profile/me', component: PageProfile },
-        { path: 'logout', component: PageLogout },
+        { path: 'profile', component: Profile },
+        { path: 'logout', component: Logout },
     ]},
 ];

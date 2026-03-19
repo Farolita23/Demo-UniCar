@@ -1,0 +1,35 @@
+main {
+    max-width: var(--max-width);
+    margin: auto;
+}
+main h2 {
+    text-align: center;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    font-size: 32px;
+}
+main section.list{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+}
+main details summary {
+    padding: 8px 16px;
+    background-color: var(--emphasis-color);
+    border-radius: 16px 8px;
+    border: 2px solid black;
+}
+main details[open] summary {
+    border-radius: 16px 8px 0 0;
+}
+main details > div {
+    padding: 8px 16px;
+    background-color: white;
+    margin-bottom: 16px;
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom: 2px solid black;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 16px;
+}

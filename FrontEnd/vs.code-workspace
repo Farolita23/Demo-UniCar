@@ -1,14 +1,3 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"path": "../../_WhereAnime/ProyectoFinal"
-		}
-	],
-	"settings": {
-		"xml.downloadExternalResources.enabled": true,
-		"liveServer.settings.multiRootWorkspaceName": "ProyectoFinal"
-	}
+	"folders": [ { "path": "." } ]
 }

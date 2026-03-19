@@ -1,0 +1,56 @@
+
+button {
+    border: 1px solid black;
+    padding: 8px;
+    width: 16px;
+    height: 8px;
+    line-height: 4px;
+    box-sizing: content-box;
+    border-radius: 0;
+    color: black;
+    font-weight: bold;
+    background-color: gray;
+}
+button.active {
+    background-color: var(--emphasis-color);
+}
+section {
+    display: flex;
+    margin: 8px auto;
+    width: fit-content;
+}
+section > button:first-child,
+section > div button:first-child.active,
+section > div button:not(.active):has(+ button.active) + button,
+section > button:has(+ button:last-child) {
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+    border-bottom: 2px solid black;
+    border-top-left-radius: 12px;
+}
+section > div button:not(:first-child):not(:last-child).active {
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}
+section > button:nth-child(2),
+section > div button:last-child.active,
+section > div button.active:has(+ button:not(.active)),
+section > button:last-child{
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+    border-bottom-right-radius: 12px;
+}
+
+section > div button:only-child,
+section > div button:not(.active) {
+    border: 2px solid black;
+    border-top-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    margin: 0px 4px;
+}
+
+section > div {
+    display: flex;
+    padding: 0px 8px;
+}
