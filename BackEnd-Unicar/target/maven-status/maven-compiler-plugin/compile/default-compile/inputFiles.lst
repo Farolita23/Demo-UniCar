@@ -1,0 +1,12 @@
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\ApplicationLauncher.java
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\controller\Controlador.java
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\controller\dto\CourseDTO.java
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\controller\dto\CreateCourseDTO.java
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\controller\dto\InstructorDTO.java
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\controller\dto\LessonDTO.java
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\controller\dto\mapper\InstructorMapper.java
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\datamodel\entities\Course.java
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\datamodel\entities\Instructor.java
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\datamodel\entities\Lesson.java
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\datamodel\repository\InstructorRepository.java
+C:\Users\Usuario\Desktop\EjercicioMapeoMapStruct\src\main\java\com\daw\service\Servicio.java
