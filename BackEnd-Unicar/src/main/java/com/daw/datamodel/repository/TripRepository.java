@@ -1,5 +1,9 @@
 package com.daw.datamodel.repository;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,5 +42,25 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
 	@Query("SELECT t FROM Trip t JOIN t.passengers p WHERE p.id = :idPassenger AND t.departureDate < CURRENT_DATE " + 
 			   "ORDER BY t.departureDate DESC, t.departureTime DESC")
 	Page<Trip> findTripsAsAPassenger(@Param("idPassenger") Long idPassenger, Pageable pageable);
+	
+	@Query("SELECT t FROM Trip t " +
+		       "WHERE t.departureDate >= CURRENT_DATE " +
+		       "AND (:campusId IS NULL OR t.campus.id = :campusId) " +
+		       "AND (:townId IS NULL OR t.town.id = :townId) " +
+		       "AND (:isToCampus IS NULL OR t.isToCampus = :isToCampus) " +
+		       "AND (:departureDate IS NULL OR t.departureDate = :departureDate) " +
+		       "AND (:departureTime IS NULL OR t.departureTime >= :departureTime) " +
+		       "AND (:maxPrice IS NULL OR t.price <= :maxPrice) " +
+		       "AND (t.car.capacity - 1 - SIZE(t.passengers) >= :minFreeSeats)")
+		Page<Trip> searchTrips(
+		    @Param("campusId")      Long campusId,
+		    @Param("townId")        Long townId,
+		    @Param("isToCampus")    Boolean isToCampus,
+		    @Param("departureDate") LocalDate departureDate,
+		    @Param("departureTime") LocalTime departureTime,
+		    @Param("maxPrice")      BigDecimal maxPrice,
+		    @Param("minFreeSeats")  int minFreeSeats,
+		    Pageable pageable
+		);
 
 }

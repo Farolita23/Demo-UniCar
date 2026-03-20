@@ -47,10 +47,10 @@ public class User {
     private String phone;
 
     @Column(name = "strikes", nullable = false)
-    private Integer strikes;
+    private Integer strikes = 0;
 
     @Column(name = "banned", nullable = false)
-    private Boolean banned;
+    private Boolean banned = false;
 
     @Column(name = "driving_license_year", nullable = true)
     private Integer drivingLicenseYear;
