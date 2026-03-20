@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.daw.controller.dto.TripCreateDTO;
 import com.daw.controller.dto.TripDTO;
+import com.daw.controller.dto.TripSearchDTO;
 import com.daw.service.TripService;
 
 import lombok.RequiredArgsConstructor;
@@ -91,6 +92,16 @@ public class TripController {
             @PathVariable Long idPassenger,
             @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok(tripService.getTripsAsAPassenger(idPassenger, pageable));
+    }
+    
+    /**
+     * POST /api/trip/search?page=0&size=10&sort=departureDate,asc
+     * Todos los campos son opcionales. Los que vengan null se ignoran.
+     */
+    @PostMapping("/search")
+    public ResponseEntity<Page<TripDTO>> searchTrips(
+            @RequestBody TripSearchDTO filters, Pageable pageable) {
+        return ResponseEntity.ok(tripService.searchTrips(filters, pageable));
     }
     
 }

@@ -41,5 +41,6 @@ public class UserCreateDTO {
 	private Long idHomeTown;
 
     private String description;
+   
 
 }

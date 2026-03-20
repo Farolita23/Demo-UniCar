@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.daw.controller.dto.TripCreateDTO;
 import com.daw.controller.dto.TripDTO;
+import com.daw.controller.dto.TripSearchDTO;
 import com.daw.controller.dto.mapper.TripCreateMapper;
 import com.daw.controller.dto.mapper.TripMapper;
 import com.daw.datamodel.entities.Trip;
@@ -79,6 +80,20 @@ public class TripService {
 	
 	public Page<TripDTO> getTripsAsAPassenger(Long idPassenger, Pageable pageable) {
 		return tripMapper.toPageDto(tripRepository.findTripsAsAPassenger(idPassenger, pageable));
+	}
+	
+	public Page<TripDTO> searchTrips(TripSearchDTO filters, Pageable pageable) {
+	    int minFreeSeats = filters.getMinFreeSeats() != null ? filters.getMinFreeSeats() : 1;
+	    return tripMapper.toPageDto(tripRepository.searchTrips(
+	        filters.getCampusId(),
+	        filters.getTownId(),
+	        filters.getIsToCampus(),
+	        filters.getDepartureDate(),
+	        filters.getDepartureTime(),
+	        filters.getMaxPrice(),
+	        minFreeSeats,
+	        pageable
+	    ));
 	}
 
 }
