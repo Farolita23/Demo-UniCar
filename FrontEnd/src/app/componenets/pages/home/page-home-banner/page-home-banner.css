@@ -1,0 +1,123 @@
+section {
+	background-image: url("/assets/media/banner.png");
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+}
+section .content {
+	width: calc(var(--max-width) - 16px * 2);
+	max-width: calc(100% - 16px * 2);
+	padding: 48px 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+    margin: auto;
+}
+section .panel {
+	width: calc(100% - 32px * 2 * 2);
+	margin: auto;
+	padding: 32px;
+	backdrop-filter: blur(8px);
+	border-radius: 16px;
+	background-color:           rgba(16, 16, 16, 0.125);
+	box-shadow: 0px 0px 8px 8px rgba(16, 16, 16, 0.225);
+	display: flex;
+	flex-direction: column;
+}
+section .panel h2 {
+	height:      48px;
+	font-size:   48px;
+	line-height: 48px;
+	text-align: center;
+	color: white;
+	margin: auto;
+}
+section .panel p {
+	height:      24px;
+	font-size:   24px;
+	line-height: 24px;
+	text-align: center;
+	margin: auto;
+	padding-bottom: 8px;
+}
+section .panel .travel {
+	align-items: flex-end;
+	display: flex;
+	gap: 16px;
+	margin-top: 8px;
+}
+section .panel .travel .origin,
+section .panel .travel .destiny {
+	width: 100%;
+}
+section .travel label {
+	color: rgba(255, 255, 255);
+	background-color: rgba(128, 192, 255);
+	width: fit-content;
+	padding: 4px 16px;
+	border-radius: 16px 16px 0 0;
+	height: 16px;
+	font-size: 16px;
+	line-height: 16px;
+	display: block;
+	z-index: 1;
+	position: relative;
+}
+section .travel label::before {
+	content: '';
+	display: block;
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	bottom: -16px;
+	left: 0;
+	background: radial-gradient(circle at 100% 100%, transparent 16px, rgba(128, 192, 255) 16px);
+}
+section .travel label::after {
+	content: '';
+	display: block;
+	width:  16px;
+	height: 16px;
+	position: absolute;
+	right: -16px;
+	bottom: 0;
+	background: radial-gradient(circle at 100% 0%, transparent 16px, rgba(128, 192, 255) 16px);
+}
+section .travel input[type="text"] {
+	border-radius: 16px;
+	padding: 8px 16px;
+	border: 0;
+	width: calc(100% - 16px * 2);
+	color: rgba(64, 128, 255);
+	background-color: white;
+	z-index: 0;
+}
+section .travel .search {
+	border-radius: 16px;
+	height: 32px;
+	font-size: 16px;
+	padding: 8px 16px;
+	line-height: 16px;
+	text-align: center;
+	border: 0;
+	color: rgba(128, 192, 255);
+	background-color: white;
+}
+section .travel .search:hover {
+	color: white;
+	background-color: rgba(128, 192, 255);
+}
+@media (max-width: 768px) {
+	section .travel {
+		flex-direction: column;
+	}
+	section .travel > div {
+		width: 100%;
+	}
+	section .travel > div input {
+		width: calc(100% - 16px * 2);
+	}
+	section .travel > .search{
+		margin: auto;
+	}
+}

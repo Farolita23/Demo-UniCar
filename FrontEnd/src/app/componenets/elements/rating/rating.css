@@ -1,0 +1,43 @@
+input {
+    mask-image: url('../../../../../public/assets/media/star.png');
+    mask-size: contain;
+    width: calc(16px * 5);
+    -webkit-appearance: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+input::-webkit-slider-runnable-track {
+  height: 16px;
+  background: linear-gradient(to right, rgb(240, 192, 0) var(--range-pct, 0%), #0000001f var(--range-pct, 0%));
+  border-radius: 0px;
+  border: 0px solid #cbd5e1;
+  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
+}
+
+input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 0;
+  width: 0;
+  background: #80c0ff;
+  border-radius: 0px;
+  border: 0px solid #ffffff;
+  box-shadow: 0px 4px 0px rgba(0, 0, 0, 0);
+  margin-top: 0px;
+}
+/* --- Firefox --- */
+input::-moz-range-track {
+  height: 16px;
+  background: linear-gradient(to right, #80c0ff var(--range-pct, 0%), #e2e8f0 var(--range-pct, 0%));
+  border-radius: 0px;
+  border: 0px solid #cbd5e1;
+  box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1);
+}
+input::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  background: #80c0ff;
+  border-radius: 0px;
+  border: 0px solid #ffffff;
+  box-shadow: 0px 4px 0px rgba(0, 0, 0, 0);
+}
