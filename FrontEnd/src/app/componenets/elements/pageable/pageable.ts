@@ -14,6 +14,7 @@ export class Pageable {
     @Output() eventChangeCurrent = new EventEmitter<number>();
 
     changeCur(cur: number) {
+        if(cur < 1 || cur > this.max) return;
         this.cur = cur;
         this.eventChangeCurrent.emit(cur);
     }
