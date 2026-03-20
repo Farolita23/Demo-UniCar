@@ -13,7 +13,7 @@ export class AppConfig {
     /*   Informacion general   */
     /* ======================= */
     readonly appName = "UniCar";
-    readonly disclaimer = `${this.appName} © ${new Date().getFullYear()}`;
+    readonly disclaimer = `${this.appName} © ${new Date().getFullYear()} – Todos los derechos reservados`;
 
 
     /* ================== */
@@ -34,10 +34,11 @@ export class AppConfig {
         "search_trip" : { label: 'Viajes'        , route: '/search-trip' , refer: false, icon: '/assets/media/icons/ui-home.png'     },
         "login"       : { label: 'Acceder'       , route: '/login'       , refer: true , icon: '/assets/media/icons/ui-profile.png'  },
         "signup"      : { label: 'Unirse'        , route: '/signup'      , refer: true , icon: '/assets/media/icons/ui-profile.png'  },
-        "profile"     : { label: 'Perfil'        , route: '/profile/me'  , refer: false, icon: '/assets/media/icons/ui-profile.png'  },
+        "profile"     : { label: 'Perfil'        , route: '/profile'     , refer: false, icon: '/assets/media/icons/ui-profile.png'  },
         "logout"      : { label: 'Salir'         , route: '/logout'      , refer: false, icon: '/assets/media/icons/ui-profile.png'  },
         "faq"         : { label: 'FAQ'           , route: '/faq'         , refer: false, icon: '/assets/media/icons/ui-profile.png'  },
         "about"       : { label: 'Sobre nosotros', route: '/about'       , refer: false, icon: '/assets/media/icons/ui-settings.png' },
+        "trip"        : { label: 'Viaje'         , route: '/trip'        , refer: false, icon: '/assets/media/icons/ui-settings.png' },
     }
 
     /* ========== */

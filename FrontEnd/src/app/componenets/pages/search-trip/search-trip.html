@@ -1,0 +1,39 @@
+<app-header></app-header>
+<main>
+    <section name="filter">
+        <h3>Filtros:</h3>
+        <div class="filter-row">
+            <label for="">Buscar</label>
+            <input type="text" placeholder="Buscar...">
+        </div>
+        <div class="filter-row">
+            <label for="">Rating:</label><br>
+            <app-rating [step]="0.5" (changeValue)="onChangeRatingFilter($event)"></app-rating>
+        </div>
+        <div class="filter-row">
+            <details open>
+                <summary>Destinos</summary>
+                <div></div>
+            </details>
+        </div>
+        <div class="filter-row">
+            <details open>
+                <summary>Salida</summary>
+                <div></div>
+            </details>
+        </div>
+        <div class="filter-row">
+            <button (click)="filterApply()">Filtrar</button>
+            <button (click)="filterReset()">Reset</button>
+        </div>
+    </section>
+    <section name="results">
+        <div class="list">
+            @for (item of filteredTripList; track item; let i = $index) {
+                <app-trip [data]="item"></app-trip>
+            }
+        </div>
+        <app-pageable [cur]="currentPage" [max]="tripList.length / itemsPerPage + (1 - (tripList.length / itemsPerPage)%1)" (eventChangeCurrent)="onChangePage($event)"></app-pageable>
+    </section>
+</main>
+<app-footer></app-footer>

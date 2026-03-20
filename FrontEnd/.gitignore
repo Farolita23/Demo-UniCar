@@ -8,4 +8,4 @@
 *.code-workspace
 
 # Variables de entorno
-/src/environments
+/src/environments/*

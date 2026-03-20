@@ -1,0 +1,29 @@
+<article>
+    <div class="user">
+        <div>
+            <img src="" alt="">
+        </div>
+        <div>
+            <p><a [routerLink]="config.routes.profile.route" [queryParams]="{id: data.user.id}">{{ data.user.name }}</a></p>
+            <p><app-rating [value]="data.user.rating" [readonly]="true"></app-rating><span class="ratings">{{data.user.ratings}}</span></p>
+        </div>
+    </div>
+    <div class="info">
+        <div>
+            <h4>Info</h4>
+            <p>Salida: <span>{{ data.trip.from }}</span></p>
+            <p>Destino: <span>{{ data.trip.dest }}</span></p>
+        </div>
+        <div>
+            <img src="" alt="">
+        </div>
+    </div>
+    <div class="actions">
+        <a 
+            [routerLink]="config.routes.trip.route"
+            [queryParams]="{ id: data.trip.id }"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+        >Ver mas</a>
+    </div>
+</article>
