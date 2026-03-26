@@ -1,0 +1,97 @@
+.trip-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+}
+.trip-card:hover {
+  border-color: rgba(230,57,70,0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+}
+
+.trip-card__direction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.trip-card__direction.to-campus { background: rgba(6,214,160,0.06); }
+.dir-icon { font-size: 1rem; }
+.dir-label { color: var(--text-2); flex: 1; }
+.free-seats {
+  background: rgba(6,214,160,0.15);
+  color: var(--success);
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+}
+.free-seats.low { background: rgba(230,57,70,0.15); color: var(--danger); }
+
+.trip-card__body { padding: 1.25rem; flex: 1; }
+
+.trip-card__route {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+.route-point {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-from { background: var(--primary); }
+.dot-to { background: var(--success); }
+.route-line { flex: 1; height: 1px; border-top: 2px dashed var(--border); }
+
+.trip-card__address {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: var(--text-2);
+  margin-bottom: 0.75rem;
+}
+
+.trip-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  color: var(--text-2);
+}
+.meta-item svg { color: var(--text-3); }
+
+.trip-card__footer {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.price { display: flex; align-items: baseline; gap: 4px; }
+.price-amount { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+.price-label { font-size: 0.75rem; color: var(--text-3); }
+.trip-btn { padding: 7px 18px; font-size: 0.82rem; }
+.trip-btn.pending { border-color: var(--warning); color: var(--warning); }

@@ -1,0 +1,79 @@
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Header } from '../../elements/header/header';
+import { Footer } from '../../elements/footer/footer';
+import { ApiService } from '../../../services/api-service';
+import { AuthService } from '../../../services/auth-service';
+import { Campus } from '../../../models/campus.model';
+import { Town } from '../../../models/town.model';
+
+function passwordMatch(g: AbstractControl) {
+  const p = g.get('password')?.value;
+  const r = g.get('rePassword')?.value;
+  return p === r ? null : { passwordsMismatch: true };
+}
+
+@Component({
+  selector: 'page-signup',
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, Footer],
+  templateUrl: './signup.html',
+  styleUrl: './signup.css',
+})
+export class Signup implements OnInit {
+  fb           = inject(FormBuilder);
+  api          = inject(ApiService);
+  auth         = inject(AuthService);
+  router       = inject(Router);
+  route        = inject(ActivatedRoute);
+  platformId   = inject(PLATFORM_ID);
+
+  campuses: Campus[] = [];
+  towns: Town[]      = [];
+  loading            = false;
+  error              = '';
+  showPassword       = false;
+
+  form = this.fb.group({
+    username:           ['', [Validators.required, Validators.minLength(3), Validators.maxLength(16)]],
+    email:              ['', [Validators.required, Validators.email]],
+    name:               ['', [Validators.required]],
+    birthdate:          ['', [Validators.required]],
+    genre:              ['', [Validators.required]],
+    phone:              ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
+    idUsualCampus:      [null as number | null, Validators.required],
+    idHomeTown:         [null as number | null, Validators.required],
+    drivingLicenseYear: [null as number | null],
+    description:        [''],
+    profileImageUrl:    [''],
+    password:           ['', [Validators.required, Validators.minLength(8)]],
+    rePassword:         ['', Validators.required],
+  }, { validators: passwordMatch });
+
+  ngOnInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
+    this.api.getTowns().subscribe({   next: t => this.towns = t,    error: () => {} });
+  }
+
+  submit() {
+    if (this.form.invalid || this.loading) return;
+    this.loading = true; this.error = '';
+    const v = this.form.value;
+    const dto = {
+      username: v.username, email: v.email, name: v.name,
+      birthdate: v.birthdate, genre: v.genre, phone: v.phone,
+      idUsualCampus: v.idUsualCampus, idHomeTown: v.idHomeTown,
+      drivingLicenseYear: v.drivingLicenseYear || null,
+      description: v.description, profileImageUrl: v.profileImageUrl,
+      password: v.password,
+    };
+    this.api.register(dto).subscribe({
+      next: () => { this.loading = false; this.router.navigate(['/login']); },
+      error: (e) => { this.error = e?.error?.message || 'Error al registrarse.'; this.loading = false; },
+    });
+  }
+}

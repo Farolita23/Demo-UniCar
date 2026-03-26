@@ -1,0 +1,106 @@
+<app-header></app-header>
+<div class="page-wrapper">
+  <div class="container">
+    <div class="publish-card">
+      <div class="publish-header">
+        <h1>Publicar viaje</h1>
+        <p>Comparte tu ruta hacia el campus y ayuda a otros estudiantes</p>
+      </div>
+
+      @if (!auth.isLoggedIn()) {
+        <div class="alert alert-warning">
+          Necesitas <a routerLink="/login">iniciar sesión</a> para publicar un viaje.
+        </div>
+      } @else if (success) {
+        <div class="success-state">
+          <div class="success-icon">✓</div>
+          <h2>¡Viaje publicado!</h2>
+          <p>Tu viaje ya está disponible para otros estudiantes.</p>
+        </div>
+      } @else {
+        <form [formGroup]="form" (ngSubmit)="submit()" class="publish-form">
+
+          <div class="form-section">
+            <h3 class="form-section-title">🚗 Vehículo</h3>
+            @if (cars.length === 0) {
+              <div class="alert alert-warning">
+                No tienes vehículos registrados. <a routerLink="/profile">Añade uno en tu perfil.</a>
+              </div>
+            } @else {
+              <div class="cars-select">
+                @for (car of cars; track car.id) {
+                  <label class="car-option" [class.selected]="form.get('idCar')?.value === car.id">
+                    <input type="radio" formControlName="idCar" [value]="car.id" style="display:none">
+                    <span class="car-opt-icon">🚗</span>
+                    <div>
+                      <strong>{{ car.model }}</strong>
+                      <small>{{ car.color }} · {{ car.licensePlate }} · {{ car.capacity }} plazas</small>
+                    </div>
+                  </label>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="form-section">
+            <h3 class="form-section-title">📍 Ruta</h3>
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="label">Campus destino/origen *</label>
+                <select formControlName="idCampus">
+                  <option [value]="null">Seleccionar campus...</option>
+                  @for (c of campuses; track c.id) { <option [value]="c.id">{{ c.name }}</option> }
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="label">Localidad *</label>
+                <select formControlName="idTown">
+                  <option [value]="null">Seleccionar localidad...</option>
+                  @for (t of towns; track t.id) { <option [value]="t.id">{{ t.name }}</option> }
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="label">Dirección *</label>
+              <div class="dir-toggle">
+                <button type="button" [class.active]="form.get('isToCampus')?.value === true"
+                  (click)="form.get('isToCampus')?.setValue(true)">🎓 Hacia el campus</button>
+                <button type="button" [class.active]="form.get('isToCampus')?.value === false"
+                  (click)="form.get('isToCampus')?.setValue(false)">🏠 Desde el campus</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="label">Punto de salida (dirección completa) *</label>
+              <input type="text" formControlName="departureAddress" placeholder="Ej: Calle Mayor 5, Los Palacios">
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3 class="form-section-title">🕐 Fecha y precio</h3>
+            <div class="form-row-3">
+              <div class="form-group">
+                <label class="label">Fecha *</label>
+                <input type="date" formControlName="departureDate">
+              </div>
+              <div class="form-group">
+                <label class="label">Hora *</label>
+                <input type="time" formControlName="departureTime">
+              </div>
+              <div class="form-group">
+                <label class="label">Precio por plaza (€) *</label>
+                <input type="number" formControlName="price" placeholder="0.00" min="0" step="0.50">
+              </div>
+            </div>
+          </div>
+
+          @if (error) { <div class="alert alert-error">{{ error }}</div> }
+
+          <button type="submit" class="btn btn-primary submit-btn" [disabled]="loading || form.invalid">
+            @if (loading) { <span class="spinner"></span> } @else { Publicar viaje }
+          </button>
+        </form>
+      }
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

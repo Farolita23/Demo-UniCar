@@ -1,0 +1,101 @@
+<app-header></app-header>
+<div class="page-wrapper">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-blob blob-1"></div>
+      <div class="hero-blob blob-2"></div>
+    </div>
+    <div class="container hero-content">
+      <div class="hero-text animate-fadeUp">
+        <div class="hero-badge">
+          <span class="badge-dot"></span> Carpooling universitario
+        </div>
+        <h1 class="hero-title">
+          Comparte el camino<br>
+          <span class="hero-highlight">hacia la uni</span>
+        </h1>
+        <p class="hero-sub">
+          Conecta con compañeros que van a tu campus. Ahorra dinero, reduce emisiones y conoce gente nueva en cada trayecto.
+        </p>
+        <div class="hero-actions">
+          <a routerLink="/search-trip" class="btn btn-primary hero-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Buscar viaje
+          </a>
+          <a routerLink="/signup" class="btn btn-ghost hero-btn">Ofrecer viaje</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="car-card">
+          <img src="/assets/media/icon-dark.png" alt="UniCar" class="car-logo">
+          <div class="car-route">
+            <span class="car-from">Tu pueblo</span>
+            <div class="car-arrow">→</div>
+            <span class="car-to">Campus uni</span>
+          </div>
+          <div class="car-tags">
+            <span class="tag">🎓 Estudiantes</span>
+            <span class="tag">💰 Económico</span>
+            <span class="tag">🌱 Eco</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-section container">
+    <div class="stats-grid">
+      @for (stat of stats; track stat.label) {
+        <div class="stat-item">
+          <span class="stat-value">{{ stat.value }}</span>
+          <span class="stat-label">{{ stat.label }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section container">
+    <div class="section-header">
+      <h2 class="section-title">¿Cómo funciona?</h2>
+      <p class="section-subtitle">En tres pasos empiezas a compartir viaje</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-number">01</div>
+        <h3>Crea tu cuenta</h3>
+        <p>Regístrate con tu correo universitario, añade tu campus habitual y pueblo de origen.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">02</div>
+        <h3>Busca o publica</h3>
+        <p>Busca viajes disponibles con tus filtros o publica el tuyo indicando fecha y precio.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">03</div>
+        <h3>¡Viaja juntos!</h3>
+        <p>Solicita tu plaza, espera la confirmación del conductor y comparte el camino.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENT TRIPS -->
+  @if (recentTrips.length > 0) {
+    <section class="trips-section container">
+      <div class="section-header">
+        <h2 class="section-title">Viajes recientes</h2>
+        <a routerLink="/search-trip" class="see-all">Ver todos →</a>
+      </div>
+      <div class="trips-grid">
+        @for (trip of recentTrips; track trip.id; let i = $index) {
+          <app-trip [data]="trip" (tripUpdated)="updateTrip($event, i)"></app-trip>
+        }
+      </div>
+    </section>
+  }
+
+</div>
+<app-footer></app-footer>

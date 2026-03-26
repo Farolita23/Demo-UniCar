@@ -1,0 +1,101 @@
+<app-header></app-header>
+<div class="page-wrapper">
+  <div class="container search-layout">
+
+    <!-- FILTERS SIDEBAR -->
+    <aside class="filters-panel">
+      <div class="filters-header">
+        <h2>Filtros</h2>
+        <button class="btn btn-ghost btn-sm" (click)="reset()">Resetear</button>
+      </div>
+
+      <div class="filter-group">
+        <label class="label">Campus</label>
+        <select [(ngModel)]="filters.campusId" (ngModelChange)="search()">
+          <option [ngValue]="null">Todos los campus</option>
+          @for (c of campuses; track c.id) {
+            <option [ngValue]="c.id">{{ c.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="label">Localidad</label>
+        <select [(ngModel)]="filters.townId" (ngModelChange)="search()">
+          <option [ngValue]="null">Todas las localidades</option>
+          @for (t of towns; track t.id) {
+            <option [ngValue]="t.id">{{ t.name }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="label">Dirección</label>
+        <div class="dir-btns">
+          <button class="dir-btn" [class.active]="filters.isToCampus === null"
+            (click)="setDirection(null)">Todos</button>
+          <button class="dir-btn" [class.active]="filters.isToCampus === true"
+            (click)="setDirection(true)">🎓 Al campus</button>
+          <button class="dir-btn" [class.active]="filters.isToCampus === false"
+            (click)="setDirection(false)">🏠 Desde campus</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label class="label">Fecha de salida</label>
+        <input type="date" [(ngModel)]="filters.departureDate" (ngModelChange)="search()">
+      </div>
+
+      <div class="filter-group">
+        <label class="label">Precio máximo (€)</label>
+        <input type="number" [(ngModel)]="filters.maxPrice" (ngModelChange)="search()"
+               placeholder="Sin límite" min="0">
+      </div>
+
+      <div class="filter-group">
+        <label class="label">Plazas mínimas libres</label>
+        <input type="number" [(ngModel)]="filters.minFreeSeats" (ngModelChange)="search()"
+               placeholder="1" min="1">
+      </div>
+
+      <button class="btn btn-primary filter-apply" (click)="search()">Buscar viajes</button>
+    </aside>
+
+    <!-- RESULTS -->
+    <main class="results-panel">
+      <div class="results-header">
+        <h1>Viajes disponibles</h1>
+        <span class="results-count">{{ trips.length }} resultado{{ trips.length !== 1 ? 's' : '' }}</span>
+      </div>
+
+      @if (loading) {
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <span>Buscando viajes...</span>
+        </div>
+      } @else if (trips.length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <h3>Sin resultados</h3>
+          <p>No se encontraron viajes con esos filtros. Prueba a ampliar la búsqueda.</p>
+          <button class="btn btn-ghost" (click)="reset()">Ver todos los viajes</button>
+        </div>
+      } @else {
+        <div class="trips-list">
+          @for (trip of trips; track trip.id; let i = $index) {
+            <app-trip [data]="trip" (tripUpdated)="updateTrip($event, i)"></app-trip>
+          }
+        </div>
+
+        @if (totalPages > 1) {
+          <div class="pagination">
+            @for (p of pages(); track p) {
+              <button class="page-btn" [class.active]="p === currentPage" (click)="search(p)">{{ p + 1 }}</button>
+            }
+          </div>
+        }
+      }
+    </main>
+  </div>
+</div>
+<app-footer></app-footer>

@@ -1,0 +1,33 @@
+<header class="site-header">
+  <div class="header-inner container">
+    <a routerLink="/" class="logo">
+      <img src="/assets/media/icon-dark.png" alt="UniCar logo" class="logo-img">
+      <span class="logo-text">Uni<span class="logo-accent">Car</span></span>
+    </a>
+
+    <nav class="main-nav" [class.open]="showNav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}" (click)="showNav=false">Inicio</a>
+      <a routerLink="/search-trip" routerLinkActive="active" (click)="showNav=false">Buscar viaje</a>
+      <a routerLink="/about" routerLinkActive="active" (click)="showNav=false">Nosotros</a>
+      <a routerLink="/faq" routerLinkActive="active" (click)="showNav=false">FAQ</a>
+    </nav>
+
+    <div class="header-actions">
+      @if (!auth.isLoggedIn()) {
+        <a routerLink="/login" class="btn btn-ghost btn-sm">Acceder</a>
+        <a routerLink="/signup" class="btn btn-primary btn-sm">Únete</a>
+      } @else {
+        <a routerLink="/profile" class="avatar-btn">
+          @if (auth.getUser()?.profileImageUrl) {
+            <img [src]="auth.getUser().profileImageUrl" alt="Perfil" class="avatar">
+          } @else {
+            <div class="avatar-initials">{{ auth.getUser()?.name?.charAt(0) || 'U' }}</div>
+          }
+        </a>
+      }
+      <button class="hamburger" (click)="alternateNav()" [class.open]="showNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>

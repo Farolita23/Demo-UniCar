@@ -1,0 +1,132 @@
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { Header } from '../../elements/header/header';
+import { Footer } from '../../elements/footer/footer';
+import { TripCard } from '../../elements/trip/trip';
+import { ApiService } from '../../../services/api-service';
+import { AuthService } from '../../../services/auth-service';
+import { User } from '../../../models/user.model';
+import { Trip } from '../../../models/trip.model';
+import { Campus } from '../../../models/campus.model';
+import { Town } from '../../../models/town.model';
+
+@Component({
+  selector: 'page-profile',
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, Footer, TripCard],
+  templateUrl: './profile.html',
+  styleUrl: './profile.css',
+})
+export class Profile implements OnInit {
+  fb           = inject(FormBuilder);
+  api          = inject(ApiService);
+  auth         = inject(AuthService);
+  platformId   = inject(PLATFORM_ID);
+
+  user: User | null = null;
+  tripsAsDriver: Trip[] = [];
+  tripsAsPassenger: Trip[] = [];
+  campuses: Campus[] = [];
+  towns: Town[] = [];
+
+  activeTab: 'info' | 'trips-driver' | 'trips-passenger' | 'cars' | 'edit' = 'info';
+  loading      = false;
+  saving       = false;
+  editSuccess  = false;
+  editError    = '';
+  showCarModal = false;
+  carSaving    = false;
+
+  carForm = this.fb.group({
+    model:        ['', Validators.required],
+    color:        ['', Validators.required],
+    licensePlate: ['', Validators.required],
+    capacity:     [4, [Validators.required, Validators.min(2), Validators.max(9)]],
+  });
+
+  editForm = this.fb.group({
+    username:       ['', [Validators.required, Validators.minLength(3)]],
+    email:          ['', [Validators.required, Validators.email]],
+    name:           ['', Validators.required],
+    phone:          ['', Validators.required],
+    description:    [''],
+    profileImageUrl:[''],
+    idUsualCampus:  [null as number | null],
+    idHomeTown:     [null as number | null],
+  });
+
+  ngOnInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
+    this.api.getTowns().subscribe({   next: t => this.towns = t,    error: () => {} });
+    const stored = this.auth.getUser();
+    if (stored?.id) this.loadUser(stored.id);
+  }
+
+  loadUser(id: number) {
+    this.loading = true;
+    this.api.getUser(id).subscribe({
+      next: u => {
+        this.user = u;
+        this.auth.saveUser(u);
+        this.populateEditForm(u);
+        this.loading = false;
+        this.loadTrips(u.id);
+      },
+      error: () => this.loading = false,
+    });
+  }
+
+  loadTrips(id: number) {
+    this.api.getTripsAsDriver(id).subscribe({    next: p => this.tripsAsDriver    = p.content, error: () => {} });
+    this.api.getTripsAsPassenger(id).subscribe({ next: p => this.tripsAsPassenger = p.content, error: () => {} });
+  }
+
+  populateEditForm(u: User) {
+    this.editForm.patchValue({
+      username:        u.username,
+      email:           u.email,
+      name:            u.name,
+      phone:           u.phone,
+      description:     u.description    || '',
+      profileImageUrl: u.profileImageUrl || '',
+      idUsualCampus:   u.usualCampusDTO?.id ?? null,
+      idHomeTown:      u.homeTownDTO?.id    ?? null,
+    });
+  }
+
+  saveProfile() {
+    if (this.editForm.invalid || !this.user) return;
+    this.saving = true; this.editError = ''; this.editSuccess = false;
+    this.api.updateUser(this.user.id, { ...this.user, ...this.editForm.value }).subscribe({
+      next: u  => { this.user = u; this.auth.saveUser(u); this.editSuccess = true; this.saving = false; },
+      error: e => { this.editError = e?.error?.message || 'Error al guardar.'; this.saving = false; },
+    });
+  }
+
+  addCar() {
+    if (this.carForm.invalid || !this.user || this.carSaving) return;
+    this.carSaving = true;
+    this.api.createCar({ ...this.carForm.value, idDriver: this.user.id }).subscribe({
+      next: () => { this.carSaving = false; this.showCarModal = false; this.carForm.reset({ capacity: 4 }); this.loadUser(this.user!.id); },
+      error: () => this.carSaving = false,
+    });
+  }
+
+  deleteCar(carId: number) {
+    if (!confirm('¿Eliminar este coche?')) return;
+    this.api.deleteCar(carId).subscribe({ next: () => this.loadUser(this.user!.id), error: () => {} });
+  }
+
+  get avgRating(): string {
+    const r = this.user?.ratingsReceivedDTO;
+    if (!r || r.length === 0) return '—';
+    const avg = r.reduce((s, x) => s + x.rating, 0) / r.length;
+    return avg.toFixed(1);
+  }
+
+  updateTrip(updated: Trip, list: Trip[], index: number) { list[index] = updated; }
+}

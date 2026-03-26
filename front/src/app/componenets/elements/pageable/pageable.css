@@ -1,0 +1,68 @@
+/* ══════════════════════════════════════
+   ELEMENTO: Paginador
+   ══════════════════════════════════════ */
+
+section.paginator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin: 24px auto;
+    width: fit-content;
+}
+
+/* Estilo base de todos los botones */
+section.paginator button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 10px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    font-family: 'Sora', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: default;
+    transition: all var(--transition);
+    line-height: 1;
+}
+
+/* Botón activo (puede hacer click) */
+section.paginator button.active {
+    cursor: pointer;
+    background: var(--bg-elevated);
+    color: var(--text-secondary);
+    border-color: rgba(59,158,255,.3);
+}
+
+section.paginator button.active:hover {
+    background: var(--accent-glow);
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+}
+
+/* Página actual (no tiene clase active = ya está seleccionada) */
+section.paginator .pages button:not(.active) {
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 2px 10px rgba(59,158,255,.35);
+    cursor: default;
+}
+
+section.paginator .pages {
+    display: flex;
+    gap: 4px;
+}
+
+/* Botones de salto rápido (primero / último) */
+section.paginator .first,
+section.paginator .last {
+    font-size: 0.75rem;
+    letter-spacing: -.02em;
+}

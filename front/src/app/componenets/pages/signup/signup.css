@@ -1,0 +1,46 @@
+.auth-page { padding: 2rem 0 4rem; }
+.signup-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+.auth-brand { text-align: center; margin-bottom: 2rem; }
+.auth-logo { width: 56px; height: 56px; object-fit: contain; margin-bottom: 1rem; }
+.auth-brand h1 { font-size: 1.6rem; margin-bottom: 0.4rem; }
+.auth-brand p { color: var(--text-2); font-size: 0.9rem; }
+
+.signup-form { display: flex; flex-direction: column; gap: 0.5rem; }
+.form-section {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+.form-section-title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  margin-bottom: 1.25rem;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+}
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.input-wrap { position: relative; }
+.input-wrap input { padding-right: 3rem; }
+.eye-btn {
+  position: absolute; right: 12px; top: 50%;
+  transform: translateY(-50%);
+  background: none; font-size: 1rem; color: var(--text-3); padding: 0;
+}
+textarea { resize: vertical; min-height: 80px; }
+.submit-btn { width: 100%; justify-content: center; padding: 0.9rem; font-size: 1rem; margin-top: 0.5rem; }
+.alert { padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: 0.875rem; }
+.alert-error { background: rgba(230,57,70,0.1); border: 1px solid rgba(230,57,70,0.2); color: var(--danger); }
+.auth-link-bottom { text-align: center; font-size: 0.875rem; color: var(--text-2); margin-top: 1rem; }
+.auth-link-bottom a { color: var(--primary); }
+@media (max-width: 600px) { .form-row-2 { grid-template-columns: 1fr; } }
