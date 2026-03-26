@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subject, switchMap, tap, catchError, of } from 'rxjs';
@@ -20,6 +20,8 @@ import { Town } from '../../../models/town.model';
 export class SearchTrip implements OnInit, OnDestroy {
   api = inject(ApiService);
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   trips: Trip[]      = [];
   campuses: Campus[] = [];
   towns: Town[]      = [];
@@ -39,8 +41,8 @@ export class SearchTrip implements OnInit, OnDestroy {
   private search$ = new Subject<{ filters: any; page: number }>();
 
   ngOnInit() {
-    this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
-    this.api.getTowns().subscribe({    next: t => this.towns    = t, error: () => {} });
+    this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {}, complete: () => { this.cdr.detectChanges(); } });
+    this.api.getTowns().subscribe({    next: t => this.towns    = t, error: () => {}, complete: () => { this.cdr.detectChanges(); } });
 
     this.search$.pipe(
       tap(() => { this.loading = true; }),
@@ -55,6 +57,7 @@ export class SearchTrip implements OnInit, OnDestroy {
         this.trips      = p.content;
         this.totalPages = p.totalPages;
       }
+      this.cdr.detectChanges();
     });
 
     this.search();
