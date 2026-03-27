@@ -11,25 +11,37 @@ import { RecoveryPassword } from './componenets/pages/recovery-password/recovery
 import { ResetPassword } from './componenets/pages/reset-password/reset-password';
 import { Settings } from './componenets/pages/settings/settings';
 import { PageTrip } from './componenets/pages/trip/trip';
+import { TripDetail } from './componenets/pages/trip-detail/trip-detail';
+import { MyTrips } from './componenets/pages/my-trips/my-trips';
 import { NoAuthGuard } from './guards/no-auth-guard';
 import { AuthGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
-  { path: '', component: Home },
+  { path: '', component: Home, pathMatch: 'full' },
   { path: 'faq', component: Faq },
   { path: 'about', component: About },
   { path: 'search-trip', component: SearchTrip },
-  { path: '', canActivate: [NoAuthGuard], children: [
-    { path: 'login', component: Login },
-    { path: 'recovery-password', component: RecoveryPassword },
-    { path: 'reset-password', component: ResetPassword },
-    { path: 'signup', component: Signup },
-  ]},
-  { path: '', canActivate: [AuthGuard], children: [
-    { path: 'profile', component: Profile },
-    { path: 'logout', component: Logout },
-    { path: 'trip', component: PageTrip },
-    { path: 'settings', component: Settings },
-  ]},
-  { path: '**', redirectTo: '' }
+  { path: 'trip-detail/:id', component: TripDetail },
+  {
+    path: '',
+    canActivate: [NoAuthGuard],
+    children: [
+      { path: 'login', component: Login },
+      { path: 'recovery-password', component: RecoveryPassword },
+      { path: 'reset-password', component: ResetPassword },
+      { path: 'signup', component: Signup },
+    ],
+  },
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'profile', component: Profile },
+      { path: 'logout', component: Logout },
+      { path: 'trip', component: PageTrip },
+      { path: 'settings', component: Settings },
+      { path: 'my-trips', component: MyTrips },
+    ],
+  },
+  { path: '**', redirectTo: '' },
 ];

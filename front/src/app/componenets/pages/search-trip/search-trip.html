@@ -35,9 +35,9 @@
           <button class="dir-btn" [class.active]="filters.isToCampus === null"
             (click)="setDirection(null)">Todos</button>
           <button class="dir-btn" [class.active]="filters.isToCampus === true"
-            (click)="setDirection(true)">🎓 Al campus</button>
+            (click)="setDirection(true)"><app-icon icon="birrete" [size]="16"></app-icon> Al campus</button>
           <button class="dir-btn" [class.active]="filters.isToCampus === false"
-            (click)="setDirection(false)">🏠 Desde campus</button>
+            (click)="setDirection(false)"><app-icon icon="casa" [size]="16"></app-icon> Desde campus</button>
         </div>
       </div>
 
@@ -75,7 +75,7 @@
         </div>
       } @else if (trips.length === 0) {
         <div class="empty-state">
-          <div class="empty-icon">🔍</div>
+          <div class="empty-icon"><app-icon icon="busqueda" [size]="48"></app-icon></div>
           <h3>Sin resultados</h3>
           <p>No se encontraron viajes con esos filtros. Prueba a ampliar la búsqueda.</p>
           <button class="btn btn-ghost" (click)="reset()">Ver todos los viajes</button>

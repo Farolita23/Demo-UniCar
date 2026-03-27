@@ -6,6 +6,7 @@ import { RouterLink } from '@angular/router';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
 import { TripCard } from '../../elements/trip/trip';
+import { AppIcon } from '../../elements/icon/icon';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 import { User } from '../../../models/user.model';
@@ -16,7 +17,7 @@ import { Town } from '../../../models/town.model';
 @Component({
   selector: 'page-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, Footer, TripCard],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, Footer, TripCard, AppIcon],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
@@ -37,6 +38,20 @@ export class Profile implements OnInit {
   saving       = false;
   editSuccess  = false;
   editError    = '';
+  editPreviewUrl: string | null = null;
+
+  onProfileFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { this.editError = 'La imagen no debe superar los 5MB.'; return; }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      this.editPreviewUrl = result;
+      this.editForm.get('profileImageUrl')?.setValue(result);
+    };
+    reader.readAsDataURL(file);
+  }
   showCarModal = false;
   carSaving    = false;
 

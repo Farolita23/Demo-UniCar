@@ -36,6 +36,7 @@ export class Signup implements OnInit {
   loading            = false;
   error              = '';
   showPassword       = false;
+  previewUrl: string | null = null;
 
   form = this.fb.group({
     username:           ['', [Validators.required, Validators.minLength(3), Validators.maxLength(16)]],
@@ -53,8 +54,20 @@ export class Signup implements OnInit {
     rePassword:         ['', Validators.required],
   }, { validators: passwordMatch });
 
-  ngOnInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
+  onFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { this.error = 'La imagen no debe superar los 5MB.'; return; }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      this.previewUrl = result;
+      this.form.get('profileImageUrl')?.setValue(result);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  ngOnInit() {    if (!isPlatformBrowser(this.platformId)) return;
     this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
     this.api.getTowns().subscribe({   next: t => this.towns = t,    error: () => {} });
   }

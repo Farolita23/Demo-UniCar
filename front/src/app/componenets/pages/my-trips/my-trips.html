@@ -1,0 +1,125 @@
+<app-header></app-header>
+<div class="page-wrapper">
+  <div class="container my-trips-container">
+
+    <div class="page-header">
+      <h1>Mis viajes</h1>
+      <p class="page-subtitle">Todos tus viajes como conductor y pasajero</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab" [class.active]="activeTab === 'passenger'" (click)="activeTab = 'passenger'">
+        🎒 Como pasajero
+        @if (tripsAsPassenger.length > 0) {
+          <span class="tab-badge">{{ tripsAsPassenger.length }}</span>
+        }
+      </button>
+      <button class="tab" [class.active]="activeTab === 'driver'" (click)="activeTab = 'driver'">
+        🚗 Como conductor
+        @if (tripsAsDriver.length > 0) {
+          <span class="tab-badge">{{ tripsAsDriver.length }}</span>
+        }
+      </button>
+    </div>
+
+    <!-- Passenger trips -->
+    @if (activeTab === 'passenger') {
+      @if (loadingPassenger) {
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <span>Cargando viajes...</span>
+        </div>
+      } @else if (tripsAsPassenger.length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <h3>No tienes viajes reservados</h3>
+          <p>Busca un viaje y solicita una plaza para empezar a compartir trayecto.</p>
+          <a routerLink="/search-trip" class="btn btn-primary">Buscar viajes</a>
+        </div>
+      } @else {
+        <div class="trips-grid">
+          @for (trip of tripsAsPassenger; track trip.id) {
+            <div class="my-trip-card" (click)="goToDetail(trip.id)">
+              <div class="my-trip-card__direction" [class.to-campus]="trip.isToCampus">
+                {{ trip.isToCampus ? '🎓 Hacia el campus' : '🏠 Desde el campus' }}
+              </div>
+              <div class="my-trip-card__body">
+                <div class="my-trip-route">
+                  <span class="route-from">{{ trip.townDTO.name }}</span>
+                  <span class="route-arrow">→</span>
+                  <span class="route-to">{{ trip.campusDTO.name }}</span>
+                </div>
+                <div class="my-trip-meta">
+                  <span>📅 {{ formatDate(trip.departureDate) }}</span>
+                  <span>⏰ {{ trip.departureTime }}</span>
+                  <span>📍 {{ trip.departureAddress }}</span>
+                </div>
+              </div>
+              <div class="my-trip-card__footer">
+                <span class="my-trip-price">{{ trip.price | number:'1.2-2' }}€</span>
+                <span class="my-trip-cta">Ver detalle →</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+
+    <!-- Driver trips -->
+    @if (activeTab === 'driver') {
+      @if (loadingDriver) {
+        <div class="loading-state">
+          <div class="spinner"></div>
+          <span>Cargando viajes...</span>
+        </div>
+      } @else if (tripsAsDriver.length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">🚗</div>
+          <h3>No has publicado ningún viaje</h3>
+          <p>Comparte tu ruta hacia el campus y ayuda a otros estudiantes.</p>
+          <a routerLink="/trip" class="btn btn-primary">Publicar viaje</a>
+        </div>
+      } @else {
+        <div class="trips-grid">
+          @for (trip of tripsAsDriver; track trip.id) {
+            <div class="my-trip-card driver-trip" (click)="goToDetail(trip.id)">
+              <div class="my-trip-card__direction" [class.to-campus]="trip.isToCampus">
+                {{ trip.isToCampus ? '🎓 Hacia el campus' : '🏠 Desde el campus' }}
+                <span class="driver-label-badge">Conductor</span>
+              </div>
+              <div class="my-trip-card__body">
+                <div class="my-trip-route">
+                  <span class="route-from">{{ trip.townDTO.name }}</span>
+                  <span class="route-arrow">→</span>
+                  <span class="route-to">{{ trip.campusDTO.name }}</span>
+                </div>
+                <div class="my-trip-meta">
+                  <span>📅 {{ formatDate(trip.departureDate) }}</span>
+                  <span>⏰ {{ trip.departureTime }}</span>
+                  <span>🚗 {{ trip.carDTO.model }} · {{ trip.carDTO.color }}</span>
+                </div>
+                <div class="passengers-info">
+                  <span class="passengers-count">
+                    👥 {{ trip.passengersDTO.length || 0 }} / {{ trip.carDTO.capacity }} pasajeros
+                  </span>
+                  @if (trip.requestersDTO.length > 0) {
+                    <span class="pending-badge">
+                      ⏳ {{ trip.requestersDTO.length }} solicitud{{ trip.requestersDTO.length !== 1 ? 'es' : '' }} pendiente{{ trip.requestersDTO.length !== 1 ? 's' : '' }}
+                    </span>
+                  }
+                </div>
+              </div>
+              <div class="my-trip-card__footer">
+                <span class="my-trip-price">{{ trip.price | number:'1.2-2' }}€/plaza</span>
+                <span class="my-trip-cta">Gestionar →</span>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+
+  </div>
+</div>
+<app-footer></app-footer>

@@ -1,14 +1,15 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { Trip } from '../../../models/trip.model';
 import { AuthService } from '../../../services/auth-service';
 import { ApiService } from '../../../services/api-service';
+import { AppIcon } from '../icon/icon';
 
 @Component({
   selector: 'app-trip',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, AppIcon],
   templateUrl: './trip.html',
   styleUrl: './trip.css',
 })
@@ -18,6 +19,7 @@ export class TripCard {
 
   auth = inject(AuthService);
   api = inject(ApiService);
+  router = inject(Router);
   loading = false;
 
   get freeSeats(): number {
@@ -26,10 +28,6 @@ export class TripCard {
 
   get direction(): string {
     return this.data.isToCampus ? 'Hacia campus' : 'Desde campus';
-  }
-
-  get directionIcon(): string {
-    return this.data.isToCampus ? '🎓' : '🏠';
   }
 
   get currentUserId(): number | null {
@@ -54,6 +52,8 @@ export class TripCard {
     const date = new Date(d);
     return date.toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' });
   }
+
+  goToDetail() { this.router.navigate(['/trip-detail', this.data.id]); }
 
   requestJoin() {
     if (!this.currentUserId || this.loading) return;

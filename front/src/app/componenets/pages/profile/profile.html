@@ -20,13 +20,13 @@
           <span class="profile-username">&#64;{{ user.username }}</span>
 
           @if (user.drivingLicenseYear) {
-            <div class="driver-badge">🚗 Conductor desde {{ user.drivingLicenseYear }}</div>
+            <div class="driver-badge"><app-icon icon="coche" [size]="16"></app-icon> Conductor desde {{ user.drivingLicenseYear }}</div>
           }
 
           <div class="profile-stats">
             <div class="pstat"><span>{{ tripsAsDriver.length }}</span><small>Viajes conducidos</small></div>
             <div class="pstat"><span>{{ tripsAsPassenger.length }}</span><small>Como pasajero</small></div>
-            <div class="pstat"><span>{{ user.carsDTO?.length || 0 }}</span><small>Vehículos</small></div>
+            <div class="pstat"><span>{{ user.carsDTO.length || 0 }}</span><small>Vehículos</small></div>
           </div>
 
           @if (user.description) {
@@ -113,7 +113,7 @@
               <div class="cars-grid">
                 @for (car of user.carsDTO; track car.id) {
                   <div class="car-card-profile">
-                    <div class="car-icon">🚗</div>
+                    <div class="car-icon"><app-icon icon="coche" [size]="32"></app-icon></div>
                     <div class="car-info">
                       <h4>{{ car.model }}</h4>
                       <p>{{ car.color }} · {{ car.licensePlate }}</p>
@@ -154,7 +154,22 @@
                   </select>
                 </div>
               </div>
-              <div class="form-group"><label class="label">URL foto de perfil</label><input type="url" formControlName="profileImageUrl" placeholder="https://..."></div>
+              <div class="form-group">
+                <label class="label">Foto de perfil</label>
+                <div class="image-upload-area" (click)="profileFileInput.click()">
+                  @if (editPreviewUrl || user.profileImageUrl) {
+                    <img [src]="editPreviewUrl || user.profileImageUrl" class="preview-img" alt="Vista previa">
+                    <div class="preview-overlay">Cambiar foto</div>
+                  } @else {
+                    <div class="upload-placeholder">
+                      <span class="upload-icon">📷</span>
+                      <span>Haz clic para subir una imagen</span>
+                      <small>JPG, PNG, GIF — máx. 5MB</small>
+                    </div>
+                  }
+                </div>
+                <input #profileFileInput type="file" accept="image/*" style="display:none" (change)="onProfileFileSelected($event)">
+              </div>
               <div class="form-group"><label class="label">Descripción</label><textarea formControlName="description" rows="3"></textarea></div>
               @if (editSuccess) { <div class="alert alert-success">✓ Perfil actualizado correctamente</div> }
               @if (editError) { <div class="alert alert-error">{{ editError }}</div> }

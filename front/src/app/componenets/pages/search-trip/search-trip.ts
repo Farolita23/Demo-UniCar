@@ -5,6 +5,7 @@ import { Subject, switchMap, tap, catchError, of } from 'rxjs';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
 import { TripCard } from '../../elements/trip/trip';
+import { AppIcon } from '../../elements/icon/icon';
 import { ApiService } from '../../../services/api-service';
 import { Trip } from '../../../models/trip.model';
 import { Campus } from '../../../models/campus.model';
@@ -13,7 +14,7 @@ import { Town } from '../../../models/town.model';
 @Component({
   selector: 'page-search-trip',
   standalone: true,
-  imports: [FormsModule, CommonModule, Header, Footer, TripCard],
+  imports: [FormsModule, CommonModule, Header, Footer, TripCard, AppIcon],
   templateUrl: './search-trip.html',
   styleUrl: './search-trip.css',
 })

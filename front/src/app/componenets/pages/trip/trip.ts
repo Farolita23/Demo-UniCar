@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
+import { AppIcon } from '../../elements/icon/icon';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 import { Campus } from '../../../models/campus.model';
@@ -14,7 +15,7 @@ import { Car } from '../../../models/car.model';
 @Component({
   selector: 'pages-trip',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, Footer],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, Footer, AppIcon],
   templateUrl: './trip.html',
   styleUrl: './trip.css',
 })

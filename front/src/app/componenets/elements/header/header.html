@@ -17,13 +17,37 @@
         <a routerLink="/login" class="btn btn-ghost btn-sm">Acceder</a>
         <a routerLink="/signup" class="btn btn-primary btn-sm">Únete</a>
       } @else {
-        <a routerLink="/profile" class="avatar-btn">
-          @if (auth.getUser()?.profileImageUrl) {
-            <img [src]="auth.getUser().profileImageUrl" alt="Perfil" class="avatar">
-          } @else {
-            <div class="avatar-initials">{{ auth.getUser()?.name?.charAt(0) || 'U' }}</div>
+        <div class="profile-dropdown-wrap" (clickOutside)="showDropdown=false">
+          <button class="avatar-btn" (click)="toggleDropdown()">
+            @if (auth.getUser()?.profileImageUrl) {
+              <img [src]="auth.getUser().profileImageUrl" alt="Perfil" class="avatar">
+            } @else {
+              <div class="avatar-initials">{{ auth.getUser()?.name?.charAt(0) || 'U' }}</div>
+            }
+          </button>
+          @if (showDropdown) {
+            <div class="dropdown-menu" (click)="showDropdown=false">
+              <div class="dropdown-user-info">
+                <span class="dropdown-name">{{ auth.getUser()?.name }}</span>
+                <span class="dropdown-username">@{{ auth.getUser()?.username }}</span>
+              </div>
+              <div class="dropdown-divider"></div>
+              <a routerLink="/profile" class="dropdown-item">
+                <span class="dropdown-icon">👤</span>
+                <span>Perfil</span>
+              </a>
+              <a routerLink="/my-trips" class="dropdown-item">
+                <span class="dropdown-icon">🚗</span>
+                <span>Mis viajes</span>
+              </a>
+              <div class="dropdown-divider"></div>
+              <a routerLink="/logout" class="dropdown-item dropdown-item--danger">
+                <span class="dropdown-icon">🚪</span>
+                <span>Cerrar sesión</span>
+              </a>
+            </div>
           }
-        </a>
+        </div>
       }
       <button class="hamburger" (click)="alternateNav()" [class.open]="showNav">
         <span></span><span></span><span></span>
