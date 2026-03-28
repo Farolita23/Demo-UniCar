@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnDestroy, afterNextRender } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subject, switchMap, tap, catchError, of } from 'rxjs';
@@ -18,10 +18,8 @@ import { Town } from '../../../models/town.model';
   templateUrl: './search-trip.html',
   styleUrl: './search-trip.css',
 })
-export class SearchTrip implements OnInit, OnDestroy {
+export class SearchTrip implements OnDestroy {
   api = inject(ApiService);
-
-  constructor(private cdr: ChangeDetectorRef) {}
 
   trips: Trip[]      = [];
   campuses: Campus[] = [];
@@ -41,10 +39,8 @@ export class SearchTrip implements OnInit, OnDestroy {
 
   private search$ = new Subject<{ filters: any; page: number }>();
 
-  ngOnInit() {
-    this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {}, complete: () => { this.cdr.detectChanges(); } });
-    this.api.getTowns().subscribe({    next: t => this.towns    = t, error: () => {}, complete: () => { this.cdr.detectChanges(); } });
-
+  constructor() {
+    // Wire up the search pipeline once
     this.search$.pipe(
       tap(() => { this.loading = true; }),
       switchMap(({ filters, page }) =>
@@ -58,17 +54,17 @@ export class SearchTrip implements OnInit, OnDestroy {
         this.trips      = p.content;
         this.totalPages = p.totalPages;
       }
-      this.cdr.detectChanges();
     });
 
-    this.search();
+    afterNextRender(() => {
+      this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
+      this.api.getTowns().subscribe({   next: t => this.towns    = t, error: () => {} });
+      this.search();
+    });
   }
 
-  ngOnDestroy() {
-    this.search$.complete();
-  }
+  ngOnDestroy() { this.search$.complete(); }
 
-  // Cambia la dirección Y busca inmediatamente
   setDirection(value: boolean | null) {
     this.filters.isToCampus = value;
     this.search();
@@ -76,7 +72,6 @@ export class SearchTrip implements OnInit, OnDestroy {
 
   search(page = 0) {
     this.currentPage = page;
-
     const f: any = {};
     if (this.filters.campusId)            f.campusId      = +this.filters.campusId;
     if (this.filters.townId)              f.townId        = +this.filters.townId;
@@ -84,7 +79,6 @@ export class SearchTrip implements OnInit, OnDestroy {
     if (this.filters.departureDate)       f.departureDate =  this.filters.departureDate;
     if (this.filters.maxPrice)            f.maxPrice      = +this.filters.maxPrice;
     if (this.filters.minFreeSeats)        f.minFreeSeats  = +this.filters.minFreeSeats;
-
     this.search$.next({ filters: f, page });
   }
 

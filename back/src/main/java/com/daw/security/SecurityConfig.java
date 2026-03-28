@@ -46,6 +46,7 @@ public class SecurityConfig {
                 // Endpoints públicos de autenticación
                 .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                .requestMatchers(HttpMethod.GET,  "/api/auth/me").authenticated()
                 // Endpoints públicos de consulta
                 .requestMatchers(HttpMethod.GET,  "/api/trip").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api/trip/{id}").permitAll()

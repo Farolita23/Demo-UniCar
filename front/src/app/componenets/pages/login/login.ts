@@ -42,9 +42,19 @@ export class Login {
     this.api.login(username!, password!).subscribe({
       next: (res) => {
         this.auth.saveToken(res.token);
-        // fetch user info - we'd need to decode JWT or call /me
-        this.loading = false;
-        this.router.navigate([this.refer()]);
+        // Obtener datos del usuario autenticado y guardarlos
+        this.api.getMe().subscribe({
+          next: (user) => {
+            this.auth.saveUser(user);
+            this.loading = false;
+            this.router.navigate([this.refer()]);
+          },
+          error: () => {
+            // Token guardado aunque falle el /me — el perfil cargará igualmente
+            this.loading = false;
+            this.router.navigate([this.refer()]);
+          }
+        });
       },
       error: () => {
         this.error = 'Credenciales incorrectas. Inténtalo de nuevo.';

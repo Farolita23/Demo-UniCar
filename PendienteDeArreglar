@@ -1,0 +1,14 @@
+Problemas con las pantallas de carga, solo cargan las cosas cuando se hace un click en ellas, el problema es recurrente en toda la app (Pendiente a buscar el error, probar el siguiente
+fix de ser posible: 
+this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => { }}); esto no cambia hasta hacer otra peticion, si dentro de los subscribe le metes:  "complete: () => { this.cdr.detectChanges(); }" y en el .ty le creas "constructor(
+        private cdr: ChangeDetectorRef
+    ){}" escanea los cambios y arregla el problema)
+
+
+
+
+
+
+Añadir vehiculo no funciona
+
+Cambiar estructura del sistema de foto de perfil (no es posible registrarse con el archivo de la foto, pendiente a cambiar la estructura de las imagenes en el back)

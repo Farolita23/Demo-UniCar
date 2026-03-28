@@ -48,14 +48,14 @@
               <div class="form-group">
                 <label class="label">Campus destino/origen *</label>
                 <select formControlName="idCampus">
-                  <option [value]="null">Seleccionar campus...</option>
+                  <option value="">Seleccionar campus...</option>
                   @for (c of campuses; track c.id) { <option [value]="c.id">{{ c.name }}</option> }
                 </select>
               </div>
               <div class="form-group">
                 <label class="label">Localidad *</label>
                 <select formControlName="idTown">
-                  <option [value]="null">Seleccionar localidad...</option>
+                  <option value="">Seleccionar localidad...</option>
                   @for (t of towns; track t.id) { <option [value]="t.id">{{ t.name }}</option> }
                 </select>
               </div>

@@ -1,5 +1,4 @@
-import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnInit, afterNextRender } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -21,37 +20,23 @@ import { Town } from '../../../models/town.model';
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
-export class Profile implements OnInit {
-  fb           = inject(FormBuilder);
-  api          = inject(ApiService);
-  auth         = inject(AuthService);
-  platformId   = inject(PLATFORM_ID);
+export class Profile {
+  fb    = inject(FormBuilder);
+  api   = inject(ApiService);
+  auth  = inject(AuthService);
 
   user: User | null = null;
-  tripsAsDriver: Trip[] = [];
+  tripsAsDriver: Trip[]    = [];
   tripsAsPassenger: Trip[] = [];
   campuses: Campus[] = [];
-  towns: Town[] = [];
+  towns: Town[]      = [];
 
   activeTab: 'info' | 'trips-driver' | 'trips-passenger' | 'cars' | 'edit' = 'info';
-  loading      = false;
-  saving       = false;
-  editSuccess  = false;
-  editError    = '';
+  loading     = true;
+  saving      = false;
+  editSuccess = false;
+  editError   = '';
   editPreviewUrl: string | null = null;
-
-  onProfileFileSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file) return;
-    if (file.size > 5 * 1024 * 1024) { this.editError = 'La imagen no debe superar los 5MB.'; return; }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const result = e.target?.result as string;
-      this.editPreviewUrl = result;
-      this.editForm.get('profileImageUrl')?.setValue(result);
-    };
-    reader.readAsDataURL(file);
-  }
   showCarModal = false;
   carSaving    = false;
 
@@ -63,22 +48,27 @@ export class Profile implements OnInit {
   });
 
   editForm = this.fb.group({
-    username:       ['', [Validators.required, Validators.minLength(3)]],
-    email:          ['', [Validators.required, Validators.email]],
-    name:           ['', Validators.required],
-    phone:          ['', Validators.required],
-    description:    [''],
-    profileImageUrl:[''],
-    idUsualCampus:  [null as number | null],
-    idHomeTown:     [null as number | null],
+    username:        ['', [Validators.required, Validators.minLength(3)]],
+    email:           ['', [Validators.required, Validators.email]],
+    name:            ['', Validators.required],
+    phone:           ['', Validators.required],
+    description:     [''],
+    profileImageUrl: [''],
+    idUsualCampus:   ['' as string],
+    idHomeTown:      ['' as string],
   });
 
-  ngOnInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
-    this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
-    this.api.getTowns().subscribe({   next: t => this.towns = t,    error: () => {} });
-    const stored = this.auth.getUser();
-    if (stored?.id) this.loadUser(stored.id);
+  constructor() {
+    afterNextRender(() => {
+      this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
+      this.api.getTowns().subscribe({   next: t => this.towns = t,    error: () => {} });
+      const stored = this.auth.getUser();
+      if (stored?.id) {
+        this.loadUser(stored.id);
+      } else {
+        this.loading = false;
+      }
+    });
   }
 
   loadUser(id: number) {
@@ -91,7 +81,7 @@ export class Profile implements OnInit {
         this.loading = false;
         this.loadTrips(u.id);
       },
-      error: () => this.loading = false,
+      error: () => { this.loading = false; },
     });
   }
 
@@ -106,17 +96,45 @@ export class Profile implements OnInit {
       email:           u.email,
       name:            u.name,
       phone:           u.phone,
-      description:     u.description    || '',
+      description:     u.description     || '',
       profileImageUrl: u.profileImageUrl || '',
-      idUsualCampus:   u.usualCampusDTO?.id ?? null,
-      idHomeTown:      u.homeTownDTO?.id    ?? null,
+      idUsualCampus:   u.usualCampusDTO?.id != null ? String(u.usualCampusDTO.id) : '',
+      idHomeTown:      u.homeTownDTO?.id    != null ? String(u.homeTownDTO.id)    : '',
     });
+  }
+
+  onProfileFileSelected(event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { this.editError = 'La imagen no debe superar los 5MB.'; return; }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const result = e.target?.result as string;
+      this.editPreviewUrl = result;
+      this.editForm.get('profileImageUrl')?.setValue(result);
+    };
+    reader.readAsDataURL(file);
   }
 
   saveProfile() {
     if (this.editForm.invalid || !this.user) return;
     this.saving = true; this.editError = ''; this.editSuccess = false;
-    this.api.updateUser(this.user.id, { ...this.user, ...this.editForm.value }).subscribe({
+    const v = this.editForm.value;
+    const dto = {
+      username:           v.username,
+      email:              v.email,
+      name:               v.name,
+      phone:              v.phone,
+      description:        v.description,
+      profileImageUrl:    v.profileImageUrl,
+      idUsualCampus:      v.idUsualCampus ? Number(v.idUsualCampus) : null,
+      idHomeTown:         v.idHomeTown    ? Number(v.idHomeTown)    : null,
+      birthdate:          this.user.birthdate,
+      genre:              this.user.genre,
+      drivingLicenseYear: this.user.drivingLicenseYear,
+      password:           '',
+    };
+    this.api.updateUser(this.user.id, dto).subscribe({
       next: u  => { this.user = u; this.auth.saveUser(u); this.editSuccess = true; this.saving = false; },
       error: e => { this.editError = e?.error?.message || 'Error al guardar.'; this.saving = false; },
     });

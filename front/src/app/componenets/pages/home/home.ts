@@ -1,5 +1,4 @@
-import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, inject, afterNextRender } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
@@ -16,20 +15,9 @@ import { Trip } from '../../../models/trip.model';
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class Home implements OnInit {
+export class Home {
   api = inject(ApiService);
-  platformId = inject(PLATFORM_ID);
   recentTrips: Trip[] = [];
-
-  ngOnInit() {
-    if (isPlatformBrowser(this.platformId)) {
-      this.api.getTrips(0, 6).subscribe({ next: (p) => this.recentTrips = p.content, error: () => {} });
-    }
-  }
-
-  updateTrip(updated: Trip, index: number) {
-    this.recentTrips[index] = updated;
-  }
 
   stats = [
     { value: '500+', label: 'Usuarios activos' },
@@ -37,4 +25,14 @@ export class Home implements OnInit {
     { value: '25+', label: 'Campus universitarios' },
     { value: '4.8★', label: 'Valoración media' },
   ];
+
+  constructor() {
+    afterNextRender(() => {
+      this.api.getTrips(0, 6).subscribe({ next: (p) => this.recentTrips = p.content, error: () => {} });
+    });
+  }
+
+  updateTrip(updated: Trip, index: number) {
+    this.recentTrips[index] = updated;
+  }
 }

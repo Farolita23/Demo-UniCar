@@ -1,7 +1,6 @@
-import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
-import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
-import { Router, RouterLink, ActivatedRoute } from '@angular/router';
+import { Component, inject, afterNextRender } from '@angular/core';
+import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
@@ -16,6 +15,12 @@ function passwordMatch(g: AbstractControl) {
   return p === r ? null : { passwordsMismatch: true };
 }
 
+function strongPassword(control: AbstractControl): ValidationErrors | null {
+  const v: string = control.value || '';
+  const ok = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&?])[A-Za-z\d!@#$%^&?]{8,}$/.test(v);
+  return ok ? null : { weakPassword: true };
+}
+
 @Component({
   selector: 'page-signup',
   standalone: true,
@@ -23,13 +28,11 @@ function passwordMatch(g: AbstractControl) {
   templateUrl: './signup.html',
   styleUrl: './signup.css',
 })
-export class Signup implements OnInit {
-  fb           = inject(FormBuilder);
-  api          = inject(ApiService);
-  auth         = inject(AuthService);
-  router       = inject(Router);
-  route        = inject(ActivatedRoute);
-  platformId   = inject(PLATFORM_ID);
+export class Signup {
+  fb   = inject(FormBuilder);
+  api  = inject(ApiService);
+  auth = inject(AuthService);
+  router = inject(Router);
 
   campuses: Campus[] = [];
   towns: Town[]      = [];
@@ -45,14 +48,21 @@ export class Signup implements OnInit {
     birthdate:          ['', [Validators.required]],
     genre:              ['', [Validators.required]],
     phone:              ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
-    idUsualCampus:      [null as number | null, Validators.required],
-    idHomeTown:         [null as number | null, Validators.required],
+    idUsualCampus:      ['', Validators.required],
+    idHomeTown:         ['', Validators.required],
     drivingLicenseYear: [null as number | null],
     description:        [''],
     profileImageUrl:    [''],
-    password:           ['', [Validators.required, Validators.minLength(8)]],
+    password:           ['', [Validators.required, strongPassword]],
     rePassword:         ['', Validators.required],
   }, { validators: passwordMatch });
+
+  constructor() {
+    afterNextRender(() => {
+      this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
+      this.api.getTowns().subscribe({   next: t => this.towns = t,    error: () => {} });
+    });
+  }
 
   onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -67,11 +77,6 @@ export class Signup implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  ngOnInit() {    if (!isPlatformBrowser(this.platformId)) return;
-    this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
-    this.api.getTowns().subscribe({   next: t => this.towns = t,    error: () => {} });
-  }
-
   submit() {
     if (this.form.invalid || this.loading) return;
     this.loading = true; this.error = '';
@@ -79,14 +84,23 @@ export class Signup implements OnInit {
     const dto = {
       username: v.username, email: v.email, name: v.name,
       birthdate: v.birthdate, genre: v.genre, phone: v.phone,
-      idUsualCampus: v.idUsualCampus, idHomeTown: v.idHomeTown,
+      idUsualCampus: v.idUsualCampus ? Number(v.idUsualCampus) : null,
+      idHomeTown:    v.idHomeTown    ? Number(v.idHomeTown)    : null,
       drivingLicenseYear: v.drivingLicenseYear || null,
       description: v.description, profileImageUrl: v.profileImageUrl,
       password: v.password,
     };
     this.api.register(dto).subscribe({
       next: () => { this.loading = false; this.router.navigate(['/login']); },
-      error: (e) => { this.error = e?.error?.message || 'Error al registrarse.'; this.loading = false; },
+      error: (e) => {
+        const fields = e?.error?.fields;
+        if (fields) {
+          this.error = 'Error de validación: ' + Object.entries(fields).map(([k, v]) => `${k}: ${v}`).join(', ');
+        } else {
+          this.error = e?.error?.message || 'Error al registrarse.';
+        }
+        this.loading = false;
+      },
     });
   }
 }

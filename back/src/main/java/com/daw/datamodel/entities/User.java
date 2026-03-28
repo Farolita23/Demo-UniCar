@@ -77,10 +77,10 @@ public class User {
     )
     private Town homeTown;
 
-    @OneToMany(mappedBy = "reportedUser", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "userReport", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Report> reportsDone;
     
-    @OneToMany(mappedBy = "userReport", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "reportedUser", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Report> reportsReceived;
 
     @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)

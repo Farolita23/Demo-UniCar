@@ -1,5 +1,4 @@
-import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, inject, afterNextRender } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -19,12 +18,11 @@ import { Car } from '../../../models/car.model';
   templateUrl: './trip.html',
   styleUrl: './trip.css',
 })
-export class PageTrip implements OnInit {
-  fb           = inject(FormBuilder);
-  api          = inject(ApiService);
-  auth         = inject(AuthService);
-  router       = inject(Router);
-  platformId   = inject(PLATFORM_ID);
+export class PageTrip {
+  fb     = inject(FormBuilder);
+  api    = inject(ApiService);
+  auth   = inject(AuthService);
+  router = inject(Router);
 
   campuses: Campus[] = [];
   towns: Town[]      = [];
@@ -35,8 +33,8 @@ export class PageTrip implements OnInit {
 
   form = this.fb.group({
     idCar:            [null as number | null, Validators.required],
-    idCampus:         [null as number | null, Validators.required],
-    idTown:           [null as number | null, Validators.required],
+    idCampus:         ['', Validators.required],
+    idTown:           ['', Validators.required],
     isToCampus:       [true, Validators.required],
     departureDate:    ['', Validators.required],
     departureTime:    ['', Validators.required],
@@ -44,23 +42,35 @@ export class PageTrip implements OnInit {
     price:            [null as number | null, [Validators.required, Validators.min(0)]],
   });
 
-  ngOnInit() {
-    if (!isPlatformBrowser(this.platformId)) return;
-    this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
-    this.api.getTowns().subscribe({   next: t => this.towns = t,    error: () => {} });
-    const userId = this.auth.getUser()?.id;
-    if (userId) {
-      this.api.getUser(userId).subscribe({
-        next: u => this.cars = u.carsDTO || [],
-        error: () => {},
-      });
-    }
+  constructor() {
+    afterNextRender(() => {
+      this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
+      this.api.getTowns().subscribe({   next: t => this.towns = t,    error: () => {} });
+      const userId = this.auth.getUser()?.id;
+      if (userId) {
+        this.api.getUser(userId).subscribe({
+          next: u => this.cars = u.carsDTO || [],
+          error: () => {},
+        });
+      }
+    });
   }
 
   submit() {
     if (this.form.invalid || this.loading) return;
     this.loading = true; this.error = '';
-    this.api.createTrip(this.form.value).subscribe({
+    const v = this.form.value;
+    const dto = {
+      idCar:            v.idCar,
+      idCampus:         v.idCampus ? Number(v.idCampus) : null,
+      idTown:           v.idTown   ? Number(v.idTown)   : null,
+      isToCampus:       v.isToCampus,
+      departureDate:    v.departureDate,
+      departureTime:    v.departureTime,
+      departureAddress: v.departureAddress,
+      price:            v.price,
+    };
+    this.api.createTrip(dto).subscribe({
       next: () => { this.loading = false; this.success = true; setTimeout(() => this.router.navigate(['/profile']), 2000); },
       error: e  => { this.error = e?.error?.message || 'Error al publicar el viaje.'; this.loading = false; },
     });

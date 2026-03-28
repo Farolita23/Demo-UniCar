@@ -40,6 +40,10 @@ export class ApiService {
         );
     }
 
+    getMe(): Observable<User> {
+        return this.http.get<User>(`${this.URL}/api/auth/me`, { headers: this.headers() });
+    }
+
     register(dto: any): Observable<User> {
         return this.http.post<User>(
             `${this.URL}/api/auth/register`,
