@@ -5,6 +5,7 @@ import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
@@ -58,7 +59,8 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "profile_image_url", nullable = true)
+    @Lob
+    @Column(name = "profile_image_url", nullable = true, columnDefinition = "LONGTEXT")
     private String profileImageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)

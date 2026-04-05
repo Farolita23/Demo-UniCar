@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectorRef} from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -15,6 +15,7 @@ import { AuthService } from '../../../services/auth-service';
   styleUrl: './login.css',
 })
 export class Login {
+  private cdr = inject(ChangeDetectorRef);
   fb = inject(FormBuilder);
   api = inject(ApiService);
   auth = inject(AuthService);

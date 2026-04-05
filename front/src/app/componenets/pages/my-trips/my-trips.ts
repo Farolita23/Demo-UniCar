@@ -1,4 +1,4 @@
-import { Component, inject, afterNextRender } from '@angular/core';
+import { Component, inject, afterNextRender, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../elements/header/header';
@@ -18,6 +18,7 @@ export class MyTrips {
   api    = inject(ApiService);
   auth   = inject(AuthService);
   router = inject(Router);
+  cdr    = inject(ChangeDetectorRef);
 
   tripsAsPassenger: Trip[] = [];
   tripsAsDriver: Trip[]    = [];
@@ -31,13 +32,13 @@ export class MyTrips {
       if (!userId) { this.router.navigate(['/login']); return; }
 
       this.api.getTripsAsPassenger(userId).subscribe({
-        next: (p) => { this.tripsAsPassenger = p.content; this.loadingPassenger = false; },
-        error: ()  => { this.loadingPassenger = false; }
+        next: (p) => { this.tripsAsPassenger = p.content; this.loadingPassenger = false; this.cdr.detectChanges(); },
+        error: ()  => { this.loadingPassenger = false; this.cdr.detectChanges(); },
       });
 
       this.api.getTripsAsDriver(userId).subscribe({
-        next: (p) => { this.tripsAsDriver = p.content; this.loadingDriver = false; },
-        error: ()  => { this.loadingDriver = false; }
+        next: (p) => { this.tripsAsDriver = p.content; this.loadingDriver = false; this.cdr.detectChanges(); },
+        error: ()  => { this.loadingDriver = false; this.cdr.detectChanges(); },
       });
     });
   }

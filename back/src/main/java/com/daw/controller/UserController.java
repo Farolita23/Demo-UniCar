@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.daw.controller.dto.UserCreateDTO;
 import com.daw.controller.dto.UserDTO;
+import com.daw.controller.dto.UserUpdateDTO;
 import com.daw.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> update(@RequestBody @Validated UserCreateDTO dto,
+    public ResponseEntity<UserDTO> update(@RequestBody @Validated UserUpdateDTO dto,
                                           @PathVariable Long id) {
         return ResponseEntity.ok(userService.update(dto, id));
     }

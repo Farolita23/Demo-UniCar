@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.daw.controller.dto.UserCreateDTO;
 import com.daw.controller.dto.UserDTO;
+import com.daw.controller.dto.UserUpdateDTO;
 import com.daw.controller.dto.mapper.UserCreateMapper;
 import com.daw.controller.dto.mapper.UserMapper;
+import com.daw.controller.dto.mapper.UserUpdateMapper;
 import com.daw.datamodel.entities.User;
 import com.daw.datamodel.repository.UserRepository;
 import com.daw.exceptions.DuplicateEmailException;
@@ -26,6 +28,7 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final UserMapper userMapper;
 	private final UserCreateMapper userCreateMapper;
+	private final UserUpdateMapper userUpdateMapper;
 	private final GeneralService generalService;
 	private final PasswordEncoder passwordEncoder;
 	
@@ -57,8 +60,9 @@ public class UserService {
 		
 		return userMapper.toDto(user);
 	}
-	
-	public UserDTO update(UserCreateDTO dto, Long id) {
+
+	/** Endpoint PUT /api/user/{id} — usado desde el perfil del front */
+	public UserDTO update(UserUpdateDTO dto, Long id) {
 		User user = generalService.findUserById(id);
 		
 		if(!user.getUsername().equals(dto.getUsername()) && generalService.existsByUsername(dto.getUsername())) {
@@ -69,14 +73,18 @@ public class UserService {
 			throw new DuplicateEmailException();
 		}
 		
-		userCreateMapper.updateEntityFromDto(dto, user);
-		
+		userUpdateMapper.updateEntityFromDto(dto, user);
+
 		if(dto.getPassword() != null && !dto.getPassword().isBlank()) {
 			user.setPassword(passwordEncoder.encode(dto.getPassword()));
 		}
 
-		user.setUsualCampus(generalService.findCampusById(dto.getIdUsualCampus()));
-		user.setHomeTown(generalService.findTownById(dto.getIdHomeTown()));
+		if (dto.getIdUsualCampus() != null) {
+			user.setUsualCampus(generalService.findCampusById(dto.getIdUsualCampus()));
+		}
+		if (dto.getIdHomeTown() != null) {
+			user.setHomeTown(generalService.findTownById(dto.getIdHomeTown()));
+		}
 		
 		User updatedUser = userRepository.save(user);
 		return userMapper.toDto(updatedUser);
@@ -119,7 +127,5 @@ public class UserService {
 		generalService.findReportById(idReport);
 		return userMapper.toDto(userRepository.findByReportsReceivedId(idReport));
 	}
-	
-	
 
 }

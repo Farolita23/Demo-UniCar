@@ -81,7 +81,8 @@ public class TripController {
     
     @PostMapping("/search")
     public ResponseEntity<Page<TripDTO>> searchTrips(
-            @RequestBody TripSearchDTO filters, Pageable pageable) {
+        @RequestBody TripSearchDTO filters,
+        @PageableDefault(size = 10, sort = "departureDate") Pageable pageable) {
         return ResponseEntity.ok(tripService.searchTrips(filters, pageable));
     }
 

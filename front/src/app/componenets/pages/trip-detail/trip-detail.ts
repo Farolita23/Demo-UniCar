@@ -1,4 +1,4 @@
-import { Component, inject, afterNextRender } from '@angular/core';
+import { Component, inject, afterNextRender, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Header } from '../../elements/header/header';
@@ -19,6 +19,7 @@ export class TripDetail {
   api   = inject(ApiService);
   auth  = inject(AuthService);
   route = inject(ActivatedRoute);
+  cdr   = inject(ChangeDetectorRef);
 
   trip: Trip | null   = null;
   driver: User | null = null;
@@ -33,17 +34,18 @@ export class TripDetail {
 
       this.api.getTripById(id).subscribe({
         next: (t) => {
-          this.trip   = t;
+          this.trip    = t;
           this.loading = false;
+          this.cdr.detectChanges();
           const driverId = t.carDTO?.driverDTO?.id;
           if (driverId) {
             this.api.getUser(driverId).subscribe({
-              next: (u) => this.driver = u,
-              error: () => {}
+              next: (u) => { this.driver = u; this.cdr.detectChanges(); },
+              error: () => {},
             });
           }
         },
-        error: () => { this.loading = false; }
+        error: () => { this.loading = false; this.cdr.detectChanges(); },
       });
     });
   }
@@ -79,8 +81,8 @@ export class TripDetail {
     if (!this.currentUserId || this.actionLoading || !this.trip) return;
     this.actionLoading = true; this.actionError = '';
     this.api.requestJoinTrip(this.trip.id, this.currentUserId).subscribe({
-      next: (t) => { this.trip = t; this.actionLoading = false; },
-      error: (e) => { this.actionError = e?.error?.message || 'Error al solicitar plaza.'; this.actionLoading = false; }
+      next: (t) => { this.trip = t; this.actionLoading = false; this.cdr.detectChanges(); },
+      error: (e) => { this.actionError = e?.error?.message || 'Error al solicitar plaza.'; this.actionLoading = false; this.cdr.detectChanges(); },
     });
   }
 
@@ -88,8 +90,8 @@ export class TripDetail {
     if (!this.currentUserId || this.actionLoading || !this.trip) return;
     this.actionLoading = true; this.actionError = '';
     this.api.cancelJoinRequest(this.trip.id, this.currentUserId).subscribe({
-      next: (t) => { this.trip = t; this.actionLoading = false; },
-      error: (e) => { this.actionError = e?.error?.message || 'Error al cancelar.'; this.actionLoading = false; }
+      next: (t) => { this.trip = t; this.actionLoading = false; this.cdr.detectChanges(); },
+      error: (e) => { this.actionError = e?.error?.message || 'Error al cancelar.'; this.actionLoading = false; this.cdr.detectChanges(); },
     });
   }
 
@@ -97,8 +99,8 @@ export class TripDetail {
     if (!this.currentUserId || this.actionLoading || !this.trip) return;
     this.actionLoading = true; this.actionError = '';
     this.api.leaveTrip(this.trip.id, this.currentUserId).subscribe({
-      next: (t) => { this.trip = t; this.actionLoading = false; },
-      error: (e) => { this.actionError = e?.error?.message || 'Error al abandonar.'; this.actionLoading = false; }
+      next: (t) => { this.trip = t; this.actionLoading = false; this.cdr.detectChanges(); },
+      error: (e) => { this.actionError = e?.error?.message || 'Error al abandonar.'; this.actionLoading = false; this.cdr.detectChanges(); },
     });
   }
 }

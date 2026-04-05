@@ -1,4 +1,4 @@
-import { Component, inject, afterNextRender } from '@angular/core';
+import { Component, inject, afterNextRender, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
@@ -17,6 +17,7 @@ import { Trip } from '../../../models/trip.model';
 })
 export class Home {
   api = inject(ApiService);
+  cdr = inject(ChangeDetectorRef);
   recentTrips: Trip[] = [];
 
   stats = [
@@ -28,11 +29,15 @@ export class Home {
 
   constructor() {
     afterNextRender(() => {
-      this.api.getTrips(0, 6).subscribe({ next: (p) => this.recentTrips = p.content, error: () => {} });
+      this.api.getTrips(0, 6).subscribe({
+        next: (p) => { this.recentTrips = p.content; this.cdr.detectChanges(); },
+        error: () => {},
+      });
     });
   }
 
   updateTrip(updated: Trip, index: number) {
     this.recentTrips[index] = updated;
+    this.cdr.detectChanges();
   }
 }

@@ -81,20 +81,7 @@
             <textarea formControlName="description" rows="3" placeholder="Cuéntanos algo sobre ti..."></textarea>
           </div>
           <div class="form-group">
-            <label class="label">Foto de perfil (opcional)</label>
-            <div class="image-upload-area" (click)="fileInput.click()">
-              @if (previewUrl) {
-                <img [src]="previewUrl" class="preview-img" alt="Vista previa">
-                <div class="preview-overlay">Cambiar foto</div>
-              } @else {
-                <div class="upload-placeholder">
-                  <span class="upload-icon">📷</span>
-                  <span>Haz clic para subir una imagen</span>
-                  <small>JPG, PNG, GIF — máx. 5MB</small>
-                </div>
-              }
-            </div>
-            <input #fileInput type="file" accept="image/*" style="display:none" (change)="onFileSelected($event)">
+            <small class="info-msg">📷 Podrás añadir una foto de perfil desde tu perfil una vez registrado.</small>
           </div>
         </div>
 

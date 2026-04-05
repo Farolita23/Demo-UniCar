@@ -1,4 +1,4 @@
-import { Component, inject, afterNextRender } from '@angular/core';
+import { Component, inject, afterNextRender, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -23,6 +23,7 @@ export class PageTrip {
   api    = inject(ApiService);
   auth   = inject(AuthService);
   router = inject(Router);
+  cdr    = inject(ChangeDetectorRef);
 
   campuses: Campus[] = [];
   towns: Town[]      = [];
@@ -44,12 +45,18 @@ export class PageTrip {
 
   constructor() {
     afterNextRender(() => {
-      this.api.getCampuses().subscribe({ next: c => this.campuses = c, error: () => {} });
-      this.api.getTowns().subscribe({   next: t => this.towns = t,    error: () => {} });
+      this.api.getCampuses().subscribe({
+        next: c => { this.campuses = c; this.cdr.detectChanges(); },
+        error: () => {},
+      });
+      this.api.getTowns().subscribe({
+        next: t => { this.towns = t; this.cdr.detectChanges(); },
+        error: () => {},
+      });
       const userId = this.auth.getUser()?.id;
       if (userId) {
         this.api.getUser(userId).subscribe({
-          next: u => this.cars = u.carsDTO || [],
+          next: u => { this.cars = u.carsDTO || []; this.cdr.detectChanges(); },
           error: () => {},
         });
       }
@@ -61,7 +68,7 @@ export class PageTrip {
     this.loading = true; this.error = '';
     const v = this.form.value;
     const dto = {
-      idCar:            v.idCar,
+      idCar:            Number(v.idCar),
       idCampus:         v.idCampus ? Number(v.idCampus) : null,
       idTown:           v.idTown   ? Number(v.idTown)   : null,
       isToCampus:       v.isToCampus,
@@ -71,8 +78,16 @@ export class PageTrip {
       price:            v.price,
     };
     this.api.createTrip(dto).subscribe({
-      next: () => { this.loading = false; this.success = true; setTimeout(() => this.router.navigate(['/profile']), 2000); },
-      error: e  => { this.error = e?.error?.message || 'Error al publicar el viaje.'; this.loading = false; },
+      next: () => {
+        this.loading = false; this.success = true;
+        this.cdr.detectChanges();
+        setTimeout(() => this.router.navigate(['/profile']), 2000);
+      },
+      error: e => {
+        this.error = e?.error?.message || 'Error al publicar el viaje.';
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
     });
   }
 }

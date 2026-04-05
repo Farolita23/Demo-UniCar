@@ -16,7 +16,7 @@ public class TripSpecification {
 
             List<Predicate> predicates = new ArrayList<>();
 
-            // Solo viajes futuros
+            // Solo viajes futuros (hoy incluido)
             predicates.add(cb.greaterThanOrEqualTo(
                 root.get("departureDate"), LocalDate.now()
             ));
@@ -33,7 +33,6 @@ public class TripSpecification {
                 ));
             }
 
-            // isToCampus: solo se aplica si NO es null (null = mostrar todos)
             if (filters.getIsToCampus() != null) {
                 predicates.add(cb.equal(
                     root.get("isToCampus"), filters.getIsToCampus()
@@ -58,12 +57,15 @@ public class TripSpecification {
                 ));
             }
 
-            // Plazas libres: capacity - 1 (conductor) - passengers >= minFreeSeats
-            int minSeats = filters.getMinFreeSeats() != null ? filters.getMinFreeSeats() : 1;
-            Expression<Integer> capacity = root.get("car").get("capacity");
-            Expression<Integer> passengers = cb.size(root.get("passengers"));
-            Expression<Integer> freeSeats = cb.diff(cb.diff(capacity, 1), passengers);
-            predicates.add(cb.greaterThanOrEqualTo(freeSeats, minSeats));
+            // Plazas libres: solo se filtra si el usuario especifica minFreeSeats
+            if (filters.getMinFreeSeats() != null && filters.getMinFreeSeats() > 0) {
+                Expression<Integer> capacity = root.get("car").get("capacity");
+                Expression<Integer> passengers = cb.size(root.get("passengers"));
+                // Plazas libres = capacidad total - pasajeros aceptados
+                // (no restamos conductor porque capacity ya es el nº de plazas)
+                Expression<Integer> freeSeats = cb.diff(capacity, passengers);
+                predicates.add(cb.greaterThanOrEqualTo(freeSeats, filters.getMinFreeSeats()));
+            }
 
             return cb.and(predicates.toArray(new Predicate[0]));
         };
