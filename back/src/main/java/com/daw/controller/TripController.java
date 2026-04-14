@@ -140,5 +140,26 @@ public class TripController {
             @PathVariable Long userId) {
         return ResponseEntity.ok(tripService.leaveTrip(id, userId));
     }
+
+    /**
+     * GET /api/trip/suggested/{userId}
+     * Viajes sugeridos basados en el historial del usuario
+     */
+    @GetMapping("/suggested/{userId}")
+    public ResponseEntity<Page<TripDTO>> findSuggestedTrips(
+            @PathVariable Long userId,
+            @PageableDefault(size = 6, sort = "departureDate") Pageable pageable) {
+        return ResponseEntity.ok(tripService.findSuggestedTrips(userId, pageable));
+    }
+
+    /**
+     * GET /api/trip/future
+     * Viajes futuros para usuarios no autenticados
+     */
+    @GetMapping("/future")
+    public ResponseEntity<Page<TripDTO>> findFutureTrips(
+            @PageableDefault(size = 6, sort = "departureDate") Pageable pageable) {
+        return ResponseEntity.ok(tripService.findFutureTrips(pageable));
+    }
     
 }

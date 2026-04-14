@@ -1,5 +1,6 @@
 package com.daw.datamodel.entities;
 
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -13,11 +14,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "car")
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"driver", "trips"})
 public class Car {
 
     @Id
@@ -47,5 +52,18 @@ public class Car {
 
     @OneToMany(mappedBy = "car", fetch = FetchType.LAZY)
     private Set<Trip> trips;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return id != null && Objects.equals(id, car.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : System.identityHashCode(this);
+    }
 
 }

@@ -26,6 +26,7 @@ import com.daw.exceptions.RatingAlreadyExistsException;
 import com.daw.exceptions.RatingNotFoundException;
 import com.daw.exceptions.ReportNotFoundException;
 import com.daw.exceptions.TownNotFoundException;
+import com.daw.exceptions.TripActionException;
 import com.daw.exceptions.TripNotFoundException;
 import com.daw.exceptions.UserNotFoundException;
 
@@ -109,6 +110,11 @@ public class ExceptionController {
 
     @ExceptionHandler(RatingAlreadyExistsException.class)
     public ResponseEntity<Map<String, Object>> handleRatingAlreadyExists(RatingAlreadyExistsException ex) {
+        return buildError(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(TripActionException.class)
+    public ResponseEntity<Map<String, Object>> handleTripAction(TripActionException ex) {
         return buildError(HttpStatus.CONFLICT, ex.getMessage());
     }
 

@@ -123,19 +123,19 @@
         <div class="manage-section slide-up delay-2">
           <div class="section-header">
             <h2 class="section-title">⏳ Solicitudes pendientes</h2>
-            @if (trip.requestersDTO.length > 0) {
-              <span class="count-badge pending-count">{{ trip.requestersDTO.length }}</span>
+            @if (requesters.length > 0) {
+              <span class="count-badge pending-count">{{ requesters.length }}</span>
             }
           </div>
 
-          @if (trip.requestersDTO.length === 0) {
+          @if (requesters.length === 0) {
             <div class="empty-section">
               <div class="empty-section-icon">📭</div>
               <p>No hay solicitudes pendientes</p>
             </div>
           } @else {
             <div class="people-list">
-              @for (requester of trip.requestersDTO; track requester.id) {
+              @for (requester of requesters; track requester.id) {
                 <div class="person-card"
                      [class.accepting]="acceptedIds.has(requester.id)"
                      [class.rejecting]="rejectedIds.has(requester.id)">
@@ -186,19 +186,19 @@
         <div class="manage-section slide-up delay-3">
           <div class="section-header">
             <h2 class="section-title">👥 Pasajeros confirmados</h2>
-            @if (trip.passengersDTO.length > 0) {
-              <span class="count-badge confirmed-count">{{ trip.passengersDTO.length }}</span>
+            @if (passengers.length > 0) {
+              <span class="count-badge confirmed-count">{{ passengers.length }}</span>
             }
           </div>
 
-          @if (trip.passengersDTO.length === 0) {
+          @if (passengers.length === 0) {
             <div class="empty-section">
               <div class="empty-section-icon">🪑</div>
               <p>Aún no hay pasajeros confirmados</p>
             </div>
           } @else {
             <div class="people-list">
-              @for (passenger of trip.passengersDTO; track passenger.id) {
+              @for (passenger of passengers; track passenger.id) {
                 <div class="person-card confirmed"
                      [class.removing]="removedIds.has(passenger.id)">
                   <div class="person-info">

@@ -66,6 +66,14 @@ export class ManageTrip implements OnInit {
     return (this.trip?.carDTO?.capacity ?? 0) - (this.trip?.passengersDTO?.length ?? 0);
   }
 
+  get requesters(): UserSummary[] {
+    return this.trip?.requestersDTO ? [...this.trip.requestersDTO] : [];
+  }
+
+  get passengers(): UserSummary[] {
+    return this.trip?.passengersDTO ? [...this.trip.passengersDTO] : [];
+  }
+
   get totalSeats(): number {
     return this.trip?.carDTO?.capacity ?? 0;
   }

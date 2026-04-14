@@ -3,6 +3,7 @@ package com.daw.datamodel.entities;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -17,11 +18,17 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Data;
+import java.util.Objects;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "trip")
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"passengers", "requesters"})
 public class Trip {
 
     @Id
@@ -73,14 +80,26 @@ public class Trip {
         joinColumns = @JoinColumn(name = "trip_id"),
         inverseJoinColumns = @JoinColumn(name = "passenger_id")
     )
-    private Set<User> passengers;
+    private Set<User> passengers = new HashSet<>();
     
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "trip_requester",
         joinColumns = @JoinColumn(name = "trip_id"),
         inverseJoinColumns = @JoinColumn(name = "requester_id")
     )
-    private Set<User> requesters;
-    
+    private Set<User> requesters = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Trip trip = (Trip) o;
+        return id != null && Objects.equals(id, trip.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : System.identityHashCode(this);
+    }
 
 }

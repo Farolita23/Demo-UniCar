@@ -38,6 +38,12 @@ public class CarController {
         return ResponseEntity.ok(carService.findById(id));
     }
 
+    /** GET /api/car/user/{driverId} — coches del conductor */
+    @GetMapping("/user/{driverId}")
+    public ResponseEntity<List<CarDTO>> findByDriver(@PathVariable Long driverId) {
+        return ResponseEntity.ok(carService.findByDriverId(driverId));
+    }
+
     @PostMapping
     public ResponseEntity<CarDTO> create(@RequestBody @Validated CarCreateDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(carService.create(dto));
@@ -45,7 +51,7 @@ public class CarController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CarDTO> update(@RequestBody @Validated CarCreateDTO dto,
-                                          @PathVariable Long id) {
+                                         @PathVariable Long id) {
         return ResponseEntity.ok(carService.update(dto, id));
     }
 

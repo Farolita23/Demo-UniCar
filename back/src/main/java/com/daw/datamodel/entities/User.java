@@ -1,6 +1,7 @@
 package com.daw.datamodel.entities;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -17,11 +18,15 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "user")
-@Data
+@Getter
+@Setter
+@ToString(exclude = {"reportsDone", "reportsReceived", "cars", "tripsAsAPassenger", "ratingsReceived", "ratingsDone"})
 public class User {
 
     @Id
@@ -99,5 +104,18 @@ public class User {
 
     @OneToMany(mappedBy = "userRate", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Rating> ratingsDone;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : System.identityHashCode(this);
+    }
 
 }

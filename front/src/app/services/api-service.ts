@@ -107,6 +107,16 @@ export class ApiService {
     return this.http.get<Page<Trip>>(`${this.URL}/api/trip/recommended/${userId}`, { headers: this.authHeaders(), params });
   }
 
+  getSuggestedTrips(userId: number, page = 0, size = 6): Observable<Page<Trip>> {
+    const params = new HttpParams().set('page', page).set('size', size);
+    return this.http.get<Page<Trip>>(`${this.URL}/api/trip/suggested/${userId}`, { headers: this.authHeaders(), params });
+  }
+
+  getFutureTrips(page = 0, size = 6): Observable<Page<Trip>> {
+    const params = new HttpParams().set('page', page).set('size', size);
+    return this.http.get<Page<Trip>>(`${this.URL}/api/trip/future`, { params });
+  }
+
   requestJoinTrip(tripId: number, userId: number): Observable<Trip> {
     return this.http.post<Trip>(`${this.URL}/api/trip/${tripId}/request/${userId}`, {}, { headers: this.authHeaders() });
   }

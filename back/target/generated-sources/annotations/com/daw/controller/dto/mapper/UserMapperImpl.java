@@ -1,12 +1,8 @@
 package com.daw.controller.dto.mapper;
 
-import com.daw.controller.dto.CarDTO;
 import com.daw.controller.dto.RatingDTO;
-import com.daw.controller.dto.ReportDTO;
 import com.daw.controller.dto.UserDTO;
-import com.daw.datamodel.entities.Car;
 import com.daw.datamodel.entities.Rating;
-import com.daw.datamodel.entities.Report;
 import com.daw.datamodel.entities.User;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -18,20 +14,16 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-05T19:22:42+0200",
+    date = "2026-04-14T20:44:09+0200",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.45.0.v20260224-0835, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
 
     @Autowired
-    private CarMapper carMapper;
-    @Autowired
     private CampusMapper campusMapper;
     @Autowired
     private TownMapper townMapper;
-    @Autowired
-    private ReportMapper reportMapper;
     @Autowired
     private RatingMapper ratingMapper;
 
@@ -45,12 +37,8 @@ public class UserMapperImpl implements UserMapper {
 
         userDTO.setUsualCampusDTO( campusMapper.toDto( user.getUsualCampus() ) );
         userDTO.setHomeTownDTO( townMapper.toDto( user.getHomeTown() ) );
-        userDTO.setReportsDoneDTO( reportSetToReportDTOSet( user.getReportsDone() ) );
-        userDTO.setReportsReceivedDTO( reportSetToReportDTOSet( user.getReportsReceived() ) );
-        userDTO.setCarsDTO( carSetToCarDTOSet( user.getCars() ) );
         userDTO.setRatingsReceivedDTO( ratingSetToRatingDTOSet( user.getRatingsReceived() ) );
         userDTO.setRatingsDoneDTO( ratingSetToRatingDTOSet( user.getRatingsDone() ) );
-        userDTO.setProfileImageUrl( user.getProfileImageUrl() );
         userDTO.setBanned( user.getBanned() );
         userDTO.setBirthdate( user.getBirthdate() );
         userDTO.setDescription( user.getDescription() );
@@ -60,6 +48,7 @@ public class UserMapperImpl implements UserMapper {
         userDTO.setId( user.getId() );
         userDTO.setName( user.getName() );
         userDTO.setPhone( user.getPhone() );
+        userDTO.setProfileImageUrl( user.getProfileImageUrl() );
         userDTO.setStrikes( user.getStrikes() );
         userDTO.setUsername( user.getUsername() );
 
@@ -78,32 +67,6 @@ public class UserMapperImpl implements UserMapper {
         }
 
         return list;
-    }
-
-    protected Set<ReportDTO> reportSetToReportDTOSet(Set<Report> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<ReportDTO> set1 = new LinkedHashSet<ReportDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( Report report : set ) {
-            set1.add( reportMapper.toDto( report ) );
-        }
-
-        return set1;
-    }
-
-    protected Set<CarDTO> carSetToCarDTOSet(Set<Car> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<CarDTO> set1 = new LinkedHashSet<CarDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( Car car : set ) {
-            set1.add( carMapper.toDto( car ) );
-        }
-
-        return set1;
     }
 
     protected Set<RatingDTO> ratingSetToRatingDTOSet(Set<Rating> set) {

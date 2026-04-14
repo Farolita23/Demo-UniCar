@@ -9,21 +9,21 @@ import com.daw.datamodel.entities.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-	
-	boolean existsByUsername(String username);
-	
-	boolean existsByEmail(String email);
-	
-	Optional<User> findByUsername(String username);
-	
-	User findByCarsId(Long idCar);
-	
-	User findByRatingsReceivedId(Long idRating);
-	
-	User findByRatingsDoneId(Long idRating);
-	
-	User findByReportsReceivedId(Long idReport);
-	
-	User findByReportsDoneId(Long idReport);
-	
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
+
+    Optional<User> findByUsername(String username);
+
+    User findByCarsId(Long idCar);
+
+    User findByRatingsReceivedId(Long idRating);
+
+    User findByRatingsDoneId(Long idRating);
+
+    User findByReportsReceivedId(Long idReport);
+
+    User findByReportsDoneId(Long idReport);
+
 }

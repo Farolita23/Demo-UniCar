@@ -51,9 +51,11 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET,  "/api/trip").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api/trip/{id}").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/trip/search").permitAll()
+                .requestMatchers(HttpMethod.GET,  "/api/trip/future").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api/campus").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api/town").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api").permitAll()
+                .requestMatchers(HttpMethod.GET,  "/api/user/car-owner/{idCar}").permitAll()
                 // Swagger
                 .requestMatchers(
                     "/swagger-ui/**",
