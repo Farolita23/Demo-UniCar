@@ -12,159 +12,136 @@ import { Car } from '../models/car.model';
 @Injectable({ providedIn: 'root' })
 export class ApiService {
 
-    readonly URL = env.API_URL;
+  readonly URL = env.API_URL;
+  private readonly jsonHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    // Cabeceras base sin token (para endpoints públicos que necesitan Content-Type)
-    private readonly jsonHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-    constructor(
-        private http: HttpClient,
-        private authService: AuthService
-    ) { }
+  private authHeaders(): HttpHeaders {
+    let h = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const token = this.authService.getToken();
+    if (token) h = h.set('Authorization', 'Bearer ' + token);
+    return h;
+  }
 
-    private headers(): HttpHeaders {
-        let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-        const token = this.authService.getToken();
-        if (token) {
-            headers = headers.set('Authorization', 'Bearer ' + token);
-        }
-        return headers;
-    }
+  // ── AUTH ──────────────────────────────────────────────────────────────────
+  login(username: string, password: string): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.URL}/api/auth/login`, { username, password }, { headers: this.jsonHeaders });
+  }
 
-    // AUTH
-    login(username: string, password: string): Observable<{ token: string }> {
-        return this.http.post<{ token: string }>(
-            `${this.URL}/api/auth/login`,
-            { username, password },
-            { headers: this.jsonHeaders }
-        );
-    }
+  getMe(): Observable<User> {
+    return this.http.get<User>(`${this.URL}/api/auth/me`, { headers: this.authHeaders() });
+  }
 
-    getMe(): Observable<User> {
-        return this.http.get<User>(`${this.URL}/api/auth/me`, { headers: this.headers() });
-    }
+  register(dto: any): Observable<User> {
+    return this.http.post<User>(`${this.URL}/api/auth/register`, dto, { headers: this.jsonHeaders });
+  }
 
-    register(dto: any): Observable<User> {
-        return this.http.post<User>(
-            `${this.URL}/api/auth/register`,
-            dto,
-            { headers: this.jsonHeaders }
-        );
-    }
+  // ── USERS ─────────────────────────────────────────────────────────────────
+  getUser(id: number): Observable<User> {
+    return this.http.get<User>(`${this.URL}/api/user/${id}`, { headers: this.authHeaders() });
+  }
 
-    // USERS
-    getUser(id: number): Observable<User> {
-        return this.http.get<User>(`${this.URL}/api/user/${id}`, { headers: this.headers() });
-    }
+  updateUser(id: number, dto: any): Observable<User> {
+    return this.http.put<User>(`${this.URL}/api/user/${id}`, dto, { headers: this.authHeaders() });
+  }
 
-    updateUser(id: number, dto: any): Observable<User> {
-        return this.http.put<User>(`${this.URL}/api/user/${id}`, dto, { headers: this.headers() });
-    }
+  /** GET /api/user/car-owner/{carId} — obtiene el conductor de un coche */
+  getCarOwner(carId: number): Observable<User> {
+    return this.http.get<User>(`${this.URL}/api/user/car-owner/${carId}`, { headers: this.authHeaders() });
+  }
 
-    getUserByUsername(username: string): Observable<User[]> {
-        return this.http.get<User[]>(`${this.URL}/api/user`, { headers: this.headers() });
-    }
+  // ── CARS ──────────────────────────────────────────────────────────────────
+  /** Obtiene los coches de un conductor. GET /api/car/user/{driverId} */
+  getCarsByUser(driverId: number): Observable<Car[]> {
+    return this.http.get<Car[]>(`${this.URL}/api/car/user/${driverId}`, { headers: this.authHeaders() });
+  }
 
-    // TRIPS
-    getTrips(page = 0, size = 10): Observable<Page<Trip>> {
-        const params = new HttpParams().set('page', page).set('size', size).set('sort', 'departureDate,asc');
-        return this.http.get<Page<Trip>>(`${this.URL}/api/trip`, { params });
-    }
+  createCar(dto: { model: string; color: string; licensePlate: string; capacity: number; idDriver: number }): Observable<Car> {
+    return this.http.post<Car>(`${this.URL}/api/car`, dto, { headers: this.authHeaders() });
+  }
 
-    getTripById(id: number): Observable<Trip> {
-        return this.http.get<Trip>(`${this.URL}/api/trip/${id}`);
-    }
+  deleteCar(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.URL}/api/car/${id}`, { headers: this.authHeaders() });
+  }
 
-    searchTrips(filters: any, page = 0, size = 10): Observable<Page<Trip>> {
-        const params = new HttpParams().set('page', page).set('size', size).set('sort', 'departureDate,asc');
-        return this.http.post<Page<Trip>>(
-            `${this.URL}/api/trip/search`,
-            filters,
-            { headers: this.jsonHeaders, params }
-        );
-    }
+  // ── TRIPS ─────────────────────────────────────────────────────────────────
+  getTrips(page = 0, size = 10): Observable<Page<Trip>> {
+    const params = new HttpParams().set('page', page).set('size', size).set('sort', 'departureDate,asc');
+    return this.http.get<Page<Trip>>(`${this.URL}/api/trip`, { params });
+  }
 
-    createTrip(dto: any): Observable<Trip> {
-        return this.http.post<Trip>(`${this.URL}/api/trip`, dto, { headers: this.headers() });
-    }
+  getTripById(id: number): Observable<Trip> {
+    return this.http.get<Trip>(`${this.URL}/api/trip/${id}`);
+  }
 
-    updateTrip(id: number, dto: any): Observable<Trip> {
-        return this.http.put<Trip>(`${this.URL}/api/trip/${id}`, dto, { headers: this.headers() });
-    }
+  searchTrips(filters: any, page = 0, size = 10): Observable<Page<Trip>> {
+    const params = new HttpParams().set('page', page).set('size', size).set('sort', 'departureDate,asc');
+    return this.http.post<Page<Trip>>(`${this.URL}/api/trip/search`, filters, { headers: this.jsonHeaders, params });
+  }
 
-    deleteTrip(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.URL}/api/trip/${id}`, { headers: this.headers() });
-    }
+  createTrip(dto: any): Observable<Trip> {
+    return this.http.post<Trip>(`${this.URL}/api/trip`, dto, { headers: this.authHeaders() });
+  }
 
-    getTripsAsDriver(driverId: number, page = 0): Observable<Page<Trip>> {
-        const params = new HttpParams().set('page', page).set('size', 10);
-        return this.http.get<Page<Trip>>(`${this.URL}/api/trip/as-driver/${driverId}`, { headers: this.headers(), params });
-    }
+  updateTrip(id: number, dto: any): Observable<Trip> {
+    return this.http.put<Trip>(`${this.URL}/api/trip/${id}`, dto, { headers: this.authHeaders() });
+  }
 
-    getTripsAsPassenger(passengerId: number, page = 0): Observable<Page<Trip>> {
-        const params = new HttpParams().set('page', page).set('size', 10);
-        return this.http.get<Page<Trip>>(`${this.URL}/api/trip/as-passenger/${passengerId}`, { headers: this.headers(), params });
-    }
+  deleteTrip(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.URL}/api/trip/${id}`, { headers: this.authHeaders() });
+  }
 
-    getRecommendedTrips(userId: number, page = 0): Observable<Page<Trip>> {
-        const params = new HttpParams().set('page', page).set('size', 10);
-        return this.http.get<Page<Trip>>(`${this.URL}/api/trip/recommended/${userId}`, { headers: this.headers(), params });
-    }
+  getTripsAsDriver(driverId: number, page = 0): Observable<Page<Trip>> {
+    const params = new HttpParams().set('page', page).set('size', 10);
+    return this.http.get<Page<Trip>>(`${this.URL}/api/trip/as-driver/${driverId}`, { headers: this.authHeaders(), params });
+  }
 
-    // JOIN / LEAVE
-    requestJoinTrip(tripId: number, userId: number): Observable<Trip> {
-        return this.http.post<Trip>(`${this.URL}/api/trip/${tripId}/request/${userId}`, {}, { headers: this.headers() });
-    }
+  getTripsAsPassenger(passengerId: number, page = 0): Observable<Page<Trip>> {
+    const params = new HttpParams().set('page', page).set('size', 10);
+    return this.http.get<Page<Trip>>(`${this.URL}/api/trip/as-passenger/${passengerId}`, { headers: this.authHeaders(), params });
+  }
 
-    cancelJoinRequest(tripId: number, userId: number): Observable<Trip> {
-        return this.http.delete<Trip>(`${this.URL}/api/trip/${tripId}/request/${userId}`, { headers: this.headers() });
-    }
+  getRecommendedTrips(userId: number, page = 0): Observable<Page<Trip>> {
+    const params = new HttpParams().set('page', page).set('size', 10);
+    return this.http.get<Page<Trip>>(`${this.URL}/api/trip/recommended/${userId}`, { headers: this.authHeaders(), params });
+  }
 
-    acceptPassenger(tripId: number, requesterId: number): Observable<Trip> {
-        return this.http.post<Trip>(`${this.URL}/api/trip/${tripId}/accept/${requesterId}`, {}, { headers: this.headers() });
-    }
+  requestJoinTrip(tripId: number, userId: number): Observable<Trip> {
+    return this.http.post<Trip>(`${this.URL}/api/trip/${tripId}/request/${userId}`, {}, { headers: this.authHeaders() });
+  }
 
-    rejectPassenger(tripId: number, requesterId: number): Observable<Trip> {
-        return this.http.delete<Trip>(`${this.URL}/api/trip/${tripId}/reject/${requesterId}`, { headers: this.headers() });
-    }
+  cancelJoinRequest(tripId: number, userId: number): Observable<Trip> {
+    return this.http.delete<Trip>(`${this.URL}/api/trip/${tripId}/request/${userId}`, { headers: this.authHeaders() });
+  }
 
-    leaveTrip(tripId: number, userId: number): Observable<Trip> {
-        return this.http.delete<Trip>(`${this.URL}/api/trip/${tripId}/leave/${userId}`, { headers: this.headers() });
-    }
+  acceptPassenger(tripId: number, requesterId: number): Observable<Trip> {
+    return this.http.post<Trip>(`${this.URL}/api/trip/${tripId}/accept/${requesterId}`, {}, { headers: this.authHeaders() });
+  }
 
-    // CARS
-    getCars(): Observable<Car[]> {
-        return this.http.get<Car[]>(`${this.URL}/api/car`, { headers: this.headers() });
-    }
+  rejectPassenger(tripId: number, requesterId: number): Observable<Trip> {
+    return this.http.delete<Trip>(`${this.URL}/api/trip/${tripId}/reject/${requesterId}`, { headers: this.authHeaders() });
+  }
 
-    createCar(dto: any): Observable<Car> {
-        return this.http.post<Car>(`${this.URL}/api/car`, dto, { headers: this.headers() });
-    }
+  leaveTrip(tripId: number, userId: number): Observable<Trip> {
+    return this.http.delete<Trip>(`${this.URL}/api/trip/${tripId}/leave/${userId}`, { headers: this.authHeaders() });
+  }
 
-    updateCar(id: number, dto: any): Observable<Car> {
-        return this.http.put<Car>(`${this.URL}/api/car/${id}`, dto, { headers: this.headers() });
-    }
+  // ── CAMPUS & TOWNS ────────────────────────────────────────────────────────
+  getCampuses(): Observable<Campus[]> {
+    return this.http.get<Campus[]>(`${this.URL}/api/campus`);
+  }
 
-    deleteCar(id: number): Observable<void> {
-        return this.http.delete<void>(`${this.URL}/api/car/${id}`, { headers: this.headers() });
-    }
+  getTowns(): Observable<Town[]> {
+    return this.http.get<Town[]>(`${this.URL}/api/town`);
+  }
 
-    // CAMPUS & TOWNS
-    getCampuses(): Observable<Campus[]> {
-        return this.http.get<Campus[]>(`${this.URL}/api/campus`);
-    }
+  // ── RATINGS & REPORTS ─────────────────────────────────────────────────────
+  createRating(dto: { rating: number; idUserRate: number; idRatedUser: number }): Observable<any> {
+    return this.http.post<any>(`${this.URL}/api/rating`, dto, { headers: this.authHeaders() });
+  }
 
-    getTowns(): Observable<Town[]> {
-        return this.http.get<Town[]>(`${this.URL}/api/town`);
-    }
-
-    // RATINGS
-    createRating(dto: { rating: number; idUserRate: number; idRatedUser: number }): Observable<any> {
-        return this.http.post<any>(`${this.URL}/api/rating`, dto, { headers: this.headers() });
-    }
-
-    // REPORTS
-    createReport(dto: { reason: string; idUserReport: number; idReportedUser: number; date: string }): Observable<any> {
-        return this.http.post<any>(`${this.URL}/api/report`, dto, { headers: this.headers() });
-    }
+  createReport(dto: { reason: string; idUserReport: number; idReportedUser: number; date: string }): Observable<any> {
+    return this.http.post<any>(`${this.URL}/api/report`, dto, { headers: this.authHeaders() });
+  }
 }

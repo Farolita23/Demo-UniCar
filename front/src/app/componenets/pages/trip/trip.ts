@@ -1,4 +1,5 @@
-import { Component, inject, afterNextRender, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -18,16 +19,18 @@ import { Car } from '../../../models/car.model';
   templateUrl: './trip.html',
   styleUrl: './trip.css',
 })
-export class PageTrip {
-  fb     = inject(FormBuilder);
-  api    = inject(ApiService);
-  auth   = inject(AuthService);
-  router = inject(Router);
-  cdr    = inject(ChangeDetectorRef);
+export class PageTrip implements OnInit {
+  fb         = inject(FormBuilder);
+  api        = inject(ApiService);
+  auth       = inject(AuthService);
+  router     = inject(Router);
+  cdr        = inject(ChangeDetectorRef);
+  platformId = inject(PLATFORM_ID);
 
   campuses: Campus[] = [];
   towns: Town[]      = [];
   cars: Car[]        = [];
+  carsLoading        = false;
   loading            = false;
   success            = false;
   error              = '';
@@ -43,34 +46,45 @@ export class PageTrip {
     price:            [null as number | null, [Validators.required, Validators.min(0)]],
   });
 
-  constructor() {
-    afterNextRender(() => {
-      this.api.getCampuses().subscribe({
-        next: c => { this.campuses = c; this.cdr.detectChanges(); },
-        error: () => {},
-      });
-      this.api.getTowns().subscribe({
-        next: t => { this.towns = t; this.cdr.detectChanges(); },
-        error: () => {},
-      });
-      const userId = this.auth.getUser()?.id;
-      if (userId) {
-        this.api.getUser(userId).subscribe({
-          next: u => { this.cars = u.carsDTO || []; this.cdr.detectChanges(); },
-          error: () => {},
-        });
-      }
+  ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.api.getCampuses().subscribe({
+      next: c => { this.campuses = c; this.cdr.detectChanges(); },
+      error: e => console.error('[PageTrip] getCampuses error:', e),
     });
+    this.api.getTowns().subscribe({
+      next: t => { this.towns = t; this.cdr.detectChanges(); },
+      error: e => console.error('[PageTrip] getTowns error:', e),
+    });
+
+    const userId = this.auth.getUser()?.id;
+    if (userId) {
+      this.carsLoading = true;
+      this.api.getCarsByUser(userId).subscribe({
+        next: cars => {
+          this.cars = cars;
+          this.carsLoading = false;
+          this.cdr.detectChanges();
+        },
+        error: e => {
+          console.error('[PageTrip] getCarsByUser error:', e?.status, e?.error);
+          this.carsLoading = false;
+          this.cdr.detectChanges();
+        },
+      });
+    }
   }
 
   submit() {
     if (this.form.invalid || this.loading) return;
-    this.loading = true; this.error = '';
+    this.loading = true;
+    this.error   = '';
     const v = this.form.value;
     const dto = {
       idCar:            Number(v.idCar),
-      idCampus:         v.idCampus ? Number(v.idCampus) : null,
-      idTown:           v.idTown   ? Number(v.idTown)   : null,
+      idCampus:         v.idCampus  ? Number(v.idCampus)  : null,
+      idTown:           v.idTown    ? Number(v.idTown)    : null,
       isToCampus:       v.isToCampus,
       departureDate:    v.departureDate,
       departureTime:    v.departureTime,
@@ -79,12 +93,13 @@ export class PageTrip {
     };
     this.api.createTrip(dto).subscribe({
       next: () => {
-        this.loading = false; this.success = true;
+        this.loading = false;
+        this.success = true;
         this.cdr.detectChanges();
         setTimeout(() => this.router.navigate(['/profile']), 2000);
       },
       error: e => {
-        this.error = e?.error?.message || 'Error al publicar el viaje.';
+        this.error   = e?.error?.message || 'Error al publicar el viaje.';
         this.loading = false;
         this.cdr.detectChanges();
       },

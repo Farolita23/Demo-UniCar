@@ -13,6 +13,7 @@ import { Settings } from './componenets/pages/settings/settings';
 import { PageTrip } from './componenets/pages/trip/trip';
 import { TripDetail } from './componenets/pages/trip-detail/trip-detail';
 import { MyTrips } from './componenets/pages/my-trips/my-trips';
+import { ManageTrip } from './componenets/pages/manage-trip/manage-trip';
 import { NoAuthGuard } from './guards/no-auth-guard';
 import { AuthGuard } from './guards/auth-guard';
 
@@ -41,6 +42,7 @@ export const routes: Routes = [
       { path: 'trip', component: PageTrip },
       { path: 'settings', component: Settings },
       { path: 'my-trips', component: MyTrips },
+      { path: 'manage-trip/:id', component: ManageTrip },
     ],
   },
   { path: '**', redirectTo: '' },

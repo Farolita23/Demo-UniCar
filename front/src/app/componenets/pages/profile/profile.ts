@@ -1,4 +1,5 @@
-import { Component, inject, afterNextRender, ChangeDetectorRef, NgZone } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, NgZone, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -9,6 +10,7 @@ import { AppIcon } from '../../elements/icon/icon';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 import { User } from '../../../models/user.model';
+import { Car } from '../../../models/car.model';
 import { Trip } from '../../../models/trip.model';
 import { Campus } from '../../../models/campus.model';
 import { Town } from '../../../models/town.model';
@@ -20,27 +22,31 @@ import { Town } from '../../../models/town.model';
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
-export class Profile {
-  fb    = inject(FormBuilder);
-  api   = inject(ApiService);
-  auth  = inject(AuthService);
-  cdr   = inject(ChangeDetectorRef);
-  zone  = inject(NgZone);
+export class Profile implements OnInit {
+  fb         = inject(FormBuilder);
+  api        = inject(ApiService);
+  auth       = inject(AuthService);
+  cdr        = inject(ChangeDetectorRef);
+  zone       = inject(NgZone);
+  platformId = inject(PLATFORM_ID);
 
   user: User | null = null;
+  cars: Car[]              = [];
   tripsAsDriver: Trip[]    = [];
   tripsAsPassenger: Trip[] = [];
-  campuses: Campus[] = [];
-  towns: Town[]      = [];
+  campuses: Campus[]       = [];
+  towns: Town[]            = [];
 
   activeTab: 'info' | 'trips-driver' | 'trips-passenger' | 'cars' | 'edit' = 'info';
-  loading     = true;
-  saving      = false;
-  editSuccess = false;
-  editError   = '';
+  loading      = true;
+  carsLoading  = false;
+  saving       = false;
+  editSuccess  = false;
+  editError    = '';
   editPreviewUrl: string | null = null;
   showCarModal = false;
   carSaving    = false;
+  carError     = '';
 
   carForm = this.fb.group({
     model:        ['', Validators.required],
@@ -60,25 +66,28 @@ export class Profile {
     idHomeTown:      ['' as string],
   });
 
-  constructor() {
-    afterNextRender(() => {
-      this.api.getCampuses().subscribe({
-        next: c => this.campuses = c,
-        error: () => {},
-        complete: () => { this.cdr.detectChanges(); },
-      });
-      this.api.getTowns().subscribe({
-        next: t => this.towns = t,
-        error: () => {},
-        complete: () => { this.cdr.detectChanges(); },
-      });
-      const stored = this.auth.getUser();
-      if (stored?.id) {
-        this.loadUser(stored.id);
-      } else {
-        this.loading = false;
-      }
+  ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      this.loading = false;
+      return;
+    }
+
+    this.api.getCampuses().subscribe({
+      next: c => { this.campuses = c; this.cdr.detectChanges(); },
+      error: e => console.error('[Profile] getCampuses error:', e),
     });
+    this.api.getTowns().subscribe({
+      next: t => { this.towns = t; this.cdr.detectChanges(); },
+      error: e => console.error('[Profile] getTowns error:', e),
+    });
+
+    const stored = this.auth.getUser();
+    if (stored?.id) {
+      this.loadUser(stored.id);
+    } else {
+      this.loading = false;
+      this.cdr.detectChanges();
+    }
   }
 
   loadUser(id: number) {
@@ -89,21 +98,42 @@ export class Profile {
         this.auth.saveUser(u);
         this.populateEditForm(u);
         this.loading = false;
-        this.loadTrips(u.id);
-        this.cdr.detectChanges(); // ← detectar inmediatamente tras recibir datos
+        this.loadCars(id);
+        this.loadTrips(id);
+        this.cdr.detectChanges();
       },
-      error: () => { this.loading = false; this.cdr.detectChanges(); },
+      error: e => {
+        console.error('[Profile] getUser error:', e?.status, e?.error);
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  loadCars(userId: number) {
+    this.carsLoading = true;
+    this.api.getCarsByUser(userId).subscribe({
+      next: cars => {
+        this.cars = cars;
+        this.carsLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: e => {
+        console.error('[Profile] getCarsByUser error:', e?.status, e?.error);
+        this.carsLoading = false;
+        this.cdr.detectChanges();
+      },
     });
   }
 
   loadTrips(id: number) {
     this.api.getTripsAsDriver(id).subscribe({
       next: p => { this.tripsAsDriver = p.content; this.cdr.detectChanges(); },
-      error: () => {},
+      error: e => console.error('[Profile] getTripsAsDriver error:', e),
     });
     this.api.getTripsAsPassenger(id).subscribe({
       next: p => { this.tripsAsPassenger = p.content; this.cdr.detectChanges(); },
-      error: () => {},
+      error: e => console.error('[Profile] getTripsAsPassenger error:', e),
     });
   }
 
@@ -126,7 +156,6 @@ export class Profile {
     if (file.size > 5 * 1024 * 1024) { this.editError = 'La imagen no debe superar los 5MB.'; return; }
     const reader = new FileReader();
     reader.onload = (e) => {
-      // FileReader callback ocurre fuera de la zona Angular → usar zone.run()
       this.zone.run(() => {
         const result = e.target?.result as string;
         this.editPreviewUrl = result;
@@ -156,7 +185,7 @@ export class Profile {
       password:           '',
     };
     this.api.updateUser(this.user.id, dto).subscribe({
-      next: u  => {
+      next: u => {
         this.user = u;
         this.auth.saveUser(u);
         this.editSuccess = true;
@@ -171,26 +200,33 @@ export class Profile {
     });
   }
 
+  openCarModal() {
+    this.carError = '';
+    this.carForm.reset({ capacity: 4 });
+    this.showCarModal = true;
+  }
+
   addCar() {
     if (this.carForm.invalid || !this.user || this.carSaving) return;
     this.carSaving = true;
+    this.carError = '';
     const v = this.carForm.value;
     const dto = {
-      model:        v.model,
-      color:        v.color,
-      licensePlate: v.licensePlate,
+      model:        v.model!,
+      color:        v.color!,
+      licensePlate: v.licensePlate!,
       capacity:     Number(v.capacity),
       idDriver:     this.user.id,
     };
     this.api.createCar(dto).subscribe({
-      next: () => {
+      next: car => {
+        this.cars = [...this.cars, car];
         this.carSaving = false;
         this.showCarModal = false;
-        this.carForm.reset({ capacity: 4 });
-        this.cdr.detectChanges(); // cerrar modal inmediatamente
-        this.loadUser(this.user!.id); // recargar usuario con el coche nuevo
+        this.cdr.detectChanges();
       },
-      error: () => {
+      error: e => {
+        this.carError = e?.error?.message || 'Error al registrar el vehículo.';
         this.carSaving = false;
         this.cdr.detectChanges();
       },
@@ -198,10 +234,13 @@ export class Profile {
   }
 
   deleteCar(carId: number) {
-    if (!confirm('¿Eliminar este coche?')) return;
+    if (!confirm('¿Eliminar este vehículo?')) return;
     this.api.deleteCar(carId).subscribe({
-      next: () => this.loadUser(this.user!.id),
-      error: () => {},
+      next: () => {
+        this.cars = this.cars.filter(c => c.id !== carId);
+        this.cdr.detectChanges();
+      },
+      error: e => console.error('[Profile] deleteCar error:', e),
     });
   }
 

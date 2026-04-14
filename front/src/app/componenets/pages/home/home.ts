@@ -1,4 +1,5 @@
-import { Component, inject, afterNextRender, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
@@ -15,24 +16,25 @@ import { Trip } from '../../../models/trip.model';
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class Home {
-  api = inject(ApiService);
-  cdr = inject(ChangeDetectorRef);
+export class Home implements OnInit {
+  api        = inject(ApiService);
+  cdr        = inject(ChangeDetectorRef);
+  platformId = inject(PLATFORM_ID);
+
   recentTrips: Trip[] = [];
 
   stats = [
-    { value: '500+', label: 'Usuarios activos' },
+    { value: '500+',  label: 'Usuarios activos' },
     { value: '1200+', label: 'Viajes realizados' },
-    { value: '25+', label: 'Campus universitarios' },
-    { value: '4.8★', label: 'Valoración media' },
+    { value: '25+',   label: 'Campus universitarios' },
+    { value: '4.8★',  label: 'Valoración media' },
   ];
 
-  constructor() {
-    afterNextRender(() => {
-      this.api.getTrips(0, 6).subscribe({
-        next: (p) => { this.recentTrips = p.content; this.cdr.detectChanges(); },
-        error: () => {},
-      });
+  ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+    this.api.getTrips(0, 6).subscribe({
+      next: p => { this.recentTrips = p.content; this.cdr.detectChanges(); },
+      error: e => console.error('[Home] getTrips error:', e),
     });
   }
 

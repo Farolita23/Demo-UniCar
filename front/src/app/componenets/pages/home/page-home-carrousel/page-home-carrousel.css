@@ -151,3 +151,13 @@ section.featured-trips .content {
         grid-template-columns: 1fr;
     }
 }
+
+/* ── Carrousel entrance animation ───────────────────────────── */
+@keyframes carrouselIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+:host {
+  animation: carrouselIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}

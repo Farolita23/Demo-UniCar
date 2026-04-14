@@ -1,4 +1,5 @@
-import { Component, inject, afterNextRender, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../elements/header/header';
@@ -14,11 +15,12 @@ import { Trip } from '../../../models/trip.model';
   templateUrl: './my-trips.html',
   styleUrl: './my-trips.css',
 })
-export class MyTrips {
-  api    = inject(ApiService);
-  auth   = inject(AuthService);
-  router = inject(Router);
-  cdr    = inject(ChangeDetectorRef);
+export class MyTrips implements OnInit {
+  api        = inject(ApiService);
+  auth       = inject(AuthService);
+  router     = inject(Router);
+  cdr        = inject(ChangeDetectorRef);
+  platformId = inject(PLATFORM_ID);
 
   tripsAsPassenger: Trip[] = [];
   tripsAsDriver: Trip[]    = [];
@@ -26,24 +28,36 @@ export class MyTrips {
   loadingDriver    = true;
   activeTab: 'passenger' | 'driver' = 'passenger';
 
-  constructor() {
-    afterNextRender(() => {
-      const userId = this.auth.getUser()?.id;
-      if (!userId) { this.router.navigate(['/login']); return; }
+  ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      this.loadingPassenger = false;
+      this.loadingDriver    = false;
+      return;
+    }
+    const userId = this.auth.getUser()?.id;
+    if (!userId) { this.router.navigate(['/login']); return; }
 
-      this.api.getTripsAsPassenger(userId).subscribe({
-        next: (p) => { this.tripsAsPassenger = p.content; this.loadingPassenger = false; this.cdr.detectChanges(); },
-        error: ()  => { this.loadingPassenger = false; this.cdr.detectChanges(); },
-      });
-
-      this.api.getTripsAsDriver(userId).subscribe({
-        next: (p) => { this.tripsAsDriver = p.content; this.loadingDriver = false; this.cdr.detectChanges(); },
-        error: ()  => { this.loadingDriver = false; this.cdr.detectChanges(); },
-      });
+    this.api.getTripsAsPassenger(userId).subscribe({
+      next: p => { this.tripsAsPassenger = p.content; this.loadingPassenger = false; this.cdr.detectChanges(); },
+      error: () => { this.loadingPassenger = false; this.cdr.detectChanges(); },
+    });
+    this.api.getTripsAsDriver(userId).subscribe({
+      next: p => { this.tripsAsDriver = p.content; this.loadingDriver = false; this.cdr.detectChanges(); },
+      error: () => { this.loadingDriver = false; this.cdr.detectChanges(); },
     });
   }
 
   goToDetail(id: number) { this.router.navigate(['/trip-detail', id]); }
+
+  goToManage(id: number) { this.router.navigate(['/manage-trip', id]); }
+
+  freeSeats(trip: Trip): number {
+    return (trip.carDTO?.capacity ?? 0) - (trip.passengersDTO?.length ?? 0);
+  }
+
+  isFull(trip: Trip): boolean {
+    return this.freeSeats(trip) <= 0;
+  }
 
   formatDate(d: string): string {
     if (!d) return '';

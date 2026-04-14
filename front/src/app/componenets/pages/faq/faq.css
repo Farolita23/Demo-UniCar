@@ -9,3 +9,19 @@
 .faq-question { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 1.5rem; font-weight: 600; font-size: 0.95rem; gap: 1rem; }
 .faq-icon { color: var(--primary); font-size: 1.3rem; font-weight: 300; flex-shrink: 0; }
 .faq-answer { padding: 0 1.5rem 1.25rem; color: var(--text-2); font-size: 0.9rem; line-height: 1.7; }
+
+/* ── FAQ entrance animations ────────────────────────────────── */
+@keyframes faqFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.faq-item {
+  animation: faqFadeIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.faq-item:nth-child(1) { animation-delay: 0.0s; }
+.faq-item:nth-child(2) { animation-delay: 0.05s; }
+.faq-item:nth-child(3) { animation-delay: 0.1s; }
+.faq-item:nth-child(4) { animation-delay: 0.15s; }
+.faq-item:nth-child(5) { animation-delay: 0.2s; }
+.faq-item:nth-child(6) { animation-delay: 0.25s; }

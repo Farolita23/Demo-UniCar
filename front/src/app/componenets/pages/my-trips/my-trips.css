@@ -187,3 +187,57 @@
   .tabs { gap: 0; }
   .tab { padding: 10px 14px; font-size: 0.85rem; }
 }
+
+/* ── Animations ──────────────────────────────────────────────── */
+@keyframes animSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes animFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes animPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.04); }
+}
+
+.anim-slide-up { animation: animSlideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-fade-in  { animation: animFadeIn 0.5s ease both; }
+.anim-pulse    { animation: animPulse 2s ease-in-out infinite; }
+
+/* stagger cards */
+.trips-grid .my-trip-card:nth-child(1) { animation-delay: 0.0s; }
+.trips-grid .my-trip-card:nth-child(2) { animation-delay: 0.06s; }
+.trips-grid .my-trip-card:nth-child(3) { animation-delay: 0.12s; }
+.trips-grid .my-trip-card:nth-child(4) { animation-delay: 0.18s; }
+.trips-grid .my-trip-card:nth-child(5) { animation-delay: 0.24s; }
+.trips-grid .my-trip-card:nth-child(6) { animation-delay: 0.30s; }
+
+/* Full badge */
+.full-badge {
+  background: var(--danger);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 100px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.passengers-full {
+  background: rgba(230,57,70,0.15) !important;
+  color: var(--danger) !important;
+}
+
+/* Manage CTA highlight */
+.manage-cta {
+  color: var(--warning) !important;
+  transition: var(--transition);
+}
+.driver-trip:hover .manage-cta {
+  color: var(--accent-dark) !important;
+}

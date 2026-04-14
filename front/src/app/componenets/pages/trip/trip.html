@@ -7,11 +7,7 @@
         <p>Comparte tu ruta hacia el campus y ayuda a otros estudiantes</p>
       </div>
 
-      @if (!auth.isLoggedIn()) {
-        <div class="alert alert-warning">
-          Necesitas <a routerLink="/login">iniciar sesión</a> para publicar un viaje.
-        </div>
-      } @else if (success) {
+      @if (success) {
         <div class="success-state">
           <div class="success-icon">✓</div>
           <h2>¡Viaje publicado!</h2>
@@ -20,11 +16,15 @@
       } @else {
         <form [formGroup]="form" (ngSubmit)="submit()" class="publish-form">
 
+          <!-- VEHÍCULO -->
           <div class="form-section">
             <h3 class="form-section-title"><app-icon icon="coche" [size]="20"></app-icon> Vehículo</h3>
-            @if (cars.length === 0) {
+            @if (carsLoading) {
+              <div class="loading-inline"><div class="spinner spinner-sm"></div><span>Cargando vehículos...</span></div>
+            } @else if (cars.length === 0) {
               <div class="alert alert-warning">
-                No tienes vehículos registrados. <a routerLink="/profile">Añade uno en tu perfil.</a>
+                No tienes vehículos registrados.
+                <a routerLink="/profile" [queryParams]="{tab:'cars'}">Añade uno en tu perfil.</a>
               </div>
             } @else {
               <div class="cars-select">
@@ -42,6 +42,7 @@
             }
           </div>
 
+          <!-- RUTA -->
           <div class="form-section">
             <h3 class="form-section-title"><app-icon icon="pin" [size]="20"></app-icon> Ruta</h3>
             <div class="form-row-2">
@@ -61,20 +62,27 @@
               </div>
             </div>
             <div class="form-group">
-              <label class="label">Dirección *</label>
+              <label class="label">Dirección del viaje *</label>
               <div class="dir-toggle">
-                <button type="button" [class.active]="form.get('isToCampus')?.value === true"
-                  (click)="form.get('isToCampus')?.setValue(true)"><app-icon icon="birrete" [size]="16"></app-icon> Hacia el campus</button>
-                <button type="button" [class.active]="form.get('isToCampus')?.value === false"
-                  (click)="form.get('isToCampus')?.setValue(false)"><app-icon icon="casa" [size]="16"></app-icon> Desde el campus</button>
+                <button type="button"
+                  [class.active]="form.get('isToCampus')?.value === true"
+                  (click)="form.get('isToCampus')?.setValue(true)">
+                  <app-icon icon="birrete" [size]="16"></app-icon> Hacia el campus
+                </button>
+                <button type="button"
+                  [class.active]="form.get('isToCampus')?.value === false"
+                  (click)="form.get('isToCampus')?.setValue(false)">
+                  <app-icon icon="casa" [size]="16"></app-icon> Desde el campus
+                </button>
               </div>
             </div>
             <div class="form-group">
-              <label class="label">Punto de salida (dirección completa) *</label>
+              <label class="label">Punto de salida *</label>
               <input type="text" formControlName="departureAddress" placeholder="Ej: Calle Mayor 5, Los Palacios">
             </div>
           </div>
 
+          <!-- FECHA Y PRECIO -->
           <div class="form-section">
             <h3 class="form-section-title"><app-icon icon="reloj" [size]="20"></app-icon> Fecha y precio</h3>
             <div class="form-row-3">
@@ -95,7 +103,8 @@
 
           @if (error) { <div class="alert alert-error">{{ error }}</div> }
 
-          <button type="submit" class="btn btn-primary submit-btn" [disabled]="loading || form.invalid">
+          <button type="submit" class="btn btn-primary submit-btn"
+            [disabled]="loading || form.invalid || cars.length === 0">
             @if (loading) { <span class="spinner"></span> } @else { Publicar viaje }
           </button>
         </form>

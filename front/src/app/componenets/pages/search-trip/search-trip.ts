@@ -1,4 +1,5 @@
-import { Component, inject, OnDestroy, afterNextRender, ChangeDetectorRef } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subject, switchMap, tap, catchError, of } from 'rxjs';
@@ -18,9 +19,10 @@ import { Town } from '../../../models/town.model';
   templateUrl: './search-trip.html',
   styleUrl: './search-trip.css',
 })
-export class SearchTrip implements OnDestroy {
-  api = inject(ApiService);
-  cdr = inject(ChangeDetectorRef);
+export class SearchTrip implements OnInit, OnDestroy {
+  api        = inject(ApiService);
+  cdr        = inject(ChangeDetectorRef);
+  platformId = inject(PLATFORM_ID);
 
   trips: Trip[]      = [];
   campuses: Campus[] = [];
@@ -28,7 +30,6 @@ export class SearchTrip implements OnDestroy {
   loading            = false;
   totalPages         = 0;
   currentPage        = 0;
-  debugInfo          = '';  // temporal para depuración
 
   filters = {
     campusId:      null as number | null,
@@ -41,55 +42,43 @@ export class SearchTrip implements OnDestroy {
 
   private search$ = new Subject<{ filters: any; page: number }>();
 
-  constructor() {
-    afterNextRender(() => {
-      this.search$.pipe(
-        tap(() => { this.loading = true; this.cdr.detectChanges(); }),
-        switchMap(({ filters, page }) =>
-          this.api.searchTrips(filters, page).pipe(
-            catchError(err => {
-              console.error('[SearchTrip] Error en searchTrips:', err);
-              return of(null);
-            })
-          )
+  ngOnInit(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.search$.pipe(
+      tap(() => { this.loading = true; this.cdr.detectChanges(); }),
+      switchMap(({ filters, page }) =>
+        this.api.searchTrips(filters, page).pipe(
+          catchError(err => { console.error('[SearchTrip] error:', err); return of(null); })
         )
-      ).subscribe(p => {
-        this.loading = false;
-        console.log('[SearchTrip] Respuesta del servidor:', p);
-        if (p) {
-          // Compatibilidad: PageImpl puede devolver content directamente
-          // o anidado en page (según versión de Spring)
-          const raw = p as any;
-          this.trips      = raw.content ?? raw._embedded?.tripDTOList ?? [];
-          this.totalPages = raw.totalPages ?? raw.page?.totalPages ?? 0;
-          this.debugInfo  = `${this.trips.length} viajes, totalPages=${this.totalPages}`;
-          console.log('[SearchTrip] trips:', this.trips.length, '| totalPages:', this.totalPages);
-        } else {
-          this.trips = [];
-          this.debugInfo = 'Respuesta null (error de red o servidor)';
-        }
-        this.cdr.detectChanges();
-      });
-
-      this.api.getCampuses().subscribe({
-        next: c => { this.campuses = c; this.cdr.detectChanges(); },
-        error: () => {},
-      });
-      this.api.getTowns().subscribe({
-        next: t => { this.towns = t; this.cdr.detectChanges(); },
-        error: () => {},
-      });
-
-      this.search();
+      )
+    ).subscribe(p => {
+      this.loading = false;
+      if (p) {
+        const raw = p as any;
+        this.trips      = raw.content ?? [];
+        this.totalPages = raw.totalPages ?? 0;
+      } else {
+        this.trips = [];
+      }
+      this.cdr.detectChanges();
     });
+
+    this.api.getCampuses().subscribe({
+      next: c => { this.campuses = c; this.cdr.detectChanges(); },
+      error: e => console.error('[SearchTrip] getCampuses error:', e),
+    });
+    this.api.getTowns().subscribe({
+      next: t => { this.towns = t; this.cdr.detectChanges(); },
+      error: e => console.error('[SearchTrip] getTowns error:', e),
+    });
+
+    this.search();
   }
 
   ngOnDestroy() { this.search$.complete(); }
 
-  setDirection(value: boolean | null) {
-    this.filters.isToCampus = value;
-    this.search();
-  }
+  setDirection(value: boolean | null) { this.filters.isToCampus = value; this.search(); }
 
   search(page = 0) {
     this.currentPage = page;
@@ -100,7 +89,6 @@ export class SearchTrip implements OnDestroy {
     if (this.filters.departureDate)       f.departureDate =  this.filters.departureDate;
     if (this.filters.maxPrice)            f.maxPrice      = +this.filters.maxPrice;
     if (this.filters.minFreeSeats)        f.minFreeSeats  = +this.filters.minFreeSeats;
-    console.log('[SearchTrip] Enviando filtros:', f, 'página:', page);
     this.search$.next({ filters: f, page });
   }
 

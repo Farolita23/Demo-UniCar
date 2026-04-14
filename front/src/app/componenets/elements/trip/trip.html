@@ -4,9 +4,13 @@
       <app-icon [icon]="data.isToCampus ? 'birrete' : 'casa'" [size]="22"></app-icon>
     </span>
     <span class="dir-label">{{ direction }}</span>
-    <span class="free-seats" [class.low]="freeSeats <= 1">
+    <span class="free-seats" [class.low]="freeSeats <= 1" [class.full-seats]="freeSeats <= 0">
       <app-icon icon="asiento" [size]="14"></app-icon>
-      {{ freeSeats }} plazas libres
+      @if (freeSeats <= 0) {
+        Completo
+      } @else {
+        {{ freeSeats }} plazas libres
+      }
     </span>
   </div>
 

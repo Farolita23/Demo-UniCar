@@ -304,4 +304,91 @@
   .detail-sidebar { order: -1; }
   .cta-box { position: static; }
   .meta-grid { grid-template-columns: 1fr; }
+  .driver-manage-banner { flex-direction: column; align-items: flex-start; }
+  .driver-manage-banner .btn { width: 100%; justify-content: center; }
+}
+
+/* ── Animations ──────────────────────────────────────────────── */
+@keyframes tdFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes tdSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes tdPulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+
+.td-fade-in  { animation: tdFadeIn 0.5s ease both; }
+.td-slide-up { animation: tdSlideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.td-pulse    { animation: tdPulse 2s ease-in-out infinite; }
+.td-delay-1  { animation-delay: 0.06s; }
+.td-delay-2  { animation-delay: 0.12s; }
+.td-delay-3  { animation-delay: 0.18s; }
+.td-delay-4  { animation-delay: 0.24s; }
+
+/* ── Direction row ───────────────────────────────────────────── */
+.direction-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.full-indicator {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--danger);
+  background: rgba(230,57,70,0.1);
+  border: 1px solid rgba(230,57,70,0.2);
+  padding: 5px 14px;
+  border-radius: 100px;
+}
+
+.full-val {
+  color: var(--danger) !important;
+}
+
+/* ── Driver manage banner ─────────────────────────────────────── */
+.driver-manage-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: linear-gradient(135deg, rgba(255,183,3,0.08), rgba(255,183,3,0.02));
+  border: 1px solid rgba(255,183,3,0.2);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1.25rem;
+}
+.driver-manage-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.driver-manage-icon {
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+.driver-manage-info strong {
+  display: block;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+.driver-manage-info p {
+  font-size: 0.82rem;
+  color: var(--text-2);
+  margin: 0;
+}
+
+/* ── Full wrap ────────────────────────────────────────────────── */
+.cta-full-wrap {
+  text-align: center;
+}
+.cta-full-wrap .cta-hint {
+  margin-top: 0.5rem;
 }

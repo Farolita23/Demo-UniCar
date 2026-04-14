@@ -1,6 +1,5 @@
 import { Campus } from './campus.model';
 import { Town } from './town.model';
-import { Car } from './car.model';
 
 export interface Rating {
   id: number;
@@ -25,11 +24,10 @@ export interface User {
   strikes: number;
   banned: boolean;
   drivingLicenseYear?: number;
-  usualCampusDTO: Campus;
-  homeTownDTO: Town;
-  carsDTO: Car[];
+  usualCampusDTO: Campus | null;
+  homeTownDTO: Town | null;
   description?: string;
   profileImageUrl?: string;
-  ratingsReceivedDTO: Rating[];
-  ratingsDoneDTO: Rating[];
+  ratingsReceivedDTO: Rating[] | null;
+  ratingsDoneDTO: Rating[] | null;
 }

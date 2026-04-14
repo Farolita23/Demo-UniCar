@@ -14,20 +14,41 @@
       </div>
     } @else {
 
-      <a routerLink="/search-trip" class="back-link">← Volver a resultados</a>
+      <a routerLink="/search-trip" class="back-link td-fade-in">← Volver a resultados</a>
 
       <div class="detail-grid">
 
         <!-- LEFT: Trip info -->
         <div class="detail-main">
 
-          <!-- Direction badge -->
-          <div class="direction-badge" [class.to-campus]="trip.isToCampus">
-            {{ trip.isToCampus ? '🎓 Hacia el campus' : '🏠 Desde el campus' }}
+          <!-- Direction badge + full indicator -->
+          <div class="direction-row td-fade-in">
+            <div class="direction-badge" [class.to-campus]="trip.isToCampus">
+              {{ trip.isToCampus ? '🎓 Hacia el campus' : '🏠 Desde el campus' }}
+            </div>
+            @if (isFull) {
+              <span class="full-indicator td-pulse">🔴 Completo</span>
+            }
           </div>
 
+          <!-- Driver manage banner -->
+          @if (isDriver) {
+            <div class="driver-manage-banner td-slide-up">
+              <div class="driver-manage-info">
+                <span class="driver-manage-icon">⚙</span>
+                <div>
+                  <strong>Eres el conductor de este viaje</strong>
+                  <p>Gestiona solicitudes y pasajeros desde el panel de gestión.</p>
+                </div>
+              </div>
+              <a [routerLink]="['/manage-trip', trip.id]" class="btn btn-primary">
+                Gestionar viaje →
+              </a>
+            </div>
+          }
+
           <!-- Route card -->
-          <div class="detail-card route-card">
+          <div class="detail-card route-card td-slide-up td-delay-1">
             <h2 class="detail-section-title">Ruta</h2>
             <div class="route-visual">
               <div class="route-stop">
@@ -52,7 +73,7 @@
           </div>
 
           <!-- Date & time card -->
-          <div class="detail-card meta-card">
+          <div class="detail-card meta-card td-slide-up td-delay-2">
             <h2 class="detail-section-title">Detalles del viaje</h2>
             <div class="meta-grid">
               <div class="meta-block">
@@ -73,7 +94,13 @@
                 <span class="meta-icon">💺</span>
                 <div>
                   <span class="meta-key">Plazas libres</span>
-                  <span class="meta-val" [class.low]="freeSeats <= 1">{{ freeSeats }} de {{ trip.carDTO.capacity }}</span>
+                  <span class="meta-val" [class.low]="freeSeats <= 1" [class.full-val]="isFull">
+                    @if (isFull) {
+                      Completo
+                    } @else {
+                      {{ freeSeats }} de {{ trip.carDTO.capacity }}
+                    }
+                  </span>
                 </div>
               </div>
               <div class="meta-block">
@@ -87,7 +114,7 @@
           </div>
 
           <!-- Car card -->
-          <div class="detail-card">
+          <div class="detail-card td-slide-up td-delay-3">
             <h2 class="detail-section-title">🚗 Vehículo</h2>
             <div class="car-info">
               <div class="car-icon-wrap">🚗</div>
@@ -100,8 +127,8 @@
 
           <!-- Passengers -->
           @if (trip.passengersDTO.length > 0) {
-            <div class="detail-card">
-              <h2 class="detail-section-title">👥 Pasajeros confirmados</h2>
+            <div class="detail-card td-slide-up td-delay-4">
+              <h2 class="detail-section-title">👥 Pasajeros confirmados ({{ trip.passengersDTO.length }})</h2>
               <div class="passengers-list">
                 @for (p of trip.passengersDTO; track p.id) {
                   <div class="passenger-item">
@@ -122,7 +149,7 @@
 
         <!-- RIGHT: Driver card + CTA -->
         <div class="detail-sidebar">
-          <div class="driver-card">
+          <div class="driver-card td-slide-up">
             <div class="driver-avatar-wrap">
               @if (driver && driver.profileImageUrl) {
                 <img [src]="driver.profileImageUrl" class="driver-avatar" alt="Conductor">
@@ -157,13 +184,17 @@
           </div>
 
           <!-- CTA box -->
-          <div class="cta-box">
+          <div class="cta-box td-slide-up td-delay-1">
             <div class="cta-price">
               <span class="cta-price-amount">{{ trip.price | number:'1.2-2' }}€</span>
               <span class="cta-price-label">por persona</span>
             </div>
 
-            @if (auth.isLoggedIn()) {
+            @if (isDriver) {
+              <a [routerLink]="['/manage-trip', trip.id]" class="btn btn-primary cta-btn">
+                ⚙ Gestionar viaje
+              </a>
+            } @else if (auth.isLoggedIn()) {
               @if (isPassenger) {
                 <div class="alert alert-success">✅ Eres pasajero de este viaje</div>
                 <button class="btn btn-ghost cta-btn" (click)="leaveTrip()" [disabled]="actionLoading">
@@ -180,7 +211,10 @@
                 </button>
                 <p class="cta-hint">El conductor deberá aceptar tu solicitud</p>
               } @else {
-                <span class="badge badge-danger cta-full">Sin plazas libres</span>
+                <div class="cta-full-wrap">
+                  <span class="badge badge-danger cta-full">🔴 Sin plazas libres</span>
+                  <p class="cta-hint">Todas las plazas están ocupadas</p>
+                </div>
               }
             } @else {
               <a routerLink="/login" class="btn btn-primary cta-btn">Inicia sesión para solicitar</a>

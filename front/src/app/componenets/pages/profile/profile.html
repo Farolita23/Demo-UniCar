@@ -12,7 +12,7 @@
             @if (user.profileImageUrl) {
               <img [src]="user.profileImageUrl" alt="Perfil" class="profile-avatar">
             } @else {
-              <div class="profile-avatar-init">{{ user.name.charAt(0) }}</div>
+              <div class="profile-avatar-init">{{ user.name?.charAt(0) ?? '?' }}</div>
             }
             <div class="rating-badge">★ {{ avgRating }}</div>
           </div>
@@ -20,13 +20,15 @@
           <span class="profile-username">&#64;{{ user.username }}</span>
 
           @if (user.drivingLicenseYear) {
-            <div class="driver-badge"><app-icon icon="coche" [size]="16"></app-icon> Conductor desde {{ user.drivingLicenseYear }}</div>
+            <div class="driver-badge">
+              <app-icon icon="coche" [size]="16"></app-icon> Conductor desde {{ user.drivingLicenseYear }}
+            </div>
           }
 
           <div class="profile-stats">
             <div class="pstat"><span>{{ tripsAsDriver.length }}</span><small>Viajes conducidos</small></div>
             <div class="pstat"><span>{{ tripsAsPassenger.length }}</span><small>Como pasajero</small></div>
-            <div class="pstat"><span>{{ user.carsDTO.length || 0 }}</span><small>Vehículos</small></div>
+            <div class="pstat"><span>{{ cars.length }}</span><small>Vehículos</small></div>
           </div>
 
           @if (user.description) {
@@ -35,11 +37,11 @@
         </div>
 
         <nav class="profile-nav">
-          <button [class.active]="activeTab === 'info'" (click)="activeTab = 'info'">Información</button>
-          <button [class.active]="activeTab === 'trips-driver'" (click)="activeTab = 'trips-driver'">Mis viajes (conductor)</button>
+          <button [class.active]="activeTab === 'info'"            (click)="activeTab = 'info'">Información</button>
+          <button [class.active]="activeTab === 'trips-driver'"    (click)="activeTab = 'trips-driver'">Mis viajes (conductor)</button>
           <button [class.active]="activeTab === 'trips-passenger'" (click)="activeTab = 'trips-passenger'">Mis viajes (pasajero)</button>
-          <button [class.active]="activeTab === 'cars'" (click)="activeTab = 'cars'">Mis vehículos</button>
-          <button [class.active]="activeTab === 'edit'" (click)="activeTab = 'edit'">Editar perfil</button>
+          <button [class.active]="activeTab === 'cars'"            (click)="activeTab = 'cars'">Mis vehículos</button>
+          <button [class.active]="activeTab === 'edit'"            (click)="activeTab = 'edit'">Editar perfil</button>
         </nav>
       </aside>
 
@@ -55,10 +57,10 @@
               <div class="info-item"><span class="info-label">Teléfono</span><span>{{ user.phone }}</span></div>
               <div class="info-item"><span class="info-label">Género</span><span>{{ user.genre }}</span></div>
               <div class="info-item"><span class="info-label">F. nacimiento</span><span>{{ user.birthdate }}</span></div>
-              <div class="info-item"><span class="info-label">Campus</span><span>{{ user.usualCampusDTO.name }}</span></div>
-              <div class="info-item"><span class="info-label">Localidad</span><span>{{ user.homeTownDTO.name }}</span></div>
+              <div class="info-item"><span class="info-label">Campus</span><span>{{ user.usualCampusDTO?.name ?? '—' }}</span></div>
+              <div class="info-item"><span class="info-label">Localidad</span><span>{{ user.homeTownDTO?.name ?? '—' }}</span></div>
             </div>
-            @if (user.strikes > 0) {
+            @if (user.strikes && user.strikes > 0) {
               <div class="strikes-warn">⚠️ Tienes {{ user.strikes }} strike{{ user.strikes > 1 ? 's' : '' }} en tu cuenta</div>
             }
           </div>
@@ -69,7 +71,8 @@
           <div class="tab-content animate-fadeUp">
             <h2 class="tab-title">Viajes como conductor</h2>
             @if (tripsAsDriver.length === 0) {
-              <div class="empty-state"><p>Aún no has publicado ningún viaje.</p>
+              <div class="empty-state">
+                <p>Aún no has publicado ningún viaje.</p>
                 <a routerLink="/trip" class="btn btn-primary" style="margin-top:1rem">Publicar viaje</a>
               </div>
             } @else {
@@ -87,7 +90,8 @@
           <div class="tab-content animate-fadeUp">
             <h2 class="tab-title">Viajes como pasajero</h2>
             @if (tripsAsPassenger.length === 0) {
-              <div class="empty-state"><p>Todavía no te has unido a ningún viaje.</p>
+              <div class="empty-state">
+                <p>Todavía no te has unido a ningún viaje.</p>
                 <a routerLink="/search-trip" class="btn btn-primary" style="margin-top:1rem">Buscar viaje</a>
               </div>
             } @else {
@@ -105,13 +109,15 @@
           <div class="tab-content animate-fadeUp">
             <div class="tab-header">
               <h2 class="tab-title">Mis vehículos</h2>
-              <button class="btn btn-primary btn-sm" (click)="showCarModal = true">+ Añadir coche</button>
+              <button class="btn btn-primary btn-sm" (click)="openCarModal()">+ Añadir vehículo</button>
             </div>
-            @if (!user.carsDTO || user.carsDTO.length === 0) {
+            @if (carsLoading) {
+              <div class="loading-state"><div class="spinner"></div></div>
+            } @else if (cars.length === 0) {
               <div class="empty-state"><p>No tienes ningún vehículo registrado.</p></div>
             } @else {
               <div class="cars-grid">
-                @for (car of user.carsDTO; track car.id) {
+                @for (car of cars; track car.id) {
                   <div class="car-card-profile">
                     <div class="car-icon"><app-icon icon="coche" [size]="32"></app-icon></div>
                     <div class="car-info">
@@ -172,7 +178,7 @@
               </div>
               <div class="form-group"><label class="label">Descripción</label><textarea formControlName="description" rows="3"></textarea></div>
               @if (editSuccess) { <div class="alert alert-success">✓ Perfil actualizado correctamente</div> }
-              @if (editError) { <div class="alert alert-error">{{ editError }}</div> }
+              @if (editError)   { <div class="alert alert-error">{{ editError }}</div> }
               <button type="submit" class="btn btn-primary" [disabled]="saving">
                 @if (saving) { <span class="spinner"></span> } @else { Guardar cambios }
               </button>
@@ -181,6 +187,10 @@
         }
 
       </main>
+    } @else {
+      <div class="empty-state" style="grid-column:1/-1;padding:4rem 0">
+        <p>No se pudo cargar el perfil. Por favor, <a routerLink="/login">inicia sesión</a> de nuevo.</p>
+      </div>
     }
   </div>
 </div>
@@ -194,10 +204,23 @@
         <button (click)="showCarModal = false" class="modal-close">✕</button>
       </div>
       <form [formGroup]="carForm" (ngSubmit)="addCar()" class="modal-form">
-        <div class="form-group"><label class="label">Modelo</label><input type="text" formControlName="model" placeholder="Ej: Seat Ibiza"></div>
-        <div class="form-group"><label class="label">Color</label><input type="text" formControlName="color" placeholder="Ej: Rojo"></div>
-        <div class="form-group"><label class="label">Matrícula</label><input type="text" formControlName="licensePlate" placeholder="Ej: 1234ABC"></div>
-        <div class="form-group"><label class="label">Capacidad (sin conductor)</label><input type="number" formControlName="capacity" min="2" max="9"></div>
+        <div class="form-group">
+          <label class="label">Modelo *</label>
+          <input type="text" formControlName="model" placeholder="Ej: Seat Ibiza">
+        </div>
+        <div class="form-group">
+          <label class="label">Color *</label>
+          <input type="text" formControlName="color" placeholder="Ej: Rojo">
+        </div>
+        <div class="form-group">
+          <label class="label">Matrícula *</label>
+          <input type="text" formControlName="licensePlate" placeholder="Ej: 1234ABC">
+        </div>
+        <div class="form-group">
+          <label class="label">Capacidad (plazas sin contar al conductor) *</label>
+          <input type="number" formControlName="capacity" min="2" max="9">
+        </div>
+        @if (carError) { <div class="alert alert-error">{{ carError }}</div> }
         <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center" [disabled]="carForm.invalid || carSaving">
           @if (carSaving) { <span class="spinner"></span> } @else { Añadir vehículo }
         </button>

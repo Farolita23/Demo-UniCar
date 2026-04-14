@@ -34,6 +34,7 @@
   font-size: 0.75rem;
 }
 .free-seats.low { background: rgba(230,57,70,0.15); color: var(--danger); }
+.free-seats.full-seats { background: rgba(230,57,70,0.2); color: var(--danger); font-weight: 700; }
 
 .trip-card__body { padding: 1.25rem; flex: 1; }
 
@@ -95,3 +96,12 @@
 .price-label { font-size: 0.75rem; color: var(--text-3); }
 .trip-btn { padding: 7px 18px; font-size: 0.82rem; }
 .trip-btn.pending { border-color: var(--warning); color: var(--warning); }
+
+/* Animations */
+@keyframes tripCardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.trip-card {
+  animation: tripCardIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}

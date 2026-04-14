@@ -77,3 +77,17 @@
   .search-layout { grid-template-columns: 1fr; }
   .filters-panel { position: static; }
 }
+
+/* ── Search page animations ────────────────────────────────── */
+@keyframes searchSlideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.filters-panel {
+  animation: searchSlideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.results-panel {
+  animation: searchSlideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both;
+}
