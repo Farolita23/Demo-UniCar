@@ -1,0 +1,129 @@
+<app-header></app-header>
+<div class="page-wrapper auth-page">
+  <div class="container">
+    <div class="signup-card">
+      <div class="auth-brand">
+        <img src="/assets/media/icon-dark.png" alt="UniCar" class="auth-logo">
+        <h1>Crea tu cuenta</h1>
+        <p>Únete a la comunidad de carpooling universitario</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="signup-form">
+        <div class="form-section">
+          <h3 class="form-section-title">Datos de acceso</h3>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="label">Usuario *</label>
+              <input type="text" formControlName="username" placeholder="usuario123">
+              @if (form.get('username')?.touched && form.get('username')?.errors?.['required']) {
+                <span class="error-msg">Requerido</span>
+              }
+            </div>
+            <div class="form-group">
+              <label class="label">Email *</label>
+              <input type="email" formControlName="email" placeholder="correo@universidad.es">
+              @if (form.get('email')?.touched && form.get('email')?.errors?.['email']) {
+                <span class="error-msg">Email inválido</span>
+              }
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="label">Contraseña *</label>
+              <div class="input-wrap">
+                <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Mín. 8 caracteres">
+                <button type="button" class="eye-btn" (click)="showPassword=!showPassword">{{ showPassword ? '🙈' : '👁️' }}</button>
+              </div>
+              @if (form.get('password')?.touched && form.get('password')?.errors?.['weakPassword']) {
+                <span class="error-msg">Debe tener mín. 8 caracteres, mayúscula, minúscula, número y símbolo (!@#$%^&?)</span>
+              }
+            </div>
+            <div class="form-group">
+              <label class="label">Confirmar contraseña *</label>
+              <input type="password" formControlName="rePassword" placeholder="Repite la contraseña">
+              @if (form.errors?.['passwordsMismatch'] && form.get('rePassword')?.touched) {
+                <span class="error-msg">Las contraseñas no coinciden</span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3 class="form-section-title">Información personal</h3>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="label">Nombre completo *</label>
+              <input type="text" formControlName="name" placeholder="Tu nombre">
+            </div>
+            <div class="form-group">
+              <label class="label">Teléfono *</label>
+              <input type="tel" formControlName="phone" placeholder="600000000">
+            </div>
+          </div>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="label">Fecha de nacimiento *</label>
+              <input type="date" formControlName="birthdate">
+            </div>
+            <div class="form-group">
+              <label class="label">Género *</label>
+              <select formControlName="genre">
+                <option value="">Seleccionar...</option>
+                <option value="Hombre">Hombre</option>
+                <option value="Mujer">Mujer</option>
+                <option value="No binario">No binario</option>
+                <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="label">Descripción (opcional)</label>
+            <textarea formControlName="description" rows="3" placeholder="Cuéntanos algo sobre ti..."></textarea>
+          </div>
+          <div class="form-group">
+            <small class="info-msg">📷 Podrás añadir una foto de perfil desde tu perfil una vez registrado.</small>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3 class="form-section-title">Ubicación</h3>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label class="label">Campus habitual *</label>
+              <select formControlName="idUsualCampus">
+                <option value="">Seleccionar campus...</option>
+                @for (c of campuses; track c.id) {
+                  <option [value]="c.id">{{ c.name }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="label">Pueblo / ciudad de origen *</label>
+              <select formControlName="idHomeTown">
+                <option value="">Seleccionar localidad...</option>
+                @for (t of towns; track t.id) {
+                  <option [value]="t.id">{{ t.name }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="label">Año carné de conducir (si eres conductor)</label>
+            <input type="number" formControlName="drivingLicenseYear" placeholder="Ej: 2020" min="1990" max="2030">
+          </div>
+        </div>
+
+        @if (error) {
+          <div class="alert alert-error">{{ error }}</div>
+        }
+
+        <button type="submit" class="btn btn-primary submit-btn" [disabled]="loading || form.invalid">
+          @if (loading) { <span class="spinner"></span> } @else { Crear cuenta }
+        </button>
+
+        <p class="auth-link-bottom">¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a></p>
+      </form>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

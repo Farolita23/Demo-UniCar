@@ -1,0 +1,171 @@
+<app-header></app-header>
+<div class="page-wrapper">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HERO
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-blob blob-1"></div>
+      <div class="hero-blob blob-2"></div>
+      <div class="hero-blob blob-3"></div>
+    </div>
+    <div class="container hero-content">
+      <div class="hero-text">
+        <div class="hero-badge anim-fade">
+          <span class="badge-dot"></span> Carpooling universitario
+        </div>
+        <h1 class="hero-title anim-rise">
+          Comparte el camino<br>
+          <span class="hero-highlight">hacia la uni</span>
+        </h1>
+        <p class="hero-sub anim-rise anim-d1">
+          Conecta con compañeros que van a tu campus. Ahorra dinero, reduce emisiones y conoce gente nueva en cada trayecto.
+        </p>
+        <div class="hero-actions anim-rise anim-d2">
+          <a routerLink="/search-trip" class="btn btn-primary hero-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Buscar viaje
+          </a>
+          <a routerLink="/trip" class="btn btn-ghost hero-btn">Ofrecer viaje →</a>
+        </div>
+        <div class="hero-trust anim-rise anim-d3">
+          <div class="trust-avatars">
+            <span class="trust-av">J</span>
+            <span class="trust-av">M</span>
+            <span class="trust-av">A</span>
+            <span class="trust-av">+</span>
+          </div>
+          <span class="trust-text">+500 estudiantes ya comparten viaje</span>
+        </div>
+      </div>
+      <div class="hero-visual anim-scale">
+        <div class="hero-card">
+          <div class="hc-header">
+            <img src="/assets/media/icon-dark.png" alt="UniCar" class="hc-logo">
+            <span class="hc-live">En vivo</span>
+          </div>
+          <div class="hc-route">
+            <div class="hc-stop">
+              <div class="hc-dot hc-dot-from"></div>
+              <div class="hc-stop-info">
+                <span class="hc-stop-label">Origen</span>
+                <span class="hc-stop-name">Tu pueblo</span>
+              </div>
+            </div>
+            <div class="hc-line"></div>
+            <div class="hc-stop">
+              <div class="hc-dot hc-dot-to"></div>
+              <div class="hc-stop-info">
+                <span class="hc-stop-label">Destino</span>
+                <span class="hc-stop-name">Campus uni</span>
+              </div>
+            </div>
+          </div>
+          <div class="hc-tags">
+            <span class="hc-tag"><app-icon icon="birrete" [size]="14"></app-icon> Estudiantes</span>
+            <span class="hc-tag"><app-icon icon="eco" [size]="14"></app-icon> Eco</span>
+            <span class="hc-tag hc-tag-price">Desde 2€</span>
+          </div>
+          <div class="hc-footer">
+            <span class="hc-seats">💺 3 plazas libres</span>
+            <span class="hc-btn">Solicitar →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       STATS
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="stats-section container">
+    <div class="stats-grid">
+      @for (stat of stats; track stat.label) {
+        <div class="stat-item anim-rise-stagger">
+          <span class="stat-icon">{{ stat.icon }}</span>
+          <span class="stat-value">{{ stat.value }}</span>
+          <span class="stat-label">{{ stat.label }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CÓMO FUNCIONA
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="how-section container">
+    <div class="section-head">
+      <span class="section-badge">Pasos simples</span>
+      <h2 class="section-title">¿Cómo funciona?</h2>
+      <p class="section-sub">En tres pasos empiezas a compartir viaje</p>
+    </div>
+    <div class="steps-grid">
+      @for (feat of features; track feat.title; let i = $index) {
+        <div class="step-card anim-rise-stagger">
+          <div class="step-icon-wrap">
+            <span class="step-icon">{{ feat.icon }}</span>
+            <span class="step-num">0{{ i + 1 }}</span>
+          </div>
+          <h3 class="step-title">{{ feat.title }}</h3>
+          <p class="step-desc">{{ feat.desc }}</p>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       QUIZÁ TE INTERESE / VIAJES DISPONIBLES
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="suggested-section container">
+    <div class="section-head">
+      @if (isSuggested && auth.isLoggedIn()) {
+        <span class="section-badge section-badge-accent">Para ti</span>
+        <h2 class="section-title">Quizá te interese</h2>
+        <p class="section-sub">Viajes que coinciden con tus rutas habituales</p>
+      } @else {
+        <span class="section-badge">Próximos viajes</span>
+        <h2 class="section-title">Viajes disponibles</h2>
+        <p class="section-sub">Los próximos trayectos publicados por la comunidad</p>
+      }
+    </div>
+
+    @if (loadingTrips) {
+      <div class="trips-loading">
+        <div class="spinner"></div>
+        <span>Buscando viajes...</span>
+      </div>
+    } @else if (suggestedTrips.length === 0) {
+      <div class="trips-empty">
+        <div class="trips-empty-icon">🔍</div>
+        <h3>No hay viajes disponibles ahora</h3>
+        <p>Sé el primero en publicar un viaje para tu campus.</p>
+        <a routerLink="/trip" class="btn btn-primary">Publicar viaje</a>
+      </div>
+    } @else {
+      <div class="suggested-grid">
+        @for (trip of suggestedTrips; track trip.id; let i = $index) {
+          <app-trip [data]="trip" (tripUpdated)="updateTrip($event, i)"></app-trip>
+        }
+      </div>
+      <div class="trips-see-all">
+        <a routerLink="/search-trip" class="btn btn-ghost">Ver todos los viajes →</a>
+      </div>
+    }
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       CTA BANNER
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="cta-section">
+    <div class="container cta-inner">
+      <div class="cta-text">
+        <h2>¿Tienes plazas libres?</h2>
+        <p>Comparte tu trayecto al campus, ayuda al planeta y gana algo de dinero por el camino.</p>
+      </div>
+      <a routerLink="/trip" class="btn btn-accent cta-action">Publicar un viaje →</a>
+    </div>
+  </section>
+
+</div>
+<app-footer></app-footer>

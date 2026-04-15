@@ -1,0 +1,77 @@
+<article class="trip-card">
+  <div class="trip-card__direction" [class.to-campus]="data.isToCampus">
+    <span class="dir-icon">
+      <app-icon [icon]="data.isToCampus ? 'birrete' : 'casa'" [size]="22"></app-icon>
+    </span>
+    <span class="dir-label">{{ direction }}</span>
+    <span class="free-seats" [class.low]="freeSeats <= 1" [class.full-seats]="freeSeats <= 0">
+      <app-icon icon="asiento" [size]="14"></app-icon>
+      @if (freeSeats <= 0) {
+        Completo
+      } @else {
+        {{ freeSeats }} plazas libres
+      }
+    </span>
+  </div>
+
+  <div class="trip-card__body">
+    <div class="trip-card__route">
+      <div class="route-point">
+        <div class="dot dot-from"></div>
+        <span>{{ data.townDTO.name }}</span>
+      </div>
+      <div class="route-line"></div>
+      <div class="route-point">
+        <div class="dot dot-to"></div>
+        <span>{{ data.campusDTO.name }}</span>
+      </div>
+    </div>
+
+    <div class="trip-card__address">
+      <app-icon icon="pin" [size]="16"></app-icon>
+      {{ data.departureAddress }}
+    </div>
+
+    <div class="trip-card__meta">
+      <div class="meta-item">
+        <app-icon icon="calendario" [size]="16"></app-icon>
+        {{ formatDate(data.departureDate) }}
+      </div>
+      <div class="meta-item">
+        <app-icon icon="reloj" [size]="16"></app-icon>
+        {{ data.departureTime }}
+      </div>
+      <div class="meta-item">
+        <app-icon icon="coche" [size]="16"></app-icon>
+        {{ data.carDTO.model }} · {{ data.carDTO.color }}
+      </div>
+    </div>
+  </div>
+
+  <div class="trip-card__footer">
+    <div class="price">
+      <span class="price-amount">{{ data.price | number:'1.2-2' }}€</span>
+      <span class="price-label">por persona</span>
+    </div>
+
+    @if (auth.isLoggedIn()) {
+      @if (isPassenger) {
+        <button class="btn btn-ghost trip-btn" (click)="leaveTrip()" [disabled]="loading">
+          {{ loading ? '...' : 'Abandonar' }}
+        </button>
+      } @else if (hasRequested) {
+        <button class="btn btn-ghost trip-btn pending" (click)="cancelRequest()" [disabled]="loading">
+          {{ loading ? '...' : 'Cancelar solicitud' }}
+        </button>
+      } @else if (freeSeats > 0) {
+        <button class="btn btn-primary trip-btn" (click)="goToDetail()">
+          Ver viaje →
+        </button>
+      } @else {
+        <span class="badge badge-danger">Completo</span>
+      }
+    } @else {
+      <a routerLink="/login" class="btn btn-primary trip-btn">Ver viaje</a>
+    }
+  </div>
+</article>

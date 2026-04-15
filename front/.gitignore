@@ -1,0 +1,9 @@
+# Dependencias de Node
+/node_modules
+
+# Cache y compilación de Angular
+/.angular
+
+# Configuración del editor
+*.code-workspace
+

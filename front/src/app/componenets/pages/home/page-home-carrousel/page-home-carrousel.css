@@ -1,0 +1,163 @@
+/* ══════════════════════════════════════
+   SECCIÓN: Viajes destacados
+   ══════════════════════════════════════ */
+
+section.featured-trips {
+    padding: 64px 0;
+    background: var(--bg);
+}
+
+section.featured-trips .content {
+    width: calc(var(--max-width) - 16px * 2);
+    max-width: calc(100% - 16px * 2);
+    margin: auto;
+    padding: 0 16px;
+}
+
+/* ── Cabecera de sección ── */
+.section-header {
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.section-header h3 {
+    font-family: 'Sora', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.section-header p {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+}
+
+/* ── Grid de tarjetas ── */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+}
+
+/* ── Tarjeta individual de viaje ── */
+.trip-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 24px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    cursor: pointer;
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Borde izquierdo de acento */
+.trip-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--accent), var(--accent-dark));
+    border-radius: 3px 0 0 3px;
+    opacity: 0;
+    transition: opacity var(--transition);
+}
+
+.trip-card:hover {
+    border-color: rgba(59,158,255,.4);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px rgba(0,0,0,.4), 0 0 24px var(--accent-glow);
+}
+
+.trip-card:hover::before {
+    opacity: 1;
+}
+
+/* ── Visualización de ruta ── */
+.route {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.city {
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    white-space: nowrap;
+}
+
+.city.from {
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.88rem;
+}
+
+.arrow {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: relative;
+}
+
+.arrow .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--text-muted), var(--accent));
+}
+
+.arrow .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+    flex: 0 0 auto;
+}
+
+/* ── Metadatos (hora, plazas) ── */
+.meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.tag {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: var(--bg-elevated);
+    padding: 4px 10px;
+    border-radius: 999px;
+}
+
+.seats {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--success);
+    background: rgba(34,199,135,.1);
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(34,199,135,.2);
+}
+
+@media (max-width: 480px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Carrousel entrance animation ───────────────────────────── */
+@keyframes carrouselIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+:host {
+  animation: carrouselIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+}
