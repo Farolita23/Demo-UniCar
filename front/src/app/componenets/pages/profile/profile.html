@@ -41,6 +41,7 @@
           <button [class.active]="activeTab === 'trips-driver'"    (click)="activeTab = 'trips-driver'">Mis viajes (conductor)</button>
           <button [class.active]="activeTab === 'trips-passenger'" (click)="activeTab = 'trips-passenger'">Mis viajes (pasajero)</button>
           <button [class.active]="activeTab === 'cars'"            (click)="activeTab = 'cars'">Mis vehículos</button>
+          <button [class.active]="activeTab === 'ratings'"         (click)="activeTab = 'ratings'">Valoraciones</button>
           <button [class.active]="activeTab === 'edit'"            (click)="activeTab = 'edit'">Editar perfil</button>
         </nav>
       </aside>
@@ -130,6 +131,88 @@
                 }
               </div>
             }
+          </div>
+        }
+
+        <!-- RATINGS TAB -->
+        @if (activeTab === 'ratings') {
+          <div class="tab-content animate-fadeUp">
+            <h2 class="tab-title">Valoraciones</h2>
+
+            <!-- Received ratings -->
+            <div class="ratings-section">
+              <h3 class="ratings-section-title">Valoraciones recibidas</h3>
+              @if (!user.ratingsReceivedDTO || user.ratingsReceivedDTO.length === 0) {
+                <div class="empty-state"><p>Aún no has recibido valoraciones.</p></div>
+              } @else {
+                <div class="ratings-overview">
+                  <div class="ratings-overview-avg">
+                    <span class="ratings-big-number">{{ avgRating }}</span>
+                    <div class="ratings-overview-stars">
+                      @for (star of [1,2,3,4,5]; track star) {
+                        <span class="star-icon" [class.filled]="star <= +avgRating">★</span>
+                      }
+                    </div>
+                    <span class="ratings-overview-count">{{ user.ratingsReceivedDTO.length }} valoración{{ user.ratingsReceivedDTO.length > 1 ? 'es' : '' }}</span>
+                  </div>
+                </div>
+                <div class="ratings-list-profile">
+                  @for (r of user.ratingsReceivedDTO; track r.id) {
+                    <div class="rating-card-profile">
+                      <div class="rating-card-user">
+                        @if (r.userRateDTO?.profileImageUrl) {
+                          <img [src]="r.userRateDTO?.profileImageUrl" class="rating-card-avatar" [alt]="r.userRateDTO?.name">
+                        } @else {
+                          <div class="rating-card-avatar-init">{{ r.userRateDTO?.name?.charAt(0) || '?' }}</div>
+                        }
+                        <div>
+                          <strong>{{ r.userRateDTO?.name || 'Usuario' }}</strong>
+                          <span class="rating-card-username">@{{ r.userRateDTO?.username || '?' }}</span>
+                        </div>
+                      </div>
+                      <div class="rating-card-stars">
+                        @for (star of [1,2,3,4,5]; track star) {
+                          <span class="star-icon" [class.filled]="star <= r.rating">★</span>
+                        }
+                        <span class="rating-card-val">{{ r.rating }}/5</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+
+            <!-- Given ratings -->
+            <div class="ratings-section" style="margin-top: 2rem">
+              <h3 class="ratings-section-title">Valoraciones realizadas</h3>
+              @if (!user.ratingsDoneDTO || user.ratingsDoneDTO.length === 0) {
+                <div class="empty-state"><p>Aún no has valorado a otros usuarios.</p></div>
+              } @else {
+                <div class="ratings-list-profile">
+                  @for (r of user.ratingsDoneDTO; track r.id) {
+                    <div class="rating-card-profile">
+                      <div class="rating-card-user">
+                        @if (r.ratedUserDTO?.profileImageUrl) {
+                          <img [src]="r.ratedUserDTO?.profileImageUrl" class="rating-card-avatar" [alt]="r.ratedUserDTO?.name">
+                        } @else {
+                          <div class="rating-card-avatar-init">{{ r.ratedUserDTO?.name?.charAt(0) || '?' }}</div>
+                        }
+                        <div>
+                          <strong>{{ r.ratedUserDTO?.name || 'Usuario' }}</strong>
+                          <span class="rating-card-username">@{{ r.ratedUserDTO?.username || '?' }}</span>
+                        </div>
+                      </div>
+                      <div class="rating-card-stars">
+                        @for (star of [1,2,3,4,5]; track star) {
+                          <span class="star-icon" [class.filled]="star <= r.rating">★</span>
+                        }
+                        <span class="rating-card-val">{{ r.rating }}/5</span>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
           </div>
         }
 

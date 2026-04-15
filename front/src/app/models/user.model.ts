@@ -4,6 +4,8 @@ import { Town } from './town.model';
 export interface Rating {
   id: number;
   rating: number;
+  userRateDTO?: UserSummary;
+  ratedUserDTO?: UserSummary;
 }
 
 export interface UserSummary {

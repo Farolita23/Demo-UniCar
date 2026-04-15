@@ -37,7 +37,7 @@ export class Profile implements OnInit {
   campuses: Campus[]       = [];
   towns: Town[]            = [];
 
-  activeTab: 'info' | 'trips-driver' | 'trips-passenger' | 'cars' | 'edit' = 'info';
+  activeTab: 'info' | 'trips-driver' | 'trips-passenger' | 'cars' | 'ratings' | 'edit' = 'info';
   loading      = true;
   carsLoading  = false;
   saving       = false;

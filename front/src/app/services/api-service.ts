@@ -151,6 +151,14 @@ export class ApiService {
     return this.http.post<any>(`${this.URL}/api/rating`, dto, { headers: this.authHeaders() });
   }
 
+  updateRating(id: number, dto: { rating: number }): Observable<any> {
+    return this.http.put<any>(`${this.URL}/api/rating/${id}`, dto, { headers: this.authHeaders() });
+  }
+
+  deleteRating(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.URL}/api/rating/${id}`, { headers: this.authHeaders() });
+  }
+
   createReport(dto: { reason: string; idUserReport: number; idReportedUser: number; date: string }): Observable<any> {
     return this.http.post<any>(`${this.URL}/api/report`, dto, { headers: this.authHeaders() });
   }

@@ -60,6 +60,7 @@ export class Login {
       error: () => {
         this.error = 'Credenciales incorrectas. Inténtalo de nuevo.';
         this.loading = false;
+        this.cdr.detectChanges();
       }
     });
   }

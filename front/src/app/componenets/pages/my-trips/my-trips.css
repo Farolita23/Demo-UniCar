@@ -241,3 +241,18 @@
 .driver-trip:hover .manage-cta {
   color: var(--accent-dark) !important;
 }
+
+/* Rate nudge badge */
+.rate-nudge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--warning);
+  background: rgba(255,183,3,0.12);
+  padding: 3px 10px;
+  border-radius: 100px;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+.my-trip-card:hover .rate-nudge {
+  background: rgba(255,183,3,0.22);
+}

@@ -211,7 +211,19 @@
                       <span class="person-name">{{ passenger.name }}</span>
                       <span class="person-username">@{{ passenger.username }}</span>
                     </div>
-                    <span class="confirmed-badge">✓ Confirmado</span>
+                    <!-- Inline star rating -->
+                    <div class="inline-stars" [class.is-saving]="pLoading[passenger.id]">
+                      @for (star of [1,2,3,4,5]; track star) {
+                        <button type="button"
+                          class="i-star"
+                          [class.active]="star <= (pRating[passenger.id] || 0)"
+                          [disabled]="pLoading[passenger.id]"
+                          (click)="clickStar(passenger.id, star); $event.stopPropagation()">★</button>
+                      }
+                      @if (pSaved[passenger.id]) {
+                        <span class="i-saved">✓</span>
+                      }
+                    </div>
                   </div>
                   <div class="person-actions">
                     <button class="btn btn-remove btn-sm"

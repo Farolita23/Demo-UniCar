@@ -125,20 +125,86 @@
             </div>
           </div>
 
-          <!-- Passengers -->
+          <!-- Passengers — with INLINE rating stars for the driver -->
           @if (trip.passengersDTO.length > 0) {
             <div class="detail-card td-slide-up td-delay-4">
-              <h2 class="detail-section-title">👥 Pasajeros confirmados ({{ trip.passengersDTO.length }})</h2>
+              <h2 class="detail-section-title">
+                👥 Pasajeros confirmados ({{ trip.passengersDTO.length }})
+                @if (isDriver) {
+                  <span class="section-hint">— toca las estrellas para valorar</span>
+                }
+              </h2>
               <div class="passengers-list">
                 @for (p of trip.passengersDTO; track p.id) {
-                  <div class="passenger-item">
+                  <div class="passenger-item" [class.passenger-item--rateable]="isDriver">
                     @if (p.profileImageUrl) {
                       <img [src]="p.profileImageUrl" class="passenger-avatar" [alt]="p.name">
                     } @else {
                       <div class="passenger-avatar-init">{{ p.name.charAt(0) }}</div>
                     }
-                    <span>{{ p.name }}</span>
-                    <span class="passenger-username">@{{ p.username }}</span>
+                    <div class="passenger-info-col">
+                      <span class="passenger-name">{{ p.name }}</span>
+                      <span class="passenger-username">@{{ p.username }}</span>
+                    </div>
+
+                    <!-- INLINE stars for driver to rate this passenger -->
+                    @if (isDriver) {
+                      <div class="inline-rating" [class.is-saving]="pLoading[p.id]">
+                        @for (star of [1,2,3,4,5]; track star) {
+                          <button type="button"
+                            class="i-star"
+                            [class.active]="star <= (pRating[p.id] || 0)"
+                            [disabled]="pLoading[p.id]"
+                            (click)="clickPassengerStar(p.id, star)">★</button>
+                        }
+                        @if (pSaved[p.id]) {
+                          <span class="i-saved">✓</span>
+                        }
+                        @if (pError[p.id]) {
+                          <span class="i-error">!</span>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Existing ratings list for the driver -->
+          @if (driver && driver.ratingsReceivedDTO && driver.ratingsReceivedDTO.length > 0) {
+            <div class="detail-card td-slide-up td-delay-4">
+              <h2 class="detail-section-title">📊 Valoraciones del conductor ({{ driver.ratingsReceivedDTO.length }})</h2>
+              <div class="ratings-summary">
+                <div class="ratings-avg">
+                  <span class="ratings-avg-number">{{ avgRating | number:'1.1-1' }}</span>
+                  <div class="ratings-avg-stars">
+                    @for (star of [1,2,3,4,5]; track star) {
+                      <span class="star" [class.filled]="star <= avgRating">★</span>
+                    }
+                  </div>
+                  <span class="ratings-avg-count">{{ driver.ratingsReceivedDTO.length }} valoración{{ driver.ratingsReceivedDTO.length > 1 ? 'es' : '' }}</span>
+                </div>
+              </div>
+              <div class="ratings-list">
+                @for (r of driver.ratingsReceivedDTO; track r.id) {
+                  <div class="rating-item">
+                    <div class="rating-item-user">
+                      @if (r.userRateDTO?.profileImageUrl) {
+                        <img [src]="r.userRateDTO?.profileImageUrl" class="rating-item-avatar" [alt]="r.userRateDTO?.name">
+                      } @else {
+                        <div class="rating-item-avatar-init">{{ r.userRateDTO?.name?.charAt(0) || '?' }}</div>
+                      }
+                      <div>
+                        <strong>{{ r.userRateDTO?.name || 'Usuario' }}</strong>
+                        <span class="rating-item-username">@{{ r.userRateDTO?.username || '?' }}</span>
+                      </div>
+                    </div>
+                    <div class="rating-item-stars">
+                      @for (star of [1,2,3,4,5]; track star) {
+                        <span class="star" [class.filled]="star <= r.rating">★</span>
+                      }
+                    </div>
                   </div>
                 }
               </div>
@@ -169,6 +235,25 @@
                   }
                 </div>
                 <span class="rating-val">{{ avgRating | number:'1.1-1' }}</span>
+              </div>
+            }
+
+            <!-- ★ INLINE: Passenger rates driver — right here in the card -->
+            @if (isPassenger && driver) {
+              <div class="inline-rate-driver">
+                <span class="ird-label">Tu valoración</span>
+                <div class="ird-stars" [class.is-saving]="driverRatingLoading">
+                  @for (star of [1,2,3,4,5]; track star) {
+                    <button type="button"
+                      class="i-star i-star-lg"
+                      [class.active]="star <= driverRatingValue"
+                      [disabled]="driverRatingLoading"
+                      (click)="clickDriverStar(star)">★</button>
+                  }
+                  @if (driverRatingSaved) {
+                    <span class="i-saved">✓ Guardada</span>
+                  }
+                </div>
               </div>
             }
 

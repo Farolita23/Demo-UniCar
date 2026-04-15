@@ -7,7 +7,7 @@ import { Footer } from '../../elements/footer/footer';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 import { Trip } from '../../../models/trip.model';
-import { User, UserSummary } from '../../../models/user.model';
+import { User, UserSummary, Rating } from '../../../models/user.model';
 
 @Component({
   selector: 'page-manage-trip',
@@ -36,6 +36,11 @@ export class ManageTrip implements OnInit {
   rejectedIds: Set<number> = new Set();
   removedIds: Set<number> = new Set();
 
+  // ── Inline rating state ───────────────────────────────────────
+  pRating:  { [id: number]: number  } = {};
+  pLoading: { [id: number]: boolean } = {};
+  pSaved:   { [id: number]: boolean } = {};
+
   ngOnInit(): void {
     if (!isPlatformBrowser(this.platformId)) { this.loading = false; return; }
 
@@ -57,9 +62,63 @@ export class ManageTrip implements OnInit {
 
   private loadDriver(carId: number) {
     this.api.getCarOwner(carId).subscribe({
-      next: u => { this.driver = u; this.cdr.detectChanges(); },
+      next: u => {
+        this.driver = u;
+        this.initRatingState();
+        this.cdr.detectChanges();
+      },
       error: e => console.error('[ManageTrip] getCarOwner error:', e),
     });
+  }
+
+  private initRatingState() {
+    if (this.trip?.passengersDTO) {
+      for (const p of this.trip.passengersDTO) {
+        const existing = this.existingRatingFor(p.id);
+        this.pRating[p.id] = existing ? existing.rating : 0;
+      }
+    }
+  }
+
+  existingRatingFor(passengerId: number): Rating | null {
+    if (!this.driver?.ratingsDoneDTO) return null;
+    return this.driver.ratingsDoneDTO.find(r => r.ratedUserDTO?.id === passengerId) ?? null;
+  }
+
+  clickStar(passengerId: number, star: number) {
+    if (!this.currentUserId || this.pLoading[passengerId]) return;
+    this.pRating[passengerId] = star;
+    this.pLoading[passengerId] = true;
+    this.pSaved[passengerId] = false;
+
+    const existing = this.existingRatingFor(passengerId);
+    if (existing) {
+      this.api.updateRating(existing.id, { rating: star }).subscribe({
+        next: () => {
+          existing.rating = star;
+          this.flashSaved(passengerId);
+        },
+        error: () => { this.pLoading[passengerId] = false; this.cdr.detectChanges(); },
+      });
+    } else {
+      this.api.createRating({
+        rating: star, idUserRate: this.currentUserId, idRatedUser: passengerId
+      }).subscribe({
+        next: (r) => {
+          if (this.driver!.ratingsDoneDTO) { this.driver!.ratingsDoneDTO.push(r); }
+          else { this.driver!.ratingsDoneDTO = [r]; }
+          this.flashSaved(passengerId);
+        },
+        error: () => { this.pLoading[passengerId] = false; this.cdr.detectChanges(); },
+      });
+    }
+  }
+
+  private flashSaved(id: number) {
+    this.pLoading[id] = false;
+    this.pSaved[id] = true;
+    this.cdr.detectChanges();
+    setTimeout(() => { this.pSaved[id] = false; this.cdr.detectChanges(); }, 1800);
   }
 
   get freeSeats(): number {

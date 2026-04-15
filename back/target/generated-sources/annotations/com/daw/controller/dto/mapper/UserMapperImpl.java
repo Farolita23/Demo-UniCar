@@ -1,21 +1,17 @@
 package com.daw.controller.dto.mapper;
 
-import com.daw.controller.dto.RatingDTO;
 import com.daw.controller.dto.UserDTO;
-import com.daw.datamodel.entities.Rating;
 import com.daw.datamodel.entities.User;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import javax.annotation.processing.Generated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-14T20:44:09+0200",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.45.0.v20260224-0835, environment: Java 21.0.10 (Eclipse Adoptium)"
+    date = "2026-04-15T21:17:43+0200",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
@@ -37,8 +33,8 @@ public class UserMapperImpl implements UserMapper {
 
         userDTO.setUsualCampusDTO( campusMapper.toDto( user.getUsualCampus() ) );
         userDTO.setHomeTownDTO( townMapper.toDto( user.getHomeTown() ) );
-        userDTO.setRatingsReceivedDTO( ratingSetToRatingDTOSet( user.getRatingsReceived() ) );
-        userDTO.setRatingsDoneDTO( ratingSetToRatingDTOSet( user.getRatingsDone() ) );
+        userDTO.setRatingsReceivedDTO( ratingMapper.toSetDto( user.getRatingsReceived() ) );
+        userDTO.setRatingsDoneDTO( ratingMapper.toSetDto( user.getRatingsDone() ) );
         userDTO.setBanned( user.getBanned() );
         userDTO.setBirthdate( user.getBirthdate() );
         userDTO.setDescription( user.getDescription() );
@@ -67,18 +63,5 @@ public class UserMapperImpl implements UserMapper {
         }
 
         return list;
-    }
-
-    protected Set<RatingDTO> ratingSetToRatingDTOSet(Set<Rating> set) {
-        if ( set == null ) {
-            return null;
-        }
-
-        Set<RatingDTO> set1 = new LinkedHashSet<RatingDTO>( Math.max( (int) ( set.size() / .75f ) + 1, 16 ) );
-        for ( Rating rating : set ) {
-            set1.add( ratingMapper.toDto( rating ) );
-        }
-
-        return set1;
     }
 }
