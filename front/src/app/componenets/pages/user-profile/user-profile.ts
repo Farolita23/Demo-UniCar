@@ -180,7 +180,10 @@ export class UserProfile implements OnInit {
       },
       error: (e) => {
         this.reportLoading = false;
-        this.reportError = e?.error?.message || 'Error al enviar el reporte. Debes compartir un viaje con este usuario.';
+        const msg = e?.error?.message || '';
+        this.reportError = msg.includes('no puedes reportar')
+          ? 'Solo puedes reportar a usuarios con los que hayas compartido un viaje.'
+          : (msg || 'Error al enviar el reporte.');
         this.cdr.detectChanges();
       },
     });

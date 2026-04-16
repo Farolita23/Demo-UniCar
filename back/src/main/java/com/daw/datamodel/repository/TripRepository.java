@@ -19,7 +19,9 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
 
     @Query("SELECT COUNT(t) > 0 FROM Trip t JOIN t.passengers p " +
            "WHERE (t.car.driver.id = :idUser1 AND p.id = :idUser2) " +
-           "OR (t.car.driver.id = :idUser2 AND p.id = :idUser1)")
+           "OR (t.car.driver.id = :idUser2 AND p.id = :idUser1) " +
+           "OR (EXISTS (SELECT 1 FROM Trip t2 JOIN t2.passengers p1 JOIN t2.passengers p2 " +
+           "WHERE p1.id = :idUser1 AND p2.id = :idUser2))")
     boolean existsSharedTrip(@Param("idUser1") Long idUser1, @Param("idUser2") Long idUser2);
 
     @Query("SELECT t FROM Trip t WHERE " +
