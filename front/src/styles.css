@@ -288,3 +288,24 @@ button {
   color: var(--warning);
   border: 1px solid rgba(255,183,3,0.2);
 }
+
+/* ── Extra button variants ─────────────────────────────── */
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+.btn-danger:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(230,57,70,0.35);
+}
+
+.btn-danger-outline {
+  background: transparent;
+  color: var(--danger);
+  border: 1.5px solid rgba(230,57,70,0.3);
+}
+.btn-danger-outline:hover {
+  border-color: var(--danger);
+  background: rgba(230,57,70,0.06);
+}

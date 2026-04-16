@@ -260,3 +260,70 @@
   color: var(--text-2);
   margin-left: 6px;
 }
+
+/* ── Warnings tab nav badge ────────────────────────────── */
+.warnings-nav-btn { position: relative; }
+.nav-unread-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--danger);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  min-width: 16px; height: 16px;
+  padding: 0 4px;
+  border-radius: 100px;
+  margin-left: 6px;
+}
+
+/* ── Warnings list ─────────────────────────────────────── */
+.warnings-list { display: flex; flex-direction: column; gap: 10px; }
+
+.warning-card {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  border-left: 3px solid var(--border);
+  transition: var(--transition);
+}
+.warning-card.warning-unread {
+  border-left-color: var(--warning);
+  background: rgba(255,183,3,0.04);
+}
+
+.warning-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+.warning-card__subject {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+.warning-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--warning);
+  flex-shrink: 0;
+}
+.warning-card__date {
+  color: var(--text-3);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+.warning-card__message {
+  color: var(--text-2);
+  font-size: 0.88rem;
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+.warning-read-btn {
+  font-size: 0.78rem !important;
+  padding: 4px 12px !important;
+}

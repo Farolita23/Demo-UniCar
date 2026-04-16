@@ -58,6 +58,9 @@
               </div>
               <div class="my-trip-card__footer">
                 <span class="my-trip-price">{{ trip.price | number:'1.2-2' }}€</span>
+                @if (trip.driverDTO) {
+                  <button class="btn-profile-sm" (click)="goToDriverProfile(trip, $event)">👤 Perfil</button>
+                }
                 <span class="my-trip-cta">Ver detalle →</span>
                 <span class="rate-nudge">⭐ Valorar</span>
               </div>

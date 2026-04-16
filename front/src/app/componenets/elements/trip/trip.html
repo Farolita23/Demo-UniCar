@@ -54,24 +54,31 @@
       <span class="price-label">por persona</span>
     </div>
 
-    @if (auth.isLoggedIn()) {
-      @if (isPassenger) {
-        <button class="btn btn-ghost trip-btn" (click)="leaveTrip()" [disabled]="loading">
-          {{ loading ? '...' : 'Abandonar' }}
+    <div class="trip-card__actions">
+      @if (driverId && !isOwnTrip) {
+        <button class="btn btn-ghost trip-btn trip-btn-profile" (click)="goToDriverProfile($event)">
+          👤 Perfil
         </button>
-      } @else if (hasRequested) {
-        <button class="btn btn-ghost trip-btn pending" (click)="cancelRequest()" [disabled]="loading">
-          {{ loading ? '...' : 'Cancelar solicitud' }}
-        </button>
-      } @else if (freeSeats > 0) {
-        <button class="btn btn-primary trip-btn" (click)="goToDetail()">
-          Ver viaje →
-        </button>
-      } @else {
-        <span class="badge badge-danger">Completo</span>
       }
-    } @else {
-      <a routerLink="/login" class="btn btn-primary trip-btn">Ver viaje</a>
-    }
+      @if (auth.isLoggedIn()) {
+        @if (isPassenger) {
+          <button class="btn btn-ghost trip-btn" (click)="leaveTrip()" [disabled]="loading">
+            {{ loading ? '...' : 'Abandonar' }}
+          </button>
+        } @else if (hasRequested) {
+          <button class="btn btn-ghost trip-btn pending" (click)="cancelRequest()" [disabled]="loading">
+            {{ loading ? '...' : 'Cancelar solicitud' }}
+          </button>
+        } @else if (freeSeats > 0) {
+          <button class="btn btn-primary trip-btn" (click)="goToDetail()">
+            Ver viaje →
+          </button>
+        } @else {
+          <span class="badge badge-danger">Completo</span>
+        }
+      } @else {
+        <a routerLink="/login" class="btn btn-primary trip-btn">Ver viaje</a>
+      }
+    </div>
   </div>
 </article>

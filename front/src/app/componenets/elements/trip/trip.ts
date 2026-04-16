@@ -42,6 +42,14 @@ export class TripCard {
     return this.data.requestersDTO?.some(r => r.id === this.currentUserId) ?? false;
   }
 
+  get driverId(): number | null {
+    return this.data.driverDTO?.id ?? null;
+  }
+
+  get isOwnTrip(): boolean {
+    return this.driverId === this.currentUserId;
+  }
+
   get avgRating(): number {
     // placeholder
     return 4.5;
@@ -54,6 +62,11 @@ export class TripCard {
   }
 
   goToDetail() { this.router.navigate(['/trip-detail', this.data.id]); }
+
+  goToDriverProfile(event: Event) {
+    event.stopPropagation();
+    if (this.driverId) this.router.navigate(['/user', this.driverId]);
+  }
 
   requestJoin() {
     if (!this.currentUserId || this.loading) return;

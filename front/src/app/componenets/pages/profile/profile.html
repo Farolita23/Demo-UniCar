@@ -42,6 +42,12 @@
           <button [class.active]="activeTab === 'trips-passenger'" (click)="activeTab = 'trips-passenger'">Mis viajes (pasajero)</button>
           <button [class.active]="activeTab === 'cars'"            (click)="activeTab = 'cars'">Mis vehículos</button>
           <button [class.active]="activeTab === 'ratings'"         (click)="activeTab = 'ratings'">Valoraciones</button>
+          <button [class.active]="activeTab === 'warnings'"        (click)="activeTab = 'warnings'" class="warnings-nav-btn">
+            Avisos
+            @if (unreadWarningsCount > 0) {
+              <span class="nav-unread-badge">{{ unreadWarningsCount }}</span>
+            }
+          </button>
           <button [class.active]="activeTab === 'edit'"            (click)="activeTab = 'edit'">Editar perfil</button>
         </nav>
       </aside>
@@ -213,6 +219,40 @@
                 </div>
               }
             </div>
+          </div>
+        }
+
+        <!-- WARNINGS TAB -->
+        @if (activeTab === 'warnings') {
+          <div class="tab-content animate-fadeUp">
+            <h2 class="tab-title">Avisos</h2>
+            @if (warningsLoading) {
+              <div class="loading-state"><div class="spinner"></div></div>
+            } @else if (warnings.length === 0) {
+              <div class="empty-state"><p>No tienes avisos.</p></div>
+            } @else {
+              <div class="warnings-list">
+                @for (w of warnings; track w.id) {
+                  <div class="warning-card" [class.warning-unread]="!w.isRead">
+                    <div class="warning-card__header">
+                      <div class="warning-card__subject">
+                        @if (!w.isRead) {
+                          <span class="warning-dot"></span>
+                        }
+                        <strong>{{ w.subject }}</strong>
+                      </div>
+                      <span class="warning-card__date">{{ w.createdAt | date:'d MMM y, HH:mm' }}</span>
+                    </div>
+                    <p class="warning-card__message">{{ w.message }}</p>
+                    @if (!w.isRead) {
+                      <button class="btn btn-ghost btn-sm warning-read-btn" (click)="markWarningRead(w.id)">
+                        Marcar como leído
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+            }
           </div>
         }
 

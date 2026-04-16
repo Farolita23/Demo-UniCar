@@ -117,4 +117,29 @@ public class UserService {
         generalService.findReportById(idReport);
         return userMapper.toDto(userRepository.findByReportsReceivedId(idReport));
     }
+
+    public List<UserDTO> searchUsers(String query) {
+        return userMapper.toListDto(userRepository.searchByNameOrUsername(query));
+    }
+
+    public void banUser(Long id) {
+        User user = generalService.findUserById(id);
+        user.setBanned(true);
+        userRepository.save(user);
+    }
+
+    public void unbanUser(Long id) {
+        User user = generalService.findUserById(id);
+        user.setBanned(false);
+        userRepository.save(user);
+    }
+
+    public void addStrike(Long id) {
+        User user = generalService.findUserById(id);
+        user.setStrikes(user.getStrikes() + 1);
+        if (user.getStrikes() >= 3) {
+            user.setBanned(true);
+        }
+        userRepository.save(user);
+    }
 }

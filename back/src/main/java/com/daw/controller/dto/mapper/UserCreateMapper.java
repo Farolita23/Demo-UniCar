@@ -22,6 +22,7 @@ public interface UserCreateMapper {
 	@Mapping(target = "ratingsDone", ignore = true) //Se crea vacío
 	@Mapping(target = "banned", ignore = true) //Se crea como falso
 	@Mapping(target = "strikes", ignore = true) //Se crea como 0
+	@Mapping(target = "role", ignore = true)
 	User toEntity(UserCreateDTO dto);
 	
 	@InheritConfiguration

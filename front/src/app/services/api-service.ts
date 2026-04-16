@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth-service';
 import { env } from '../../environments/env';
 import { Trip, Page } from '../models/trip.model';
-import { User } from '../models/user.model';
+import { User, Favorite, Warning, Report } from '../models/user.model';
 import { Campus } from '../models/campus.model';
 import { Town } from '../models/town.model';
 import { Car } from '../models/car.model';
@@ -161,5 +161,83 @@ export class ApiService {
 
   createReport(dto: { reason: string; idUserReport: number; idReportedUser: number; date: string }): Observable<any> {
     return this.http.post<any>(`${this.URL}/api/report`, dto, { headers: this.authHeaders() });
+  }
+
+  // ── USER SEARCH ───────────────────────────────────────────────────────────
+  searchUsers(q: string): Observable<User[]> {
+    const params = new HttpParams().set('q', q);
+    return this.http.get<User[]>(`${this.URL}/api/user/search`, { headers: this.authHeaders(), params });
+  }
+
+  // ── FAVORITES ─────────────────────────────────────────────────────────────
+  getFavorites(userId: number): Observable<Favorite[]> {
+    return this.http.get<Favorite[]>(`${this.URL}/api/favorite/user/${userId}`, { headers: this.authHeaders() });
+  }
+
+  addFavorite(userId: number, favoriteUserId: number): Observable<Favorite> {
+    return this.http.post<Favorite>(`${this.URL}/api/favorite/${userId}/add/${favoriteUserId}`, {}, { headers: this.authHeaders() });
+  }
+
+  removeFavorite(userId: number, favoriteUserId: number): Observable<void> {
+    return this.http.delete<void>(`${this.URL}/api/favorite/${userId}/remove/${favoriteUserId}`, { headers: this.authHeaders() });
+  }
+
+  isFavorite(userId: number, favoriteUserId: number): Observable<{ isFavorite: boolean }> {
+    return this.http.get<{ isFavorite: boolean }>(`${this.URL}/api/favorite/${userId}/check/${favoriteUserId}`, { headers: this.authHeaders() });
+  }
+
+  // ── WARNINGS ──────────────────────────────────────────────────────────────
+  getWarnings(userId: number): Observable<Warning[]> {
+    return this.http.get<Warning[]>(`${this.URL}/api/warning/user/${userId}`, { headers: this.authHeaders() });
+  }
+
+  markWarningRead(id: number): Observable<Warning> {
+    return this.http.put<Warning>(`${this.URL}/api/warning/${id}/read`, {}, { headers: this.authHeaders() });
+  }
+
+  getUnreadWarningCount(userId: number): Observable<{ count: number }> {
+    return this.http.get<{ count: number }>(`${this.URL}/api/warning/user/${userId}/unread-count`, { headers: this.authHeaders() });
+  }
+
+  // ── ADMIN ─────────────────────────────────────────────────────────────────
+  adminGetAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${this.URL}/api/admin/users`, { headers: this.authHeaders() });
+  }
+
+  adminSearchUsers(q: string): Observable<User[]> {
+    const params = new HttpParams().set('q', q);
+    return this.http.get<User[]>(`${this.URL}/api/admin/users/search`, { headers: this.authHeaders(), params });
+  }
+
+  adminGetAllReports(): Observable<Report[]> {
+    return this.http.get<Report[]>(`${this.URL}/api/admin/reports`, { headers: this.authHeaders() });
+  }
+
+  adminBanUser(id: number): Observable<void> {
+    return this.http.post<void>(`${this.URL}/api/admin/users/${id}/ban`, {}, { headers: this.authHeaders() });
+  }
+
+  adminUnbanUser(id: number): Observable<void> {
+    return this.http.post<void>(`${this.URL}/api/admin/users/${id}/unban`, {}, { headers: this.authHeaders() });
+  }
+
+  adminAddStrike(id: number): Observable<void> {
+    return this.http.post<void>(`${this.URL}/api/admin/users/${id}/strike`, {}, { headers: this.authHeaders() });
+  }
+
+  adminDeleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.URL}/api/admin/users/${id}`, { headers: this.authHeaders() });
+  }
+
+  adminDeleteReport(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.URL}/api/admin/reports/${id}`, { headers: this.authHeaders() });
+  }
+
+  adminSendWarning(dto: { subject: string; message: string; idUser: number }): Observable<Warning> {
+    return this.http.post<Warning>(`${this.URL}/api/admin/warnings`, dto, { headers: this.authHeaders() });
+  }
+
+  adminGetWarningsByUser(userId: number): Observable<Warning[]> {
+    return this.http.get<Warning[]>(`${this.URL}/api/admin/warnings/user/${userId}`, { headers: this.authHeaders() });
   }
 }

@@ -3,6 +3,8 @@ package com.daw.controller;
 import com.daw.controller.dto.UserCreateDTO;
 import com.daw.controller.dto.UserDTO;
 import com.daw.controller.dto.UserLoginDTO;
+import com.daw.datamodel.entities.User;
+import com.daw.datamodel.repository.UserRepository;
 import com.daw.security.JwtUtil;
 import com.daw.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +28,15 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDTO dto) {
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
-        return ResponseEntity.ok(Map.of("token", jwtUtil.generateToken(auth.getName())));
+        User user = userRepository.findByUsername(auth.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return ResponseEntity.ok(Map.of("token", jwtUtil.generateToken(auth.getName(), user.getRole())));
     }
 
     @PostMapping("/register")

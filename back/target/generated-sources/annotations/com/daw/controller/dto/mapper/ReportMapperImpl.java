@@ -5,15 +5,19 @@ import com.daw.datamodel.entities.Report;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-15T21:17:42+0200",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
+    date = "2026-04-16T09:46:26+0200",
+    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.44.0.v20251118-1623, environment: Java 25.0.1 (Eclipse Adoptium)"
 )
 @Component
 public class ReportMapperImpl implements ReportMapper {
+
+    @Autowired
+    private UserSummaryMapper userSummaryMapper;
 
     @Override
     public ReportDTO toDto(Report report) {
@@ -23,6 +27,8 @@ public class ReportMapperImpl implements ReportMapper {
 
         ReportDTO reportDTO = new ReportDTO();
 
+        reportDTO.setUserReportDTO( userSummaryMapper.toDto( report.getUserReport() ) );
+        reportDTO.setReportedUserDTO( userSummaryMapper.toDto( report.getReportedUser() ) );
         reportDTO.setDate( report.getDate() );
         reportDTO.setId( report.getId() );
         reportDTO.setReason( report.getReason() );

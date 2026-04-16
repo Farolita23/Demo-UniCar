@@ -51,6 +51,11 @@ export class MyTrips implements OnInit {
 
   goToManage(id: number) { this.router.navigate(['/manage-trip', id]); }
 
+  goToDriverProfile(trip: Trip, event: Event) {
+    event.stopPropagation();
+    if (trip.driverDTO?.id) this.router.navigate(['/user', trip.driverDTO.id]);
+  }
+
   freeSeats(trip: Trip): number {
     return (trip.carDTO?.capacity ?? 0) - (trip.passengersDTO?.length ?? 0);
   }

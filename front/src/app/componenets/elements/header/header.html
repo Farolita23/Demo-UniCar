@@ -17,6 +17,58 @@
         <a routerLink="/login" class="btn btn-ghost btn-sm">Acceder</a>
         <a routerLink="/signup" class="btn btn-primary btn-sm">Únete</a>
       } @else {
+
+        <!-- Person search bar -->
+        <div class="search-wrap">
+          <div class="search-bar">
+            <span class="search-icon"></span>
+            <input type="text"
+                   [(ngModel)]="searchQuery"
+                   (input)="onSearchInput()"
+                   (focus)="searchQuery.trim() && (showSearchResults = true)"
+                   placeholder="Buscar persona..."
+                   class="search-input">
+          </div>
+          @if (showSearchResults) {
+            <div class="search-dropdown">
+              @if (searchLoading) {
+                <div class="search-loading">
+                  <div class="spinner-sm"></div>
+                  <span>Buscando...</span>
+                </div>
+              } @else if (searchResults.length === 0) {
+                <div class="search-empty">Sin resultados para "{{ searchQuery }}"</div>
+              } @else {
+                @for (user of searchResults; track user.id) {
+                  <div class="search-result-item" (click)="goToUserProfile(user)">
+                    @if (user.profileImageUrl) {
+                      <img [src]="user.profileImageUrl" class="search-avatar">
+                    } @else {
+                      <div class="search-avatar-init">{{ user.name.charAt(0) }}</div>
+                    }
+                    <div class="search-result-info">
+                      <span class="search-result-name">{{ user.name }}</span>
+                      <span class="search-result-username">@{{ user.username }}</span>
+                    </div>
+                  </div>
+                }
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Favorites shortcut -->
+        <a routerLink="/favorites" class="header-icon-btn" title="Favoritos">⭐</a>
+
+        <!-- Warnings badge -->
+        <a routerLink="/profile" class="header-icon-btn warnings-icon" title="Avisos"
+           [attr.data-count]="unreadWarnings > 0 ? unreadWarnings : null">
+          🔔
+          @if (unreadWarnings > 0) {
+            <span class="unread-badge">{{ unreadWarnings }}</span>
+          }
+        </a>
+
         <div class="profile-dropdown-wrap" (clickOutside)="showDropdown=false">
           <button class="avatar-btn" (click)="toggleDropdown()">
             @if (auth.getUser()?.profileImageUrl) {
@@ -40,6 +92,17 @@
                 <span class="dropdown-icon">🚗</span>
                 <span>Mis viajes</span>
               </a>
+              <a routerLink="/favorites" class="dropdown-item">
+                <span class="dropdown-icon">⭐</span>
+                <span>Favoritos</span>
+              </a>
+              @if (isAdmin) {
+                <div class="dropdown-divider"></div>
+                <a routerLink="/admin" class="dropdown-item dropdown-item--admin">
+                  <span class="dropdown-icon">🛡</span>
+                  <span>Panel de admin</span>
+                </a>
+              }
               <div class="dropdown-divider"></div>
               <a routerLink="/logout" class="dropdown-item dropdown-item--danger">
                 <span class="dropdown-icon">🚪</span>

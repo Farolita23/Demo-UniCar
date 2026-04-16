@@ -9,7 +9,7 @@ import { TripCard } from '../../elements/trip/trip';
 import { AppIcon } from '../../elements/icon/icon';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
-import { User } from '../../../models/user.model';
+import { User, Warning } from '../../../models/user.model';
 import { Car } from '../../../models/car.model';
 import { Trip } from '../../../models/trip.model';
 import { Campus } from '../../../models/campus.model';
@@ -37,7 +37,10 @@ export class Profile implements OnInit {
   campuses: Campus[]       = [];
   towns: Town[]            = [];
 
-  activeTab: 'info' | 'trips-driver' | 'trips-passenger' | 'cars' | 'ratings' | 'edit' = 'info';
+  warnings: Warning[]     = [];
+  warningsLoading = false;
+
+  activeTab: 'info' | 'trips-driver' | 'trips-passenger' | 'cars' | 'ratings' | 'warnings' | 'edit' = 'info';
   loading      = true;
   carsLoading  = false;
   saving       = false;
@@ -100,6 +103,7 @@ export class Profile implements OnInit {
         this.loading = false;
         this.loadCars(id);
         this.loadTrips(id);
+        this.loadWarnings(id);
         this.cdr.detectChanges();
       },
       error: e => {
@@ -124,6 +128,32 @@ export class Profile implements OnInit {
         this.cdr.detectChanges();
       },
     });
+  }
+
+  loadWarnings(userId: number) {
+    this.warningsLoading = true;
+    this.api.getWarnings(userId).subscribe({
+      next: w => {
+        this.warnings = w;
+        this.warningsLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: () => { this.warningsLoading = false; this.cdr.detectChanges(); },
+    });
+  }
+
+  markWarningRead(warningId: number) {
+    this.api.markWarningRead(warningId).subscribe({
+      next: updated => {
+        const idx = this.warnings.findIndex(w => w.id === warningId);
+        if (idx >= 0) this.warnings[idx] = updated;
+        this.cdr.detectChanges();
+      },
+    });
+  }
+
+  get unreadWarningsCount(): number {
+    return this.warnings.filter(w => !w.isRead).length;
   }
 
   loadTrips(id: number) {
