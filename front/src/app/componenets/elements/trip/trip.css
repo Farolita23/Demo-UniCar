@@ -94,8 +94,10 @@
 .price { display: flex; align-items: baseline; gap: 4px; }
 .price-amount { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--accent); }
 .price-label { font-size: 0.75rem; color: var(--text-3); }
+.trip-card__actions { display: flex; align-items: center; gap: 6px; }
 .trip-btn { padding: 7px 18px; font-size: 0.82rem; }
 .trip-btn.pending { border-color: var(--warning); color: var(--warning); }
+.trip-btn-profile { padding: 7px 12px; font-size: 0.78rem; }
 
 /* Animations */
 @keyframes tripCardIn {

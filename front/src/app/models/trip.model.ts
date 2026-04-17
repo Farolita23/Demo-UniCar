@@ -8,6 +8,7 @@ export interface Trip {
   carDTO: Car;
   campusDTO: Campus;
   townDTO: Town;
+  driverDTO?: UserSummary;
   isToCampus: boolean;
   departureDate: string;
   departureTime: string;

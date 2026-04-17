@@ -57,6 +57,124 @@
 }
 .btn-sm { padding: 6px 16px; font-size: 0.85rem; }
 
+/* ── Person search bar ─────────────────────────────────── */
+.search-wrap {
+  position: relative;
+}
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 4px 12px;
+  transition: var(--transition);
+}
+.search-bar:focus-within {
+  border-color: var(--primary);
+  background: var(--surface-2);
+  box-shadow: 0 0 0 3px rgba(230,57,70,0.12);
+}
+.search-icon { font-size: 0.75rem; }
+.search-input {
+  background: none !important;
+  border: none !important;
+  padding: 4px 0 !important;
+  width: 140px;
+  font-size: 0.82rem;
+  color: var(--text);
+  box-shadow: none !important;
+}
+.search-input::placeholder { color: var(--text-3); }
+.search-input:focus { outline: none; box-shadow: none !important; }
+
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0; right: 0;
+  min-width: 280px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+  z-index: 2000;
+  max-height: 320px;
+  overflow-y: auto;
+  animation: fadeUp 0.15s ease forwards;
+}
+
+.search-loading {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 14px; color: var(--text-2); font-size: 0.85rem;
+}
+.spinner-sm {
+  width: 16px; height: 16px;
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+.search-empty {
+  padding: 14px; color: var(--text-3);
+  font-size: 0.85rem; text-align: center;
+}
+
+.search-result-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; cursor: pointer;
+  transition: var(--transition);
+}
+.search-result-item:hover { background: var(--surface); }
+.search-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  object-fit: cover; border: 1.5px solid var(--border);
+}
+.search-avatar-init {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--primary); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.8rem;
+}
+.search-result-info { display: flex; flex-direction: column; }
+.search-result-name { font-weight: 600; font-size: 0.88rem; color: var(--text); }
+.search-result-username { font-size: 0.78rem; color: var(--text-2); }
+
+/* ── Icon buttons (favorites, warnings) ────────────────── */
+.header-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  position: relative;
+  cursor: pointer;
+}
+.header-icon-btn:hover {
+  border-color: var(--primary);
+  background: rgba(230,57,70,0.08);
+}
+
+.warnings-icon { position: relative; }
+.unread-badge {
+  position: absolute;
+  top: -4px; right: -4px;
+  background: var(--danger);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+
+/* ── Avatar / dropdown ─────────────────────────────────── */
 .avatar-btn { display: flex; background: none; padding: 0; }
 .avatar {
   width: 36px; height: 36px;
@@ -78,7 +196,6 @@
   cursor: pointer;
 }
 
-/* Dropdown */
 .profile-dropdown-wrap {
   position: relative;
 }
@@ -139,6 +256,8 @@
 }
 .dropdown-item--danger { color: var(--danger); }
 .dropdown-item--danger:hover { background: rgba(230,57,70,0.1); color: var(--danger); }
+.dropdown-item--admin { color: var(--accent); }
+.dropdown-item--admin:hover { background: rgba(255,183,3,0.1); color: var(--accent); }
 .dropdown-icon { font-size: 1rem; width: 20px; text-align: center; }
 
 .hamburger {
@@ -160,6 +279,8 @@
 .hamburger.open span:nth-child(2) { opacity: 0; }
 .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
+@keyframes spin { to { transform: rotate(360deg); } }
+
 @media (max-width: 768px) {
   .hamburger { display: flex; }
   .main-nav {
@@ -176,4 +297,6 @@
   }
   .main-nav.open { transform: translateY(0); }
   .main-nav a { padding: 12px 16px; border-radius: var(--radius-sm); }
+
+  .search-wrap { display: none; }
 }

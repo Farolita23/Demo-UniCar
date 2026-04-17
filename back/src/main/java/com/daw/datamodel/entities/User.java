@@ -68,6 +68,9 @@ public class User {
     @Column(name = "profile_image_url", nullable = true, columnDefinition = "LONGTEXT")
     private String profileImageUrl;
 
+    @Column(name = "role", nullable = false)
+    private String role = "USER";
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usual_campus_id",
         referencedColumnName = "id",

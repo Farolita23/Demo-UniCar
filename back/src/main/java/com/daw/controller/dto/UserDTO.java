@@ -22,6 +22,7 @@ public class UserDTO {
     private TownDTO homeTownDTO;
     private String description;
     private String profileImageUrl;
+    private String role;
     private Set<RatingDTO> ratingsReceivedDTO;
     private Set<RatingDTO> ratingsDoneDTO;
 

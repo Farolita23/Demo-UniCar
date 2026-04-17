@@ -56,6 +56,12 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET,  "/api/town").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api/user/car-owner/{idCar}").permitAll()
+                // User search (authenticated)
+                .requestMatchers(HttpMethod.GET, "/api/user/search").authenticated()
+                // User by ID (public for profile viewing)
+                .requestMatchers(HttpMethod.GET, "/api/user/{id}").permitAll()
+                // Admin endpoints
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 // Swagger
                 .requestMatchers(
                     "/swagger-ui/**",

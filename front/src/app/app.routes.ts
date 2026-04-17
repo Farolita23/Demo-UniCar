@@ -14,6 +14,9 @@ import { PageTrip } from './componenets/pages/trip/trip';
 import { TripDetail } from './componenets/pages/trip-detail/trip-detail';
 import { MyTrips } from './componenets/pages/my-trips/my-trips';
 import { ManageTrip } from './componenets/pages/manage-trip/manage-trip';
+import { UserProfile } from './componenets/pages/user-profile/user-profile';
+import { Favorites } from './componenets/pages/favorites/favorites';
+import { Admin } from './componenets/pages/admin/admin';
 import { NoAuthGuard } from './guards/no-auth-guard';
 import { AuthGuard } from './guards/auth-guard';
 
@@ -23,6 +26,7 @@ export const routes: Routes = [
   { path: 'about', component: About },
   { path: 'search-trip', component: SearchTrip },
   { path: 'trip-detail/:id', component: TripDetail },
+  { path: 'user/:id', component: UserProfile },
   {
     path: '',
     canActivate: [NoAuthGuard],
@@ -43,6 +47,8 @@ export const routes: Routes = [
       { path: 'settings', component: Settings },
       { path: 'my-trips', component: MyTrips },
       { path: 'manage-trip/:id', component: ManageTrip },
+      { path: 'favorites', component: Favorites },
+      { path: 'admin', component: Admin },
     ],
   },
   { path: '**', redirectTo: '' },

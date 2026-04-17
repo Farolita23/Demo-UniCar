@@ -28,6 +28,8 @@ public class TripDTO {
 
     private BigDecimal price;
 
+    private UserSummaryDTO driverDTO;
+
     // Usamos UserSummaryDTO para evitar referencia circular User <-> Car
     private Set<UserSummaryDTO> passengersDTO;
 

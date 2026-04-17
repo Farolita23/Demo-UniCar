@@ -1,0 +1,178 @@
+<app-header></app-header>
+<div class="page-wrapper">
+  <div class="container up-container">
+
+    @if (loading) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <span>Cargando perfil...</span>
+      </div>
+    } @else if (!user) {
+      <div class="empty-state">
+        <h3>Usuario no encontrado</h3>
+        <a routerLink="/" class="btn btn-primary">Volver al inicio</a>
+      </div>
+    } @else {
+
+      <a routerLink="/" class="back-link fade-in">← Volver</a>
+
+      <!-- Toast -->
+      @if (reportSuccess) {
+        <div class="toast toast-success slide-down">✅ {{ reportSuccess }}</div>
+      }
+
+      <div class="up-layout fade-in">
+
+        <!-- Profile Card -->
+        <aside class="up-sidebar">
+          <div class="up-avatar-wrap">
+            @if (user.profileImageUrl) {
+              <img [src]="user.profileImageUrl" class="up-avatar" [alt]="user.name">
+            } @else {
+              <div class="up-avatar-init">{{ user.name.charAt(0) }}</div>
+            }
+          </div>
+
+          <h1 class="up-name">{{ user.name }}</h1>
+          <span class="up-username">@{{ user.username }}</span>
+
+          <!-- Average rating -->
+          <div class="up-avg-rating">
+            @if (avgRating > 0) {
+              <span class="up-stars">
+                @for (s of starsArray(avgRating); track $index) {
+                  <span class="star-filled">★</span>
+                }
+                @for (s of emptyStarsArray(avgRating); track $index) {
+                  <span class="star-empty">★</span>
+                }
+              </span>
+              <span class="up-avg-num">{{ avgRating | number:'1.1-1' }}</span>
+              <span class="up-avg-count">({{ user.ratingsReceivedDTO?.length || 0 }})</span>
+            } @else {
+              <span class="up-no-rating">Sin valoraciones</span>
+            }
+          </div>
+
+          @if (isDriver) {
+            <span class="up-driver-badge">🚗 Conductor · desde {{ user.drivingLicenseYear }}</span>
+          }
+
+          @if (user.description) {
+            <p class="up-bio">{{ user.description }}</p>
+          }
+
+          <!-- Info -->
+          <div class="up-info-list">
+            @if (user.usualCampusDTO) {
+              <div class="up-info-item">
+                <span class="up-info-icon">🎓</span>
+                <span>{{ user.usualCampusDTO.name }}</span>
+              </div>
+            }
+            @if (user.homeTownDTO) {
+              <div class="up-info-item">
+                <span class="up-info-icon">📍</span>
+                <span>{{ user.homeTownDTO.name }}</span>
+              </div>
+            }
+          </div>
+
+          <!-- Action buttons -->
+          @if (currentUserId) {
+            <div class="up-actions">
+              <button class="btn up-fav-btn" [class.is-fav]="isFavorite"
+                      (click)="toggleFavorite()" [disabled]="favLoading">
+                {{ isFavorite ? '★ Favorito' : '☆ Añadir a favoritos' }}
+              </button>
+              <button class="btn btn-danger-outline btn-sm" (click)="openReport()">
+                🚩 Reportar
+              </button>
+            </div>
+          }
+        </aside>
+
+        <!-- Main content -->
+        <main class="up-main">
+
+          <!-- Rate this user -->
+          @if (currentUserId) {
+            <section class="up-section up-rate-section slide-up">
+              <h2 class="up-section-title">Valorar a {{ user.name }}</h2>
+              <p class="up-rate-hint">Toca las estrellas para valorar</p>
+              <div class="up-rate-stars" [class.is-saving]="ratingLoading">
+                @for (star of [1,2,3,4,5]; track star) {
+                  <button type="button" class="up-star"
+                          [class.active]="star <= ratingValue"
+                          [disabled]="ratingLoading"
+                          (click)="clickStar(star)">★</button>
+                }
+                @if (ratingSaved) {
+                  <span class="up-saved">✓</span>
+                }
+              </div>
+            </section>
+          }
+
+          <!-- Ratings received -->
+          <section class="up-section slide-up">
+            <h2 class="up-section-title">Valoraciones recibidas</h2>
+            @if (!user.ratingsReceivedDTO?.length) {
+              <p class="up-empty-text">Este usuario aún no ha recibido valoraciones.</p>
+            } @else {
+              <div class="up-ratings-list">
+                @for (r of user.ratingsReceivedDTO; track r.id) {
+                  <div class="up-rating-item">
+                    <div class="up-rating-user">
+                      @if (r.userRateDTO?.profileImageUrl) {
+                        <img [src]="r.userRateDTO?.profileImageUrl" class="up-rating-avatar">
+                      } @else {
+                        <div class="up-rating-avatar-init">{{ r.userRateDTO?.name?.charAt(0) || '?' }}</div>
+                      }
+                      <span class="up-rating-name">{{ r.userRateDTO?.name || 'Usuario' }}</span>
+                    </div>
+                    <div class="up-rating-stars-sm">
+                      @for (s of [1,2,3,4,5]; track s) {
+                        <span [class.star-filled]="s <= r.rating" [class.star-empty]="s > r.rating">★</span>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            }
+          </section>
+
+        </main>
+      </div>
+
+      <!-- Report modal -->
+      @if (showReportModal) {
+        <div class="modal-overlay" (click)="closeReport()">
+          <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+              <h3>Reportar a {{ user.name }}</h3>
+              <button class="modal-close" (click)="closeReport()">✕</button>
+            </div>
+            <div class="modal-body">
+              <p class="modal-hint">Describe el motivo del reporte. Solo los administradores podrán verlo.</p>
+              @if (reportError) {
+                <div class="modal-error">{{ reportError }}</div>
+              }
+              <textarea [(ngModel)]="reportReason" rows="4" placeholder="Escribe el motivo del reporte..."
+                        class="modal-textarea"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-ghost" (click)="closeReport()">Cancelar</button>
+              <button class="btn btn-danger" (click)="submitReport()"
+                      [disabled]="reportLoading || !reportReason.trim()">
+                {{ reportLoading ? 'Enviando...' : 'Enviar reporte' }}
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+
+    }
+  </div>
+</div>
+<app-footer></app-footer>
