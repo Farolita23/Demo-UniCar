@@ -1,3 +1,4 @@
+/* Estilos del componente base */
 :host {
     position: fixed;
     top: 0;
@@ -22,6 +23,7 @@
     justify-content: space-between;
     gap: 24px;
 }
+/* Estilos del logo */
 :host .content .logo {
     height: 40px;
     font-size: 24px;
@@ -34,6 +36,7 @@
 :host .content .logo .logo-accent {
     color: var(--primary);
 }
+/* Estilos de la barra de navegacion */
 :host .content .main-nav {
     width: 100%;
     height: 40px;
@@ -50,7 +53,6 @@
     font-weight: bold;
     color: var(--text-2);
     text-decoration: none;
-    transition: var(--transition);
 }
 :host .content .main-nav a:hover {
     color: var(--text);
@@ -60,6 +62,7 @@
     color: var(--text);
     background: var(--surface);
 }
+/* Estilos de las acciones del header */
 :host .content .header-actions {
     height: 40px;
     display: flex;
@@ -73,7 +76,7 @@
     margin: 2px 4px;
     height: 18px;
 }
-/* ── Person search bar ─────────────────────────────────── */
+/* Estilos del campo/menu de busqueda */
 :host .content .header-actions .search-wrap {
     position: relative;
     height: 40px;
@@ -194,7 +197,7 @@
     line-height: 10px;
     color: var(--text-2);
 }
-/* ── Icon buttons (warnings) ────────────────── */
+/* Estilos de los botones de acciones del header */
 :host .content .header-actions .header-icon-btn {
     margin: 4px;
     width:  calc(40px - (6px + 1px + 4px) * 2);
@@ -233,7 +236,7 @@
     justify-content: center;
     line-height: 1;
 }
-/* ── Avatar / dropdown ─────────────────────────────────── */
+/* Estilos del boton/menu de perfil */
 :host .content .header-actions .profile-dropdown-wrap {
     position: relative;
     width: 40px;
@@ -346,6 +349,7 @@
     font-size: 16px;
     text-align: center;
 }
+/* Estilos del boton desplegable de dispositivo movil */
 :host .content .header-actions .hamburger {
     margin: 4px;
     width:  calc(40px - (1px + 4px) * 2);
@@ -396,16 +400,17 @@
 :host .content .header-actions .hamburger.open span:nth-child(3) {
     transform: rotate(-45deg);
 }
-
+/* Animacion de carga */
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
-
+/* Estilos de prevencion de overflowing */
 @media (max-width: calc(768px + 64px)) {
     :host .content .header-actions .search-wrap {
         display: none;
     }
 }
+/* Estilos responsitivos de dispositivos moviles */
 @media (max-width: 768px) {
     :host .content {
         gap: 0px;
@@ -416,7 +421,6 @@
     :host .content .header-actions .hamburger {
         display: flex;
     }
-    
     :host .content .main-nav {
         position: fixed;
         top: 72px;
@@ -431,14 +435,11 @@
         transition: transform 0.2s, opacity 0.2s;
         display: none;
     }
-    
     :host .content .main-nav.open {
         display: flex;
     }
-
     :host .content .main-nav a {
         padding: 12px 16px;
         border-radius: var(--radius-sm);
     }
-    
 }
