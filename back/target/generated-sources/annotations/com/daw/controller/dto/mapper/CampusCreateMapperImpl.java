@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-16T16:53:14+0200",
+    date = "2026-04-19T17:25:27+0200",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
@@ -21,8 +21,8 @@ public class CampusCreateMapperImpl implements CampusCreateMapper {
 
         Campus campus = new Campus();
 
-        campus.setAddress( dto.getAddress() );
         campus.setName( dto.getName() );
+        campus.setAddress( dto.getAddress() );
 
         return campus;
     }
@@ -33,7 +33,7 @@ public class CampusCreateMapperImpl implements CampusCreateMapper {
             return;
         }
 
-        entity.setAddress( dto.getAddress() );
         entity.setName( dto.getName() );
+        entity.setAddress( dto.getAddress() );
     }
 }

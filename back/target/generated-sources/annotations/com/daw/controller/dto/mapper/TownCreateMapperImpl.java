@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-16T16:53:14+0200",
+    date = "2026-04-19T17:25:27+0200",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
@@ -21,10 +21,10 @@ public class TownCreateMapperImpl implements TownCreateMapper {
 
         Town town = new Town();
 
-        town.setName( dto.getName() );
         if ( dto.getZipCode() != null ) {
             town.setZipCode( String.valueOf( dto.getZipCode() ) );
         }
+        town.setName( dto.getName() );
 
         return town;
     }
@@ -35,12 +35,12 @@ public class TownCreateMapperImpl implements TownCreateMapper {
             return;
         }
 
-        entity.setName( dto.getName() );
         if ( dto.getZipCode() != null ) {
             entity.setZipCode( String.valueOf( dto.getZipCode() ) );
         }
         else {
             entity.setZipCode( null );
         }
+        entity.setName( dto.getName() );
     }
 }

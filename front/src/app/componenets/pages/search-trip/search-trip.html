@@ -11,51 +11,46 @@
 
       <div class="filter-group">
         <label class="label">Campus</label>
-        <select [(ngModel)]="filters.campusId" (ngModelChange)="search()">
-          <option [ngValue]="null">Todos los campus</option>
-          @for (c of campuses; track c.id) {
-            <option [ngValue]="c.id">{{ c.name }}</option>
-          }
-        </select>
+        <input type="text" list="campus" placeholder="Selecciona el campus">
+        <datalist id="campus">
+            @for (c of campuses; track c.id) {
+                <option [ngValue]="c.id">{{ c.name }}</option>
+            }
+        </datalist>
       </div>
 
       <div class="filter-group">
         <label class="label">Localidad</label>
-        <select [(ngModel)]="filters.townId" (ngModelChange)="search()">
-          <option [ngValue]="null">Todas las localidades</option>
-          @for (t of towns; track t.id) {
-            <option [ngValue]="t.id">{{ t.name }}</option>
-          }
-        </select>
+        <input type="text" list="towns" placeholder="Selecciona la localidad">
+        <datalist id="towns">
+            @for (t of towns; track t.id) {
+                <option [ngValue]="t.id">{{ t.name }}</option>
+            }
+        </datalist>
       </div>
 
       <div class="filter-group">
         <label class="label">Dirección</label>
         <div class="dir-btns">
-          <button class="dir-btn" [class.active]="filters.isToCampus === null"
-            (click)="setDirection(null)">Todos</button>
-          <button class="dir-btn" [class.active]="filters.isToCampus === true"
-            (click)="setDirection(true)"><app-icon icon="birrete" [size]="16"></app-icon> Al campus</button>
-          <button class="dir-btn" [class.active]="filters.isToCampus === false"
-            (click)="setDirection(false)"><app-icon icon="casa" [size]="16"></app-icon> Desde campus</button>
+          <button class="dir-btn" [class.active]="filters.isToCampus === null" (click)="setDirection(null)">Todos</button>
+          <button class="dir-btn" [class.active]="filters.isToCampus === true" (click)="setDirection(true)"><app-icon icon="birrete" [size]="16"></app-icon> Al campus</button>
+          <button class="dir-btn" [class.active]="filters.isToCampus === false" (click)="setDirection(false)"><app-icon icon="casa" [size]="16"></app-icon> Desde campus</button>
         </div>
       </div>
 
       <div class="filter-group">
         <label class="label">Fecha de salida</label>
-        <input type="date" [(ngModel)]="filters.departureDate" (ngModelChange)="search()">
+        <input type="date" [(ngModel)]="filters.departureDate">
       </div>
 
       <div class="filter-group">
         <label class="label">Precio máximo (€)</label>
-        <input type="number" [(ngModel)]="filters.maxPrice" (ngModelChange)="search()"
-               placeholder="Sin límite" min="0">
+        <p><input type="range" [(ngModel)]="filters.maxPrice" id="" min="0" step="0.01" max="100" value="100"><span> {{ filters.maxPrice }}</span>€</p>
       </div>
 
       <div class="filter-group">
         <label class="label">Plazas mínimas libres</label>
-        <input type="number" [(ngModel)]="filters.minFreeSeats" (ngModelChange)="search()"
-               placeholder="1" min="1">
+        <input type="number" [(ngModel)]="filters.minFreeSeats" placeholder="1" min="1">
       </div>
 
       <button class="btn btn-primary filter-apply" (click)="search()">Buscar viajes</button>

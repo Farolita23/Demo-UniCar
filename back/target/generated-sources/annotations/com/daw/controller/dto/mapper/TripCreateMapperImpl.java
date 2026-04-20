@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-16T16:53:15+0200",
+    date = "2026-04-19T17:25:27+0200",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
@@ -21,10 +21,10 @@ public class TripCreateMapperImpl implements TripCreateMapper {
 
         Trip trip = new Trip();
 
-        trip.setDepartureAddress( dto.getDepartureAddress() );
+        trip.setIsToCampus( dto.getIsToCampus() );
         trip.setDepartureDate( dto.getDepartureDate() );
         trip.setDepartureTime( dto.getDepartureTime() );
-        trip.setIsToCampus( dto.getIsToCampus() );
+        trip.setDepartureAddress( dto.getDepartureAddress() );
         trip.setPrice( dto.getPrice() );
 
         return trip;
@@ -36,10 +36,10 @@ public class TripCreateMapperImpl implements TripCreateMapper {
             return;
         }
 
-        entity.setDepartureAddress( dto.getDepartureAddress() );
+        entity.setIsToCampus( dto.getIsToCampus() );
         entity.setDepartureDate( dto.getDepartureDate() );
         entity.setDepartureTime( dto.getDepartureTime() );
-        entity.setIsToCampus( dto.getIsToCampus() );
+        entity.setDepartureAddress( dto.getDepartureAddress() );
         entity.setPrice( dto.getPrice() );
     }
 }
