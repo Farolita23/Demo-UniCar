@@ -12,7 +12,8 @@ import { Car } from '../models/car.model';
 @Injectable({ providedIn: 'root' })
 export class ApiService {
 
-    readonly URL = env.API_URL;
+    readonly URL = env.API_SAME_URL;
+
     private readonly jsonHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
     constructor(private http: HttpClient, private authService: AuthService) { }

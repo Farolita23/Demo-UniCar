@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-19T17:25:27+0200",
+    date = "2026-04-24T13:37:18+0200",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
@@ -21,10 +21,10 @@ public class CarCreateMapperImpl implements CarCreateMapper {
 
         Car car = new Car();
 
-        car.setModel( dto.getModel() );
+        car.setCapacity( dto.getCapacity() );
         car.setColor( dto.getColor() );
         car.setLicensePlate( dto.getLicensePlate() );
-        car.setCapacity( dto.getCapacity() );
+        car.setModel( dto.getModel() );
 
         return car;
     }
@@ -35,9 +35,9 @@ public class CarCreateMapperImpl implements CarCreateMapper {
             return;
         }
 
-        entity.setModel( dto.getModel() );
+        entity.setCapacity( dto.getCapacity() );
         entity.setColor( dto.getColor() );
         entity.setLicensePlate( dto.getLicensePlate() );
-        entity.setCapacity( dto.getCapacity() );
+        entity.setModel( dto.getModel() );
     }
 }
