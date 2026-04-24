@@ -217,25 +217,6 @@
     border-color: var(--primary);
     background: rgba(230, 57, 70, 0.08);
 }
-:host .content .header-actions .header-icon-btn.warnings-icon {
-    position: relative;
-}
-:host .content .header-actions .header-icon-btn.warnings-icon .unread-badge {
-    position: absolute;
-    top: -4px;
-    right: -4px;
-    background: var(--danger);
-    color: #fff;
-    font-size: 10px;
-    font-weight: 700;
-    width:  14px;
-    height: 14px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-}
 /* Estilos del boton/menu de perfil */
 :host .content .header-actions .profile-dropdown-wrap {
     position: relative;

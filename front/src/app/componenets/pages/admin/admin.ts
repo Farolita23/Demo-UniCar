@@ -6,7 +6,7 @@ import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
-import { User, Report, Warning } from '../../../models/user.model';
+import { User, Report } from '../../../models/user.model';
 
 @Component({
   selector: 'page-admin',
@@ -22,7 +22,7 @@ export class Admin implements OnInit {
   cdr        = inject(ChangeDetectorRef);
   platformId = inject(PLATFORM_ID);
 
-  activeTab: 'users' | 'reports' | 'warnings' = 'users';
+  activeTab: 'users' | 'reports' = 'users';
   loading = true;
 
   // Users
@@ -33,18 +33,8 @@ export class Admin implements OnInit {
   // Reports
   reports: Report[] = [];
 
-  // Warning form
-  showWarningModal = false;
-  warningTarget: User | null = null;
-  warningSubject = '';
-  warningMessage = '';
-  warningLoading = false;
-  warningSuccess = '';
-  warningError = '';
-
   // User detail
   selectedUser: User | null = null;
-  userWarnings: Warning[] = [];
 
   // Action feedback
   actionSuccess = '';
@@ -88,9 +78,6 @@ export class Admin implements OnInit {
 
   selectUser(u: User) {
     this.selectedUser = u;
-    this.api.adminGetWarningsByUser(u.id).subscribe({
-      next: w => { this.userWarnings = w; this.cdr.detectChanges(); },
-    });
   }
 
   viewReportedUser(userId: number) {
@@ -100,7 +87,7 @@ export class Admin implements OnInit {
     });
   }
 
-  closeUserDetail() { this.selectedUser = null; this.userWarnings = []; }
+  closeUserDetail() { this.selectedUser = null; }
 
   banUser(id: number) {
     this.api.adminBanUser(id).subscribe({
@@ -145,43 +132,6 @@ export class Admin implements OnInit {
         this.cdr.detectChanges();
       },
       error: () => this.showActionError('Error al eliminar reporte.'),
-    });
-  }
-
-  // ── Warning Modal ─────────────────────────────────────
-  openWarning(user: User) {
-    this.warningTarget = user;
-    this.showWarningModal = true;
-    this.warningSubject = '';
-    this.warningMessage = '';
-    this.warningError = '';
-  }
-
-  closeWarning() {
-    this.showWarningModal = false;
-    this.warningTarget = null;
-  }
-
-  sendWarning() {
-    if (!this.warningTarget || !this.warningSubject.trim() || !this.warningMessage.trim()) return;
-    this.warningLoading = true;
-    this.api.adminSendWarning({
-      subject: this.warningSubject.trim(),
-      message: this.warningMessage.trim(),
-      idUser: this.warningTarget.id,
-    }).subscribe({
-      next: () => {
-        this.warningLoading = false;
-        this.showWarningModal = false;
-        this.showAction(`Aviso enviado a ${this.warningTarget!.name}.`);
-        this.warningTarget = null;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.warningLoading = false;
-        this.warningError = 'Error al enviar aviso.';
-        this.cdr.detectChanges();
-      },
     });
   }
 

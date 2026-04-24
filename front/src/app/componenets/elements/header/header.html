@@ -44,13 +44,6 @@
                     </div>
                 }
             </div>
-            <!-- Warnings badge -->
-            <a routerLink="/profile" class="header-icon-btn warnings-icon" title="Avisos" [attr.data-count]="unreadWarnings > 0 ? unreadWarnings : null">
-                🔔
-                @if (unreadWarnings > 0) {
-                    <span class="unread-badge">{{ unreadWarnings }}</span>
-                }
-            </a>
 
             <div class="profile-dropdown-wrap" (clickOutside)="showDropdown=false">
                 <button class="avatar-btn" (click)="toggleDropdown()">

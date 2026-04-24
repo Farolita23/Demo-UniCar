@@ -43,9 +43,6 @@ export class Header implements OnInit {
     // Sujeto para manejar el flujo de entrada de búsqueda con operadores reactivos
     private search$ = new Subject<string>();
 
-    // Contador de advertencias/notificaciones no leídas
-    unreadWarnings = 0;
-
     ngOnInit(): void {
         /**
          * Configuración del pipeline de búsqueda:
@@ -74,24 +71,6 @@ export class Header implements OnInit {
             },
         });
 
-        // Carga inicial de datos solo si se ejecuta en el navegador y el usuario está autenticado
-        if (isPlatformBrowser(this.platformId) && this.auth.isLoggedIn()) {
-            this.loadUnreadWarnings();
-        }
-    }
-
-    /**
-     * Recupera el conteo de advertencias pendientes desde el servidor.
-     */
-    loadUnreadWarnings() {
-        const userId = this.auth.getUser()?.id;
-        if (!userId) return;
-        this.api.getUnreadWarningCount(userId).subscribe({
-            next: r => { 
-                this.unreadWarnings = r.count; 
-                this.cdr.detectChanges(); 
-            },
-        });
     }
 
     /** Getter para verificar si el usuario actual posee rol de administrador */
