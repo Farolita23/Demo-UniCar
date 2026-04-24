@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 :root {
+    --responsive-mobile-w: 384px;
     --max-width: 1280px;
     --header-h: calc(72px + 1px);
     /*  */
@@ -35,7 +36,6 @@
     box-sizing: content-box;
     margin: 0;
     padding: 0;
-    /* transition: var(--transition); */
 }
 
 html {
@@ -48,7 +48,6 @@ body {
     background-color: var(--bg);
     color: var(--text);
     min-height: 100vh;
-    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -227,7 +226,7 @@ button {
 
 .page-wrapper {
     margin-top: var(--header-h);
-    height: calc(100vh - var(--header-h));
+    height: calc(100dvh - var(--header-h));
     overflow-y: auto;
 }
 
@@ -366,11 +365,6 @@ button {
         opacity: 1;
         transform: scale(1);
     }
-}
-
-/* Smooth page wrapper entrance */
-.page-wrapper {
-    animation: g-fadeIn 0.35s ease both;
 }
 
 /* Badge utilities */

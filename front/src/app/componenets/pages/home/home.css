@@ -90,8 +90,8 @@
     max-width: 45%;
 }
 :host .hero .hero-content .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 :host .hero .hero-content .hero-actions .hero-btn {
@@ -279,7 +279,8 @@
     height: 32px;
     margin: 16px;
 }
-/* RESPONSIVE */
+
+/* RESPONSIVE – BIG TABLET */
 @media (max-width: calc(768px + 256px)) {
     :host .how-section .steps-grid {
         display: flex;
@@ -289,10 +290,6 @@
     }
     :host .suggested-section .suggested-grid app-trip {
         width: calc((100% - 16px * 1) / 2);
-    }
-    :host .cta-section {
-        padding-left: 64px;
-        padding-right: 64px;
     }
     :host .cta-section .cta-inner {
         flex-direction: column;
@@ -309,7 +306,15 @@
         text-align: center;
     }
 }
+
+/* RESPONSIVE – TABLET */
 @media (max-width: 768px) {
+    :host .hero .hero-content .hero-title {
+        font-size: 48px;
+    }
+    :host .hero .hero-content .hero-sub {
+        max-width: 100%;
+    }
     :host .how-section .steps-grid {
         flex-direction: column;
     }
@@ -321,5 +326,20 @@
     }
     :host .suggested-section .suggested-grid app-trip{
         width: 100%;
+    }
+    :host .cta-section .cta-inner {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+/* RESPONSIVE – MOBILE */
+@media (max-width: 384px) {
+    :host .hero .hero-content .hero-actions {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+    :host .hero .hero-content .hero-actions .hero-btn {
+        width: calc(100% - 32px * 2);
     }
 }

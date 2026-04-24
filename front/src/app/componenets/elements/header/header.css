@@ -363,30 +363,26 @@
 }
 :host .content .header-actions .hamburger span {
     display: block;
-    width: calc(100% - 4px * 2);
-    height: 4px;
+    width: calc(100% - 4px * 3);
+    height: 2px;
     left: 4px;
     background: var(--text);
     border-radius: 2px;
-    transition: var(--transition);
+    transition: all 0.2s;
+    margin-left: 2px;
     position: absolute;
     pointer-events: none;
 }
 :host .content .header-actions .hamburger:not(.open) span:nth-child(1) {
-    width: calc(18px);
-    margin-left: 2px;
-    top: 6px;
+    top: 8px;
 }
 :host .content .header-actions .hamburger:not(.open) span:nth-child(2) {
-    width: calc(18px);
-    margin-left: 2px;
     top: calc(100% / 2);
+    opacity: 1;
     transform: translateY(-50%);
 }
 :host .content .header-actions .hamburger:not(.open) span:nth-child(3) {
-    width: calc(18px);
-    margin-left: 2px;
-    bottom: 6px;
+    bottom: 8px;
 }
 :host .content .header-actions .hamburger.open span {
     top: calc((100% - 3px) / 2);
