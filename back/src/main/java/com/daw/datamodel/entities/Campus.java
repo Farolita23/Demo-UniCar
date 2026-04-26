@@ -13,6 +13,18 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Entidad JPA que representa un campus universitario
+ *
+ * Los campus actúan como puntos de origen o destino de los viajes publicados.
+ * Cada usuario tiene un campus habitual y cada viaje está asociado a exactamente
+ * un campus. No se permite eliminar un campus que tenga usuarios o viajes activos.
+ *
+ * @author Javier Falcon
+ * @version 1.0.0
+ * @see Trip
+ * @see User
+ */
 @Entity
 @Table(name = "campus")
 @Getter
@@ -32,7 +44,7 @@ public class Campus {
 
     @OneToMany(mappedBy = "campus", fetch = FetchType.LAZY)
     private Set<Trip> trips;
-    
+
     @OneToMany(mappedBy = "usualCampus", fetch = FetchType.LAZY)
     private Set<User> users;
 

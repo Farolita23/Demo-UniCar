@@ -22,6 +22,23 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Entidad JPA que representa a un usuario registrado en la plataforma UniCar.
+ *
+ * Centraliza todos los datos personales, credenciales de acceso y relaciones
+ * del usuario con el resto del dominio. Soporta dos roles: {@code USER} (por defecto)
+ * y {@code ADMIN}. El sistema de strikes acumula infracciones; al alcanzar tres el
+ * usuario queda baneado automáticamente.
+ *
+ * @author Javier Falcon
+ * @version 1.0.0
+ * @see Campus
+ * @see Town
+ * @see Car
+ * @see Trip
+ * @see Rating
+ * @see Report
+ */
 @Entity
 @Table(name = "user")
 @Getter
@@ -33,7 +50,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    
+
     @Column(name = "username", nullable = false, unique = true)
     private String username;
 
@@ -52,6 +69,7 @@ public class User {
     @Column(name = "phone", nullable = false, length = 9)
     private String phone;
 
+    /** Número de infracciones acumuladas; al llegar a 3 el usuario es baneado automáticamente. */
     @Column(name = "strikes", nullable = false)
     private Integer strikes = 0;
 
@@ -68,6 +86,7 @@ public class User {
     @Column(name = "profile_image_url", nullable = true, columnDefinition = "LONGTEXT")
     private String profileImageUrl;
 
+    /** Rol del usuario en el sistema: {@code USER} o {@code ADMIN}. */
     @Column(name = "role", nullable = false)
     private String role = "USER";
 
@@ -89,7 +108,7 @@ public class User {
 
     @OneToMany(mappedBy = "userReport", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Report> reportsDone;
-    
+
     @OneToMany(mappedBy = "reportedUser", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<Report> reportsReceived;
 

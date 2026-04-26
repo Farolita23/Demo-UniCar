@@ -15,6 +15,19 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Filtro de seguridad que intercepta cada petición HTTP para validar el token JWT.
+ *
+ * Se ejecuta una única vez por solicitud (hereda de {@link OncePerRequestFilter}).
+ * Extrae el token del encabezado {@code Authorization: Bearer <token>}, lo valida
+ * y, si es correcto, establece la autenticación en el {@link SecurityContextHolder}
+ * para que los filtros y controladores posteriores la reconozcan.
+ *
+ * @author Adam Gavira
+ * @version 1.0.0
+ * @see JwtUtil
+ * @see SecurityConfig
+ */
 @Component
 @RequiredArgsConstructor
 public class JwtAuthFilter extends OncePerRequestFilter {
@@ -22,6 +35,19 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Lógica principal del filtro: extrae, valida e inyecta la autenticación JWT.
+     *
+     * Si la cabecera {@code Authorization} está ausente o no empieza por
+     * {@code "Bearer "}, la petición pasa al siguiente filtro sin autenticar.
+     * Si el token está malformado, también se delega al siguiente filtro.
+     *
+     * @param request     petición HTTP entrante
+     * @param response    respuesta HTTP saliente
+     * @param filterChain cadena de filtros de Spring Security
+     * @throws ServletException si se produce un error de servlet
+     * @throws IOException      si se produce un error de entrada/salida
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -31,7 +57,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         final String jwt;
         final String username;
 
-        // Si no hay cabecera Authorization o no empieza por "Bearer ", dejamos pasar
+        // Si no hay cabecera Authorization o no empieza por "Bearer ", dejamos pasar sin autenticar
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -42,12 +68,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             username = jwtUtil.extractUsername(jwt);
         } catch (Exception e) {
-            // Token malformado
+            // Token malformado: se continúa la cadena sin autenticar
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Si tenemos username y aún no está autenticado en el contexto
+        // Solo se autentica si hay username y el contexto aún no tiene autenticación
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 

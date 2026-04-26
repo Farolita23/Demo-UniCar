@@ -7,6 +7,17 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuración de la documentación OpenAPI (Swagger) para la plataforma UniCar.
+ *
+ * Define los metadatos de la API expuesta en {@code /swagger-ui/index.html},
+ * incluyendo el esquema de seguridad Bearer JWT que permite autenticar las
+ * peticiones directamente desde la interfaz de Swagger UI.
+ *
+ * @author Moises Junior
+ * @version 1.0.0
+ * @see SecurityConfig
+ */
 @Configuration
 @OpenAPIDefinition(
     info = @Info(

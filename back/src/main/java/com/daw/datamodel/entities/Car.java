@@ -18,6 +18,19 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Entidad JPA que representa un vehículo registrado en la plataforma UniCar.
+ *
+ * Cada vehículo pertenece a un conductor ({@link User}) y puede estar asociado
+ * a múltiples viajes. La capacidad del vehículo determina el número máximo de
+ * plazas disponibles en cada viaje. No se permite eliminar un vehículo que
+ * tenga viajes asociados.
+ *
+ * @author Javier Falcon
+ * @version 1.0.0
+ * @see User
+ * @see Trip
+ */
 @Entity
 @Table(name = "car")
 @Getter
@@ -40,7 +53,7 @@ public class Car {
 
     @Column(name = "model", nullable = false)
     private String model;
-    
+
     @Column(name ="color", nullable = false)
     private String color;
 

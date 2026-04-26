@@ -24,6 +24,21 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Entidad JPA que representa un viaje compartido publicado en la plataforma UniCar.
+ *
+ * Un viaje conecta una localidad ({@link Town}) con un campus ({@link Campus}) o
+ * viceversa, dependiendo del sentido indicado por {@code isToCampus}. El conductor
+ * es el propietario del vehículo asociado. El ciclo de vida de un pasajero en el
+ * viaje pasa por tres estados: solicitante → pasajero confirmado (o rechazado).
+ *
+ * @author Javier Falcon
+ * @version 1.0.0
+ * @see Car
+ * @see Campus
+ * @see Town
+ * @see User
+ */
 @Entity
 @Table(name = "trip")
 @Getter
@@ -60,6 +75,7 @@ public class Trip {
     )
     private Town town;
 
+    /** {@code true} si el viaje va desde la localidad hacia el campus; {@code false} en sentido inverso. */
     @Column(name = "is_to_campus", nullable = false)
     private Boolean isToCampus;
 
@@ -75,13 +91,15 @@ public class Trip {
     @Column(name = "price", nullable = false, precision = 4, scale = 2)
     private BigDecimal price;
 
+    /** Conjunto de pasajeros confirmados por el conductor. */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "trip_passenger",
         joinColumns = @JoinColumn(name = "trip_id"),
         inverseJoinColumns = @JoinColumn(name = "passenger_id")
     )
     private Set<User> passengers = new HashSet<>();
-    
+
+    /** Conjunto de usuarios que han solicitado una plaza y están pendientes de aprobación. */
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "trip_requester",
         joinColumns = @JoinColumn(name = "trip_id"),

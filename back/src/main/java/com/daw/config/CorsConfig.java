@@ -1,7 +1,16 @@
 package com.daw.config;
 
-// Configuración CORS centralizada en SecurityConfig.java
-// Este archivo se mantiene vacío intencionalmente para evitar
-// conflictos con el manejo de preflights de Spring Security.
+/**
+ * Clase de configuración CORS reservada para uso futuro.
+ *
+ * La política CORS activa se gestiona íntegramente desde {@code SecurityConfig},
+ * donde se registra el bean {@code CorsConfigurationSource} junto con la cadena
+ * de filtros de Spring Security. Mantener la configuración CORS en un único lugar
+ * evita conflictos en el manejo de peticiones preflight {@code OPTIONS}.
+ *
+ * @author Adam Gavira
+ * @version 1.0.0
+ * @see com.daw.security.SecurityConfig
+ */
 public class CorsConfig {
 }

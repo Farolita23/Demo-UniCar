@@ -24,6 +24,22 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Configuración central de seguridad de la aplicación UniCar.
+ *
+ * Define la cadena de filtros de Spring Security con las siguientes políticas:
+ * 
+ *   Sesión stateless (JWT): no se crea ni gestiona sesión HTTP.
+ *   CORS habilitado para el cliente Angular en {@code localhost:4200}.
+ *   CSRF desactivado al operar exclusivamente con tokens JWT.
+ *   Autorización por rutas: endpoints públicos, autenticados y de administrador.
+ * 
+ *
+ * @author Adam Gavira
+ * @version 1.0.0
+ * @see JwtAuthFilter
+ * @see JwtUtil
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -32,16 +48,23 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Define la cadena de filtros de seguridad HTTP con las reglas de autorización por ruta.
+     *
+     * @param http objeto de configuración de seguridad HTTP proporcionado por Spring
+     * @return cadena de filtros de seguridad construida y lista para ser registrada
+     * @throws Exception si ocurre algún error durante la configuración de la cadena
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // CORS debe procesarse ANTES que cualquier check de autenticación
+            // CORS debe procesarse antes que cualquier comprobación de autenticación
             .cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // Preflights OPTIONS siempre libres
+                // Peticiones preflight OPTIONS siempre autorizadas
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // Endpoints públicos de autenticación
                 .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
@@ -56,13 +79,13 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET,  "/api/town").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api/user/car-owner/{idCar}").permitAll()
-                // User search (authenticated)
+                // Búsqueda de usuarios (requiere autenticación)
                 .requestMatchers(HttpMethod.GET, "/api/user/search").authenticated()
-                // User by ID (public for profile viewing)
+                // Perfil público de usuario
                 .requestMatchers(HttpMethod.GET, "/api/user/{id}").permitAll()
-                // Admin endpoints
+                // Endpoints exclusivos de administrador
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                // Swagger
+                // Documentación Swagger
                 .requestMatchers(
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
@@ -76,6 +99,14 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Configura la política CORS permitiendo al cliente Angular interactuar con la API.
+     *
+     * Se permite cualquier cabecera en la solicitud y se expone {@code Authorization}
+     * en la respuesta. El resultado del preflight se cachea durante una hora.
+     *
+     * @return fuente de configuración CORS registrada para todos los patrones de ruta
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -91,6 +122,12 @@ public class SecurityConfig {
         return source;
     }
 
+    /**
+     * Crea el proveedor de autenticación DAO que delega en {@link UserDetailsService}
+     * y utiliza BCrypt para la verificación de contraseñas.
+     *
+     * @return proveedor de autenticación configurado
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -99,11 +136,23 @@ public class SecurityConfig {
         return provider;
     }
 
+    /**
+     * Expone el {@link AuthenticationManager} del contexto de Spring Security como bean.
+     *
+     * @param config configuración de autenticación de Spring
+     * @return gestor de autenticación listo para ser inyectado
+     * @throws Exception si no se puede obtener el gestor de autenticación
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
+    /**
+     * Define el codificador de contraseñas basado en el algoritmo BCrypt.
+     *
+     * @return instancia de {@link BCryptPasswordEncoder}
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
