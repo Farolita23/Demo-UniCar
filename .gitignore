@@ -24,5 +24,10 @@ hs_err_pid*
 replay_pid*
 /.metadata/
 
+back/src/main/resources/application.properties
+.env
 
-BackEnd-Unicar/src/main/resources/application.properties
+.claude
+.github
+.settings
+.vscode
