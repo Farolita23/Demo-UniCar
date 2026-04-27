@@ -1,0 +1,345 @@
+/* HOME PAGE — Full redesign */
+/* HERO */
+:host .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 64px 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+}
+:host .hero .hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+:host .hero .hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(96px) brightness(12.5%);
+}
+:host .hero .hero-blob.blob-1 {
+    width: 700px;
+    height: 700px;
+    background: var(--primary);
+    top: -250px;
+    left: -150px;
+    animation: hero-blob-rotation 5s linear infinite reverse;
+}
+:host .hero .hero-blob.blob-2 {
+    width: 500px;
+    height: 500px;
+    background: var(--accent);
+    bottom: -200px;
+    right: 0;
+    animation: hero-blob-rotation 5s linear infinite;
+}
+:host .hero .hero-blob.blob-3 {
+    width: 300px;
+    height: 300px;
+    background: var(--success);
+    top: 40%;
+    right: 30%;
+    animation: hero-blob-rotation 5s linear infinite reverse;
+}
+@keyframes hero-blob-rotation {
+      0% { scale: 1.0; }
+     50% { scale: 1.5; }
+    100% { scale: 1.0; }
+}
+:host .hero .hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: start;
+    padding: 0;
+}
+:host .hero .hero-content .hero-badge {
+    height: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(230, 57, 70, 0.08);
+    border: 1px solid rgba(230, 57, 70, 0.15);
+    padding: 8px 16px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-light);
+}
+:host .hero .hero-content .hero-badge .badge-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: pulseRing 2s ease infinite;
+}
+:host .hero .hero-content .hero-title {
+    font-size: 64px;
+    line-height: 1.05;
+}
+:host .hero .hero-content .hero-title .hero-highlight {
+    color: var(--primary);
+}
+:host .hero .hero-content .hero-sub {
+    color: var(--text-2);
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 32px;
+    max-width: 45%;
+}
+:host .hero .hero-content .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+:host .hero .hero-content .hero-actions .hero-btn {
+    padding: 16px 32px;
+    font-size: 16px;
+}
+/* SECTION HEADINGS (reusable) */
+:host .section-head {
+    text-align: center;
+    margin: 32px 0;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
+}
+:host .section-head .section-badge {
+    height:      16px;
+    font-size:   16px;
+    line-height: 16px;
+    display: block;
+    background: rgba(230, 57, 70, 0.15);
+    border: 1px solid rgba(230, 57, 70, 0.08);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--primary-light);
+}
+:host .section-head .section-badge-accent {
+    background: rgba(255, 183, 3, 0.1);
+    border-color: rgba(255, 183, 3, 0.2);
+    color: var(--accent);
+}
+:host .section-head .section-title {
+    font-size: 32px;
+}
+:host .section-head .section-sub {
+    color: var(--text-2);
+    font-size: 16px;
+    max-width: 100%;
+    width: 512px;
+    margin-top: -16px;
+}
+/* HOW IT WORKS */
+:host .how-section {
+    padding-bottom: 64px;
+}
+:host .how-section .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+:host .how-section .steps-grid .step-card {
+    width: calc(100% - 32px * 2 - 1px * 2);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+:host .how-section .steps-grid .step-card:hover {
+    border-color: rgba(230, 57, 70, 0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s;
+}
+:host .how-section .steps-grid .step-card .step-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0;
+}
+:host .how-section .steps-grid .step-card .step-icon-wrap .step-icon {
+    font-size: 32px;
+    width:  64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(230, 57, 70, 0.08);
+    border-radius: var(--radius-sm);
+}
+:host .how-section .steps-grid .step-card .step-icon-wrap .step-num {
+    font-family: 'Syne', sans-serif;
+    height:      64px;
+    font-size:   64px;
+    line-height: 64px;
+    font-weight: 800;
+    color: var(--primary-light);
+    text-shadow: 1px 2px 8px var(--primary);
+}
+:host .how-section .steps-grid .step-card .step-title {
+    font-size: 24px;
+}
+:host .how-section .steps-grid .step-card .step-desc {
+    margin-top: -8px;
+    color: var(--text-2);
+    font-size: 16px;
+    line-height: 24px;
+}
+/* SUGGESTED TRIPS */
+:host .suggested-section {
+    padding-bottom: 64px;
+}
+:host .suggested-section .suggested-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-bottom: 32px;
+    gap: 16px;
+}
+:host .suggested-section .suggested-grid app-trip {
+    width: calc((100% - 16px * 2) / 3);
+}
+:host .suggested-section .trips-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem 0;
+    color: var(--text-2);
+}
+:host .suggested-section .trips-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+:host .suggested-section .trips-empty-icon {
+    font-size: 3rem;
+}
+:host .suggested-section .trips-empty h3 {
+    font-size: 1.3rem;
+}
+:host .suggested-section .trips-empty p {
+    color: var(--text-2);
+    max-width: 360px;
+}
+:host .suggested-section .trips-see-all {
+    text-align: center;
+}
+/* CTA SECTION */
+:host .cta-section {
+    padding-bottom: 64px;
+}
+:host .cta-section .cta-inner {
+    background: linear-gradient(135deg, rgba(230, 57, 70, 0.08), rgba(255, 183, 3, 0.06));
+    border: 1px solid rgba(230, 57, 70, 0.12);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+:host .cta-section .cta-inner .cta-text {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+:host .cta-section .cta-inner .cta-text h2 {
+    font-size: 24px;
+}
+:host .cta-section .cta-inner .cta-text p {
+    color: var(--text-2);
+    font-size: 16px;
+    line-height: 20px;
+    width: 512px;
+    max-width: 100%;
+}
+:host .cta-section .cta-inner .cta-action {
+    flex-shrink: 0;
+    padding: 16px 32px;
+    font-size: 16px;
+    height: 32px;
+    margin: 16px;
+}
+
+/* RESPONSIVE – BIG TABLET */
+@media (max-width: calc(768px + 256px)) {
+    :host .how-section .steps-grid {
+        display: flex;
+    }
+    :host .how-section .steps-grid .step-card {
+        width: calc((100% - 16px * 1 - 1px * 4 - 32px * 4) / 2);
+    }
+    :host .suggested-section .suggested-grid app-trip {
+        width: calc((100% - 16px * 1) / 2);
+    }
+    :host .cta-section .cta-inner {
+        flex-direction: column;
+        gap: 0;
+    }
+    :host .cta-section .cta-inner .cta-text{
+        width: calc(100% - 16px * 2);
+    }
+    :host .cta-section .cta-inner .cta-text h2{
+        text-align: center;
+    }
+    :host .cta-section .cta-inner .cta-text p {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* RESPONSIVE – TABLET */
+@media (max-width: 768px) {
+    :host .hero .hero-content .hero-title {
+        font-size: 48px;
+    }
+    :host .hero .hero-content .hero-sub {
+        max-width: 100%;
+    }
+    :host .how-section .steps-grid {
+        flex-direction: column;
+    }
+    :host .how-section .steps-grid .step-card{
+        width: calc((100% - 16px * 0 - 1px * 2 - 32px * 2) / 1);
+    }
+    :host .suggested-section .suggested-grid {
+        flex-direction: column;
+    }
+    :host .suggested-section .suggested-grid app-trip{
+        width: 100%;
+    }
+    :host .cta-section .cta-inner {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+/* RESPONSIVE – MOBILE */
+@media (max-width: 384px) {
+    :host .hero .hero-content .hero-actions {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+    :host .hero .hero-content .hero-actions .hero-btn {
+        width: calc(100% - 32px * 2);
+    }
+}

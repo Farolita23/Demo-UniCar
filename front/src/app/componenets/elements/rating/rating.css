@@ -1,0 +1,54 @@
+/* ══════════════════════════════════════
+   ELEMENTO: Rating de estrellas
+   ══════════════════════════════════════ */
+
+input[type="range"] {
+    mask-image: url('../../../../../public/assets/media/star.png');
+    mask-size: contain;
+    width: calc(18px * 5);
+    height: 18px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    display: block;
+}
+
+/* ── Track Webkit ── */
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 18px;
+    background: linear-gradient(
+        to right,
+        #f0c000 var(--range-pct, 0%),
+        rgba(255,255,255,.15) var(--range-pct, 0%)
+    );
+    border-radius: 0;
+    border: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 0;
+    width: 0;
+}
+
+/* ── Track Firefox ── */
+input[type="range"]::-moz-range-track {
+    height: 18px;
+    background: linear-gradient(
+        to right,
+        #f0c000 var(--range-pct, 0%),
+        rgba(255,255,255,.15) var(--range-pct, 0%)
+    );
+    border-radius: 0;
+    border: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+    height: 18px;
+    width: 18px;
+    background: var(--accent);
+    border-radius: 0;
+    border: none;
+    opacity: 0;
+}

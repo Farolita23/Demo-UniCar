@@ -1,0 +1,318 @@
+<app-header></app-header>
+<div class="page-wrapper">
+  <div class="container detail-container">
+
+    @if (loading) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <span>Cargando viaje...</span>
+      </div>
+    } @else if (!trip) {
+      <div class="empty-state">
+        <h3>Viaje no encontrado</h3>
+        <a routerLink="/search-trip" class="btn btn-primary">Volver a búsqueda</a>
+      </div>
+    } @else {
+
+      <a routerLink="/search-trip" class="back-link td-fade-in">← Volver a resultados</a>
+
+      <div class="detail-grid">
+
+        <!-- LEFT: Trip info -->
+        <div class="detail-main">
+
+          <!-- Direction badge + full indicator -->
+          <div class="direction-row td-fade-in">
+            <div class="direction-badge" [class.to-campus]="trip.isToCampus">
+              {{ trip.isToCampus ? '🎓 Hacia el campus' : '🏠 Desde el campus' }}
+            </div>
+            @if (isFull) {
+              <span class="full-indicator td-pulse">🔴 Completo</span>
+            }
+          </div>
+
+          <!-- Driver manage banner -->
+          @if (isDriver) {
+            <div class="driver-manage-banner td-slide-up">
+              <div class="driver-manage-info">
+                <span class="driver-manage-icon">⚙</span>
+                <div>
+                  <strong>Eres el conductor de este viaje</strong>
+                  <p>Gestiona solicitudes y pasajeros desde el panel de gestión.</p>
+                </div>
+              </div>
+              <a [routerLink]="['/manage-trip', trip.id]" class="btn btn-primary">
+                Gestionar viaje →
+              </a>
+            </div>
+          }
+
+          <!-- Route card -->
+          <div class="detail-card route-card td-slide-up td-delay-1">
+            <h2 class="detail-section-title">Ruta</h2>
+            <div class="route-visual">
+              <div class="route-stop">
+                <div class="stop-dot stop-from"></div>
+                <div class="stop-info">
+                  <span class="stop-label">Origen</span>
+                  <span class="stop-name">{{ trip.townDTO.name }}</span>
+                  <span class="stop-address">{{ trip.departureAddress }}</span>
+                </div>
+              </div>
+              <div class="route-connector">
+                <div class="route-connector-line"></div>
+              </div>
+              <div class="route-stop">
+                <div class="stop-dot stop-to"></div>
+                <div class="stop-info">
+                  <span class="stop-label">Destino</span>
+                  <span class="stop-name">{{ trip.campusDTO.name }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Date & time card -->
+          <div class="detail-card meta-card td-slide-up td-delay-2">
+            <h2 class="detail-section-title">Detalles del viaje</h2>
+            <div class="meta-grid">
+              <div class="meta-block">
+                <span class="meta-icon">📅</span>
+                <div>
+                  <span class="meta-key">Fecha</span>
+                  <span class="meta-val">{{ formatDate(trip.departureDate) }}</span>
+                </div>
+              </div>
+              <div class="meta-block">
+                <span class="meta-icon">⏰</span>
+                <div>
+                  <span class="meta-key">Hora de salida</span>
+                  <span class="meta-val">{{ trip.departureTime }}</span>
+                </div>
+              </div>
+              <div class="meta-block">
+                <span class="meta-icon">💺</span>
+                <div>
+                  <span class="meta-key">Plazas libres</span>
+                  <span class="meta-val" [class.low]="freeSeats <= 1" [class.full-val]="isFull">
+                    @if (isFull) {
+                      Completo
+                    } @else {
+                      {{ freeSeats }} de {{ trip.carDTO.capacity }}
+                    }
+                  </span>
+                </div>
+              </div>
+              <div class="meta-block">
+                <span class="meta-icon">💰</span>
+                <div>
+                  <span class="meta-key">Precio por persona</span>
+                  <span class="meta-val price-highlight">{{ trip.price | number:'1.2-2' }}€</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Car card -->
+          <div class="detail-card td-slide-up td-delay-3">
+            <h2 class="detail-section-title">🚗 Vehículo</h2>
+            <div class="car-info">
+              <div class="car-icon-wrap">🚗</div>
+              <div>
+                <strong>{{ trip.carDTO.model }}</strong>
+                <span class="car-sub">{{ trip.carDTO.color }} · {{ trip.carDTO.licensePlate }} · {{ trip.carDTO.capacity }} plazas</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Passengers — with INLINE rating stars for the driver -->
+          @if (trip.passengersDTO.length > 0) {
+            <div class="detail-card td-slide-up td-delay-4">
+              <h2 class="detail-section-title">
+                👥 Pasajeros confirmados ({{ trip.passengersDTO.length }})
+                @if (isDriver) {
+                  <span class="section-hint">— toca las estrellas para valorar</span>
+                }
+              </h2>
+              <div class="passengers-list">
+                @for (p of trip.passengersDTO; track p.id) {
+                  <div class="passenger-item" [class.passenger-item--rateable]="isDriver">
+                    @if (p.profileImageUrl) {
+                      <img [src]="p.profileImageUrl" class="passenger-avatar" [alt]="p.name">
+                    } @else {
+                      <div class="passenger-avatar-init">{{ p.name.charAt(0) }}</div>
+                    }
+                    <div class="passenger-info-col">
+                      <span class="passenger-name">{{ p.name }}</span>
+                      <span class="passenger-username">@{{ p.username }}</span>
+                    </div>
+
+                    <!-- INLINE stars for driver to rate this passenger -->
+                    @if (isDriver) {
+                      <div class="inline-rating" [class.is-saving]="pLoading[p.id]">
+                        @for (star of [1,2,3,4,5]; track star) {
+                          <button type="button"
+                            class="i-star"
+                            [class.active]="star <= (pRating[p.id] || 0)"
+                            [disabled]="pLoading[p.id]"
+                            (click)="clickPassengerStar(p.id, star)">★</button>
+                        }
+                        @if (pSaved[p.id]) {
+                          <span class="i-saved">✓</span>
+                        }
+                        @if (pError[p.id]) {
+                          <span class="i-error">!</span>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Existing ratings list for the driver -->
+          @if (driver && driver.ratingsReceivedDTO && driver.ratingsReceivedDTO.length > 0) {
+            <div class="detail-card td-slide-up td-delay-4">
+              <h2 class="detail-section-title">📊 Valoraciones del conductor ({{ driver.ratingsReceivedDTO.length }})</h2>
+              <div class="ratings-summary">
+                <div class="ratings-avg">
+                  <span class="ratings-avg-number">{{ avgRating | number:'1.1-1' }}</span>
+                  <div class="ratings-avg-stars">
+                    @for (star of [1,2,3,4,5]; track star) {
+                      <span class="star" [class.filled]="star <= avgRating">★</span>
+                    }
+                  </div>
+                  <span class="ratings-avg-count">{{ driver.ratingsReceivedDTO.length }} valoración{{ driver.ratingsReceivedDTO.length > 1 ? 'es' : '' }}</span>
+                </div>
+              </div>
+              <div class="ratings-list">
+                @for (r of driver.ratingsReceivedDTO; track r.id) {
+                  <div class="rating-item">
+                    <div class="rating-item-user">
+                      @if (r.userRateDTO?.profileImageUrl) {
+                        <img [src]="r.userRateDTO?.profileImageUrl" class="rating-item-avatar" [alt]="r.userRateDTO?.name">
+                      } @else {
+                        <div class="rating-item-avatar-init">{{ r.userRateDTO?.name?.charAt(0) || '?' }}</div>
+                      }
+                      <div>
+                        <strong>{{ r.userRateDTO?.name || 'Usuario' }}</strong>
+                        <span class="rating-item-username">@{{ r.userRateDTO?.username || '?' }}</span>
+                      </div>
+                    </div>
+                    <div class="rating-item-stars">
+                      @for (star of [1,2,3,4,5]; track star) {
+                        <span class="star" [class.filled]="star <= r.rating">★</span>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+        </div>
+
+        <!-- RIGHT: Driver card + CTA -->
+        <div class="detail-sidebar">
+          <div class="driver-card td-slide-up">
+            <div class="driver-avatar-wrap">
+              @if (driver && driver.profileImageUrl) {
+                <img [src]="driver.profileImageUrl" class="driver-avatar" alt="Conductor">
+              } @else {
+                <div class="driver-avatar-init">{{ driver?.name?.charAt(0) || '?' }}</div>
+              }
+            </div>
+            <div class="driver-badge">Conductor</div>
+            <h3 class="driver-name">{{ driver?.name }}</h3>
+            <p class="driver-username">@{{ driver?.username }}</p>
+
+            @if (avgRating > 0) {
+              <div class="driver-rating">
+                <div class="stars">
+                  @for (star of [1,2,3,4,5]; track star) {
+                    <span class="star" [class.filled]="star <= avgRating">★</span>
+                  }
+                </div>
+                <span class="rating-val">{{ avgRating | number:'1.1-1' }}</span>
+              </div>
+            }
+
+            <!-- ★ INLINE: Passenger rates driver — right here in the card -->
+            @if (isPassenger && driver) {
+              <div class="inline-rate-driver">
+                <span class="ird-label">Tu valoración</span>
+                <div class="ird-stars" [class.is-saving]="driverRatingLoading">
+                  @for (star of [1,2,3,4,5]; track star) {
+                    <button type="button"
+                      class="i-star i-star-lg"
+                      [class.active]="star <= driverRatingValue"
+                      [disabled]="driverRatingLoading"
+                      (click)="clickDriverStar(star)">★</button>
+                  }
+                  @if (driverRatingSaved) {
+                    <span class="i-saved">✓ Guardada</span>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (driver?.description) {
+              <p class="driver-bio">{{ driver?.description }}</p>
+            }
+
+            @if (driver?.drivingLicenseYear) {
+              <div class="driver-license">
+                🪪 Carné desde {{ driver?.drivingLicenseYear }}
+              </div>
+            }
+          </div>
+
+          <!-- CTA box -->
+          <div class="cta-box td-slide-up td-delay-1">
+            <div class="cta-price">
+              <span class="cta-price-amount">{{ trip.price | number:'1.2-2' }}€</span>
+              <span class="cta-price-label">por persona</span>
+            </div>
+
+            @if (isDriver) {
+              <a [routerLink]="['/manage-trip', trip.id]" class="btn btn-primary cta-btn">
+                ⚙ Gestionar viaje
+              </a>
+            } @else if (auth.isLoggedIn()) {
+              @if (isPassenger) {
+                <div class="alert alert-success">✅ Eres pasajero de este viaje</div>
+                <button class="btn btn-ghost cta-btn" (click)="leaveTrip()" [disabled]="actionLoading">
+                  {{ actionLoading ? 'Procesando...' : 'Abandonar viaje' }}
+                </button>
+              } @else if (hasRequested) {
+                <div class="alert alert-warning">⏳ Solicitud enviada — pendiente de confirmación</div>
+                <button class="btn btn-ghost cta-btn" (click)="cancelRequest()" [disabled]="actionLoading">
+                  {{ actionLoading ? 'Procesando...' : 'Cancelar solicitud' }}
+                </button>
+              } @else if (freeSeats > 0) {
+                <button class="btn btn-primary cta-btn" (click)="requestJoin()" [disabled]="actionLoading">
+                  {{ actionLoading ? 'Enviando...' : '🚀 Solicitar plaza' }}
+                </button>
+                <p class="cta-hint">El conductor deberá aceptar tu solicitud</p>
+              } @else {
+                <div class="cta-full-wrap">
+                  <span class="badge badge-danger cta-full">🔴 Sin plazas libres</span>
+                  <p class="cta-hint">Todas las plazas están ocupadas</p>
+                </div>
+              }
+            } @else {
+              <a routerLink="/login" class="btn btn-primary cta-btn">Inicia sesión para solicitar</a>
+            }
+
+            @if (actionError) {
+              <div class="alert alert-error">{{ actionError }}</div>
+            }
+          </div>
+
+        </div>
+      </div>
+    }
+  </div>
+</div>
+<app-footer></app-footer>

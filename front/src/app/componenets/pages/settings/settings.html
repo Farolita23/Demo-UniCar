@@ -1,0 +1,33 @@
+<app-header></app-header>
+<div class="page-wrapper">
+  <div class="container settings-page">
+    <h1>Ajustes</h1>
+    <div class="settings-grid">
+      <div class="settings-section">
+        <h3>Cuenta</h3>
+        <div class="setting-item">
+          <div><strong>Notificaciones</strong><small>Recibe alertas de nuevos viajes</small></div>
+          <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+        <div class="setting-item">
+          <div><strong>Perfil público</strong><small>Otros usuarios pueden ver tu perfil</small></div>
+          <label class="toggle"><input type="checkbox" checked><span class="slider"></span></label>
+        </div>
+      </div>
+      <div class="settings-section danger-zone">
+        <h3>Zona de peligro</h3>
+        <button class="btn btn-ghost danger-btn" (click)="confirmLogout = true">Cerrar sesión</button>
+        @if (confirmLogout) {
+          <div class="confirm-box">
+            <p>¿Seguro que quieres cerrar sesión?</p>
+            <div class="confirm-actions">
+              <button class="btn btn-ghost" (click)="confirmLogout = false">Cancelar</button>
+              <button class="btn btn-primary" (click)="logout()">Cerrar sesión</button>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

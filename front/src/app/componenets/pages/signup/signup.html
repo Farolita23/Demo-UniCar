@@ -1,0 +1,190 @@
+<app-header></app-header>
+<div class="page-wrapper">
+    <div class="container">
+        <div class="signup-card">
+            <div class="auth-brand">
+                <img src="/assets/media/icon-dark.png" alt="UniCar" class="auth-logo">
+                <h1>Crea tu cuenta</h1>
+                <p>Únete a la comunidad de carpooling universitario</p>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="submit()" class="signup-form">
+                <div class="form-section">
+                    <h3 class="form-section-title">Datos de acceso</h3>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label class="label required">Usuario</label>
+                            <input type="text" formControlName="username" placeholder="usuario123">
+                            @let username = form.get('username');
+                            @if ((submited || (username?.dirty || username?.touched)) && username?.invalid) {
+                                @if (username?.hasError("required")) {
+                                    <span class="error-msg">Este campo no puede estar vacio</span>
+                                } @else if (username?.hasError("minlength")) {
+                                    <span class="error-msg">Mínimo 3 caracteres requeridos</span>
+                                } @else if (username?.hasError("maxlength")) {
+                                    <span class="error-msg">Maximo 16 caracteres requeridos</span>
+                                }
+                            }
+                        </div>
+                        <div class="form-group">
+                            <label class="label required">Email</label>
+                            <input type="email" formControlName="email" placeholder="correo@universidad.es">
+                            @let email = form.get('email');
+                            @if ((submited || (email?.dirty || email?.touched)) && email?.invalid) {
+                                @if (email?.hasError("required")) {
+                                    <span class="error-msg">Este campo no puede estar vacio</span>
+                                } @else if (email?.hasError("email")) {
+                                    <span class="error-msg">Email inválido</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label class="label required">Contraseña</label>
+                            <div class="input-wrap">
+                                <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Mín. 8 caracteres">
+                                <button type="button" class="eye-btn" (click)="showPassword=!showPassword">{{ showPassword ? '🙈' : '👁️' }}</button>
+                            </div>
+                            @let password = form.get('password');
+                            @if ((submited || (password?.dirty || password?.touched)) && password?.invalid) {
+                                @if (password?.hasError("required")) {
+                                    <span class="error-msg">Este campo no puede estar vacio</span>
+                                } @else {
+                                    <span class="error-msg">Debe contener: </span>
+                                    @if (password?.hasError("minlength")) { <br><span class="error-msg">• Mín. 8 caracteres</span> }
+                                    @if (password?.hasError("uppercase")) { <br><span class="error-msg">• Mayusculas</span> }
+                                    @if (password?.hasError("lowercase")) { <br><span class="error-msg">• Minusculas</span> }
+                                    @if (password?.hasError("number")) { <br><span class="error-msg">• Numero</span> }
+                                    @if (password?.hasError("special")) { <br><span class="error-msg">• Caracter especial (!@#$%^&?)</span> }
+                                }
+                            }
+                        </div>
+                        <div class="form-group">
+                            <label class="label required">Confirmar contraseña</label>
+                            <input type="password" formControlName="rePassword" placeholder="Repite la contraseña">
+                            @let rePassword = form.get('rePassword');
+                            @if ((submited || (rePassword?.dirty || rePassword?.touched)) && rePassword?.invalid) {
+                                @if (form.errors?.['passwordsMismatch']) {
+                                    <span class="error-msg">Las contraseñas no coinciden</span>
+                                } @else if (rePassword?.hasError("required")) {
+                                    <span class="error-msg">Este campo no puede estar vacio</span>
+                                } 
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">Información personal</h3>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label class="label required">Nombre completo</label>
+                            <input type="text" formControlName="name" placeholder="Tu nombre">
+                            @let name = form.get('name');
+                            @if ((submited || (name?.dirty || name?.touched)) && name?.invalid) {
+                                @if (name?.hasError("required")) {
+                                    <span class="error-msg">Este campo no puede estar vacio</span>
+                                } 
+                            }
+                        </div>
+                        <div class="form-group">
+                            <label class="label required">Teléfono</label>
+                            <input type="tel" formControlName="phone" placeholder="600000000">
+                            @let phone = form.get('phone');
+                            @if ((submited || (phone?.dirty || phone?.touched)) && phone?.invalid) {
+                                @if (phone?.hasError("required")) {
+                                    <span class="error-msg">Este campo no puede estar vacio</span>
+                                } @else if (phone?.hasError("pattern")) {
+                                    <span class="error-msg">Telefono invalido</span>
+                                } 
+                            }
+                        </div>
+                    </div>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label class="label required">Fecha de nacimiento</label>
+                            <input type="date" formControlName="birthdate">
+                            @let birthdate = form.get('birthdate');
+                            @if ((submited || (birthdate?.dirty || birthdate?.touched)) && birthdate?.invalid) {
+                                @if (birthdate?.hasError("required")) {
+                                    <span class="error-msg">Este campo no puede estar vacio</span>
+                                }
+                            }
+                        </div>
+                        <div class="form-group">
+                            <label class="label required">Género</label>
+                            <select formControlName="genre">
+                                <option value="">Seleccionar...</option>
+                                <option value="Hombre">Hombre</option>
+                                <option value="Mujer">Mujer</option>
+                                <option value="No binario">No binario</option>
+                                <option value="Prefiero no decirlo">Prefiero no decirlo</option>
+                            </select>
+                            @let genre = form.get('genre');
+                            @if ((submited || (genre?.dirty || genre?.touched)) && genre?.invalid) {
+                                @if (genre?.hasError("required")) {
+                                    <span class="error-msg">Este campo no puede estar vacio</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Descripción</label>
+                        <textarea formControlName="description" rows="3" placeholder="Cuéntanos algo sobre ti..."></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-title">Ubicación</h3>
+                    <div class="form-row-2">
+                        <div class="form-group">
+                            <label class="label required">Campus habitual</label>
+                            <select formControlName="idUsualCampus">
+                                <option value="" selected disabled>Seleccionar campus...</option>
+                                @for (c of campuses; track c.id) {
+                                    <option [value]="c.id">{{ c.name }}</option>
+                                }
+                            </select>
+                            @let idUsualCampus = form.get('idUsualCampus');
+                            @if ((submited || (idUsualCampus?.dirty || idUsualCampus?.touched)) && idUsualCampus?.invalid) {
+                                @if (idUsualCampus?.hasError("required")) {
+                                    <span class="error-msg">Este campo no puede estar vacio</span>
+                                }
+                            }
+                        </div>
+                        <div class="form-group">
+                            <label class="label required">Pueblo / ciudad de origen</label>
+                            <select formControlName="idHomeTown">
+                                <option value="" selected disabled>Seleccionar localidad...</option>
+                                @for (t of towns; track t.id) {
+                                    <option [value]="t.id">{{ t.name }}</option>
+                                }
+                            </select>
+                            @let idHomeTown = form.get('idHomeTown');
+                            @if ((submited || (idHomeTown?.dirty || idHomeTown?.touched)) && idHomeTown?.invalid) {
+                                @if (idHomeTown?.hasError("required")) {
+                                    <span class="error-msg">Este campo no puede estar vacio</span>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="label">Año carné de conducir (si eres conductor)</label>
+                        <input type="number" formControlName="drivingLicenseYear" placeholder="Ej: 2020" min="1990" max="2030">
+                    </div>
+                </div>
+
+                @if (error) {
+                    <div class="alert alert-error">{{ error }}</div>
+                }
+
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary submit-btn" [disabled]="loading">@if (loading) { <span class="spinner"></span> } @else { Crear cuenta }</button>
+                    <button type="button" class="btn btn-ghost submit-btn" routerLink="/">Volver</button>
+                </div>
+            </form>
+            <p class="auth-link-bottom">¿Ya tienes cuenta? <a routerLink="/login">¡Inicia sesión!</a></p>
+        </div>
+    </div>
+</div>

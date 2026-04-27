@@ -1,0 +1,49 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: unicar-db
+    environment:
+      MYSQL_DATABASE: UniCarDB
+      MYSQL_USER: usuario
+      MYSQL_PASSWORD: usuario
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
+    volumes:
+      - unicar-db-data:/var/lib/mysql
+      - ./unicardb.sql:/docker-entrypoint-initdb.d/unicardb.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "--protocol=tcp", "-u", "usuario", "-pusuario"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+      start_period: 60s
+
+  backend:
+    build:
+      context: ./back
+      dockerfile: Dockerfile
+    container_name: unicar-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/UniCarDB?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: usuario
+      SPRING_DATASOURCE_PASSWORD: usuario
+      JWT_SECRET: ${JWT_SECRET:-unaClaveSecretaMuyLargaYSegura1234567890}
+      JWT_EXPIRATION: 86400000
+    ports:
+      - "8081:8081"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+
+  frontend:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    container_name: unicar-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+volumes:
+  unicar-db-data:
