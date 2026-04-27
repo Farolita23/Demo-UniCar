@@ -5,7 +5,6 @@ import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
 import { TripCard } from '../../elements/trip/trip';
-import { AppIcon } from '../../elements/icon/icon';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 import { Trip } from '../../../models/trip.model';
@@ -13,7 +12,7 @@ import { Trip } from '../../../models/trip.model';
 @Component({
   selector: 'page-home',
   standalone: true,
-  imports: [RouterLink, CommonModule, Header, Footer, TripCard, AppIcon],
+  imports: [RouterLink, CommonModule, Header, Footer, TripCard],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

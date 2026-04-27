@@ -1,355 +1,339 @@
 <app-header></app-header>
 <div class="page-wrapper">
-  <div class="container profile-layout">
-    @if (loading) {
-      <div class="loading-state"><div class="spinner"></div></div>
-    } @else if (user) {
-
-      <!-- SIDEBAR -->
-      <aside class="profile-sidebar">
-        <div class="profile-card">
-          <div class="avatar-wrap">
-            @if (user.profileImageUrl) {
-              <img [src]="user.profileImageUrl" alt="Perfil" class="profile-avatar">
-            } @else {
-              <div class="profile-avatar-init">{{ user.name?.charAt(0) ?? '?' }}</div>
-            }
-            <div class="rating-badge">★ {{ avgRating }}</div>
-          </div>
-          <h2 class="profile-name">{{ user.name }}</h2>
-          <span class="profile-username">&#64;{{ user.username }}</span>
-
-          @if (user.drivingLicenseYear) {
-            <div class="driver-badge">
-              <app-icon icon="coche" [size]="16"></app-icon> Conductor desde {{ user.drivingLicenseYear }}
+    <div class="container">
+        @if (loading) {
+            <div class="loading-state">
+                <div class="spinner"></div>
             </div>
-          }
+        } @else if (user) {
 
-          <div class="profile-stats">
-            <div class="pstat"><span>{{ tripsAsDriver.length }}</span><small>Viajes conducidos</small></div>
-            <div class="pstat"><span>{{ tripsAsPassenger.length }}</span><small>Como pasajero</small></div>
-            <div class="pstat"><span>{{ cars.length }}</span><small>Vehículos</small></div>
-          </div>
-
-          @if (user.description) {
-            <p class="profile-desc">{{ user.description }}</p>
-          }
-        </div>
-
-        <nav class="profile-nav">
-          <button [class.active]="activeTab === 'info'"            (click)="activeTab = 'info'">Información</button>
-          <button [class.active]="activeTab === 'trips-driver'"    (click)="activeTab = 'trips-driver'">Mis viajes (conductor)</button>
-          <button [class.active]="activeTab === 'trips-passenger'" (click)="activeTab = 'trips-passenger'">Mis viajes (pasajero)</button>
-          <button [class.active]="activeTab === 'cars'"            (click)="activeTab = 'cars'">Mis vehículos</button>
-          <button [class.active]="activeTab === 'ratings'"         (click)="activeTab = 'ratings'">Valoraciones</button>
-          <button [class.active]="activeTab === 'warnings'"        (click)="activeTab = 'warnings'" class="warnings-nav-btn">
-            Avisos
-            @if (unreadWarningsCount > 0) {
-              <span class="nav-unread-badge">{{ unreadWarningsCount }}</span>
-            }
-          </button>
-          <button [class.active]="activeTab === 'edit'"            (click)="activeTab = 'edit'">Editar perfil</button>
-        </nav>
-      </aside>
-
-      <!-- MAIN CONTENT -->
-      <main class="profile-main">
-
-        <!-- INFO TAB -->
-        @if (activeTab === 'info') {
-          <div class="tab-content animate-fadeUp">
-            <h2 class="tab-title">Información personal</h2>
-            <div class="info-grid">
-              <div class="info-item"><span class="info-label">Email</span><span>{{ user.email }}</span></div>
-              <div class="info-item"><span class="info-label">Teléfono</span><span>{{ user.phone }}</span></div>
-              <div class="info-item"><span class="info-label">Género</span><span>{{ user.genre }}</span></div>
-              <div class="info-item"><span class="info-label">F. nacimiento</span><span>{{ user.birthdate }}</span></div>
-              <div class="info-item"><span class="info-label">Campus</span><span>{{ user.usualCampusDTO?.name ?? '—' }}</span></div>
-              <div class="info-item"><span class="info-label">Localidad</span><span>{{ user.homeTownDTO?.name ?? '—' }}</span></div>
-            </div>
-            @if (user.strikes && user.strikes > 0) {
-              <div class="strikes-warn">⚠️ Tienes {{ user.strikes }} strike{{ user.strikes > 1 ? 's' : '' }} en tu cuenta</div>
-            }
-          </div>
-        }
-
-        <!-- TRIPS DRIVER TAB -->
-        @if (activeTab === 'trips-driver') {
-          <div class="tab-content animate-fadeUp">
-            <h2 class="tab-title">Viajes como conductor</h2>
-            @if (tripsAsDriver.length === 0) {
-              <div class="empty-state">
-                <p>Aún no has publicado ningún viaje.</p>
-                <a routerLink="/trip" class="btn btn-primary" style="margin-top:1rem">Publicar viaje</a>
-              </div>
-            } @else {
-              <div class="trips-list">
-                @for (t of tripsAsDriver; track t.id; let i = $index) {
-                  <app-trip [data]="t" (tripUpdated)="updateTrip($event, tripsAsDriver, i)"></app-trip>
-                }
-              </div>
-            }
-          </div>
-        }
-
-        <!-- TRIPS PASSENGER TAB -->
-        @if (activeTab === 'trips-passenger') {
-          <div class="tab-content animate-fadeUp">
-            <h2 class="tab-title">Viajes como pasajero</h2>
-            @if (tripsAsPassenger.length === 0) {
-              <div class="empty-state">
-                <p>Todavía no te has unido a ningún viaje.</p>
-                <a routerLink="/search-trip" class="btn btn-primary" style="margin-top:1rem">Buscar viaje</a>
-              </div>
-            } @else {
-              <div class="trips-list">
-                @for (t of tripsAsPassenger; track t.id; let i = $index) {
-                  <app-trip [data]="t" (tripUpdated)="updateTrip($event, tripsAsPassenger, i)"></app-trip>
-                }
-              </div>
-            }
-          </div>
-        }
-
-        <!-- CARS TAB -->
-        @if (activeTab === 'cars') {
-          <div class="tab-content animate-fadeUp">
-            <div class="tab-header">
-              <h2 class="tab-title">Mis vehículos</h2>
-              <button class="btn btn-primary btn-sm" (click)="openCarModal()">+ Añadir vehículo</button>
-            </div>
-            @if (carsLoading) {
-              <div class="loading-state"><div class="spinner"></div></div>
-            } @else if (cars.length === 0) {
-              <div class="empty-state"><p>No tienes ningún vehículo registrado.</p></div>
-            } @else {
-              <div class="cars-grid">
-                @for (car of cars; track car.id) {
-                  <div class="car-card-profile">
-                    <div class="car-icon"><app-icon icon="coche" [size]="32"></app-icon></div>
-                    <div class="car-info">
-                      <h4>{{ car.model }}</h4>
-                      <p>{{ car.color }} · {{ car.licensePlate }}</p>
-                      <span class="badge badge-neutral">{{ car.capacity }} plazas</span>
-                    </div>
-                    <button class="delete-btn" (click)="deleteCar(car.id)" title="Eliminar">✕</button>
-                  </div>
-                }
-              </div>
-            }
-          </div>
-        }
-
-        <!-- RATINGS TAB -->
-        @if (activeTab === 'ratings') {
-          <div class="tab-content animate-fadeUp">
-            <h2 class="tab-title">Valoraciones</h2>
-
-            <!-- Received ratings -->
-            <div class="ratings-section">
-              <h3 class="ratings-section-title">Valoraciones recibidas</h3>
-              @if (!user.ratingsReceivedDTO || user.ratingsReceivedDTO.length === 0) {
-                <div class="empty-state"><p>Aún no has recibido valoraciones.</p></div>
-              } @else {
-                <div class="ratings-overview">
-                  <div class="ratings-overview-avg">
-                    <span class="ratings-big-number">{{ avgRating }}</span>
-                    <div class="ratings-overview-stars">
-                      @for (star of [1,2,3,4,5]; track star) {
-                        <span class="star-icon" [class.filled]="star <= +avgRating">★</span>
-                      }
-                    </div>
-                    <span class="ratings-overview-count">{{ user.ratingsReceivedDTO.length }} valoración{{ user.ratingsReceivedDTO.length > 1 ? 'es' : '' }}</span>
-                  </div>
-                </div>
-                <div class="ratings-list-profile">
-                  @for (r of user.ratingsReceivedDTO; track r.id) {
-                    <div class="rating-card-profile">
-                      <div class="rating-card-user">
-                        @if (r.userRateDTO?.profileImageUrl) {
-                          <img [src]="r.userRateDTO?.profileImageUrl" class="rating-card-avatar" [alt]="r.userRateDTO?.name">
+        <!-- SIDEBAR -->
+            <aside class="profile-sidebar">
+                <div class="profile-card">
+                    <div class="avatar-wrap">
+                        @if (user.profileImageUrl) {
+                            <img [src]="user.profileImageUrl" alt="Perfil" class="profile-avatar">
                         } @else {
-                          <div class="rating-card-avatar-init">{{ r.userRateDTO?.name?.charAt(0) || '?' }}</div>
+                            <div class="profile-avatar-init">{{ user.name[0] }}</div>
                         }
-                        <div>
-                          <strong>{{ r.userRateDTO?.name || 'Usuario' }}</strong>
-                          <span class="rating-card-username">@{{ r.userRateDTO?.username || '?' }}</span>
-                        </div>
-                      </div>
-                      <div class="rating-card-stars">
-                        @for (star of [1,2,3,4,5]; track star) {
-                          <span class="star-icon" [class.filled]="star <= r.rating">★</span>
-                        }
-                        <span class="rating-card-val">{{ r.rating }}/5</span>
-                      </div>
+                        <div class="rating-badge">★ {{ avgRating }}</div>
                     </div>
-                  }
-                </div>
-              }
-            </div>
+                    <h2 class="profile-name">{{ user.name }}</h2>
+                    <span class="profile-username">&#64;{{ user.username }}</span>
 
-            <!-- Given ratings -->
-            <div class="ratings-section" style="margin-top: 2rem">
-              <h3 class="ratings-section-title">Valoraciones realizadas</h3>
-              @if (!user.ratingsDoneDTO || user.ratingsDoneDTO.length === 0) {
-                <div class="empty-state"><p>Aún no has valorado a otros usuarios.</p></div>
-              } @else {
-                <div class="ratings-list-profile">
-                  @for (r of user.ratingsDoneDTO; track r.id) {
-                    <div class="rating-card-profile">
-                      <div class="rating-card-user">
-                        @if (r.ratedUserDTO?.profileImageUrl) {
-                          <img [src]="r.ratedUserDTO?.profileImageUrl" class="rating-card-avatar" [alt]="r.ratedUserDTO?.name">
-                        } @else {
-                          <div class="rating-card-avatar-init">{{ r.ratedUserDTO?.name?.charAt(0) || '?' }}</div>
-                        }
-                        <div>
-                          <strong>{{ r.ratedUserDTO?.name || 'Usuario' }}</strong>
-                          <span class="rating-card-username">@{{ r.ratedUserDTO?.username || '?' }}</span>
-                        </div>
-                      </div>
-                      <div class="rating-card-stars">
-                        @for (star of [1,2,3,4,5]; track star) {
-                          <span class="star-icon" [class.filled]="star <= r.rating">★</span>
-                        }
-                        <span class="rating-card-val">{{ r.rating }}/5</span>
-                      </div>
+                    @if (user.drivingLicenseYear) {
+                    <div class="driver-badge">
+                        <app-icon icon="coche" [size]="16"></app-icon> Conductor desde {{ user.drivingLicenseYear }}
                     </div>
-                  }
-                </div>
-              }
-            </div>
-          </div>
-        }
-
-        <!-- WARNINGS TAB -->
-        @if (activeTab === 'warnings') {
-          <div class="tab-content animate-fadeUp">
-            <h2 class="tab-title">Avisos</h2>
-            @if (warningsLoading) {
-              <div class="loading-state"><div class="spinner"></div></div>
-            } @else if (warnings.length === 0) {
-              <div class="empty-state"><p>No tienes avisos.</p></div>
-            } @else {
-              <div class="warnings-list">
-                @for (w of warnings; track w.id) {
-                  <div class="warning-card" [class.warning-unread]="!w.isRead">
-                    <div class="warning-card__header">
-                      <div class="warning-card__subject">
-                        @if (!w.isRead) {
-                          <span class="warning-dot"></span>
-                        }
-                        <strong>{{ w.subject }}</strong>
-                      </div>
-                      <span class="warning-card__date">{{ w.createdAt | date:'d MMM y, HH:mm' }}</span>
-                    </div>
-                    <p class="warning-card__message">{{ w.message }}</p>
-                    @if (!w.isRead) {
-                      <button class="btn btn-ghost btn-sm warning-read-btn" (click)="markWarningRead(w.id)">
-                        Marcar como leído
-                      </button>
                     }
-                  </div>
-                }
-              </div>
-            }
-          </div>
-        }
 
-        <!-- EDIT TAB -->
-        @if (activeTab === 'edit') {
-          <div class="tab-content animate-fadeUp">
-            <h2 class="tab-title">Editar perfil</h2>
-            <form [formGroup]="editForm" (ngSubmit)="saveProfile()" class="edit-form">
-              <div class="form-row-2">
-                <div class="form-group"><label class="label">Nombre</label><input type="text" formControlName="name"></div>
-                <div class="form-group"><label class="label">Usuario</label><input type="text" formControlName="username"></div>
-              </div>
-              <div class="form-row-2">
-                <div class="form-group"><label class="label">Email</label><input type="email" formControlName="email"></div>
-                <div class="form-group"><label class="label">Teléfono</label><input type="tel" formControlName="phone"></div>
-              </div>
-              <div class="form-row-2">
-                <div class="form-group">
-                  <label class="label">Campus</label>
-                  <select formControlName="idUsualCampus">
-                    @for (c of campuses; track c.id) { <option [value]="c.id">{{ c.name }}</option> }
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label class="label">Localidad</label>
-                  <select formControlName="idHomeTown">
-                    @for (t of towns; track t.id) { <option [value]="t.id">{{ t.name }}</option> }
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="label">Foto de perfil</label>
-                <div class="image-upload-area" (click)="profileFileInput.click()">
-                  @if (editPreviewUrl || user.profileImageUrl) {
-                    <img [src]="editPreviewUrl || user.profileImageUrl" class="preview-img" alt="Vista previa">
-                    <div class="preview-overlay">Cambiar foto</div>
-                  } @else {
-                    <div class="upload-placeholder">
-                      <span class="upload-icon">📷</span>
-                      <span>Haz clic para subir una imagen</span>
-                      <small>JPG, PNG, GIF — máx. 5MB</small>
+                    <div class="profile-stats">
+                        <div class="pstat"><span>{{ tripsAsDriver.length }}</span><small>Viaje{{ tripsAsDriver.length === 1 ? "" : "s" }} conducido{{ tripsAsDriver.length === 1 ? "" : "s" }}</small></div>
+                        <div class="pstat"><span>{{ tripsAsPassenger.length }}</span><small>Como pasajero</small></div>
+                        <div class="pstat"><span>{{ cars.length }}</span><small>Vehículo{{ cars.length === 1 ? "" : "s" }}</small></div>
                     </div>
-                  }
-                </div>
-                <input #profileFileInput type="file" accept="image/*" style="display:none" (change)="onProfileFileSelected($event)">
-              </div>
-              <div class="form-group"><label class="label">Descripción</label><textarea formControlName="description" rows="3"></textarea></div>
-              @if (editSuccess) { <div class="alert alert-success">✓ Perfil actualizado correctamente</div> }
-              @if (editError)   { <div class="alert alert-error">{{ editError }}</div> }
-              <button type="submit" class="btn btn-primary" [disabled]="saving">
-                @if (saving) { <span class="spinner"></span> } @else { Guardar cambios }
-              </button>
-            </form>
-          </div>
-        }
 
-      </main>
-    } @else {
-      <div class="empty-state" style="grid-column:1/-1;padding:4rem 0">
-        <p>No se pudo cargar el perfil. Por favor, <a routerLink="/login">inicia sesión</a> de nuevo.</p>
-      </div>
-    }
-  </div>
+                    @if (user.description) {
+                    <p class="profile-desc">{{ user.description }}</p>
+                    }
+                </div>
+
+                <nav class="profile-nav">
+                    <button [class.active]="activeTab === 'info'" (click)="activeTab = 'info'">Información</button>
+                    <button [class.active]="activeTab === 'trips-driver'" (click)="activeTab = 'trips-driver'">Mis viajes
+                        (conductor)</button>
+                    <button [class.active]="activeTab === 'trips-passenger'" (click)="activeTab = 'trips-passenger'">Mis
+                        viajes (pasajero)</button>
+                    <button [class.active]="activeTab === 'cars'" (click)="activeTab = 'cars'">Mis vehículos</button>
+                    <button [class.active]="activeTab === 'ratings'" (click)="activeTab = 'ratings'">Valoraciones</button>
+                    <button [class.active]="activeTab === 'edit'" (click)="activeTab = 'edit'">Editar perfil</button>
+                </nav>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <main class="profile-main">
+
+                <!-- INFO TAB -->
+                @if (activeTab === 'info') {
+                <div class="tab-content animate-fadeUp">
+                    <h2 class="tab-title">Información personal</h2>
+                    <div class="info-grid">
+                        <div class="info-item"><span class="info-label">Email</span><span>{{ user.email }}</span></div>
+                        <div class="info-item"><span class="info-label">Teléfono</span><span>{{ user.phone }}</span></div>
+                        <div class="info-item"><span class="info-label">Género</span><span>{{ user.genre }}</span></div>
+                        <div class="info-item"><span class="info-label">F. nacimiento</span><span>{{ user.birthdate }}</span></div>
+                        <div class="info-item"><span class="info-label">Campus</span><span>{{ user.usualCampusDTO?.name ?? '—' }}</span></div>
+                        <div class="info-item"><span class="info-label">Localidad</span><span>{{ user.homeTownDTO?.name ?? '—' }}</span></div>
+                    </div>
+                    @if (user.strikes && user.strikes > 0) {
+                        <div class="strikes-warn">⚠️ Tienes {{ user.strikes }} strike{{ user.strikes > 1 ? 's' : '' }} en tu cuenta</div>
+                    }
+                </div>
+                }
+
+                <!-- TRIPS DRIVER TAB -->
+                @if (activeTab === 'trips-driver') {
+                    <div class="tab-content animate-fadeUp">
+                        <h2 class="tab-title">Viajes como conductor</h2>
+                        @if (tripsAsDriver.length === 0) {
+                            <div class="empty-state">
+                                <p>Aún no has publicado ningún viaje.</p>
+                                <a routerLink="/trip" class="btn btn-primary" style="margin-top:1rem">Publicar viaje</a>
+                            </div>
+                        } @else {
+                            <div class="trips-list">
+                                @for (t of tripsAsDriver; track t.id; let i = $index) {
+                                    <app-trip [data]="t" (tripUpdated)="updateTrip($event, tripsAsDriver, i)"></app-trip>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+
+                <!-- TRIPS PASSENGER TAB -->
+                @if (activeTab === 'trips-passenger') {
+                    <div class="tab-content animate-fadeUp">
+                        <h2 class="tab-title">Viajes como pasajero</h2>
+                        @if (tripsAsPassenger.length === 0) {
+                            <div class="empty-state">
+                                <p>Todavía no te has unido a ningún viaje.</p>
+                                <a routerLink="/search-trip" class="btn btn-primary" style="margin-top:1rem">Buscar viaje</a>
+                            </div>
+                        } @else {
+                            <div class="trips-list">
+                                @for (t of tripsAsPassenger; track t.id; let i = $index) {
+                                    <app-trip [data]="t" (tripUpdated)="updateTrip($event, tripsAsPassenger, i)"></app-trip>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+
+                <!-- CARS TAB -->
+                @if (activeTab === 'cars') {
+                <div class="tab-content animate-fadeUp">
+                    <div class="tab-header">
+                        <h2 class="tab-title">Mis vehículos</h2>
+                        <button class="btn btn-primary btn-sm" (click)="openCarModal()">+ Añadir vehículo</button>
+                    </div>
+                    @if (carsLoading) {
+                        <div class="loading-state">
+                            <div class="spinner"></div>
+                        </div>
+                    } @else if (cars.length === 0) {
+                        <div class="empty-state">
+                            <p>No tienes ningún vehículo registrado.</p>
+                        </div>
+                    } @else {
+                        <div class="cars-grid">
+                            @for (car of cars; track car.id) {
+                                <div class="car-card-profile">
+                                    <div class="car-icon"><app-icon icon="coche" [size]="32"></app-icon></div>
+                                    <div class="car-info">
+                                        <h4>{{ car.model }}</h4>
+                                        <p>Color: {{ car.color }} • {{ car.licensePlate.replaceAll(" ", "") }}</p>
+                                        <span class="badge badge-neutral">{{ car.capacity }} plazas</span>
+                                    </div>
+                                    <button class="delete-btn" (click)="deleteCar(car.id)" title="Eliminar">✕</button>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                }
+
+                <!-- RATINGS TAB -->
+                @if (activeTab === 'ratings') {
+                <div class="tab-content animate-fadeUp">
+                    <h2 class="tab-title">Valoraciones</h2>
+
+                    <!-- Received ratings -->
+                    <div class="ratings-section">
+                        <h3 class="ratings-section-title">Valoraciones recibidas</h3>
+                        @if (!user.ratingsReceivedDTO || user.ratingsReceivedDTO.length === 0) {
+                        <div class="empty-state">
+                            <p>Aún no has recibido valoraciones.</p>
+                        </div>
+                        } @else {
+                        <div class="ratings-overview">
+                            <div class="ratings-overview-avg">
+                                <span class="ratings-big-number">{{ avgRating }}</span>
+                                <div class="ratings-overview-stars">
+                                    @for (star of [1,2,3,4,5]; track star) {
+                                    <span class="star-icon" [class.filled]="star <= +avgRating">★</span>
+                                    }
+                                </div>
+                                <span class="ratings-overview-count">{{ user.ratingsReceivedDTO.length }} valoración{{
+                                    user.ratingsReceivedDTO.length > 1 ? 'es' : '' }}</span>
+                            </div>
+                        </div>
+                        <div class="ratings-list-profile">
+                            @for (r of user.ratingsReceivedDTO; track r.id) {
+                            <div class="rating-card-profile">
+                                <div class="rating-card-user">
+                                    @if (r.userRateDTO?.profileImageUrl) {
+                                    <img [src]="r.userRateDTO?.profileImageUrl" class="rating-card-avatar"
+                                        [alt]="r.userRateDTO?.name">
+                                    } @else {
+                                    <div class="rating-card-avatar-init">{{ r.userRateDTO?.name?.charAt(0) || '?' }}</div>
+                                    }
+                                    <div>
+                                        <strong>{{ r.userRateDTO?.name || 'Usuario' }}</strong>
+                                        <span class="rating-card-username">@{{ r.userRateDTO?.username || '?' }}</span>
+                                    </div>
+                                </div>
+                                <div class="rating-card-stars">
+                                    @for (star of [1,2,3,4,5]; track star) {
+                                    <span class="star-icon" [class.filled]="star <= r.rating">★</span>
+                                    }
+                                    <span class="rating-card-val">{{ r.rating }}/5</span>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Given ratings -->
+                    <div class="ratings-section" style="margin-top: 2rem">
+                        <h3 class="ratings-section-title">Valoraciones realizadas</h3>
+                        @if (!user.ratingsDoneDTO || user.ratingsDoneDTO.length === 0) {
+                        <div class="empty-state">
+                            <p>Aún no has valorado a otros usuarios.</p>
+                        </div>
+                        } @else {
+                        <div class="ratings-list-profile">
+                            @for (r of user.ratingsDoneDTO; track r.id) {
+                            <div class="rating-card-profile">
+                                <div class="rating-card-user">
+                                    @if (r.ratedUserDTO?.profileImageUrl) {
+                                    <img [src]="r.ratedUserDTO?.profileImageUrl" class="rating-card-avatar"
+                                        [alt]="r.ratedUserDTO?.name">
+                                    } @else {
+                                    <div class="rating-card-avatar-init">{{ r.ratedUserDTO?.name?.charAt(0) || '?' }}</div>
+                                    }
+                                    <div>
+                                        <strong>{{ r.ratedUserDTO?.name || 'Usuario' }}</strong>
+                                        <span class="rating-card-username">@{{ r.ratedUserDTO?.username || '?' }}</span>
+                                    </div>
+                                </div>
+                                <div class="rating-card-stars">
+                                    @for (star of [1,2,3,4,5]; track star) {
+                                    <span class="star-icon" [class.filled]="star <= r.rating">★</span>
+                                    }
+                                    <span class="rating-card-val">{{ r.rating }}/5</span>
+                                </div>
+                            </div>
+                            }
+                        </div>
+                        }
+                    </div>
+                </div>
+                }
+
+                <!-- EDIT TAB -->
+                @if (activeTab === 'edit') {
+                    <div class="tab-content animate-fadeUp">
+                        <h2 class="tab-title">Editar perfil</h2>
+                        <form [formGroup]="editForm" (ngSubmit)="saveProfile()" class="edit-form">
+                            <div class="form-row-2">
+                                <div class="form-group"><label class="label">Nombre</label><input type="text" formControlName="name"></div>
+                                <div class="form-group"><label class="label">Usuario</label><input type="text" formControlName="username"></div>
+                            </div>
+                            <div class="form-row-2">
+                                <div class="form-group"><label class="label">Email</label><input type="email" formControlName="email"></div>
+                                <div class="form-group"><label class="label">Teléfono</label><input type="tel" formControlName="phone"></div>
+                            </div>
+                            <div class="form-row-2">
+                                <div class="form-group">
+                                    <label class="label">Campus</label>
+                                    <select formControlName="idUsualCampus"> @for (c of campuses; track c.id) { 
+                                        <option [value]="c.id">{{ c.name }}</option> 
+                                    } </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Localidad</label>
+                                    <select formControlName="idHomeTown"> @for (t of towns; track t.id) { 
+                                        <option [value]="t.id">{{ t.name }}</option>
+                                    } </select>
+                                </div>
+                            </div>
+                            <div class="form-row-2">
+                                <div class="form-group">
+                                    <label class="label">Foto de perfil</label>
+                                    <div class="image-upload-area" (click)="profileFileInput.click()">
+                                        @if ((editPreviewUrl || user.profileImageUrl)) {
+                                            <img [src]="editPreviewUrl || user.profileImageUrl" class="preview-img" alt="Vista previa">
+                                            <div class="preview-overlay">Cambiar foto</div>
+                                        } @else {
+                                            <div class="upload-placeholder">
+                                                <span class="upload-icon">📷</span>
+                                                <span>Haz clic para subir una imagen</span>
+                                                <small>JPG, PNG, GIF — máx. 5MB</small>
+                                            </div>
+                                        }
+                                    </div>
+                                    <input #profileFileInput type="file" accept="image/*" style="display:none" (change)="onProfileFileSelected($event)">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Descripción</label>
+                                    <textarea formControlName="description" rows="3"></textarea>
+                                </div>
+                            </div>
+                            @if (editSuccess) {
+                                <div class="alert alert-success">✓ Perfil actualizado correctamente</div>
+                            }
+                            @if (editError) {
+                                <div class="alert alert-error">{{ editError }}</div>
+                            }
+                            <button type="submit" class="btn btn-primary" [disabled]="saving">
+                                @if (saving) { <span class="spinner"></span> } @else { Guardar cambios }
+                            </button>
+                        </form>
+                    </div>
+                }
+
+            </main>
+        } @else {
+            <div class="empty-state" style="grid-column:1/-1;padding:4rem 0">
+                <p>No se pudo cargar el perfil. Por favor, <a routerLink="/login">inicia sesión</a> de nuevo.</p>
+            </div>
+        }
+    </div>
 </div>
 
 <!-- CAR MODAL -->
 @if (showCarModal) {
-  <div class="modal-backdrop" (click)="showCarModal = false">
-    <div class="modal" (click)="$event.stopPropagation()">
-      <div class="modal-header">
-        <h3>Añadir vehículo</h3>
-        <button (click)="showCarModal = false" class="modal-close">✕</button>
-      </div>
-      <form [formGroup]="carForm" (ngSubmit)="addCar()" class="modal-form">
-        <div class="form-group">
-          <label class="label">Modelo *</label>
-          <input type="text" formControlName="model" placeholder="Ej: Seat Ibiza">
+    <div class="modal-backdrop" (click)="showCarModal = false">
+        <div class="modal" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Añadir vehículo</h3>
+                <button (click)="showCarModal = false" class="modal-close">✕</button>
+            </div>
+            <form [formGroup]="carForm" (ngSubmit)="addCar()" class="modal-form">
+                <div class="form-group">
+                    <label class="label">Modelo *</label>
+                    <input type="text" formControlName="model" placeholder="Ej: Seat Ibiza">
+                </div>
+                <div class="form-group">
+                    <label class="label">Color *</label>
+                    <input type="text" formControlName="color" placeholder="Ej: Rojo">
+                </div>
+                <div class="form-group">
+                    <label class="label">Matrícula *</label>
+                    <input type="text" formControlName="licensePlate" placeholder="Ej: 1234ABC">
+                </div>
+                <div class="form-group">
+                    <label class="label">Capacidad (plazas sin contar al conductor) *</label>
+                    <input type="number" formControlName="capacity" min="2" max="9">
+                </div>
+                @if (carError) { <div class="alert alert-error">{{ carError }}</div> }
+                <button type="submit" class="btn btn-primary" style="justify-content:center" [disabled]="carForm.invalid || carSaving">
+                    @if (carSaving) { <span class="spinner"></span> } @else { Añadir vehículo }
+                </button>
+            </form>
         </div>
-        <div class="form-group">
-          <label class="label">Color *</label>
-          <input type="text" formControlName="color" placeholder="Ej: Rojo">
-        </div>
-        <div class="form-group">
-          <label class="label">Matrícula *</label>
-          <input type="text" formControlName="licensePlate" placeholder="Ej: 1234ABC">
-        </div>
-        <div class="form-group">
-          <label class="label">Capacidad (plazas sin contar al conductor) *</label>
-          <input type="number" formControlName="capacity" min="2" max="9">
-        </div>
-        @if (carError) { <div class="alert alert-error">{{ carError }}</div> }
-        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center" [disabled]="carForm.invalid || carSaving">
-          @if (carSaving) { <span class="spinner"></span> } @else { Añadir vehículo }
-        </button>
-      </form>
     </div>
-  </div>
 }
 
 <app-footer></app-footer>

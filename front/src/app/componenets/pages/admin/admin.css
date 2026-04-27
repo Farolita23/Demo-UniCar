@@ -121,19 +121,9 @@
 }
 
 .btn-success { background: var(--success); color: #fff; border: none; }
-.btn-warning { background: var(--warning); color: #000; border: none; }
 
 .udp-section { margin-top: 1rem; }
 .udp-section h3 { font-size: 1rem; margin-bottom: 0.75rem; }
-.udp-warnings-list { display: flex; flex-direction: column; gap: 8px; }
-.udp-warning-item {
-  padding: 10px 14px; background: var(--bg-3);
-  border-radius: var(--radius-sm); border-left: 3px solid var(--border);
-}
-.udp-warning-item.unread { border-left-color: var(--warning); }
-.udp-warning-head { display: flex; justify-content: space-between; margin-bottom: 4px; }
-.udp-warning-date { color: var(--text-3); font-size: 0.8rem; }
-.udp-warning-msg { color: var(--text-2); font-size: 0.85rem; margin: 0; }
 
 /* Reports */
 .reports-list { display: flex; flex-direction: column; gap: 1rem; }

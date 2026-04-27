@@ -80,27 +80,8 @@
                 <button class="btn btn-danger btn-sm" (click)="banUser(selectedUser.id)">🚫 Banear</button>
               }
               <button class="btn btn-warning btn-sm" (click)="addStrike(selectedUser.id)">⚡ Añadir strike</button>
-              <button class="btn btn-primary btn-sm" (click)="openWarning(selectedUser)">📩 Enviar aviso</button>
               <a [routerLink]="['/user', selectedUser.id]" class="btn btn-ghost btn-sm">👁 Ver perfil público</a>
             </div>
-
-            <!-- Warnings for this user -->
-            @if (userWarnings.length > 0) {
-              <div class="udp-section">
-                <h3>Avisos enviados ({{ userWarnings.length }})</h3>
-                <div class="udp-warnings-list">
-                  @for (w of userWarnings; track w.id) {
-                    <div class="udp-warning-item" [class.unread]="!w.isRead">
-                      <div class="udp-warning-head">
-                        <strong>{{ w.subject }}</strong>
-                        <span class="udp-warning-date">{{ w.createdAt | date:'short' }}</span>
-                      </div>
-                      <p class="udp-warning-msg">{{ w.message }}</p>
-                    </div>
-                  }
-                </div>
-              </div>
-            }
           </div>
 
         } @else {
@@ -178,40 +159,6 @@
         }
       }
 
-    }
-
-    <!-- Warning modal -->
-    @if (showWarningModal && warningTarget) {
-      <div class="modal-overlay" (click)="closeWarning()">
-        <div class="modal-content" (click)="$event.stopPropagation()">
-          <div class="modal-header">
-            <h3>Enviar aviso a {{ warningTarget.name }}</h3>
-            <button class="modal-close" (click)="closeWarning()">✕</button>
-          </div>
-          <div class="modal-body">
-            @if (warningError) {
-              <div class="modal-error">{{ warningError }}</div>
-            }
-            <div class="form-group">
-              <label class="label">Asunto</label>
-              <input type="text" [(ngModel)]="warningSubject" placeholder="Asunto del aviso..."
-                     class="form-input">
-            </div>
-            <div class="form-group">
-              <label class="label">Mensaje</label>
-              <textarea [(ngModel)]="warningMessage" rows="4" placeholder="Escribe el mensaje del aviso..."
-                        class="form-textarea"></textarea>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-ghost" (click)="closeWarning()">Cancelar</button>
-            <button class="btn btn-primary" (click)="sendWarning()"
-                    [disabled]="warningLoading || !warningSubject.trim() || !warningMessage.trim()">
-              {{ warningLoading ? 'Enviando...' : 'Enviar aviso' }}
-            </button>
-          </div>
-        </div>
-      </div>
     }
 
   </div>
