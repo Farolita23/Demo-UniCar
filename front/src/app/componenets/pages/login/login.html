@@ -1,17 +1,29 @@
+<!-- Cabecera global -->
 <app-header></app-header>
+<!-- Contenedor de la página -->
 <div class="page-wrapper">
+    <!-- Contenedor principal centrado -->
     <div class="container">
+        <!-- Tarjeta de autenticación -->
         <div class="auth-card">
+            <!-- Marca / identidad de la app -->
             <div class="auth-brand">
+                <!-- Logo -->
                 <img src="/assets/media/icon-dark.png" alt="UniCar" class="auth-logo">
+                <!-- Título principal -->
                 <h1>Bienvenido de nuevo</h1>
+                <!-- Subtítulo -->
                 <p>Accede a tu cuenta de UniCar</p>
             </div>
-
+            <!-- Formulario reactivo -->
             <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
+                <!-- Campo usuario -->
                 <div class="form-group">
+                    <!-- Label -->
                     <label class="label">Usuario</label>
+                    <!-- Input de usuario -->
                     <input type="text" formControlName="username" placeholder="Tu nombre de usuario">
+                    <!-- Validación usuario -->
                     @if ((submited || form.get('username')?.touched) && form.get('username')?.invalid) {
                         @if (form.get('username')?.hasError("required")) {
                             <span class="error-msg">Este campo no puede estar vacio</span>
@@ -20,29 +32,44 @@
                         }
                     }
                 </div>
-
+                <!-- Campo contraseña -->
                 <div class="form-group">
+                    <!-- Label -->
                     <label class="label">Contraseña</label>
+                    <!-- Wrapper input con botón -->
                     <div class="input-wrap">
-                        <input [type]="showPassword ? 'text' : 'password'" formControlName="password"
-                            placeholder="Tu contraseña">
-                        <button type="button" class="eye-btn" (click)="showPassword = !showPassword">{{ showPassword ?
-                            '🙈' : '👁️' }}</button>
+                        <!-- Input contraseña (toggle visible/oculta) -->
+                        <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Tu contraseña">
+                        <!-- Botón mostrar/ocultar contraseña -->
+                        <button type="button" class="eye-btn" (click)="showPassword = !showPassword">{{ showPassword ? '🙈' : '👁️' }}</button>
                     </div>
-                    @if ((submited || form.get('password')?.touched) &&form.get('password')?.invalid) {
+                    <!-- Validación contraseña -->
+                    @if ((submited || form.get('password')?.touched) && form.get('password')?.invalid) {
                         @if (form.get('password')?.getError("required")) {
                             <span class="error-msg">Este campo no puede estar vacio</span>
                         }
                     }
                 </div>
-                @if (error) { <div class="alert alert-error">{{ error }}</div> }
-
+                <!-- Mensaje de error general -->
+                @if (error) {
+                    <div class="alert alert-error">{{ error }}</div>
+                }
+                <!-- Acciones del formulario -->
                 <div class="actions">
-                    <button type="submit" class="btn btn-primary submit-btn" [disabled]="loading">@if (loading) { <span class="spinner"></span> } @else { Acceder }</button>
+                    <!-- Botón submit -->
+                    <button type="submit" class="btn btn-primary submit-btn" [disabled]="loading">
+                        <!-- Estado loading -->
+                        @if (loading) {
+                            <span class="spinner"></span>
+                        } @else {
+                            Acceder
+                        }
+                    </button>
+                    <!-- Botón volver -->
                     <button type="button" class="btn btn-ghost submit-btn" routerLink="/">Volver</button>
                 </div>
             </form>
-
+            <!-- Enlaces secundarios -->
             <div class="auth-links">¿No tienes cuenta? <a routerLink="/signup">¡Registrate!</a></div>
         </div>
     </div>

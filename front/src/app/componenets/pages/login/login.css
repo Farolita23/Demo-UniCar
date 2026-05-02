@@ -1,9 +1,12 @@
+/* Contenedor principal */
 :host .container {
     padding-top: 16px;
     min-height: calc(100% - 72px - 16px * 2);
     padding-bottom: 16px;
     display: flex;
 }
+
+/* Tarjeta de autenticación */
 :host .auth-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -13,56 +16,74 @@
     align-items: center;
     margin: auto;
 }
+
+/* Bloque de marca */
 :host .auth-card .auth-brand {
     display: flex;
     flex-direction: column;
     text-align: center;
     margin-bottom: 32px;
 }
+
+/* Logo */
 :host .auth-card .auth-brand .auth-logo {
-    width:  64px;
+    width: 64px;
     height: 64px;
     margin: auto;
 }
+
+/* Título */
 :host .auth-card .auth-brand h1 {
     font-size: 24px;
     min-height: 24px;
     line-height: 24px;
     margin-bottom: 4px;
 }
+
+/* Subtítulo */
 :host .auth-card .auth-brand p {
     color: var(--text-2);
-    font-size:   14px;
-    min-height:  14px;
+    font-size: 14px;
+    min-height: 14px;
     line-height: 14px;
 }
+
+/* Formulario */
 :host .auth-card .auth-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
+
+/* Wrapper de input */
 :host .auth-card .auth-form .input-wrap {
     position: relative;
 }
-:host .auth-card .auth-form .input-wrap input {
 
-}
+/* Input */
+:host .auth-card .auth-form .input-wrap input {}
+
+/* Botón mostrar/ocultar contraseña */
 :host .auth-card .auth-form .input-wrap .eye-btn {
     position: absolute;
     right: 16px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
-    font-size: 1rem;
+    font-size: 16px;
     line-height: 1;
     color: var(--text-3);
     padding: 0;
 }
+
+/* Acciones del formulario */
 :host .auth-card .auth-form .actions {
     margin-top: 16px;
     display: flex;
     gap: 16px;
 }
+
+/* Botones */
 :host .auth-card .auth-form .actions button {
     margin: auto;
     justify-content: center;
@@ -70,46 +91,66 @@
     font-size: 16px;
     width: 100%;
 }
+
+/* Botón con spinner */
 :host .auth-card .auth-form .actions button:has(.spinner) {
     background-color: var(--border);
 }
+
+/* Spinner */
 :host .auth-card .auth-form .actions button .spinner {
     width: 16px;
     height: 16px;
 }
+
+/* Alertas */
 :host .auth-card .auth-form .alert {
     padding: 8px 16px;
     border-radius: var(--radius-sm);
     font-size: 14px;
 }
+
+/* Alerta de error */
 :host .auth-card .auth-form .alert.alert-error {
     background: rgba(230, 57, 70, 0.1);
     border: 1px solid rgba(230, 57, 70, 0.2);
     color: var(--danger);
 }
+
+/* Enlaces */
 :host .auth-card .auth-links {
     text-align: center;
     font-size: 14px;
     color: var(--text-2);
     margin-top: 16px;
 }
+
+/* Enlace individual */
 :host .auth-card .auth-links a {
     color: var(--primary);
 }
 
-
+/* Responsive móvil */
 @media screen and (max-width: 384px) {
+
+    /* Ocultar header */
     app-header {
         display: none;
     }
+
+    /* Wrapper principal */
     :host .page-wrapper {
         height: 100dvh;
         margin-top: 0;
     }
+
+    /* Contenedor en móvil */
     :host .page-wrapper .container {
         padding: 0;
         border: 0;
     }
+
+    /* Tarjeta en móvil */
     :host .page-wrapper .container .auth-card {
         border: 0;
         padding: 16px;
