@@ -1,250 +1,229 @@
 <app-header></app-header>
 <div class="page-wrapper">
-  <div class="container manage-container">
-
-    @if (loading) {
-      <div class="loading-state">
-        <div class="spinner"></div>
-        <span>Cargando viaje...</span>
-      </div>
-    } @else if (!trip) {
-      <div class="empty-state">
-        <h3>Viaje no encontrado</h3>
-        <a routerLink="/my-trips" class="btn btn-primary">Volver a mis viajes</a>
-      </div>
-    } @else {
-
-      <a routerLink="/my-trips" class="back-link fade-in">← Volver a mis viajes</a>
-
-      <!-- Page header -->
-      <div class="manage-header fade-in">
-        <div class="manage-header__left">
-          <h1 class="manage-title">Gestionar viaje</h1>
-          <div class="direction-badge" [class.to-campus]="trip.isToCampus">
-            {{ trip.isToCampus ? '🎓 Hacia el campus' : '🏠 Desde el campus' }}
-          </div>
+    <div class="container">
+        @if (loading) {
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <span>Cargando viaje...</span>
         </div>
-        <div class="manage-header__actions">
-          <a [routerLink]="['/trip-detail', trip.id]" class="btn btn-ghost">
-            👁 Ver como público
-          </a>
-          <button class="btn btn-danger-outline" (click)="deleteTrip()">
-            🗑 Eliminar viaje
-          </button>
+        } @else if (!trip) {
+        <div class="empty-state">
+            <h3>Viaje no encontrado</h3>
+            <a routerLink="/my-trips" class="btn btn-primary">Volver a mis viajes</a>
         </div>
-      </div>
-
-      <!-- Status overview cards -->
-      <div class="status-grid slide-up">
-        <div class="status-card">
-          <div class="status-icon">🛣</div>
-          <div class="status-info">
-            <span class="status-label">Ruta</span>
-            <span class="status-value">{{ trip.townDTO.name }} → {{ trip.campusDTO.name }}</span>
-          </div>
+        } @else {
+        <a routerLink="/my-trips" class="back-link fade-in">← Volver a mis viajes</a>
+        <!-- Page header -->
+        <div class="manage-header fade-in">
+            <div class="manage-header__left">
+                <h1 class="manage-title">Gestionar viaje</h1>
+                <div class="direction-badge" [class.to-campus]="trip.isToCampus">
+                    {{ trip.isToCampus ? '🎓 Hacia el campus' : '🏠 Desde el campus' }}
+                </div>
+            </div>
+            <div class="manage-header__actions">
+                <a [routerLink]="['/trip-detail', trip.id]" class="btn btn-ghost">👁 Ver</a>
+                <button class="btn btn-danger-outline" (click)="deleteTrip()">🗑 Eliminar</button>
+            </div>
         </div>
-        <div class="status-card">
-          <div class="status-icon">📅</div>
-          <div class="status-info">
-            <span class="status-label">Fecha</span>
-            <span class="status-value">{{ formatDate(trip.departureDate) }}</span>
-          </div>
+        <!-- Status overview cards -->
+        <div class="status-grid slide-up">
+            <div class="status-card">
+                <div class="status-info">
+                    <div class="status-icon">🛣</div>
+                    <span class="status-label">Ruta</span>
+                </div>
+                <span class="status-value"><span class="accent">Desde </span>{{ trip.townDTO.name }}<span
+                        class="accent"> hacia </span>{{ trip.campusDTO.name }}</span>
+            </div>
+            <div class="status-card">
+                <div class="status-info">
+                    <div class="status-icon">📅</div>
+                    <span class="status-label">Fecha</span>
+                </div>
+                <span class="status-value">{{ formatDate(trip.departureDate) }}</span>
+            </div>
+            <div class="status-card">
+                <div class="status-info">
+                    <div class="status-icon">⏰</div>
+                    <span class="status-label">Hora</span>
+                </div>
+                <span class="status-value">{{ trip.departureTime }}</span>
+            </div>
+            <div class="status-card">
+                <div class="status-info">
+                    <div class="status-icon">💰</div>
+                    <span class="status-label">Precio</span>
+                </div>
+                <span class="status-value price-val">{{ trip.price | number:'1.2-2' }}€</span>
+            </div>
         </div>
-        <div class="status-card">
-          <div class="status-icon">⏰</div>
-          <div class="status-info">
-            <span class="status-label">Hora</span>
-            <span class="status-value">{{ trip.departureTime }}</span>
-          </div>
+        <!-- Occupancy bar -->
+        <div class="occupancy-card slide-up delay-1">
+            <div class="section-header occupancy-header">
+                <h2 class="occupancy-title">💺 Ocupación del vehículo</h2>
+                <div class="occupancy-numbers">
+                    <span class="occupancy-current">{{ occupiedSeats }}</span>
+                    <span class="occupancy-sep">/</span>
+                    <span class="occupancy-total">{{ totalSeats }}</span>
+                    <span class="occupancy-label">plazas</span>
+                </div>
+            </div>
+            <div class="occupancy-bar-wrap">
+                <div class="occupancy-bar" [style.width.%]="occupancyPercent" [class.full]="isFull"
+                    [class.almost-full]="freeSeats === 1 && !isFull">
+                </div>
+            </div>
+            <div class="occupancy-footer">
+                @if (isFull) {
+                <span class="occupancy-status full-status pulse">
+                    🔴 Vehículo completo — No se pueden aceptar más solicitudes
+                </span>
+                } @else if (freeSeats === 1) {
+                <span class="occupancy-status almost-status">
+                    🟡 Queda {{ freeSeats }} plaza libre
+                </span>
+                } @else {
+                <span class="occupancy-status free-status">
+                    🟢 {{ freeSeats }} plazas libres
+                </span>
+                }
+            </div>
+            <div class="car-detail-row">
+                <span>🚗 {{ trip.carDTO.model }}</span>
+                <span>🎨 {{ trip.carDTO.color }}</span>
+                <span>📋 {{ trip.carDTO.licensePlate }}</span>
+            </div>
         </div>
-        <div class="status-card">
-          <div class="status-icon">💰</div>
-          <div class="status-info">
-            <span class="status-label">Precio</span>
-            <span class="status-value price-val">{{ trip.price | number:'1.2-2' }}€</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Occupancy bar -->
-      <div class="occupancy-card slide-up delay-1">
-        <div class="occupancy-header">
-          <h2 class="section-title">💺 Ocupación del vehículo</h2>
-          <div class="occupancy-numbers">
-            <span class="occupancy-current">{{ occupiedSeats }}</span>
-            <span class="occupancy-sep">/</span>
-            <span class="occupancy-total">{{ totalSeats }}</span>
-            <span class="occupancy-label">plazas</span>
-          </div>
-        </div>
-        <div class="occupancy-bar-wrap">
-          <div class="occupancy-bar" [style.width.%]="occupancyPercent" [class.full]="isFull" [class.almost-full]="freeSeats === 1 && !isFull">
-          </div>
-        </div>
-        <div class="occupancy-footer">
-          @if (isFull) {
-            <span class="occupancy-status full-status pulse">
-              🔴 Vehículo completo — No se pueden aceptar más solicitudes
-            </span>
-          } @else if (freeSeats === 1) {
-            <span class="occupancy-status almost-status">
-              🟡 Queda {{ freeSeats }} plaza libre
-            </span>
-          } @else {
-            <span class="occupancy-status free-status">
-              🟢 {{ freeSeats }} plazas libres
-            </span>
-          }
-        </div>
-        <div class="car-detail-row">
-          <span>🚗 {{ trip.carDTO.model }}</span>
-          <span>🎨 {{ trip.carDTO.color }}</span>
-          <span>📋 {{ trip.carDTO.licensePlate }}</span>
-        </div>
-      </div>
-
-      <!-- Toast messages -->
-      @if (actionSuccess) {
+        <!-- Toast messages -->
+        @if (actionSuccess) {
         <div class="toast toast-success slide-down">
-          <span class="toast-icon">✅</span>
-          <span>{{ actionSuccess }}</span>
+            <span class="toast-icon">✅</span>
+            <span>{{ actionSuccess }}</span>
         </div>
-      }
-      @if (actionError) {
+        }
+        @if (actionError) {
         <div class="toast toast-error slide-down">
-          <span class="toast-icon">❌</span>
-          <span>{{ actionError }}</span>
+            <span class="toast-icon">❌</span>
+            <span>{{ actionError }}</span>
         </div>
-      }
-
-      <div class="manage-grid">
-
-        <!-- Pending requests section -->
-        <div class="manage-section slide-up delay-2">
-          <div class="section-header">
-            <h2 class="section-title">⏳ Solicitudes pendientes</h2>
-            @if (requesters.length > 0) {
-              <span class="count-badge pending-count">{{ requesters.length }}</span>
-            }
-          </div>
-
-          @if (requesters.length === 0) {
-            <div class="empty-section">
-              <div class="empty-section-icon">📭</div>
-              <p>No hay solicitudes pendientes</p>
-            </div>
-          } @else {
-            <div class="people-list">
-              @for (requester of requesters; track requester.id) {
-                <div class="person-card"
-                     [class.accepting]="acceptedIds.has(requester.id)"
-                     [class.rejecting]="rejectedIds.has(requester.id)">
-                  <div class="person-info">
-                    @if (requester.profileImageUrl) {
-                      <img [src]="requester.profileImageUrl" class="person-avatar" [alt]="requester.name">
-                    } @else {
-                      <div class="person-avatar-init">{{ requester.name.charAt(0) }}</div>
+        }
+        <div class="manage-grid">
+            <!-- Pending requests section -->
+            <div class="manage-section slide-up delay-2">
+                <div class="section-header">
+                    <h2 class="section-title">⏳ Solicitudes pendientes</h2>
+                    @if (requesters.length > 0) {
+                        <span class="count-badge pending-count">{{ requesters.length }}</span>
                     }
-                    <div class="person-details">
-                      <span class="person-name">{{ requester.name }}</span>
-                      <span class="person-username">@{{ requester.username }}</span>
-                    </div>
-                  </div>
-                  <div class="person-actions">
-                    @if (isFull) {
-                      <span class="btn btn-ghost btn-sm" style="opacity:0.5;cursor:not-allowed">
-                        Sin plazas
-                      </span>
-                    } @else {
-                      <button class="btn btn-accept btn-sm"
-                              (click)="acceptRequest(requester)"
-                              [disabled]="!!actionLoading[requester.id]">
-                        @if (isActionLoading(requester.id, 'accept')) {
-                          <span class="btn-spinner"></span>
-                        } @else {
-                          ✓ Aceptar
-                        }
-                      </button>
-                    }
-                    <button class="btn btn-reject btn-sm"
-                            (click)="rejectRequest(requester)"
-                            [disabled]="!!actionLoading[requester.id]">
-                      @if (isActionLoading(requester.id, 'reject')) {
-                        <span class="btn-spinner"></span>
-                      } @else {
-                        ✗ Rechazar
-                      }
-                    </button>
-                  </div>
                 </div>
-              }
-            </div>
-          }
-        </div>
-
-        <!-- Confirmed passengers section -->
-        <div class="manage-section slide-up delay-3">
-          <div class="section-header">
-            <h2 class="section-title">👥 Pasajeros confirmados</h2>
-            @if (passengers.length > 0) {
-              <span class="count-badge confirmed-count">{{ passengers.length }}</span>
-            }
-          </div>
-
-          @if (passengers.length === 0) {
-            <div class="empty-section">
-              <div class="empty-section-icon">🪑</div>
-              <p>Aún no hay pasajeros confirmados</p>
-            </div>
-          } @else {
-            <div class="people-list">
-              @for (passenger of passengers; track passenger.id) {
-                <div class="person-card confirmed"
-                     [class.removing]="removedIds.has(passenger.id)">
-                  <div class="person-info">
-                    @if (passenger.profileImageUrl) {
-                      <img [src]="passenger.profileImageUrl" class="person-avatar" [alt]="passenger.name">
-                    } @else {
-                      <div class="person-avatar-init confirmed-init">{{ passenger.name.charAt(0) }}</div>
+                @if (requesters.length === 0) {
+                    <div class="empty-section">
+                        <div class="empty-section-icon">📭</div>
+                        <p>No hay solicitudes pendientes</p>
+                    </div>
+                } @else {
+                <div class="people-list">
+                    @for (requester of requesters; track requester.id) {
+                    <div class="person-card" [class.accepting]="acceptedIds.has(requester.id)"
+                        [class.rejecting]="rejectedIds.has(requester.id)">
+                        <div class="person-info">
+                            @if (requester.profileImageUrl) {
+                                <img [src]="requester.profileImageUrl" class="person-avatar" [alt]="requester.name">
+                            } @else {
+                                <div class="person-avatar-init">{{ requester.name.charAt(0) }}</div>
+                            }
+                            <div class="person-details">
+                                <span class="person-name">{{ requester.name }}</span>
+                                <span class="person-username">@{{ requester.username }}</span>
+                            </div>
+                        </div>
+                        <div class="person-actions">
+                            @if (isFull) {
+                            <span class="btn btn-ghost btn-sm" style="opacity:0.5;cursor:not-allowed">
+                                Sin plazas
+                            </span>
+                            } @else {
+                            <button class="btn btn-accept" (click)="acceptRequest(requester)"
+                                [disabled]="!!actionLoading[requester.id]">
+                                @if (isActionLoading(requester.id, 'accept')) {
+                                <span class="btn-spinner"></span>
+                                } @else {
+                                ✓
+                                }
+                            </button>
+                            }
+                            <button class="btn btn-reject" (click)="rejectRequest(requester)"
+                                [disabled]="!!actionLoading[requester.id]">
+                                @if (isActionLoading(requester.id, 'reject')) {
+                                <span class="btn-spinner"></span>
+                                } @else {
+                                ✗ 
+                                }
+                            </button>
+                        </div>
+                    </div>
                     }
-                    <div class="person-details">
-                      <span class="person-name">{{ passenger.name }}</span>
-                      <span class="person-username">@{{ passenger.username }}</span>
-                    </div>
-                    <!-- Inline star rating -->
-                    <div class="inline-stars" [class.is-saving]="pLoading[passenger.id]">
-                      @for (star of [1,2,3,4,5]; track star) {
-                        <button type="button"
-                          class="i-star"
-                          [class.active]="star <= (pRating[passenger.id] || 0)"
-                          [disabled]="pLoading[passenger.id]"
-                          (click)="clickStar(passenger.id, star); $event.stopPropagation()">★</button>
-                      }
-                      @if (pSaved[passenger.id]) {
-                        <span class="i-saved">✓</span>
-                      }
-                    </div>
-                  </div>
-                  <div class="person-actions">
-                    <button class="btn btn-remove btn-sm"
-                            (click)="removePassenger(passenger)"
-                            [disabled]="!!actionLoading[passenger.id]">
-                      @if (isActionLoading(passenger.id, 'remove')) {
-                        <span class="btn-spinner"></span>
-                      } @else {
-                        Eliminar
-                      }
-                    </button>
-                  </div>
                 </div>
-              }
+                }
             </div>
-          }
+            <!-- Confirmed passengers section -->
+            <div class="manage-section slide-up delay-3">
+                <div class="section-header">
+                    <h2 class="section-title">👥 Pasajeros confirmados</h2>
+                    @if (passengers.length > 0) {
+                    <span class="count-badge confirmed-count">{{ passengers.length }}</span>
+                    }
+                </div>
+                @if (passengers.length === 0) {
+                <div class="empty-section">
+                    <div class="empty-section-icon">🪑</div>
+                    <p>Aún no hay pasajeros confirmados</p>
+                </div>
+                } @else {
+                <div class="people-list">
+                    @for (passenger of passengers; track passenger.id) {
+                    <div class="person-card confirmed" [class.removing]="removedIds.has(passenger.id)">
+                        <div class="person-info">
+                            @if (passenger.profileImageUrl) {
+                                <img [src]="passenger.profileImageUrl" class="person-avatar" [alt]="passenger.name">
+                            } @else {
+                                <div class="person-avatar-init confirmed-init">{{ passenger.name.charAt(0) }}</div>
+                            }
+                            <div class="person-details">
+                                <span class="person-name">{{ passenger.name }}</span>
+                                <span class="person-username">@{{ passenger.username }}</span>
+                            </div>
+                            <!-- Inline star rating -->
+                            <div class="inline-stars" [class.is-saving]="pLoading[passenger.id]">
+                                @for (star of [1,2,3,4,5]; track star) {
+                                <button type="button" class="i-star"
+                                    [class.active]="star <= (pRating[passenger.id] || 0)"
+                                    [disabled]="pLoading[passenger.id]"
+                                    (click)="clickStar(passenger.id, star); $event.stopPropagation()">★</button>
+                                }
+                                @if (pSaved[passenger.id]) {
+                                <span class="i-saved">✓</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="person-actions">
+                            <button class="btn btn-remove" (click)="removePassenger(passenger)"
+                                [disabled]="!!actionLoading[passenger.id]">
+                                @if (isActionLoading(passenger.id, 'remove')) {
+                                <span class="btn-spinner"></span>
+                                } @else {
+                                ✗
+                                }
+                            </button>
+                        </div>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
         </div>
-
-      </div>
-
-    }
-  </div>
+        }
+    </div>
+    <app-footer></app-footer>
 </div>
-<app-footer></app-footer>
