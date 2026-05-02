@@ -1,88 +1,83 @@
 <app-header></app-header>
 <div class="page-wrapper">
-  <div class="container fav-container">
-
-    <div class="page-header">
-      <h1>Favoritos</h1>
-      <p class="page-subtitle">Personas que sigues y sus viajes</p>
-    </div>
-
-    <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab" [class.active]="activeTab === 'people'" (click)="activeTab = 'people'">
-        👥 Personas
-        @if (favorites.length > 0) {
-          <span class="tab-badge">{{ favorites.length }}</span>
-        }
-      </button>
-      <button class="tab" [class.active]="activeTab === 'trips'" (click)="activeTab = 'trips'">
-        🚗 Sus viajes
-        @if (favoriteTrips.length > 0) {
-          <span class="tab-badge">{{ favoriteTrips.length }}</span>
-        }
-      </button>
-    </div>
-
-    <!-- People tab -->
-    @if (activeTab === 'people') {
-      @if (loading) {
-        <div class="loading-state">
-          <div class="spinner"></div>
-          <span>Cargando favoritos...</span>
+    <div class="container">
+        <div class="page-header">
+            <h1>Favoritos</h1>
+            <p class="page-subtitle">Personas que sigues y sus viajes</p>
         </div>
-      } @else if (favorites.length === 0) {
-        <div class="empty-state">
-          <div class="empty-icon">⭐</div>
-          <h3>No tienes favoritos</h3>
-          <p>Visita el perfil de otros usuarios y márcalos como favoritos para seguir sus viajes.</p>
-        </div>
-      } @else {
-        <div class="fav-grid">
-          @for (fav of favorites; track fav.id) {
-            <div class="fav-card anim-slide-up">
-              <div class="fav-card__info" (click)="goToProfile(fav.favoriteUserDTO.id)">
-                @if (fav.favoriteUserDTO.profileImageUrl) {
-                  <img [src]="fav.favoriteUserDTO.profileImageUrl" class="fav-avatar">
-                } @else {
-                  <div class="fav-avatar-init">{{ fav.favoriteUserDTO.name.charAt(0) }}</div>
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab" [class.active]="activeTab === 'people'" (click)="activeTab = 'people'">
+                👥 Personas
+                @if (favorites.length > 0) {
+                <span class="tab-badge">{{ favorites.length }}</span>
                 }
-                <div class="fav-details">
-                  <span class="fav-name">{{ fav.favoriteUserDTO.name }}</span>
-                  <span class="fav-username">@{{ fav.favoriteUserDTO.username }}</span>
-                </div>
-              </div>
-              <div class="fav-card__actions">
-                <a [routerLink]="['/user', fav.favoriteUserDTO.id]" class="btn btn-ghost btn-sm">Ver perfil</a>
-                <button class="btn btn-remove btn-sm" (click)="removeFavorite(fav)">✕</button>
-              </div>
-            </div>
-          }
+            </button>
+            <button class="tab" [class.active]="activeTab === 'trips'" (click)="activeTab = 'trips'">
+                🚗 Sus viajes
+                @if (favoriteTrips.length > 0) {
+                <span class="tab-badge">{{ favoriteTrips.length }}</span>
+                }
+            </button>
         </div>
-      }
-    }
-
-    <!-- Trips tab -->
-    @if (activeTab === 'trips') {
-      @if (loadingTrips) {
+        <!-- People tab -->
+        @if (activeTab === 'people') {
+        @if (loading) {
         <div class="loading-state">
-          <div class="spinner"></div>
-          <span>Cargando viajes...</span>
+            <div class="spinner"></div>
+            <span>Cargando favoritos...</span>
         </div>
-      } @else if (favoriteTrips.length === 0) {
+        } @else if (favorites.length === 0) {
         <div class="empty-state">
-          <div class="empty-icon">🚗</div>
-          <h3>Sin viajes de favoritos</h3>
-          <p>Tus usuarios favoritos aún no han publicado viajes.</p>
+            <div class="empty-icon">⭐</div>
+            <h3>No tienes favoritos</h3>
+            <p>Visita el perfil de otros usuarios y márcalos como favoritos para seguir sus viajes.</p>
         </div>
-      } @else {
+        } @else {
+        <div class="fav-grid">
+            @for (fav of favorites; track fav.id) {
+            <div class="fav-card anim-slide-up">
+                <div class="fav-card__info" (click)="goToProfile(fav.favoriteUserDTO.id)">
+                    @if (fav.favoriteUserDTO.profileImageUrl) {
+                    <img [src]="fav.favoriteUserDTO.profileImageUrl" class="fav-avatar">
+                    } @else {
+                    <div class="fav-avatar-init">{{ fav.favoriteUserDTO.name.charAt(0) }}</div>
+                    }
+                    <div class="fav-details">
+                        <span class="fav-name">{{ fav.favoriteUserDTO.name }}</span>
+                        <span class="fav-username">@{{ fav.favoriteUserDTO.username }}</span>
+                    </div>
+                </div>
+                <div class="fav-card__actions">
+                    <a [routerLink]="['/user', fav.favoriteUserDTO.id]" class="btn btn-ghost btn-sm">Ver</a>
+                    <button class="btn btn-remove btn-sm" (click)="removeFavorite(fav)">✕</button>
+                </div>
+            </div>
+            }
+        </div>
+        }
+        }
+        <!-- Trips tab -->
+        @if (activeTab === 'trips') {
+        @if (loadingTrips) {
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <span>Cargando viajes...</span>
+        </div>
+        } @else if (favoriteTrips.length === 0) {
+        <div class="empty-state">
+            <div class="empty-icon">🚗</div>
+            <h3>Sin viajes de favoritos</h3>
+            <p>Tus usuarios favoritos aún no han publicado viajes.</p>
+        </div>
+        } @else {
         <div class="trips-list">
-          @for (trip of favoriteTrips; track trip.id; let i = $index) {
+            @for (trip of favoriteTrips; track trip.id; let i = $index) {
             <app-trip [data]="trip" (tripUpdated)="updateTrip($event, i)"></app-trip>
-          }
+            }
         </div>
-      }
-    }
-
-  </div>
+        }
+        }
+    </div>
+    <app-footer></app-footer>
 </div>
-<app-footer></app-footer>
