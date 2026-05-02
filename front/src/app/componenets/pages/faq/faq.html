@@ -1,23 +1,23 @@
 <app-header></app-header>
 <div class="page-wrapper">
-  <div class="container faq-page">
-    <div class="faq-header">
-      <h1>Preguntas frecuentes</h1>
-      <p>Todo lo que necesitas saber sobre UniCar</p>
-    </div>
-    <div class="faq-list">
-      @for (item of items; track item.q; let i = $index) {
-        <div class="faq-item" [class.open]="openIndex === i" (click)="toggle(i)">
-          <div class="faq-question">
-            <span>{{ item.q }}</span>
-            <span class="faq-icon">{{ openIndex === i ? '−' : '+' }}</span>
-          </div>
-          @if (openIndex === i) {
-            <div class="faq-answer animate-fadeUp">{{ item.a }}</div>
-          }
+    <div class="container">
+        <div class="faq-header">
+            <h1>Preguntas frecuentes</h1>
+            <p>Todo lo que necesitas saber sobre UniCar</p>
         </div>
-      }
+        <div class="faq-list">
+            @for (item of items; track item.q; let i = $index) {
+            <div class="faq-item" [style.animation-delay]="(i * 0.05) + 's'" [class.open]="openIndex === i" (click)="toggle(i)">
+                <div class="faq-question">
+                    <span>{{ item.q }}</span>
+                    <span class="faq-icon">{{ openIndex === i ? '−' : '+' }}</span>
+                </div>
+                @if (openIndex === i) {
+                <div class="faq-answer animate-fadeUp">{{ item.a }}</div>
+                }
+            </div>
+            }
+        </div>
     </div>
-  </div>
+    <app-footer></app-footer>
 </div>
-<app-footer></app-footer>
