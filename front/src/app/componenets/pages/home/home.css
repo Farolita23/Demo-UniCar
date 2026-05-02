@@ -1,4 +1,3 @@
-/* HOME PAGE — Full redesign */
 /* HERO */
 :host .hero {
     position: relative;
@@ -7,16 +6,22 @@
     border-bottom: 1px solid var(--border);
     margin-bottom: 64px;
 }
+
+/* Fondo del hero */
 :host .hero .hero-bg {
     position: absolute;
     inset: 0;
     pointer-events: none;
 }
+
+/* Blobs decorativos */
 :host .hero .hero-blob {
     position: absolute;
     border-radius: 50%;
     filter: blur(96px) brightness(12.5%);
 }
+
+/* Blob 1 */
 :host .hero .hero-blob.blob-1 {
     width: 700px;
     height: 700px;
@@ -25,6 +30,8 @@
     left: -150px;
     animation: hero-blob-rotation 5s linear infinite reverse;
 }
+
+/* Blob 2 */
 :host .hero .hero-blob.blob-2 {
     width: 500px;
     height: 500px;
@@ -33,6 +40,8 @@
     right: 0;
     animation: hero-blob-rotation 5s linear infinite;
 }
+
+/* Blob 3 */
 :host .hero .hero-blob.blob-3 {
     width: 300px;
     height: 300px;
@@ -41,11 +50,23 @@
     right: 30%;
     animation: hero-blob-rotation 5s linear infinite reverse;
 }
+
+/* Animación blobs */
 @keyframes hero-blob-rotation {
-      0% { scale: 1.0; }
-     50% { scale: 1.5; }
-    100% { scale: 1.0; }
+    0% {
+        scale: 1.0;
+    }
+
+    50% {
+        scale: 1.5;
+    }
+
+    100% {
+        scale: 1.0;
+    }
 }
+
+/* Contenido hero */
 :host .hero .hero-content {
     position: relative;
     z-index: 1;
@@ -55,6 +76,8 @@
     align-items: start;
     padding: 0;
 }
+
+/* Badge hero */
 :host .hero .hero-content .hero-badge {
     height: 14px;
     display: inline-flex;
@@ -68,6 +91,8 @@
     font-weight: 600;
     color: var(--primary-light);
 }
+
+/* Punto del badge */
 :host .hero .hero-content .hero-badge .badge-dot {
     width: 7px;
     height: 7px;
@@ -75,13 +100,19 @@
     border-radius: 50%;
     animation: pulseRing 2s ease infinite;
 }
+
+/* Título hero */
 :host .hero .hero-content .hero-title {
     font-size: 64px;
     line-height: 1.05;
 }
+
+/* Highlight del título */
 :host .hero .hero-content .hero-title .hero-highlight {
     color: var(--primary);
 }
+
+/* Subtítulo */
 :host .hero .hero-content .hero-sub {
     color: var(--text-2);
     font-size: 18px;
@@ -89,16 +120,21 @@
     margin-bottom: 32px;
     max-width: 45%;
 }
+
+/* Acciones hero */
 :host .hero .hero-content .hero-actions {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
+
+/* Botón hero */
 :host .hero .hero-content .hero-actions .hero-btn {
     padding: 16px 32px;
     font-size: 16px;
 }
-/* SECTION HEADINGS (reusable) */
+
+/* Cabeceras de sección */
 :host .section-head {
     text-align: center;
     margin: 32px 0;
@@ -107,9 +143,11 @@
     flex-direction: column;
     align-items: center;
 }
+
+/* Badge de sección */
 :host .section-head .section-badge {
-    height:      16px;
-    font-size:   16px;
+    height: 16px;
+    font-size: 16px;
     line-height: 16px;
     display: block;
     background: rgba(230, 57, 70, 0.15);
@@ -121,14 +159,20 @@
     letter-spacing: 2px;
     color: var(--primary-light);
 }
+
+/* Badge alternativo */
 :host .section-head .section-badge-accent {
     background: rgba(255, 183, 3, 0.1);
     border-color: rgba(255, 183, 3, 0.2);
     color: var(--accent);
 }
+
+/* Título sección */
 :host .section-head .section-title {
     font-size: 32px;
 }
+
+/* Subtítulo sección */
 :host .section-head .section-sub {
     color: var(--text-2);
     font-size: 16px;
@@ -136,10 +180,13 @@
     width: 512px;
     margin-top: -16px;
 }
-/* HOW IT WORKS */
+
+/* HOW SECTION */
 :host .how-section {
     padding-bottom: 64px;
 }
+
+/* Grid de pasos */
 :host .how-section .steps-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -147,6 +194,8 @@
     justify-content: center;
     gap: 16px;
 }
+
+/* Tarjeta paso */
 :host .how-section .steps-grid .step-card {
     width: calc(100% - 32px * 2 - 1px * 2);
     background: var(--surface);
@@ -159,21 +208,27 @@
     flex-direction: column;
     gap: 16px;
 }
+
+/* Hover paso */
 :host .how-section .steps-grid .step-card:hover {
     border-color: rgba(230, 57, 70, 0.2);
     transform: translateY(-8px);
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
     transition: transform 0.2s;
 }
+
+/* Cabecera paso */
 :host .how-section .steps-grid .step-card .step-icon-wrap {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 0;
 }
+
+/* Icono paso */
 :host .how-section .steps-grid .step-card .step-icon-wrap .step-icon {
     font-size: 32px;
-    width:  64px;
+    width: 64px;
     height: 64px;
     display: flex;
     align-items: center;
@@ -181,28 +236,37 @@
     background: rgba(230, 57, 70, 0.08);
     border-radius: var(--radius-sm);
 }
+
+/* Número paso */
 :host .how-section .steps-grid .step-card .step-icon-wrap .step-num {
     font-family: 'Syne', sans-serif;
-    height:      64px;
-    font-size:   64px;
+    height: 64px;
+    font-size: 64px;
     line-height: 64px;
     font-weight: 800;
     color: var(--primary-light);
     text-shadow: 1px 2px 8px var(--primary);
 }
+
+/* Título paso */
 :host .how-section .steps-grid .step-card .step-title {
     font-size: 24px;
 }
+
+/* Descripción paso */
 :host .how-section .steps-grid .step-card .step-desc {
     margin-top: -8px;
     color: var(--text-2);
     font-size: 16px;
     line-height: 24px;
 }
-/* SUGGESTED TRIPS */
+
+/* SUGGESTED SECTION */
 :host .suggested-section {
     padding-bottom: 64px;
 }
+
+/* Grid sugeridos */
 :host .suggested-section .suggested-grid {
     display: flex;
     flex-wrap: wrap;
@@ -210,42 +274,59 @@
     padding-bottom: 32px;
     gap: 16px;
 }
+
+/* Tarjetas viaje */
 :host .suggested-section .suggested-grid app-trip {
     width: calc((100% - 16px * 2) / 3);
 }
+
+/* Estado carga */
 :host .suggested-section .trips-loading {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    padding: 3rem 0;
+    gap: 16px;
+    padding: 48px 0;
     color: var(--text-2);
 }
+
+/* Estado vacío */
 :host .suggested-section .trips-empty {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 64px 32px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: 16px;
 }
+
+/* Icono vacío */
 :host .suggested-section .trips-empty-icon {
-    font-size: 3rem;
+    font-size: 48px;
 }
+
+/* Título vacío */
 :host .suggested-section .trips-empty h3 {
-    font-size: 1.3rem;
+    font-size: 24px;
 }
+
+/* Texto vacío */
 :host .suggested-section .trips-empty p {
     color: var(--text-2);
-    max-width: 360px;
+    max-width: 256px;
 }
+
+/* Ver todos */
 :host .suggested-section .trips-see-all {
     text-align: center;
 }
+
 /* CTA SECTION */
 :host .cta-section {
     padding-bottom: 64px;
 }
+
+/* Contenedor CTA */
 :host .cta-section .cta-inner {
     background: linear-gradient(135deg, rgba(230, 57, 70, 0.08), rgba(255, 183, 3, 0.06));
     border: 1px solid rgba(230, 57, 70, 0.12);
@@ -256,15 +337,21 @@
     justify-content: space-between;
     gap: 16px;
 }
+
+/* Texto CTA */
 :host .cta-section .cta-inner .cta-text {
     padding: 16px;
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
+
+/* Título CTA */
 :host .cta-section .cta-inner .cta-text h2 {
     font-size: 24px;
 }
+
+/* Descripción CTA */
 :host .cta-section .cta-inner .cta-text p {
     color: var(--text-2);
     font-size: 16px;
@@ -272,6 +359,8 @@
     width: 512px;
     max-width: 100%;
 }
+
+/* Acción CTA */
 :host .cta-section .cta-inner .cta-action {
     flex-shrink: 0;
     padding: 16px 32px;
@@ -280,65 +369,78 @@
     margin: 16px;
 }
 
-/* RESPONSIVE – BIG TABLET */
+/* Responsive tablet grande */
 @media (max-width: calc(768px + 256px)) {
     :host .how-section .steps-grid {
         display: flex;
     }
+
     :host .how-section .steps-grid .step-card {
         width: calc((100% - 16px * 1 - 1px * 4 - 32px * 4) / 2);
     }
+
     :host .suggested-section .suggested-grid app-trip {
         width: calc((100% - 16px * 1) / 2);
     }
+
     :host .cta-section .cta-inner {
         flex-direction: column;
         gap: 0;
     }
-    :host .cta-section .cta-inner .cta-text{
+
+    :host .cta-section .cta-inner .cta-text {
         width: calc(100% - 16px * 2);
     }
-    :host .cta-section .cta-inner .cta-text h2{
+
+    :host .cta-section .cta-inner .cta-text h2 {
         text-align: center;
     }
+
     :host .cta-section .cta-inner .cta-text p {
         width: 100%;
         text-align: center;
     }
 }
 
-/* RESPONSIVE – TABLET */
+/* Responsive tablet */
 @media (max-width: 768px) {
     :host .hero .hero-content .hero-title {
         font-size: 48px;
     }
+
     :host .hero .hero-content .hero-sub {
         max-width: 100%;
     }
+
     :host .how-section .steps-grid {
         flex-direction: column;
     }
-    :host .how-section .steps-grid .step-card{
+
+    :host .how-section .steps-grid .step-card {
         width: calc((100% - 16px * 0 - 1px * 2 - 32px * 2) / 1);
     }
+
     :host .suggested-section .suggested-grid {
         flex-direction: column;
     }
-    :host .suggested-section .suggested-grid app-trip{
+
+    :host .suggested-section .suggested-grid app-trip {
         width: 100%;
     }
+
     :host .cta-section .cta-inner {
         flex-direction: column;
         gap: 0;
     }
 }
 
-/* RESPONSIVE – MOBILE */
+/* Responsive móvil */
 @media (max-width: 384px) {
     :host .hero .hero-content .hero-actions {
         width: 100%;
         grid-template-columns: 1fr;
     }
+
     :host .hero .hero-content .hero-actions .hero-btn {
         width: calc(100% - 32px * 2);
     }
