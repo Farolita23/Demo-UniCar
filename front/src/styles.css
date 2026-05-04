@@ -400,6 +400,7 @@ button {
         transform: translateY(0);
     }
 }
+
 @keyframes g-slideDown {
     from {
         opacity: 0;
@@ -452,6 +453,27 @@ button {
         opacity: 0.85;
         transform: scale(1.04);
     }
+}
+
+@keyframes flashPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.anim-flash-pop {
+    animation: g-flashPop 0.3s ease both;
 }
 
 .anim-pulse {
