@@ -62,6 +62,7 @@ export class TripCard {
   }
 
   goToDetail() { this.router.navigate(['/trip-detail', this.data.id]); }
+  goToManage() { this.router.navigate(['/manage-trip', this.data.id]); }
 
   goToDriverProfile(event: Event) {
     event.stopPropagation();

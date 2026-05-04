@@ -87,11 +87,6 @@
     gap: 16px;
 }
 
-/* Animación de entrada */
-:host .fav-grid .fav-card.anim-slide-up {
-    animation: animSlideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
 /* Hover en tarjeta */
 :host .fav-grid .fav-card:hover {
     border-color: rgba(255, 183, 3, 0.3);
@@ -209,19 +204,6 @@
 :host .empty-state p {
     color: var(--text-2);
     max-width: 384px;
-}
-
-/* Animación slide up */
-@keyframes animSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* Responsive */
