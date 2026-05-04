@@ -7,8 +7,6 @@ import { SearchTrip } from './componenets/pages/search-trip/search-trip';
 import { Signup } from './componenets/pages/signup/signup';
 import { Login } from './componenets/pages/login/login';
 import { Logout } from './componenets/pages/logout/logout';
-import { RecoveryPassword } from './componenets/pages/recovery-password/recovery-password';
-import { ResetPassword } from './componenets/pages/reset-password/reset-password';
 import { Settings } from './componenets/pages/settings/settings';
 import { PageTrip } from './componenets/pages/trip/trip';
 import { TripDetail } from './componenets/pages/trip-detail/trip-detail';
@@ -32,8 +30,6 @@ export const routes: Routes = [
     canActivate: [NoAuthGuard],
     children: [
       { path: 'login', component: Login },
-      { path: 'recovery-password', component: RecoveryPassword },
-      { path: 'reset-password', component: ResetPassword },
       { path: 'signup', component: Signup },
     ],
   },

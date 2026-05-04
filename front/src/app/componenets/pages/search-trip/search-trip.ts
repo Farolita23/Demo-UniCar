@@ -2,7 +2,7 @@ import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef, PLATFORM_ID } 
 import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Subject, switchMap, tap, catchError, of } from 'rxjs';
+import { Subject, switchMap, tap, catchError, of, filter } from 'rxjs';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
 import { TripCard } from '../../elements/trip/trip';

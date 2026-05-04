@@ -80,9 +80,9 @@
     border-color: rgba(255, 183, 3, 0.3);
 }
 
-/* =============== */
-/* RESPONSIBILIDAD */
-/* =============== */
+/* ============= */
+/* RESPONSIVIDAD */
+/* ============= */
 
 /* TABLET GRANDE */
 @media (max-width: calc(768px + 128px)) {

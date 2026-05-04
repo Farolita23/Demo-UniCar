@@ -400,7 +400,6 @@ button {
         transform: translateY(0);
     }
 }
-
 @keyframes g-slideDown {
     from {
         opacity: 0;

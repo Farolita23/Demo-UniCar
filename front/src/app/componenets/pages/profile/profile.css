@@ -1,11 +1,17 @@
-:host .page-wrapper > .container {
+/* ==================== */
+/* ESTILOS DE LA PAGINA */
+/* ==================== */
+/* ESTILOS DEL CONTENEDOR PRINCIPAL */
+:host .container {
     display: grid;
     grid-template-columns: 280px 1fr;
     gap: 16px;
-    padding-top: 2rem;
-    padding-bottom: 4rem;
+    padding-top: 32px;
+    padding-bottom: 64px;
     align-items: start;
 }
+
+/* ESTILOS DEL PANEL */
 :host .profile-sidebar {
     position: sticky;
     top: calc(0px + 16px);
@@ -13,6 +19,8 @@
     flex-direction: column;
     gap: 16px;
 }
+
+/* ESTILOS DE LA CARTA DE PERFIL */
 :host .profile-sidebar .profile-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -24,10 +32,14 @@
     align-items: center;
     gap: 8px;
 }
+
+/* ESTILOS DEL CONTENEDOR DE LA IMAGEN DE PERFIL */
 :host .profile-sidebar .profile-card .avatar-wrap {
     position: relative;
     display: inline-block;
 }
+
+/* ESTILOS DE LA IMAGEN DE PERFIL */
 :host .profile-sidebar .profile-card .avatar-wrap .profile-avatar {
     width: 90px;
     height: 90px;
@@ -35,13 +47,15 @@
     object-fit: cover;
     border: 3px solid var(--primary);
 }
+
+/* ESTILOS DE LAS INICIALES DE IMAGEN DE PERFIL */
 :host .profile-sidebar .profile-card .avatar-wrap .profile-avatar-init {
     width: 90px;
     height: 90px;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: #fff;
-    font-size: 2.5rem;
+    font-size: 32px;
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     display: flex;
@@ -49,6 +63,8 @@
     justify-content: center;
     border: 3px solid var(--primary);
 }
+
+/* ESTILOS DE LA VALORACION */
 :host .profile-sidebar .profile-card .avatar-wrap .rating-badge {
     position: absolute;
     bottom: 0;
@@ -60,13 +76,19 @@
     padding: 2px 6px;
     border-radius: 16px;
 }
+
+/* ESTILOS DEL NOMBRE */
 :host .profile-sidebar .profile-card .profile-name {
     font-size: 18px;
 }
+
+/* ESTILOS DEL NOMBRE DE USUARIO */
 :host .profile-sidebar .profile-card .profile-username {
     font-size: 14px;
     color: var(--text-2);
 }
+
+/* ESTILOS DE LA INSIGNIA DE CONDUCTOR */
 :host .profile-sidebar .profile-card .driver-badge {
     background: rgba(6, 214, 160, 0.1);
     border: 1px solid rgba(6, 214, 160, 0.2);
@@ -76,11 +98,15 @@
     padding: 6px 12px;
     border-radius: 16px;
 }
+
+/* ESTILOS DE LAS ESTADISTICAS */
 :host .profile-sidebar .profile-card .profile-stats {
     display: flex;
     width: 100%;
     justify-content: center;
 }
+
+/* ESTILOS DE CADA ESTADISTICA */
 :host .profile-sidebar .profile-card .profile-stats .pstat {
     margin: 8px;
     width: 100%;
@@ -88,16 +114,22 @@
     flex-direction: column;
     align-items: center;
 }
+
+/* ESTILOS DEL NUMERO DE CADA ESTADISTICA */
 :host .profile-sidebar .profile-card .profile-stats .pstat span {
     font-size: 20px;
     font-weight: 700;
     color: var(--primary);
 }
+
+/* ESTILOS DEL NOMBRE DE CADA ESTADISTICA */
 :host .profile-sidebar .profile-card .profile-stats .pstat small {
     font-size: 12px;
     color: var(--text-3);
     text-align: center;
 }
+
+/* ESTILOS DE LA DESCRIPCION DEL PERFIL */
 :host .profile-sidebar .profile-card .profile-desc {
     font-size: 14px;
     color: var(--text-2);
@@ -105,6 +137,8 @@
     text-align: left;
     width: 100%;
 }
+
+/* ESTILOS DE LA NAVEGACION */
 :host .profile-sidebar .profile-nav {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -113,46 +147,55 @@
     display: flex;
     flex-direction: column;
 }
+
+/* ESTILOS DE LOS BOTONES DE NAVEGACION */
 :host .profile-sidebar .profile-nav button {
     background: none;
     border: none;
     padding: 8px 16px;
     text-align: left;
     color: var(--text-2);
-    font-size: 0.875rem;
+    font-size: 14px;
     cursor: pointer;
     transition: var(--transition);
     border-bottom: 1px solid var(--border);
     font-family: 'DM Sans', sans-serif;
 }
+
 :host .profile-sidebar .profile-nav button:last-child {
     border-bottom: none;
 }
+
 :host .profile-sidebar .profile-nav button:hover {
     background: var(--bg-3);
     color: var(--text);
 }
+
 :host .profile-sidebar .profile-nav button.active {
     background: rgba(230, 57, 70, 0.08);
     color: var(--primary);
     font-weight: bold;
 }
+
 :host .tab-content {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
+
 :host .tab-content .tab-title {
     padding-top: 16px;
     font-size: 20px;
     min-height: 20px;
     line-height: 20px;
 }
+
 :host .tab-content .tab-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
 :host .tab-content .info-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -162,6 +205,7 @@
     border-radius: var(--radius);
     overflow: hidden;
 }
+
 :host .tab-content .info-grid .info-item {
     background: var(--surface);
     padding: 16px;
@@ -169,6 +213,7 @@
     flex-direction: column;
     gap: 4px;
 }
+
 :host .tab-content .info-grid .info-item .info-label {
     font-size: 14px;
     text-transform: uppercase;
@@ -176,9 +221,11 @@
     color: var(--text-3);
     font-weight: bold;
 }
+
 :host .tab-content .info-grid .info-item span {
     font-size: 14px;
 }
+
 :host .tab-content .strikes-warn {
     background: rgba(255, 183, 3, 0.1);
     border: 1px solid rgba(255, 183, 3, 0.2);
@@ -187,20 +234,24 @@
     border-radius: 8px;
     font-size: 16px;
 }
+
 :host .tab-content .trips-list {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 16px;
 }
+
 :host .tab-content .trips-list app-trip {
     width: calc((100% - 16px * 1) / 2);
 }
+
 :host .tab-content .cars-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
+
 :host .tab-content .cars-grid .car-card-profile {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -210,22 +261,27 @@
     align-items: center;
     gap: 16px;
 }
+
 :host .tab-content .cars-grid .car-card-profile .car-icon {
     font-size: 32px;
 }
+
 :host .tab-content .cars-grid .car-card-profile .car-info {
     flex: 1;
 }
+
 :host .tab-content .cars-grid .car-card-profile .car-info h4 {
     font-size: 16px;
     text-transform: uppercase;
     margin-bottom: 2px;
 }
+
 :host .tab-content .cars-grid .car-card-profile .car-info p {
     font-size: 14px;
     color: var(--text-2);
     margin-bottom: 6px;
 }
+
 :host .tab-content .cars-grid .car-card-profile .delete-btn {
     background: rgba(230, 57, 70, 0.1);
     border: 1px solid rgba(230, 57, 70, 0.2);
@@ -242,11 +298,13 @@
     flex-direction: column;
     gap: 16px;
 }
+
 :host .tab-content .edit-form .form-row-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
+
 :host .tab-content .edit-form .image-upload-area {
     border: 2px dashed var(--border);
     border-radius: var(--radius);
@@ -262,10 +320,12 @@
     align-items: center;
     justify-content: center;
 }
+
 :host .tab-content .edit-form .image-upload-area:hover {
     border-color: var(--primary);
     background: rgba(230, 57, 70, 0.04);
 }
+
 :host .tab-content .edit-form .image-upload-area .upload-placeholder {
     display: flex;
     flex-direction: column;
@@ -274,13 +334,16 @@
     color: var(--text-2);
     font-size: 14px;
 }
+
 :host .tab-content .edit-form .image-upload-area .upload-placeholder .upload-icon {
     font-size: 32px;
 }
+
 :host .tab-content .edit-form .image-upload-area .upload-placeholder small {
     color: var(--text-3);
     font-size: 14px;
 }
+
 :host .tab-content .edit-form .image-upload-area .preview-img {
     width: 128px;
     height: 128px;
@@ -288,6 +351,7 @@
     border-radius: var(--radius-sm);
     display: block;
 }
+
 :host .tab-content .edit-form .image-upload-area .preview-overlay {
     position: absolute;
     inset: 0;
@@ -302,34 +366,40 @@
     opacity: 0;
     transition: var(--transition);
 }
+
 :host .tab-content .edit-form .image-upload-area:hover .preview-overlay {
     opacity: 1;
 }
+
 :host .tab-content .edit-form .alert {
     padding: 12px 24px;
     border-radius: var(--radius-sm);
     font-size: 14px;
 }
+
 :host .tab-content .edit-form .alert.alert-success {
     background: rgba(6, 214, 160, 0.1);
     border: 1px solid rgba(6, 214, 160, 0.2);
     color: var(--success);
 }
+
 :host .tab-content .edit-form .alert.alert-error {
     background: rgba(230, 57, 70, 0.1);
     border: 1px solid rgba(230, 57, 70, 0.2);
     color: var(--danger);
 }
-.empty-state {
+:host .empty-state {
     text-align: center;
-    padding: 2rem;
+    padding: 32px;
     color: var(--text-2);
 }
-.loading-state {
+
+:host .loading-state {
     display: flex;
     justify-content: center;
-    padding: 4rem;
+    padding: 64px;
 }
+
 /* MODAL */
 :host .modal-backdrop {
     position: fixed;
@@ -341,6 +411,7 @@
     justify-content: center;
     padding: 16px;
 }
+
 :host .modal-backdrop .modal {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -349,103 +420,108 @@
     width: 100%;
     max-width: 512px;
 }
+
 :host .modal-backdrop .modal .modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 16px;
 }
+
 :host .modal-backdrop .modal .modal-header h3 {
     font-size: 24px;
     height: 24px;
     line-height: 24px;
 }
+
 :host .modal-backdrop .modal .modal-header .modal-close {
     background: none;
     color: var(--text-2);
     font-size: 16px;
     cursor: pointer;
 }
+
 :host .modal-backdrop .modal .modal-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
+
 /* ══════════════════════════════════════
    RATINGS TAB
    ══════════════════════════════════════ */
 
-.ratings-section-title {
-    font-size: 0.95rem;
+:host .tab-content .ratings-section-title {
+    font-size: 16px;
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 16px;
     color: var(--text);
 }
 
-.ratings-overview {
-    margin-bottom: 1.25rem;
-    padding-bottom: 1.25rem;
+:host .tab-content .ratings-overview {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
     border-bottom: 1px solid var(--border);
 }
 
-.ratings-overview-avg {
+:host .tab-content .ratings-overview .ratings-overview-avg {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
-.ratings-big-number {
+:host .tab-content .ratings-overview .ratings-overview-avg .ratings-big-number {
     font-family: 'Syne', sans-serif;
-    font-size: 2.2rem;
+    font-size: 32px;
     font-weight: 800;
     color: var(--accent);
 }
 
-.ratings-overview-stars {
+:host .tab-content .ratings-overview .ratings-overview-avg .ratings-overview-stars {
     display: flex;
     gap: 2px;
 }
 
-.star-icon {
-    font-size: 1.1rem;
+:host .tab-content .ratings-overview .ratings-overview-avg .ratings-overview-stars .star-icon {
+    font-size: 16px;
     color: var(--border);
 }
 
-.star-icon.filled {
+:host .tab-content .ratings-overview .ratings-overview-avg .ratings-overview-stars .star-icon.filled {
     color: var(--accent);
 }
 
-.ratings-overview-count {
-    font-size: 0.82rem;
+:host .tab-content .ratings-overview .ratings-overview-avg .ratings-overview-count {
+    font-size: 14px;
     color: var(--text-2);
 }
 
-.ratings-list-profile {
+:host .tab-content .ratings-list-profile {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 16px;
 }
 
-.rating-card-profile {
+:host .tab-content .ratings-list-profile .rating-card-profile {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 14px;
+    padding: 16px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    gap: 12px;
+    gap: 16px;
 }
 
-.rating-card-user {
+:host .tab-content .ratings-list-profile .rating-card-profile .rating-card-user {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
     flex: 1;
     min-width: 0;
 }
 
-.rating-card-avatar {
+:host .tab-content .ratings-list-profile .rating-card-profile .rating-card-user .rating-card-avatar {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -454,7 +530,7 @@
     flex-shrink: 0;
 }
 
-.rating-card-avatar-init {
+:host .tab-content .ratings-list-profile .rating-card-profile .rating-card-user .rating-card-avatar-init {
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -464,89 +540,79 @@
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 14px;
     flex-shrink: 0;
 }
 
-.rating-card-user strong {
-    font-size: 0.88rem;
+:host .tab-content .ratings-list-profile .rating-card-profile .rating-card-user strong {
+    font-size: 14px;
     display: block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.rating-card-username {
-    font-size: 0.78rem;
+:host .tab-content .ratings-list-profile .rating-card-profile .rating-card-user .rating-card-username {
+    font-size: 14px;
     color: var(--text-2);
     display: block;
 }
 
-.rating-card-stars {
+:host .tab-content .ratings-list-profile .rating-card-profile .rating-card-stars {
     display: flex;
     align-items: center;
     gap: 2px;
     flex-shrink: 0;
 }
 
-.rating-card-stars .star-icon {
-    font-size: 0.95rem;
+:host .tab-content .ratings-list-profile .rating-card-profile .rating-card-stars .star-icon {
+    font-size: 16px;
 }
 
-.rating-card-val {
-    font-size: 0.82rem;
+:host .tab-content .ratings-list-profile .rating-card-profile .rating-card-stars .rating-card-val {
+    font-size: 14px;
     font-weight: 700;
     color: var(--text-2);
     margin-left: 6px;
 }
 
+/* ============= */
+/* RESPONSIVIDAD */
+/* ============= */
 
-.nav-unread-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--danger);
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 700;
-    min-width: 16px;
-    height: 16px;
-    padding: 0 4px;
-    border-radius: 100px;
-    margin-left: 6px;
-}
+/* TABLET GRANDE */
+@media (max-width: calc(768px + 128px)) {}
 
-/* RESPONSIVE - TABLET */
+/* TABLET */
 @media (max-width: 768px) {
-    :host .page-wrapper .container .profile-sidebar {
-        
-        position: relative;
-        top: 0;
-    }
-    :host .page-wrapper > .container {
+    :host .container {
         grid-template-columns: 1fr;
     }
 
-    .profile-sidebar {
+    :host .profile-sidebar {
         position: static;
+        top: 0;
     }
 
-    .form-row-2 {
-        grid-template-columns: 1fr !important;
+    :host .tab-content .edit-form .form-row-2 {
+        grid-template-columns: 1fr;
     }
 
     :host .tab-content .info-grid {
-        grid-template-columns: 1fr !important;
+        grid-template-columns: 1fr;
     }
 
     :host .tab-content .trips-list app-trip {
         width: 100%;
     }
+
     :host .tab-content .cars-grid {
         grid-template-columns: repeat(1, 1fr);
     }
 }
 
-/* RESPONSIVE - MOBILE */
-@media (max-width: 384px) {
-}
+/* TELEFONO GRANDE*/
+@media (max-width: calc(384px + 128px)) {}
+
+/* TELEFONO */
+@media (max-width: 384px) {}
