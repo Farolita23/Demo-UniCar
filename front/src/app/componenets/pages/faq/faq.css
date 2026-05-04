@@ -1,26 +1,38 @@
-/* Contenedor principal del componente */
+/* ========================================
+   CONTENEDOR PRINCIPAL
+   ======================================== */
+
+/* Contenedor principal con ancho máximo y padding */
 :host .container {
     max-width: 720px;
     padding: 64px 16px 32px 16px;
 }
 
-/* Cabecera de la sección FAQ */
+/* ========================================
+   ENCABEZADO FAQ
+   ======================================== */
+
+/* Sección de encabezado con título y descripción */
 :host .faq-header {
     margin-bottom: 32px;
 }
 
-/* Título principal */
+/* Título principal de la página FAQ */
 :host .faq-header h1 {
     font-size: 36px;
 }
 
-/* Subtítulo o descripción */
+/* Texto descriptivo debajo del título */
 :host .faq-header p {
     color: var(--text-2);
     margin-top: 8px;
 }
 
-/* Lista de preguntas FAQ */
+/* ========================================
+   LISTA DE PREGUNTAS FAQ
+   ======================================== */
+
+/* Contenedor de todos los items FAQ con separadores visuales */
 :host .faq-list {
     display: flex;
     flex-direction: column;
@@ -31,7 +43,7 @@
     overflow: hidden;
 }
 
-/* Cada item de la FAQ */
+/* Item individual de pregunta-respuesta */
 :host .faq-list .faq-item {
     padding: 16px 32px;
     background: var(--surface);
@@ -40,12 +52,12 @@
     animation: faqFadeIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Estado abierto del item */
+/* Estilos cuando el item está abierto (expandido) */
 :host .faq-list .faq-item.open {
     background: var(--surface-2);
 }
 
-/* Contenedor de la pregunta */
+/* Contenedor de la pregunta con ícono y texto */
 :host .faq-list .faq-item .faq-question {
     display: flex;
     justify-content: space-between;
@@ -55,7 +67,7 @@
     gap: 16px;
 }
 
-/* Icono de la pregunta */
+/* Ícono indicador de pregunta/estado */
 :host .faq-list .faq-item .faq-question .faq-icon {
     color: var(--primary);
     font-size: 24px;
@@ -63,7 +75,7 @@
     flex-shrink: 0;
 }
 
-/* Contenido de la respuesta */
+/* Contenido de la respuesta (oculto o visible) */
 :host .faq-list .faq-item .faq-answer {
     padding-top: 16px;
     color: var(--text-2);
@@ -71,7 +83,11 @@
     line-height: 18px;
 }
 
-/* Animación de entrada */
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+
+/* Animación de entrada suave para items FAQ */
 @keyframes faqFadeIn {
     from {
         opacity: 0;

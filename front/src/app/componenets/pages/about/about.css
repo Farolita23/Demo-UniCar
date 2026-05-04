@@ -1,3 +1,8 @@
+/* ========================================
+   SECCIÓN HERO
+   ======================================== */
+
+/* Contenedor principal del hero */
 :host .about-hero {
     text-align: center;
     padding: 32px 16px;
@@ -5,6 +10,7 @@
     margin: 0 auto;
 }
 
+/* Badge decorativo con color primario */
 :host .about-hero-badge {
     display: inline-flex;
     align-items: center;
@@ -20,6 +26,7 @@
     margin-bottom: 16px;
 }
 
+/* Título principal del hero */
 :host .about-hero h1 {
     min-height: 32px;
     font-size: 32px;
@@ -27,16 +34,24 @@
     margin-bottom: 16px;
 }
 
+/* Texto acentuado en el título */
 :host .about-hero h1 .text-accent {
     color: var(--primary);
 }
 
+/* Descripción del hero */
 :host .about-hero p {
     color: var(--text-2);
     font-size: 16px;
     line-height: 24px;
 }
 
+
+/* ========================================
+   SECCIÓN MISIÓN (GRID)
+   ======================================== */
+
+/* Grid contenedor con 3 columnas para las tarjetas de misión */
 :host .mission-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -45,6 +60,7 @@
     margin-bottom: 32px;
 }
 
+/* Tarjeta individual de misión */
 :host .mission-grid .mission-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -53,6 +69,7 @@
     text-align: center;
 }
 
+/* Icono dentro de la tarjeta de misión */
 :host .mission-grid .mission-card .mission-icon {
     font-size: 24px;
     height: 40px;
@@ -61,21 +78,30 @@
     margin-bottom: 16px;
 }
 
+/* Título de la tarjeta de misión */
 :host .mission-grid .mission-card h3 {
     font-size: 20px;
     margin-bottom: 8px;
 }
 
+/* Descripción en la tarjeta de misión */
 :host .mission-grid .mission-card p {
     color: var(--text-2);
     font-size: 16px;
     line-height: 24px;
 }
 
+
+/* ========================================
+   SECCIÓN VALORES
+   ======================================== */
+
+/* Contenedor de la sección de valores */
 :host .values-section {
     padding: 16px;
 }
 
+/* Título de la sección de valores */
 :host .values-section h2 {
     height: 32px;
     font-size: 32px;
@@ -83,6 +109,7 @@
     margin-bottom: 16px;
 }
 
+/* Lista de valores en grid de 2 columnas */
 :host .values-section .values-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -93,6 +120,7 @@
     overflow: hidden;
 }
 
+/* Item individual de valor */
 :host .values-section .values-list .value-item {
     background: var(--surface);
     padding: 16px 32px;
@@ -101,6 +129,7 @@
     align-items: flex-start;
 }
 
+/* Número del valor (numeración) */
 :host .values-section .values-list .value-item .value-num {
     font-family: 'Syne', sans-serif;
     height: 24px;
@@ -111,32 +140,46 @@
     flex-shrink: 0;
 }
 
+/* Título del valor */
 :host .values-section .values-list .value-item h4 {
     font-size: 20px;
     margin-bottom: 4px;
 }
 
+/* Descripción del valor */
 :host .values-section .values-list .value-item p {
     color: var(--text-2);
     font-size: 16px;
     line-height: 16px;
 }
 
+
+
+/* ========================================
+   MEDIA QUERIES - RESPONSIVIDAD
+   ======================================== */
+
+/* Tabletas (768px o menos) */
 @media (max-width: 768px) {
+    /* Reducir a 2 columnas en el grid de misión */
     :host .mission-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    /* Reducir a 1 columna en la lista de valores */
     :host .values-section .values-list {
         grid-template-columns: repeat(1, 1fr);
     }
 }
 
+/* Dispositivos móviles pequeños (512px o menos) */
 @media (max-width: calc(384px + 128px)) {
+    /* Cambiar a 1 columna en el grid de misión */
     :host .mission-grid {
         grid-template-columns: repeat(1, 1fr);
     }
 
+    /* Mantener 1 columna en la lista de valores */
     :host .values-section .values-list {
         grid-template-columns: 1fr;
     }

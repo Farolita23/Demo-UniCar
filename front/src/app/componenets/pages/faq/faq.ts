@@ -1,21 +1,57 @@
+/**
+ * Componente de Página de Preguntas Frecuentes (FAQ)
+ * 
+ * Muestra un acordeón interactivo con preguntas y respuestas frecuentes
+ * sobre el funcionamiento de la aplicación UniCar.
+ */
+
+// Importaciones de Angular
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+// Importaciones de componentes compartidos
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
 
+/**
+ * Componente Faq
+ * 
+ * Gestiona la visualización de preguntas frecuentes en un formato
+ * de acordeón expandible. Los usuarios pueden hacer clic en cualquier
+ * pregunta para ver/ocultar su respuesta.
+ */
 @Component({
+    // Selector CSS para usar el componente en templates
     selector: 'page-faq',
+    // Componente standalone sin necesidad de módulo
     standalone: true,
+    // Módulos y componentes importados
     imports: [CommonModule, Header, Footer],
+    // Archivo HTML de la plantilla
     templateUrl: './faq.html',
+    // Archivo CSS de estilos
     styleUrl: './faq.css',
 })
 export class Faq {
-
+    /**
+     * Índice del item FAQ actualmente abierto
+     * Valor -1 significa que ninguno está abierto
+     */
     openIndex = -1;
     
+    /**
+     * Alterna entre abrir y cerrar un item FAQ
+     * Si el item ya está abierto, lo cierra; si está cerrado, lo abre
+     * @param i - Índice del item FAQ a alternar
+     */
     toggle(i: number) { this.openIndex = this.openIndex === i ? -1 : i; }
 
+    /**
+     * Arreglo de preguntas y respuestas frecuentes
+     * Cada objeto contiene:
+     * - q: pregunta que se muestra en el acordeón
+     * - a: respuesta que se expande al hacer clic
+     */
     items = [
         {
             q: '¿Cómo me registro en UniCar?',

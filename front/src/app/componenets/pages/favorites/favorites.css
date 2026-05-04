@@ -1,25 +1,37 @@
-/* Contenedor principal */
+/* ========================================
+   CONTENEDOR PRINCIPAL
+   ======================================== */
+
+/* Contenedor principal con padding */
 :host .container {
     padding: 32px 16px;
 }
 
-/* Cabecera de página */
+/* ========================================
+   ENCABEZADO DE PÁGINA
+   ======================================== */
+
+/* Sección de encabezado con título y descripción */
 :host .page-header {
     margin-bottom: 32px;
 }
 
-/* Título principal */
+/* Título principal de la página */
 :host .page-header h1 {
     font-size: 32px;
 }
 
-/* Subtítulo */
+/* Subtítulo descriptivo debajo del título */
 :host .page-header .page-subtitle {
     color: var(--text-2);
     margin-top: 8px;
 }
 
-/* Tabs */
+/* ========================================
+   NAVEGACIÓN POR TABS
+   ======================================== */
+
+/* Contenedor de tabs con borde inferior */
 :host .tabs {
     display: flex;
     gap: 8px;
@@ -28,7 +40,7 @@
     padding-bottom: 0;
 }
 
-/* Tab individual */
+/* Botón individual de tab */
 :host .tabs .tab {
     display: flex;
     align-items: center;
@@ -45,18 +57,18 @@
     transition: var(--transition);
 }
 
-/* Hover en tab */
+/* Efecto hover en tab */
 :host .tabs .tab:hover {
     color: var(--text);
 }
 
-/* Tab activa */
+/* Estilos para tab activo */
 :host .tabs .tab.active {
     color: var(--primary);
     border-bottom-color: var(--primary);
 }
 
-/* Badge en tab */
+/* Badge numerador en tabs */
 :host .tabs .tab .tab-badge {
     background: var(--primary);
     color: #fff;
@@ -66,14 +78,18 @@
     border-radius: 16px;
 }
 
-/* Grid de favoritos */
+/* ========================================
+   GRID DE FAVORITOS
+   ======================================== */
+
+/* Grid contenedor con 2 columnas para tarjetas de favoritos */
 :host .fav-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 
-/* Tarjeta de favorito */
+/* Tarjeta individual de favorito (usuario o viaje) */
 :host .fav-grid .fav-card {
     display: flex;
     align-items: center;
@@ -87,12 +103,12 @@
     gap: 16px;
 }
 
-/* Hover en tarjeta */
+/* Efecto hover en tarjeta con borde destacado */
 :host .fav-grid .fav-card:hover {
     border-color: rgba(255, 183, 3, 0.3);
 }
 
-/* Info de la tarjeta */
+/* Contenedor de información dentro de la tarjeta */
 :host .fav-grid .fav-card .fav-card__info {
     display: flex;
     align-items: center;
@@ -100,7 +116,7 @@
     flex: 1;
 }
 
-/* Avatar con imagen */
+/* Avatar de imagen del usuario favorito */
 :host .fav-grid .fav-card .fav-card__info .fav-avatar {
     width: 36px;
     height: 36px;
@@ -110,7 +126,7 @@
     flex: 0 0 auto;
 }
 
-/* Avatar con inicial */
+/* Avatar generado con iniciales */
 :host .fav-grid .fav-card .fav-card__info .fav-avatar-init {
     width: 36px;
     height: 36px;
@@ -125,32 +141,32 @@
     flex: 0 0 auto;
 }
 
-/* Detalles del favorito */
+/* Contenedor de detalles (nombre, username) */
 :host .fav-grid .fav-card .fav-details {
     display: flex;
     flex-direction: column;
 }
 
-/* Nombre */
+/* Nombre del favorito */
 :host .fav-grid .fav-card .fav-details .fav-name {
     font-weight: 700;
     font-size: 16px;
 }
 
-/* Username */
+/* Username o información secundaria */
 :host .fav-grid .fav-card .fav-details .fav-username {
     color: var(--text-2);
     font-size: 14px;
 }
 
-/* Acciones de la tarjeta */
+/* Contenedor de acciones en la tarjeta */
 :host .fav-grid .fav-card .fav-card__actions {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-/* Botón eliminar */
+/* Botón para eliminar de favoritos */
 :host .fav-grid .fav-card .fav-card__actions .btn-remove {
     background: none;
     border: 1px solid var(--border);
@@ -161,20 +177,28 @@
     transition: var(--transition);
 }
 
-/* Hover eliminar */
+/* Efecto hover en botón de eliminar */
 :host .fav-grid .fav-card .fav-card__actions .btn-remove:hover {
     border-color: var(--danger);
     color: var(--danger);
 }
 
-/* Lista de viajes */
+/* ========================================
+   LISTA DE VIAJES FAVORITOS
+   ======================================== */
+
+/* Grid de viajes favoritos con 2 columnas */
 :host .trips-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 
-/* Estado de carga */
+/* ========================================
+   ESTADOS (CARGA Y VACÍO)
+   ======================================== */
+
+/* Contenedor de estado de carga con indicador */
 :host .loading-state {
     display: flex;
     align-items: center;
@@ -185,7 +209,7 @@
     color: var(--text-2);
 }
 
-/* Estado vacío */
+/* Contenedor de estado vacío con ícono y mensaje */
 :host .empty-state {
     text-align: center;
     padding: 32px 16px;
@@ -195,23 +219,29 @@
     gap: 16px;
 }
 
-/* Icono del estado vacío */
+/* Ícono grande para el estado vacío */
 :host .empty-state .empty-icon {
     font-size: 48px;
 }
 
-/* Texto del estado vacío */
+/* Texto descriptivo del estado vacío */
 :host .empty-state p {
     color: var(--text-2);
     max-width: 384px;
 }
 
-/* Responsive */
+/* ========================================
+   MEDIA QUERIES - RESPONSIVIDAD
+   ======================================== */
+
+/* Tabletas (768px o menos) - Una columna */
 @media (max-width: 768px) {
+    /* Grid de favoritos a una columna */
     :host .fav-grid {
         grid-template-columns: 1fr;
     }
 
+    /* Lista de viajes a una columna */
     :host .trips-list {
         grid-template-columns: 1fr;
     }

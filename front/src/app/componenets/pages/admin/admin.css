@@ -1,19 +1,30 @@
+/* ========================================
+   ENCABEZADO DE PÁGINA
+   ======================================== */
+
+/* Contenedor principal del encabezado */
 :host .page-header {
     padding: 32px 16px;
     margin-top: 32px;
 }
 
+/* Título principal de la página */
 :host .page-header h1 {
     font-size: 32px;
     line-height: 32px;
     margin-bottom: 8px;
 }
 
+/* Subtítulo descriptivo de la página */
 :host .page-header .page-subtitle {
     color: var(--text-2);
 }
 
-/* Tabs */
+/* ========================================
+   NAVEGACIÓN POR TABS
+   ======================================== */
+
+/* Contenedor de tabs con borde inferior */
 :host .tabs {
     display: flex;
     gap: 8px;
@@ -22,6 +33,7 @@
     padding-bottom: 0;
 }
 
+/* Botón individual de tab */
 :host .tabs .tab {
     display: flex;
     align-items: center;
@@ -38,15 +50,18 @@
     transition: var(--transition);
 }
 
+/* Efecto hover en tab */
 :host .tabs .tab:hover {
     color: var(--text);
 }
 
+/* Estilos para tab activo */
 :host .tabs .tab.active {
     color: var(--primary);
     border-bottom-color: var(--primary);
 }
 
+/* Badge numerador en tabs */
 :host .tabs .tab .tab-badge {
     background: var(--primary);
     color: #fff;
@@ -56,15 +71,21 @@
     border-radius: 16px;
 }
 
+/* Badge de peligro/advertencia */
 :host .tabs .tab .tab-badge.danger-badge {
     background: var(--danger) !important;
 }
 
-/* Search */
+/* ========================================
+   BUSCADOR DE ADMINISTRACIÓN
+   ======================================== */
+
+/* Contenedor del buscador */
 :host .admin-search {
     margin-bottom: 24px;
 }
 
+/* Input de búsqueda de usuarios */
 :host .admin-search .admin-search-input {
     width: 384px;
     max-width: calc(100% - 16px * 2 - 2px);
@@ -77,12 +98,17 @@
     font-family: inherit;
 }
 
+/* Estilos del input cuando está enfocado */
 :host .admin-search .admin-search-input:focus {
     outline: none;
     border-color: var(--primary);
 }
 
-/* Users list */
+/* ========================================
+   LISTA DE USUARIOS
+   ======================================== */
+
+/* Grid de usuarios con 2 columnas */
 :host .admin-users-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -90,6 +116,7 @@
     gap: 8px;
 }
 
+/* Fila individual de usuario */
 :host .admin-users-list .admin-user-row {
     display: flex;
     align-items: center;
@@ -103,11 +130,13 @@
     gap: 16px;
 }
 
+/* Efecto hover en fila de usuario */
 :host .admin-users-list .admin-user-row:hover {
     border-color: var(--primary);
     background: var(--bg-3);
 }
 
+/* Sección de información del usuario */
 :host .admin-users-list .admin-user-row .aur-info {
     display: flex;
     align-items: center;
@@ -115,6 +144,7 @@
     flex: 1;
 }
 
+/* Avatar de imagen del usuario */
 :host .admin-users-list .admin-user-row .aur-info .aur-avatar {
     width: 36px;
     height: 36px;
@@ -124,6 +154,7 @@
     flex: 0 0 auto;
 }
 
+/* Avatar generado con iniciales */
 :host .admin-users-list .admin-user-row .aur-info .aur-avatar-init {
     width: 36px;
     height: 36px;
@@ -138,27 +169,32 @@
     flex: 0 0 auto;
 }
 
+/* Detalles del usuario (nombre, username) */
 :host .admin-users-list .admin-user-row .aur-info .aur-details {
     display: flex;
     flex-direction: column;
 }
 
+/* Nombre del usuario */
 :host .admin-users-list .admin-user-row .aur-info .aur-details .aur-name {
     font-weight: 700;
     font-size: 16px;
 }
 
+/* Username del usuario */
 :host .admin-users-list .admin-user-row .aur-info .aur-details .aur-username {
     color: var(--text-2);
     font-size: 14px;
 }
 
+/* Contenedor de badges de usuario */
 :host .admin-users-list .admin-user-row .aur-badges {
     display: flex;
     gap: 8px;
     align-items: center;
 }
 
+/* Badge de rol del usuario */
 :host .admin-users-list .admin-user-row .aur-badges .aur-role {
     height: 12px;
     font-size: 12px;
@@ -171,6 +207,7 @@
     text-transform: uppercase;
 }
 
+/* Badge de usuario baneado */
 :host .admin-users-list .admin-user-row .aur-badges .aur-banned {
     height: 12px;
     font-size: 12px;
@@ -182,6 +219,7 @@
     color: var(--danger);
 }
 
+/* Badge de advertencias del usuario */
 :host .admin-users-list .admin-user-row .aur-badges .aur-strikes {
     height: 12px;
     font-size: 12px;
@@ -193,7 +231,15 @@
     color: var(--warning);
 }
 
-/* User detail panel */
+/* ========================================
+   PANEL DE DETALLE DE USUARIO
+   ======================================== */
+
+/* ========================================
+   PANEL DE DETALLE DE USUARIO
+   ======================================== */
+
+/* Contenedor principal del panel de detalle */
 :host .user-detail-panel {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -201,10 +247,12 @@
     padding: 32px;
 }
 
+/* Encabezado del panel de detalle */
 :host .user-detail-panel .udp-header {
     margin-bottom: 32px;
 }
 
+/* Sección superior con avatar e información */
 :host .user-detail-panel .udp-top {
     display: flex;
     gap: 16px;
@@ -212,6 +260,7 @@
     margin-bottom: 16px;
 }
 
+/* Avatar del usuario en el panel */
 :host .user-detail-panel .udp-top .udp-avatar {
     width: calc(96px - 3px * 2);
     height: calc(96px - 3px * 2);
@@ -221,6 +270,7 @@
     flex: 0 0 auto;
 }
 
+/* Avatar generado con iniciales en el panel */
 :host .user-detail-panel .udp-top .udp-avatar-init {
     width: 96px;
     height: 96px;
@@ -235,32 +285,38 @@
     flex: 0 0 auto;
 }
 
+/* Contenedor de información del usuario */
 :host .user-detail-panel .udp-top .udp-info {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
+/* Nombre del usuario en el panel */
 :host .user-detail-panel .udp-top .udp-info .udp-name {
     font-size: 24px;
 }
 
+/* Username del usuario en el panel */
 :host .user-detail-panel .udp-top .udp-info .udp-username {
     color: var(--text-2);
     font-size: 16px;
 }
 
+/* Email del usuario en el panel */
 :host .user-detail-panel .udp-top .udp-info .udp-email {
     color: var(--text-2);
     font-size: 14px;
 }
 
+/* Contenedor de badges en el panel */
 :host .user-detail-panel .udp-top .udp-info .udp-badges {
     display: flex;
     gap: 8px;
     margin-top: 8px;
 }
 
+/* Badge de rol en el panel */
 :host .user-detail-panel .udp-top .udp-info .udp-badges .udp-role-badge {
     height: 12px;
     font-size: 12px;
@@ -272,6 +328,7 @@
     font-weight: 700;
 }
 
+/* Badge de baneado en el panel */
 :host .user-detail-panel .udp-top .udp-info .udp-badges .udp-banned-badge {
     height: 12px;
     font-size: 12px;
@@ -283,6 +340,7 @@
     font-weight: 700;
 }
 
+/* Badge de advertencias en el panel */
 :host .user-detail-panel .udp-top .udp-info .udp-badges .udp-strikes-badge {
     height: 12px;
     font-size: 12px;
@@ -294,25 +352,32 @@
     font-weight: 700;
 }
 
+/* Contenedor de acciones del usuario */
 :host .user-detail-panel .udp-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
 }
 
+/* Botón de acción exitosa */
 :host .user-detail-panel .udp-actions .btn-success {
     background: var(--success);
     color: #fff;
     border: none;
 }
 
-/* Reports */
+/* ========================================
+   LISTA Y TARJETAS DE REPORTES
+   ======================================== */
+
+/* Contenedor de la lista de reportes */
 .reports-list {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
+/* Tarjeta individual de reporte */
 .report-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -320,6 +385,7 @@
     overflow: hidden;
 }
 
+/* Encabezado de la tarjeta de reporte */
 .report-card__header {
     display: flex;
     justify-content: space-between;
@@ -329,6 +395,7 @@
     border-bottom: 1px solid var(--border);
 }
 
+/* Contenedor de usuarios del reporte (de-a) */
 .report-users {
     display: flex;
     align-items: center;
@@ -336,38 +403,46 @@
     flex-wrap: wrap;
 }
 
+/* Usuario remitente del reporte */
 .report-from,
+/* Usuario destinatario del reporte */
 .report-to {
     display: flex;
     flex-direction: column;
 }
 
+/* Texto descriptivo para usuarios */
 .report-from small,
 .report-to small {
     color: var(--text-2);
     font-size: 0.78rem;
 }
 
+/* Flecha indicadora entre usuarios */
 .report-arrow {
     color: var(--text-3);
     font-size: 0.85rem;
 }
 
+/* Fecha del reporte */
 .report-date {
     color: var(--text-3);
     font-size: 0.82rem;
 }
 
+/* Cuerpo de la tarjeta de reporte */
 .report-card__body {
     padding: 12px 16px;
 }
 
+/* Razón/motivo del reporte */
 .report-reason {
     margin: 0;
     color: var(--text);
     font-size: 0.9rem;
 }
 
+/* Contenedor de acciones del reporte */
 .report-card__actions {
     display: flex;
     gap: 8px;
@@ -375,105 +450,11 @@
     border-top: 1px solid var(--border);
 }
 
+/* ========================================
+   NOTIFICACIONES (TOAST)
+   ======================================== */
 
-/* Modal */
-/* # UN-USED #
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 5000;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-content {
-    background: var(--bg-2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    width: 90%;
-    max-width: 480px;
-}
-
-.modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.25rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-}
-
-.modal-header h3 {
-    margin: 0;
-    font-size: 1.1rem;
-}
-
-.modal-close {
-    background: none;
-    border: none;
-    color: var(--text-2);
-    font-size: 1.2rem;
-    cursor: pointer;
-}
-
-.modal-body {
-    padding: 1.25rem 1.5rem;
-}
-
-.modal-error {
-    background: rgba(230, 57, 70, 0.1);
-    color: var(--danger);
-    padding: 8px 12px;
-    border-radius: var(--radius-sm);
-    font-size: 0.85rem;
-    margin-bottom: 1rem;
-}
-
-.form-group {
-    margin-bottom: 1rem;
-}
-
-.label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: var(--text-2);
-}
-
-.form-input,
-.form-textarea {
-    width: 100%;
-    background: var(--bg-3);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-    color: var(--text);
-    font-family: inherit;
-    font-size: 0.9rem;
-}
-
-.form-textarea {
-    resize: vertical;
-}
-
-.form-input:focus,
-.form-textarea:focus {
-    outline: none;
-    border-color: var(--primary);
-}
-
-.modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-    padding: 1rem 1.5rem;
-    border-top: 1px solid var(--border);
-}
-*/
-
-/* Toast */
+/* Contenedor base para notificaciones toast posicionadas en la parte superior */
 :host .toast {
     position: fixed;
     top: calc(var(--header-h) + 16px);
@@ -486,18 +467,25 @@
     z-index: 6000;
 }
 
+/* Toast de éxito con fondo verde y borde */
 :host .toast.toast-success {
     background: rgba(6, 214, 160, 0.15);
     color: var(--success);
     border: 1px solid var(--success);
 }
 
+/* Toast de error con fondo rojo y borde */
 :host .toast.toast-error {
     background: rgba(230, 57, 70, 0.15);
     color: var(--danger);
     border: 1px solid var(--danger);
 }
 
+/* ========================================
+   ESTADO DE CARGA Y VACÍO
+   ======================================== */
+
+/* Contenedor de estado de carga con indicador y mensaje */
 :host .loading-state {
     display: flex;
     align-items: center;
@@ -508,6 +496,7 @@
     color: var(--text-2);
 }
 
+/* Contenedor de estado vacío con ícono y mensaje descriptivo */
 :host .empty-state {
     text-align: center;
     padding: 32px 16px;
@@ -517,10 +506,16 @@
     gap: 16px;
 }
 
+/* Ícono grande para el estado vacío */
 :host .empty-state .empty-icon {
     font-size: 48px;
 }
 
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+
+/* Animación de entrada desde abajo hacia arriba */
 @keyframes slideUp {
     from {
         opacity: 0;
@@ -533,6 +528,7 @@
     }
 }
 
+/* Animación de entrada desde arriba hacia abajo */
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -545,29 +541,45 @@
     }
 }
 
+/* Clase para aplicar animación de entrada desde abajo */
 .slide-up {
     animation: slideUp 0.4s ease both;
 }
 
+/* Clase para aplicar animación de entrada desde arriba */
 .slide-down {
     animation: slideDown 0.3s ease both;
 }
 
+/* ========================================
+   MEDIA QUERIES - RESPONSIVIDAD
+   ======================================== */
+
+/* Tabletas (768px o menos) - Ajustes de layout para pantallas medianas */
 @media (max-width: 768px) {
+    /* Reducir a 2 columnas en lista de usuarios */
     :host .admin-users-list {
         grid-template-columns: repeat(2, 1fr);
     }
+    
+    /* Ajustar flujo de filas de usuario */
     :host .admin-users-list .admin-user-row {
         flex-wrap: wrap;
         justify-content: flex-end;
     }
+    
+    /* Información de usuario ocupa ancho completo */
     :host .admin-users-list .admin-user-row .aur-info {
         width: 100%;
         flex: 0 0 auto;
     }
+    
+    /* Avatar e info apilados verticalmente */
     :host .user-detail-panel .udp-top {
         flex-direction: column;
     }
+    
+    /* Texto centrado en panel de detalle */
     :host .user-detail-panel .udp-top .udp-info .udp-name{
         text-align: center;
     }
@@ -577,9 +589,13 @@
     :host .user-detail-panel .udp-top .udp-info .udp-email{
         text-align: center;
     }
+    
+    /* Badges centrados */
     :host .user-detail-panel .udp-top .udp-badges{
         justify-content: center;
     }
+    
+    /* Botones y enlaces a ancho completo */
     :host .user-detail-panel .udp-actions button {
         width: 100%;
         justify-content: center;
@@ -589,7 +605,10 @@
         justify-content: center;
     }
 }
+
+/* Dispositivos móviles pequeños (512px o menos) - Una columna */
 @media (max-width: calc(384px + 128px)) {
+    /* Cambiar a una sola columna en lista de usuarios */
     :host .admin-users-list {
         grid-template-columns: repeat(1, 1fr);
     }
