@@ -16,34 +16,41 @@ import { Favorites } from './componenets/pages/favorites/favorites';
 import { Admin } from './componenets/pages/admin/admin';
 import { NoAuthGuard } from './guards/no-auth-guard';
 import { AuthGuard } from './guards/auth-guard';
+import { NoBannedGuard } from './guards/no-banned-guard';
 
 export const routes: Routes = [
-    { path: '', component: Home, pathMatch: 'full' },
-    { path: 'faq', component: Faq },
-    { path: 'about', component: About },
-    { path: 'search-trip', component: SearchTrip },
-    { path: 'trip-detail/:id', component: TripDetail },
-    { path: 'user/:id', component: UserProfile },
     {
-        path: '',
-        canActivate: [NoAuthGuard],
+        path: '', 
+        canActivateChild: [NoBannedGuard],
         children: [
-            { path: 'login', component: Login },
-            { path: 'signup', component: Signup },
-        ],
-    },
-    {
-        path: '',
-        canActivate: [AuthGuard],
-        children: [
-            { path: 'profile', component: Profile },
-            { path: 'logout', component: Logout },
-            { path: 'trip', component: PageTrip },
-            { path: 'my-trips', component: MyTrips },
-            { path: 'manage-trip/:id', component: ManageTrip },
-            { path: 'favorites', component: Favorites },
-            { path: 'admin', component: Admin },
-        ],
-    },
-    { path: '**', redirectTo: '' },
+            { path: '', component: Home, pathMatch: 'full' },
+            { path: 'faq', component: Faq },
+            { path: 'about', component: About },
+            { path: 'search-trip', component: SearchTrip },
+            { path: 'trip-detail/:id', component: TripDetail },
+            { path: 'user/:id', component: UserProfile },
+            {
+                path: '',
+                canActivate: [NoAuthGuard],
+                children: [
+                    { path: 'login', component: Login },
+                    { path: 'signup', component: Signup },
+                ],
+            },
+            {
+                path: '',
+                canActivate: [AuthGuard],
+                children: [
+                    { path: 'profile', component: Profile },
+                    { path: 'logout', component: Logout },
+                    { path: 'trip', component: PageTrip },
+                    { path: 'my-trips', component: MyTrips },
+                    { path: 'manage-trip/:id', component: ManageTrip },
+                    { path: 'favorites', component: Favorites },
+                    { path: 'admin', component: Admin },
+                ],
+            },
+            { path: '**', redirectTo: '' },
+        ]
+    }
 ];

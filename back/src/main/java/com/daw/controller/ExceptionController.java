@@ -28,6 +28,7 @@ import com.daw.exceptions.ReportNotFoundException;
 import com.daw.exceptions.TownNotFoundException;
 import com.daw.exceptions.TripActionException;
 import com.daw.exceptions.TripNotFoundException;
+import com.daw.exceptions.UserIsBannedException;
 import com.daw.exceptions.UserNotFoundException;
 
 /**
@@ -203,6 +204,14 @@ public class ExceptionController {
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleUsernameNotFound(UsernameNotFoundException ex) {
         return buildError(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos");
+    }
+    
+    // ─── 403 Forbidden (Spring Security) ──────────────────────────────────
+    
+    /**@see UserIsBannedException */
+    @ExceptionHandler(UserIsBannedException.class)
+    public ResponseEntity<Map<String, Object>> handleUserIsBanned(UserIsBannedException ex) {
+        return buildError(HttpStatus.FORBIDDEN, "Usuario baneado");
     }
 
     // ─── 500 Fallback ─────────────────────────────────────────────────────────

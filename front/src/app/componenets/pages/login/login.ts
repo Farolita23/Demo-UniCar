@@ -56,8 +56,11 @@ export class Login {
                     }
                 });
             },
-            error: () => {
-                this.error = 'Credenciales incorrectas. Inténtalo de nuevo.';
+            error: (e) => {
+                switch (e.error.status) {
+                    case 403: this.error = 'Tu cuenta ha sido baneada. Contacta con soporte para más información.'; break;
+                    default: this.error = 'Credenciales incorrectas. Inténtalo de nuevo.';
+                }
                 this.loading = false;
                 this.cdr.detectChanges();
             }
