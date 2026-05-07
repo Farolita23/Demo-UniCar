@@ -65,7 +65,7 @@
         <main class="results-panel">
             <div class="results-header">
                 <h1>Viajes disponibles</h1>
-                <span class="results-count">{{ trips.length }} resultado{{ trips.length !== 1 ? 's' : '' }}</span>
+                <span class="results-count">{{ totalTrips }} resultado{{ totalTrips !== 1 ? 's' : '' }}</span>
             </div>
 
             @if (loading) {

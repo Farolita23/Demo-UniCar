@@ -13,12 +13,12 @@
         <div class="trip-card__route">
             <div class="route-point">
                 <div class="dot dot-from"></div>
-                <span>{{ data.townDTO.name }}</span>
+                <span>{{ data.isToCampus ? data.townDTO.name : data.campusDTO.name }}</span>
             </div>
             <div class="route-line"></div>
             <div class="route-point">
                 <div class="dot dot-to"></div>
-                <span>{{ data.campusDTO.name }}</span>
+                <span>{{ data.isToCampus ? data.campusDTO.name : data.townDTO.name }}</span>
             </div>
         </div>
 

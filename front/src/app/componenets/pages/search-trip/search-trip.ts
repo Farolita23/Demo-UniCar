@@ -29,6 +29,7 @@ export class SearchTrip implements OnInit, OnDestroy {
     towns: Town[] = [];
     loading = false;
     totalPages = 0;
+    totalTrips = 0;
     currentPage = 0;
 
     filters = {
@@ -60,6 +61,7 @@ export class SearchTrip implements OnInit, OnDestroy {
                 const raw = p as any;
                 this.trips = raw.content ?? [];
                 this.totalPages = raw.totalPages ?? 0;
+                this.totalTrips = raw.totalElements ?? 0;
             } else {
                 this.trips = [];
             }
