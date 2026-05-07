@@ -11,7 +11,7 @@
 
             <div class="filter-group">
                 <label class="label">Campus</label>
-                <input type="text" list="campus" placeholder="Selecciona el campus">
+                <input type="text" list="campus" [(ngModel)]="filters.campus" placeholder="Selecciona el campus">
                 <datalist id="campus">
                     @for (c of campuses; track c.id) {
                     <option [ngValue]="c.id">{{ c.name }}</option>
@@ -21,7 +21,7 @@
 
             <div class="filter-group">
                 <label class="label">Localidad</label>
-                <input type="text" list="towns" placeholder="Selecciona la localidad">
+                <input type="text" list="towns" [(ngModel)]="filters.town" placeholder="Selecciona la localidad">
                 <datalist id="towns">
                     @for (t of towns; track t.id) {
                     <option [ngValue]="t.id">{{ t.name }}</option>
@@ -87,13 +87,11 @@
                 }
             </div>
 
-            @if (totalPages > 1) {
             <div class="pagination">
                 @for (p of pages(); track p) {
                 <button class="page-btn" [class.active]="p === currentPage" (click)="search(p)">{{ p + 1 }}</button>
                 }
             </div>
-            }
             }
         </main>
     </div>

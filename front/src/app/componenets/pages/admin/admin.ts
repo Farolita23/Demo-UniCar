@@ -54,13 +54,16 @@ export class Admin implements OnInit {
     
     /** Indicador de estado de carga */
     loading = true;
+    /** Número total de usuarios (para paginación) */
+    totalUsers = 0;
+    /** Número total de páginas */
+    totalPages = 0;
+    /** Página actual */
+    currentPage = 0;
 
     // ========================================
     // Propiedades relacionadas con usuarios
     // ========================================
-    
-    /** Lista completa de todos los usuarios */
-    users: User[] = [];
     
     /** Lista de usuarios filtrados por búsqueda */
     filteredUsers: User[] = [];
@@ -117,18 +120,9 @@ export class Admin implements OnInit {
      * Carga los datos iniciales (usuarios y reportes) desde el servidor
      */
     loadData() {
-        this.loading = true;
-        
         // Cargar lista de usuarios
-        this.api.adminGetAllUsers().subscribe({
-            next: u => {
-                this.users = u;
-                this.filteredUsers = u;
-                this.loading = false;
-                this.cdr.detectChanges();
-            },
-            error: () => { this.loading = false; this.cdr.detectChanges(); },
-        });
+        this.loading = true;
+        this.searchUsers();
         
         // Cargar lista de reportes
         this.api.adminGetAllReports().subscribe({
@@ -140,16 +134,18 @@ export class Admin implements OnInit {
      * Filtra usuarios según el texto de búsqueda ingresado
      * Si no hay búsqueda, muestra todos los usuarios
      */
-    searchUsers() {
-        if (!this.userSearch.trim()) {
-            // Si está vacío, mostrar todos los usuarios
-            this.filteredUsers = this.users;
-        } else {
-            // Si hay texto, buscar mediante la API
-            this.api.adminSearchUsers(this.userSearch.trim()).subscribe({
-                next: u => { this.filteredUsers = u; this.cdr.detectChanges(); },
-            });
-        }
+    searchUsers(page = 0) {
+        this.api.adminSearchUsers(this.userSearch.trim() || "", page).subscribe({
+            next: (pageable) => {
+                this.filteredUsers = pageable.content; 
+                this.totalUsers = pageable.totalElements;
+                this.totalPages = pageable.totalPages;
+                this.currentPage = pageable.number;
+                this.loading = false;
+                this.cdr.detectChanges(); 
+            },
+            error: () => { this.loading = false; this.cdr.detectChanges(); },
+        });
     }
 
     /**
@@ -259,4 +255,11 @@ export class Admin implements OnInit {
         this.actionError = msg;
         setTimeout(() => { this.actionError = ''; this.cdr.detectChanges(); }, 4000);
     }
+
+    /**
+     * Obtiene un array con los números de página para la paginación
+     * @returns Array de números de página
+     */
+    pages(): number[] { return Array.from({ length: this.totalPages }, (_, i) => i); }
+
 }

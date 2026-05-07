@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-27T10:23:55+0200",
+    date = "2026-05-07T10:43:52+0200",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
@@ -35,19 +35,19 @@ public class UserMapperImpl implements UserMapper {
         userDTO.setHomeTownDTO( townMapper.toDto( user.getHomeTown() ) );
         userDTO.setRatingsReceivedDTO( ratingMapper.toSetDto( user.getRatingsReceived() ) );
         userDTO.setRatingsDoneDTO( ratingMapper.toSetDto( user.getRatingsDone() ) );
-        userDTO.setBanned( user.getBanned() );
-        userDTO.setBirthdate( user.getBirthdate() );
-        userDTO.setDescription( user.getDescription() );
-        userDTO.setDrivingLicenseYear( user.getDrivingLicenseYear() );
-        userDTO.setEmail( user.getEmail() );
-        userDTO.setGenre( user.getGenre() );
         userDTO.setId( user.getId() );
+        userDTO.setUsername( user.getUsername() );
+        userDTO.setEmail( user.getEmail() );
         userDTO.setName( user.getName() );
+        userDTO.setBirthdate( user.getBirthdate() );
+        userDTO.setGenre( user.getGenre() );
         userDTO.setPhone( user.getPhone() );
+        userDTO.setStrikes( user.getStrikes() );
+        userDTO.setBanned( user.getBanned() );
+        userDTO.setDrivingLicenseYear( user.getDrivingLicenseYear() );
+        userDTO.setDescription( user.getDescription() );
         userDTO.setProfileImageUrl( user.getProfileImageUrl() );
         userDTO.setRole( user.getRole() );
-        userDTO.setStrikes( user.getStrikes() );
-        userDTO.setUsername( user.getUsername() );
 
         return userDTO;
     }

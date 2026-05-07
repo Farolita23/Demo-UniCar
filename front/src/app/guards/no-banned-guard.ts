@@ -23,7 +23,7 @@ export const NoBannedGuard: CanActivateFn = () => {
             return true;
         }),
         catchError((err) => {
-            console.log("ERR", err);
+            console.error(err);
             return of(true);
         })
     );

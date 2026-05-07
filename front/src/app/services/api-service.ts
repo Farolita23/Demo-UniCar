@@ -165,9 +165,9 @@ export class ApiService {
     }
 
     // ── USER SEARCH ───────────────────────────────────────────────────────────
-    searchUsers(q: string): Observable<User[]> {
-        const params = new HttpParams().set('q', q);
-        return this.http.get<User[]>(`${this.URL}/api/user/search`, { headers: this.authHeaders(), params });
+    searchUsers(q: string): Observable<Page<User>> {
+        const params = new HttpParams().set('q', q).set('page', 0).set('size', 10);
+        return this.http.get<Page<User>>(`${this.URL}/api/user/search`, { headers: this.authHeaders(), params });
     }
 
     // ── FAVORITES ─────────────────────────────────────────────────────────────
@@ -192,9 +192,9 @@ export class ApiService {
         return this.http.get<User[]>(`${this.URL}/api/admin/users`, { headers: this.authHeaders() });
     }
 
-    adminSearchUsers(q: string): Observable<User[]> {
-        const params = new HttpParams().set('q', q);
-        return this.http.get<User[]>(`${this.URL}/api/admin/users/search`, { headers: this.authHeaders(), params });
+    adminSearchUsers(q: string, page: number): Observable<Page<User>> {
+        const params = new HttpParams().set('q', q).set('page', page).set('size', 10);
+        return this.http.get<Page<User>>(`${this.URL}/api/admin/users/search`, { headers: this.authHeaders(), params });
     }
 
     adminGetAllReports(): Observable<Report[]> {

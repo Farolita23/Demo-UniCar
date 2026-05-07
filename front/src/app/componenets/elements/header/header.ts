@@ -52,14 +52,14 @@ export class Header implements OnInit {
         this.search$.pipe(
             debounceTime(300),
             switchMap(q => {
-                if (!q.trim()) return of([]);
+                if (!q.trim()) return of([]); // Retorna resultado vacío si la búsqueda está vacía
                 this.searchLoading = true;
                 return this.api.searchUsers(q.trim());
             })
         ).subscribe({
-            next: results => {
-                console.log(results);
-                this.searchResults = results;
+            next: (pageable) => {
+                if(pageable instanceof Array) return;
+                this.searchResults = pageable.content;
                 this.searchLoading = false;
                 this.showSearchResults = this.searchQuery.trim().length > 0;
                 // Forzar detección de cambios ante actualizaciones asíncronas

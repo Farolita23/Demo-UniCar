@@ -10,6 +10,9 @@ import org.springframework.stereotype.Repository;
 
 import com.daw.datamodel.entities.User;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 /**
  * Repositorio de acceso a datos para la entidad {@link User}.
  *
@@ -94,9 +97,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * sin distinguir entre mayúsculas y minúsculas.
      *
      * @param query término de búsqueda parcial
+     * @param pageable información de paginación y ordenamiento
      * @return lista de usuarios coincidentes; vacía si no hay resultados
      */
     @Query("SELECT u FROM User u WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :q, '%')) OR LOWER(u.username) LIKE LOWER(CONCAT('%', :q, '%'))")
-    List<User> searchByNameOrUsername(@Param("q") String query);
+    Page<User> searchByNameOrUsername(@Param("q") String query, Pageable pageable);
 
 }

@@ -32,7 +32,9 @@ export class SearchTrip implements OnInit, OnDestroy {
     currentPage = 0;
 
     filters = {
+        campus: null as string | null,
         campusId: null as number | null,
+        town: null as string | null,
         townId: null as number | null,
         isToCampus: null as boolean | null,
         departureDate: '',
@@ -83,19 +85,20 @@ export class SearchTrip implements OnInit, OnDestroy {
     search(page = 0) {
         this.currentPage = page;
         const f: any = {};
-        if (this.filters.campusId) f.campusId = +this.filters.campusId;
-        if (this.filters.townId) f.townId = +this.filters.townId;
+        if (this.filters.campus) f.campusId = +this.campuses.find(c => c.name === this.filters.campus)?.id!;
+        if (this.filters.town) f.townId = +this.towns.find(t => t.name === this.filters.town)?.id!;
         if (this.filters.isToCampus !== null) f.isToCampus = this.filters.isToCampus;
         if (this.filters.departureDate) f.departureDate = this.filters.departureDate;
         if (this.filters.maxPrice) f.maxPrice = +this.filters.maxPrice;
-        if (this.filters.minFreeSeats) f.minFreeSeats = +this.filters.minFreeSeats;
+        if (this.filters.minFreeSeats) f.minFreeSeats = +this.filters.minFreeSeats;        
         this.search$.next({ filters: f, page });
     }
 
     reset() {
         this.filters = {
+            campus: null, town: null,
             campusId: null, townId: null, isToCampus: null,
-            departureDate: '', maxPrice: null, minFreeSeats: null
+            departureDate: '', maxPrice: 100, minFreeSeats: null
         };
         this.search();
     }

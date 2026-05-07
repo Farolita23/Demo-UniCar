@@ -18,7 +18,7 @@
         <!-- Tabs -->
         <div class="tabs">
             <button class="tab" [class.active]="activeTab === 'users'" (click)="activeTab = 'users'">👥 Usuarios
-                <span class="tab-badge">{{ users.length }}</span>
+                <span class="tab-badge">{{ totalUsers }}</span>
             </button>
             <button class="tab" [class.active]="activeTab === 'reports'" (click)="activeTab = 'reports'">🚩 Reportes
                 @if (reports.length > 0) {
@@ -118,6 +118,12 @@
             </div>
             }
         </div>
+        
+        <div class="pagination">
+            @for (p of pages(); track p) {
+            <button class="page-btn" [class.active]="p === currentPage" (click)="searchUsers(p)">{{ p + 1 }}</button>
+            }
+        </div>
         }
         }
 
@@ -148,15 +154,13 @@
                     <span class="report-date">{{ r.date }}</span>
                 </div>
                 <div class="report-card__body">
-                    <p class="report-reason">{{ r.reason }}</p>
+                    <p class="report-reason"><b>Motivo:</b> {{ r.reason }}</p>
                 </div>
                 <div class="report-card__actions">
                     @if (r.reportedUserDTO) {
-                    <button class="btn btn-primary btn-sm" (click)="viewReportedUser(r.reportedUserDTO.id)">Ver usuario
-                        reportado</button>
+                    <button class="btn btn-primary btn-sm" (click)="viewReportedUser(r.reportedUserDTO.id)">Ver usuario</button>
                     }
-                    <button class="btn btn-danger-outline btn-sm" (click)="deleteReport(r.id)">Descartar
-                        reporte</button>
+                    <button class="btn btn-danger-outline btn-sm" (click)="deleteReport(r.id)">Descartar</button>
                 </div>
             </div>
             }

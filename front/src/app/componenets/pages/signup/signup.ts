@@ -77,7 +77,6 @@ export class Signup implements OnInit {
     submited = false;
     submit() {
         this.submited = true;
-        console.log(this.form.get('phone')?.errors);
 
         if (this.form.invalid || this.loading) return;
 

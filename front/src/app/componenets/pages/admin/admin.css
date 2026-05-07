@@ -367,6 +367,43 @@
 }
 
 /* ========================================
+   PAGINACION
+   ======================================== */
+/* Contenedor de la paginación */
+:host .pagination {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+/* Botón individual de página */
+:host .pagination .page-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+/* Estilos para el botón de página activo */
+:host .pagination .page-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+}
+
+/* Efecto hover en botones de página (excepto el activo) */
+:host .pagination .page-btn:hover:not(.active) {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* ========================================
    LISTA Y TARJETAS DE REPORTES
    ======================================== */
 
@@ -557,49 +594,53 @@
 
 /* Tabletas (768px o menos) - Ajustes de layout para pantallas medianas */
 @media (max-width: 768px) {
+
     /* Reducir a 2 columnas en lista de usuarios */
     :host .admin-users-list {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     /* Ajustar flujo de filas de usuario */
     :host .admin-users-list .admin-user-row {
         flex-wrap: wrap;
         justify-content: flex-end;
     }
-    
+
     /* Información de usuario ocupa ancho completo */
     :host .admin-users-list .admin-user-row .aur-info {
         width: 100%;
         flex: 0 0 auto;
     }
-    
+
     /* Avatar e info apilados verticalmente */
     :host .user-detail-panel .udp-top {
         flex-direction: column;
     }
-    
+
     /* Texto centrado en panel de detalle */
-    :host .user-detail-panel .udp-top .udp-info .udp-name{
+    :host .user-detail-panel .udp-top .udp-info .udp-name {
         text-align: center;
     }
-    :host .user-detail-panel .udp-top .udp-info .udp-username{
+
+    :host .user-detail-panel .udp-top .udp-info .udp-username {
         text-align: center;
     }
-    :host .user-detail-panel .udp-top .udp-info .udp-email{
+
+    :host .user-detail-panel .udp-top .udp-info .udp-email {
         text-align: center;
     }
-    
+
     /* Badges centrados */
-    :host .user-detail-panel .udp-top .udp-badges{
+    :host .user-detail-panel .udp-top .udp-badges {
         justify-content: center;
     }
-    
+
     /* Botones y enlaces a ancho completo */
     :host .user-detail-panel .udp-actions button {
         width: 100%;
         justify-content: center;
     }
+
     :host .user-detail-panel .udp-actions a {
         margin: auto;
         justify-content: center;
@@ -608,6 +649,7 @@
 
 /* Dispositivos móviles pequeños (512px o menos) - Una columna */
 @media (max-width: calc(384px + 128px)) {
+
     /* Cambiar a una sola columna en lista de usuarios */
     :host .admin-users-list {
         grid-template-columns: repeat(1, 1fr);
