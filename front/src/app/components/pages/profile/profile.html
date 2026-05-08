@@ -6,7 +6,6 @@
                 <div class="spinner"></div>
             </div>
         } @else if (user) {
-
         <!-- SIDEBAR -->
             <aside class="profile-sidebar">
                 <div class="profile-card">
@@ -40,10 +39,11 @@
 
                 <nav class="profile-nav">
                     <button [class.active]="activeTab === 'info'" (click)="activeTab = 'info'">Información</button>
-                    <button [class.active]="activeTab === 'trips-driver'" (click)="activeTab = 'trips-driver'">Mis viajes
-                        (conductor)</button>
-                    <button [class.active]="activeTab === 'trips-passenger'" (click)="activeTab = 'trips-passenger'">Mis
-                        viajes (pasajero)</button>
+                    <!-- 
+                        <button [class.active]="activeTab === 'trips-driver'" (click)="activeTab = 'trips-driver'">Mis viajes (conductor)</button>
+                        <button [class.active]="activeTab === 'trips-passenger'" (click)="activeTab = 'trips-passenger'">Mis viajes (pasajero)</button>
+                    -->
+                    <button [class.active]="activeTab === 'trips-driver'" [routerLink]="['/my-trips']">Mis viajes</button>
                     <button [class.active]="activeTab === 'cars'" (click)="activeTab = 'cars'">Mis vehículos</button>
                     <button [class.active]="activeTab === 'ratings'" (click)="activeTab = 'ratings'">Valoraciones</button>
                     <button [class.active]="activeTab === 'edit'" (click)="activeTab = 'edit'">Editar perfil</button>
@@ -237,25 +237,69 @@
                         <h2 class="tab-title">Editar perfil</h2>
                         <form [formGroup]="editForm" (ngSubmit)="saveProfile()" class="edit-form">
                             <div class="form-row-2">
-                                <div class="form-group"><label class="label">Nombre</label><input type="text" formControlName="name"></div>
-                                <div class="form-group"><label class="label">Usuario</label><input type="text" formControlName="username"></div>
+                                <div class="form-group">
+                                    <label class="label">Nombre</label>
+                                    <input type="text" formControlName="name">
+                                    <!-- Validación Nombre -->
+                                    @let name = editForm.get('name');
+                                    @if ((editSubmitted || (name?.dirty || name?.touched)) && name?.invalid) {
+                                        @if (name?.hasError("required")) {
+                                            <div class="error-msg">El nombre es obligatorio.</div>
+                                        }
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Usuario</label>
+                                    <input type="text" formControlName="username">
+                                    <!-- Validación Usuario -->
+                                    @let username = editForm.get('username');
+                                    @if ((editSubmitted || (username?.dirty || username?.touched)) && username?.invalid) {
+                                        @if (username?.hasError("required")) {
+                                            <div class="error-msg">El nombre de usuario es obligatorio.</div>
+                                        } @else if(username?.hasError("minlength")) {
+                                            <div class="error-msg">El nombre de usuario debe tener al menos 3 caracteres.</div>
+                                        } @else if(username?.hasError("maxlength")) {
+                                            <div class="error-msg">El nombre de usuario no puede tener más de 16 caracteres.</div>
+                                        }
+                                    }
+                                </div>
                             </div>
                             <div class="form-row-2">
-                                <div class="form-group"><label class="label">Email</label><input type="email" formControlName="email"></div>
-                                <div class="form-group"><label class="label">Teléfono</label><input type="tel" formControlName="phone"></div>
+                                <div class="form-group">
+                                    <label class="label">Email</label>
+                                    <input type="email" formControlName="email">
+                                    <!-- Validación Email -->
+                                    @let email = editForm.get('email');
+                                    @if ((editSubmitted || (email?.dirty || email?.touched)) && email?.invalid) {
+                                        @if (email?.hasError("required")) {
+                                            <div class="error-msg">El email es obligatorio.</div>
+                                        } @else if (email?.hasError("email")) {
+                                            <div class="error-msg">El email no es válido.</div>
+                                        }
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <label class="label">Teléfono</label>
+                                    <input type="tel" formControlName="phone">
+                                    <!-- Validación Teléfono -->
+                                    @let phone = editForm.get('phone');
+                                    @if ((editSubmitted || (phone?.dirty || phone?.touched)) && phone?.invalid) {
+                                        @if (phone?.hasError("required")) {
+                                            <div class="error-msg">El teléfono es obligatorio.</div>
+                                        } @else if (phone?.hasError("pattern")) {
+                                            <div class="error-msg">El teléfono debe tener 9 dígitos.</div>
+                                        }
+                                    }
+                                </div>
                             </div>
                             <div class="form-row-2">
                                 <div class="form-group">
                                     <label class="label">Campus</label>
-                                    <select formControlName="idUsualCampus"> @for (c of campuses; track c.id) { 
-                                        <option [value]="c.id">{{ c.name }}</option> 
-                                    } </select>
+                                    <select formControlName="idUsualCampus"> @for (c of campuses; track c.id) { <option [value]="c.id">{{ c.name }}</option> } </select>
                                 </div>
                                 <div class="form-group">
                                     <label class="label">Localidad</label>
-                                    <select formControlName="idHomeTown"> @for (t of towns; track t.id) { 
-                                        <option [value]="t.id">{{ t.name }}</option>
-                                    } </select>
+                                    <select formControlName="idHomeTown"> @for (t of towns; track t.id) { <option [value]="t.id">{{ t.name }}</option>} </select>
                                 </div>
                             </div>
                             <div class="form-row-2">
@@ -286,9 +330,7 @@
                             @if (editError) {
                                 <div class="alert alert-error">{{ editError }}</div>
                             }
-                            <button type="submit" class="btn btn-primary" [disabled]="saving">
-                                @if (saving) { <span class="spinner"></span> } @else { Guardar cambios }
-                            </button>
+                            <button type="submit" class="btn btn-primary"> @if (saving) { <span class="spinner"></span> } @else { Guardar cambios }</button>
                         </form>
                     </div>
                 }
@@ -300,6 +342,7 @@
             </div>
         }
     </div>
+    <app-footer></app-footer>
 </div>
 
 <!-- CAR MODAL -->
@@ -312,28 +355,54 @@
             </div>
             <form [formGroup]="carForm" (ngSubmit)="addCar()" class="modal-form">
                 <div class="form-group">
-                    <label class="label">Modelo *</label>
+                    <label class="label required">Modelo</label>
                     <input type="text" formControlName="model" placeholder="Ej: Seat Ibiza">
+                    <!-- Validación Modelo -->
+                    @if ((addCarSubmitted || carForm.get('model')?.dirty) && carForm.get('model')?.invalid) {
+                        @if (carForm.get('model')?.getError("required")) {
+                            <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                    }
                 </div>
                 <div class="form-group">
-                    <label class="label">Color *</label>
+                    <label class="label required">Color</label>
                     <input type="text" formControlName="color" placeholder="Ej: Rojo">
+                    <!-- Validación Color -->
+                    @if ((addCarSubmitted || carForm.get('color')?.dirty) && carForm.get('color')?.invalid) {
+                        @if (carForm.get('color')?.getError("required")) {
+                            <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                    }
                 </div>
                 <div class="form-group">
-                    <label class="label">Matrícula *</label>
+                    <label class="label required">Matrícula</label>
                     <input type="text" formControlName="licensePlate" placeholder="Ej: 1234ABC">
+                    <!-- Validación Matrícula -->
+                    @let licensePlate = carForm.get('licensePlate');
+                    @if ((addCarSubmitted || (licensePlate?.dirty || licensePlate?.touched)) && licensePlate?.invalid) {
+                        @if (licensePlate?.hasError("required")) {
+                            <span class="error-msg">Este campo no puede estar vacio</span>
+                        } @else if (licensePlate?.hasError("invalidFormat")) {
+                            <span class="error-msg">Formato de matrícula no válido.</span><br>
+                            <span class="error-msg">Formatos aceptados: 1234BCD, 1234 BCD, M-1234-Z, AB-1234-CD</span>
+                        }
+                    }
                 </div>
                 <div class="form-group">
-                    <label class="label">Capacidad (plazas sin contar al conductor) *</label>
+                    <label class="label required">Capacidad (plazas sin contar al conductor)</label>
                     <input type="number" formControlName="capacity" min="2" max="9">
+                    <!-- Validación Capacidad -->
+                    @if ((addCarSubmitted || carForm.get('capacity')?.dirty) && carForm.get('capacity')?.invalid) {
+                        @if (carForm.get('capacity')?.getError("required")) {
+                            <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                    }
                 </div>
                 @if (carError) { <div class="alert alert-error">{{ carError }}</div> }
-                <button type="submit" class="btn btn-primary" style="justify-content:center" [disabled]="carForm.invalid || carSaving">
+                <button type="submit" class="btn btn-primary" style="justify-content:center">
                     @if (carSaving) { <span class="spinner"></span> } @else { Añadir vehículo }
                 </button>
             </form>
         </div>
     </div>
 }
-
-<app-footer></app-footer>

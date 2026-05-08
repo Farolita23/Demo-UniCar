@@ -207,16 +207,6 @@
                                 }
                             </div>
                         </div>
-                        <div class="person-actions">
-                            <button class="btn btn-remove" (click)="removePassenger(passenger)"
-                                [disabled]="!!actionLoading[passenger.id]">
-                                @if (isActionLoading(passenger.id, 'remove')) {
-                                <span class="btn-spinner"></span>
-                                } @else {
-                                ✗
-                                }
-                            </button>
-                        </div>
                     </div>
                     }
                 </div>

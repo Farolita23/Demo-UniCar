@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, ChangeDetectorRef, NgZone, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Header } from '../../elements/header/header';
@@ -15,6 +15,16 @@ import { Trip } from '../../../models/trip.model';
 import { Campus } from '../../../models/campus.model';
 import { Town } from '../../../models/town.model';
 
+function plateValidator(control: AbstractControl): ValidationErrors | null {
+    const v: string = (control.value || '').trim();
+    const errors: ValidationErrors = {};
+
+    const regex = /^(\d{4}\s?[BCDFGHJKLMNPRSTVWXYZ]{3}|[A-Z]{1,2}-\d{4}-[A-Z]{1,2})$/;
+
+    if (!regex.test(v)) { errors['invalidFormat'] = true; }
+
+    return Object.keys(errors).length ? errors : null;
+}
 @Component({
     selector: 'page-profile',
     standalone: true,
@@ -52,15 +62,15 @@ export class Profile implements OnInit {
     carForm = this.fb.group({
         model: ['', Validators.required],
         color: ['', Validators.required],
-        licensePlate: ['', Validators.required],
+        licensePlate: ['', [Validators.required, plateValidator]],
         capacity: [4, [Validators.required, Validators.min(2), Validators.max(9)]],
     });
 
     editForm = this.fb.group({
-        username: ['', [Validators.required, Validators.minLength(3)]],
-        email: ['', [Validators.required, Validators.email]],
         name: ['', Validators.required],
-        phone: ['', Validators.required],
+        username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(16)]],
+        email: ['', [Validators.required, Validators.email]],
+        phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
         description: [''],
         profileImageUrl: [''],
         idUsualCampus: ['' as string],
@@ -166,8 +176,9 @@ export class Profile implements OnInit {
         };
         reader.readAsDataURL(file);
     }
-
+    editSubmitted = false;
     saveProfile() {
+        this.editSubmitted = true;
         if (this.editForm.invalid || !this.user) return;
         this.saving = true; this.editError = ''; this.editSuccess = false;
         const v = this.editForm.value;
@@ -207,7 +218,10 @@ export class Profile implements OnInit {
         this.showCarModal = true;
     }
 
+    addCarSubmitted = false;
     addCar() {
+        this.addCarSubmitted = true;
+
         if (this.carForm.invalid || !this.user || this.carSaving) return;
         this.carSaving = true;
         this.carError = '';
@@ -241,7 +255,10 @@ export class Profile implements OnInit {
                 this.cars = this.cars.filter(c => c.id !== carId);
                 this.cdr.detectChanges();
             },
-            error: e => console.error('[Profile] deleteCar error:', e),
+            error: e => {
+                alert(e.error.message);
+                console.error('[Profile] deleteCar error:', e);
+            },
         });
     }
 

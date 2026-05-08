@@ -1,0 +1,30 @@
+<div class="container">
+    <div class="footer-brand">
+        <span class="logo-text">Uni<span class="logo-accent">Car</span></span>
+        <p>Comparte el camino hacia la universidad</p>
+    </div>
+    <div class="footer-links">
+        <div>
+            <h4>Plataforma</h4>
+            <a routerLink="/">Inicio</a>
+            <a routerLink="/search-trip">Buscar viaje</a>
+            <a routerLink="/about">Nosotros</a>
+            <a routerLink="/faq">FAQ</a>
+        </div>
+        <div>
+            <h4>Cuenta</h4>
+            @if (!auth.isLoggedIn()){
+                <a routerLink="/signup">Registrarse</a>
+                <a routerLink="/login">Iniciar sesión</a>
+            } @else {
+                <a routerLink="/profile">Mi perfil</a>
+                <a routerLink="/my-trips">Mis viajes</a>
+                <a routerLink="/favorites">Favoritos</a>
+                @if(isAdmin){
+                    <a routerLink="/admin">Panel de administración</a>
+                }
+            }
+        </div>
+    </div>
+</div>
+<div class="container disclaimer"><span>© {{ year }} UniCar — Todos los derechos reservados</span></div>

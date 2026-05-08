@@ -292,38 +292,6 @@ export class ManageTrip implements OnInit {
         });
     }
 
-    // ── Remove passenger ───────────────────────────────────────
-    removePassenger(passenger: UserSummary) {
-        if (!this.trip || this.actionLoading[passenger.id]) return;
-
-        this.actionLoading[passenger.id] = 'remove';
-        this.actionError = '';
-        this.actionSuccess = '';
-
-        this.api.leaveTrip(this.trip.id, passenger.id).subscribe({
-            next: t => {
-                this.removedIds.add(passenger.id);
-                this.cdr.detectChanges();
-
-                setTimeout(() => {
-                    this.trip = t;
-                    this.removedIds.delete(passenger.id);
-                    delete this.actionLoading[passenger.id];
-
-                    this.actionSuccess = `${passenger.name} ha sido eliminado del viaje.`;
-                    this.clearMessages();
-                    this.cdr.detectChanges();
-                }, 400);
-            },
-            error: e => {
-                this.actionError = e?.error?.message || 'Error al eliminar pasajero.';
-                delete this.actionLoading[passenger.id];
-                this.clearMessages();
-                this.cdr.detectChanges();
-            },
-        });
-    }
-
     // ── Delete trip ────────────────────────────────────────────
     deleteTrip() {
         if (!this.trip) return;

@@ -58,7 +58,7 @@ export class Login {
             },
             error: (e) => {
                 switch (e.error.status) {
-                    case 403: this.error = 'Tu cuenta ha sido baneada. Contacta con soporte para más información.'; break;
+                    case 403: this.error = 'Tu cuenta ha sido baneada. Recuerda cumplir con tus viajes pendientes. En caso de no hacerlo, el baneo podrá prolongarse.'; break;
                     default: this.error = 'Credenciales incorrectas. Inténtalo de nuevo.';
                 }
                 this.loading = false;

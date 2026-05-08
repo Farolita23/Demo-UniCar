@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-04-27T10:23:54+0200",
+    date = "2026-05-08T17:05:43+0200",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.0.v20260407-0427, environment: Java 21.0.10 (Eclipse Adoptium)"
 )
 @Component
@@ -29,9 +29,9 @@ public class ReportMapperImpl implements ReportMapper {
 
         reportDTO.setUserReportDTO( userSummaryMapper.toDto( report.getUserReport() ) );
         reportDTO.setReportedUserDTO( userSummaryMapper.toDto( report.getReportedUser() ) );
-        reportDTO.setDate( report.getDate() );
         reportDTO.setId( report.getId() );
         reportDTO.setReason( report.getReason() );
+        reportDTO.setDate( report.getDate() );
 
         return reportDTO;
     }

@@ -622,7 +622,7 @@
     font-size: 16px;
     padding: 8px 16px;
     justify-content: center;
-    width: 100%;
+    width: calc(100% - 16px * 2);
     display: flex;
 }
 

@@ -408,14 +408,14 @@
    ======================================== */
 
 /* Contenedor de la lista de reportes */
-.reports-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+:host .reports-list {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 16px;
 }
 
 /* Tarjeta individual de reporte */
-.report-card {
+:host .reports-list .report-card {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -423,17 +423,17 @@
 }
 
 /* Encabezado de la tarjeta de reporte */
-.report-card__header {
+:host .reports-list .report-card .report-card__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
+    padding: 16px;
     background: rgba(230, 57, 70, 0.05);
     border-bottom: 1px solid var(--border);
 }
 
 /* Contenedor de usuarios del reporte (de-a) */
-.report-users {
+:host .reports-list .report-card .report-card__header .report-users {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -441,49 +441,49 @@
 }
 
 /* Usuario remitente del reporte */
-.report-from,
+:host .reports-list .report-card .report-card__header .report-users .report-from,
 /* Usuario destinatario del reporte */
-.report-to {
+:host .reports-list .report-card .report-card__header .report-users .report-to {
     display: flex;
     flex-direction: column;
 }
 
 /* Texto descriptivo para usuarios */
-.report-from small,
-.report-to small {
+:host .reports-list .report-card .report-card__header .report-users .report-from small,
+:host .reports-list .report-card .report-card__header .report-users .report-to small {
     color: var(--text-2);
-    font-size: 0.78rem;
+    font-size: 14px;
 }
 
 /* Flecha indicadora entre usuarios */
-.report-arrow {
+:host .reports-list .report-card .report-card__header .report-users .report-arrow {
     color: var(--text-3);
-    font-size: 0.85rem;
+    font-size: 12px;
 }
 
 /* Fecha del reporte */
-.report-date {
+:host .reports-list .report-card .report-card__header .report-date {
     color: var(--text-3);
-    font-size: 0.82rem;
+    font-size: 14px;
 }
 
 /* Cuerpo de la tarjeta de reporte */
-.report-card__body {
-    padding: 12px 16px;
+:host .reports-list .report-card .report-card__body {
+    padding: 16px;
 }
 
 /* Razón/motivo del reporte */
-.report-reason {
+:host .reports-list .report-card .report-card__body .report-reason {
     margin: 0;
     color: var(--text);
-    font-size: 0.9rem;
+    font-size: 14px;
 }
 
 /* Contenedor de acciones del reporte */
-.report-card__actions {
+:host .reports-list .report-card .report-card__actions {
     display: flex;
     gap: 8px;
-    padding: 10px 16px;
+    padding: 16px;
     border-top: 1px solid var(--border);
 }
 

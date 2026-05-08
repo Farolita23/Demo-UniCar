@@ -2,6 +2,8 @@ package com.daw.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.daw.controller.dto.ReportCreateDTO;
@@ -43,11 +45,11 @@ public class ReportService {
 
 	/**
 	 * Recupera todos los reportes registrados en el sistema.
-	 *
-	 * @return lista de {@link ReportDTO} con todos los reportes disponibles
+	 * @param pageable información de paginación y ordenación
+	 * @return paginacion con la lista de {@link ReportDTO}
 	 */
-	public List<ReportDTO> findAll() {
-		return reportMapper.toListDto(reportRepository.findAll());
+	public Page<ReportDTO> findAll(Pageable pageable) {
+		return reportMapper.toPageDto(reportRepository.findAll(pageable));
 	}
 
 	/**

@@ -65,8 +65,10 @@ public class AdminController {
      * @return {@code 200 OK} con la lista de {@link ReportDTO}
      */
     @GetMapping("/reports")
-    public ResponseEntity<List<ReportDTO>> getAllReports() {
-        return ResponseEntity.ok(reportService.findAll());
+    public ResponseEntity<Page<ReportDTO>> getAllReports(
+        @PageableDefault(size = 2, sort = "date") Pageable pageable
+    ) {
+        return ResponseEntity.ok(reportService.findAll(pageable));
     }
 
     /**

@@ -54,12 +54,6 @@ export class Admin implements OnInit {
     
     /** Indicador de estado de carga */
     loading = true;
-    /** Número total de usuarios (para paginación) */
-    totalUsers = 0;
-    /** Número total de páginas */
-    totalPages = 0;
-    /** Página actual */
-    currentPage = 0;
 
     // ========================================
     // Propiedades relacionadas con usuarios
@@ -68,6 +62,15 @@ export class Admin implements OnInit {
     /** Lista de usuarios filtrados por búsqueda */
     filteredUsers: User[] = [];
     
+    /** Número total de usuarios (para paginación) */
+    totalUsers = 0;
+    
+    /** Número total de páginas */
+    totalUserPages = 0;
+
+    /** Página actual */
+    currentUserPage = 0;
+
     /** Texto de búsqueda ingresado por el usuario */
     userSearch = '';
 
@@ -77,6 +80,15 @@ export class Admin implements OnInit {
     
     /** Lista de reportes de usuarios */
     reports: Report[] = [];
+
+    /** Número total de reportes (para paginación) */
+    totalReports = 0;
+
+    /** Número total de páginas para reportes */
+    totalReportPages = 0;
+
+    /** Página actual para reportes */
+    currentReportPage = 0;
 
     // ========================================
     // Propiedades de detalle de usuario
@@ -120,14 +132,12 @@ export class Admin implements OnInit {
      * Carga los datos iniciales (usuarios y reportes) desde el servidor
      */
     loadData() {
-        // Cargar lista de usuarios
+        // Mostrar indicador de carga
         this.loading = true;
+        // Cargar lista de usuarios
         this.searchUsers();
-        
         // Cargar lista de reportes
-        this.api.adminGetAllReports().subscribe({
-            next: r => { this.reports = r; this.cdr.detectChanges(); },
-        });
+        this.searchReports();
     }
 
     /**
@@ -139,8 +149,25 @@ export class Admin implements OnInit {
             next: (pageable) => {
                 this.filteredUsers = pageable.content; 
                 this.totalUsers = pageable.totalElements;
-                this.totalPages = pageable.totalPages;
-                this.currentPage = pageable.number;
+                this.totalUserPages = pageable.totalPages;
+                this.currentUserPage = pageable.number;
+                this.loading = false;
+                this.cdr.detectChanges(); 
+            },
+            error: () => { this.loading = false; this.cdr.detectChanges(); },
+        });
+    }
+
+    /**
+     * Carga la lista de reportes de usuarios desde el servidor
+     */
+    searchReports(page = 0) {
+        this.api.adminSearchReports(page).subscribe({
+            next: (pageable) => {
+                this.reports = pageable.content; 
+                this.totalReports = pageable.totalElements;
+                this.totalReportPages = pageable.totalPages;
+                this.currentReportPage = pageable.number;
                 this.loading = false;
                 this.cdr.detectChanges(); 
             },
@@ -260,6 +287,12 @@ export class Admin implements OnInit {
      * Obtiene un array con los números de página para la paginación
      * @returns Array de números de página
      */
-    pages(): number[] { return Array.from({ length: this.totalPages }, (_, i) => i); }
+    userPages(): number[] { return Array.from({ length: this.totalUserPages }, (_, i) => i); }
+
+    /**
+     * Obtiene un array con los números de página para la paginación de reportes
+     * @returns Array de números de página para reportes
+     */
+    reportPages(): number[] { return Array.from({ length: this.totalReportPages }, (_, i) => i); }
 
 }

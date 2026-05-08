@@ -91,7 +91,7 @@
                             <span class="meta-icon">💺</span>
                             <div>
                                 <span class="meta-key">Plazas libres</span>
-                                <span class="meta-val" [class.low]="freeSeats <= 1" [class.full-val]="!isFull">
+                                <span class="meta-val" [class.low]="freeSeats <= 1" [class.full-val]="isFull">
                                     @if (isFull) {
                                     Completo
                                     } @else {
@@ -275,7 +275,7 @@
                         ⚙ Gestionar viaje
                     </a>
                     } @else if (auth.isLoggedIn()) {
-                    @if (!isPassenger) {
+                    @if (isPassenger) {
                     <div class="alert alert-success">✅ Eres pasajero de este viaje</div>
                     <button class="btn btn-ghost cta-btn" (click)="leaveTrip()" [disabled]="actionLoading">
                         {{ actionLoading ? 'Procesando...' : 'Abandonar viaje' }}

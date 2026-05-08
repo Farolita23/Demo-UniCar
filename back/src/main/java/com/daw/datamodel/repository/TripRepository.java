@@ -79,7 +79,7 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      * @return página de viajes como conductor
      */
     @EntityGraph(attributePaths = {"passengers", "requesters", "car", "campus", "town"})
-    @Query("SELECT t FROM Trip t WHERE t.car.driver.id = :idDriver " +
+    @Query("SELECT t FROM Trip t WHERE t.car.driver.id = :idDriver AND t.departureDate > CURRENT_DATE " +
            "ORDER BY t.departureDate DESC, t.departureTime DESC")
     Page<Trip> findTripsAsADriver(@Param("idDriver") Long idDriver, Pageable pageable);
 

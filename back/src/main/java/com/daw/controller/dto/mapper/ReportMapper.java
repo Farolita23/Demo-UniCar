@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.data.domain.Page;
 
 import com.daw.controller.dto.ReportDTO;
 import com.daw.datamodel.entities.Report;
@@ -16,4 +17,8 @@ public interface ReportMapper {
     ReportDTO toDto(Report report);
 
     List<ReportDTO> toListDto(List<Report> reports);
+
+    default Page<ReportDTO> toPageDto(Page<Report> reports) {
+        return reports.map(this::toDto);
+    }
 }

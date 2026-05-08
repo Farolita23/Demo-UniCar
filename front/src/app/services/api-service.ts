@@ -197,8 +197,9 @@ export class ApiService {
         return this.http.get<Page<User>>(`${this.URL}/api/admin/users/search`, { headers: this.authHeaders(), params });
     }
 
-    adminGetAllReports(): Observable<Report[]> {
-        return this.http.get<Report[]>(`${this.URL}/api/admin/reports`, { headers: this.authHeaders() });
+    adminSearchReports(page: number): Observable<Page<Report>> {
+        const params = new HttpParams().set('page', page).set('size', 5);
+        return this.http.get<Page<Report>>(`${this.URL}/api/admin/reports`, { headers: this.authHeaders(), params });
     }
 
     adminBanUser(id: number): Observable<void> {

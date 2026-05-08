@@ -21,8 +21,8 @@
                 <span class="tab-badge">{{ totalUsers }}</span>
             </button>
             <button class="tab" [class.active]="activeTab === 'reports'" (click)="activeTab = 'reports'">🚩 Reportes
-                @if (reports.length > 0) {
-                <span class="tab-badge danger-badge">{{ reports.length }}</span>
+                @if (totalReports > 0) {
+                <span class="tab-badge danger-badge">{{ totalReports }}</span>
                 }
             </button>
         </div>
@@ -120,8 +120,8 @@
         </div>
         
         <div class="pagination">
-            @for (p of pages(); track p) {
-            <button class="page-btn" [class.active]="p === currentPage" (click)="searchUsers(p)">{{ p + 1 }}</button>
+            @for (p of userPages(); track p) {
+            <button class="page-btn" [class.active]="p === currentUserPage" (click)="searchUsers(p)">{{ p + 1 }}</button>
             }
         </div>
         }
@@ -129,7 +129,7 @@
 
         <!-- REPORTS TAB -->
         @if (activeTab === 'reports') {
-        @if (reports.length === 0) {
+        @if (totalReports === 0) {
         <div class="empty-state">
             <div class="empty-icon">🎉</div>
             <h3>Sin reportes pendientes</h3>
@@ -163,6 +163,12 @@
                     <button class="btn btn-danger-outline btn-sm" (click)="deleteReport(r.id)">Descartar</button>
                 </div>
             </div>
+            }
+        </div>
+        
+        <div class="pagination">
+            @for (p of reportPages(); track p) {
+            <button class="page-btn" [class.active]="p === currentReportPage" (click)="searchReports(p)">{{ p + 1 }}</button>
             }
         </div>
         }
