@@ -43,7 +43,7 @@ public class CampusService {
 	 * @return lista de {@link CampusDTO} con todos los campus disponibles
 	 */
 	public List<CampusDTO> findAll() {
-		return campusMapper.toListDto(campusRepository.findAll());
+		return campusMapper.toListDto(campusRepository.findAllByOrderByNameAsc());
 	}
 
 	/**

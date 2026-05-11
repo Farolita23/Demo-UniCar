@@ -11,7 +11,10 @@ import { Town } from '../../../models/town.model';
 
 // Función de validación personalizada para verificar que las contraseñas coincidan
 function passwordMatch(g: AbstractControl) {
-    return g.get('password')?.value === g.get('rePassword')?.value ? null : { passwordsMismatch: true };
+    const password = g.get('password')?.value;
+    const rePassword = g.get('rePassword')?.value;
+
+    return password === rePassword ? null : { passwordsMismatch: true };
 }
 
 // Función de validación personalizada para verificar la fortaleza de la contraseña

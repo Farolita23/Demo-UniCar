@@ -2,7 +2,7 @@ import { Component, inject, OnInit, ChangeDetectorRef, NgZone, PLATFORM_ID } fro
 import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
 import { TripCard } from '../../elements/trip/trip';
@@ -42,6 +42,7 @@ export class Profile implements OnInit {
     auth = inject(AuthService);
     cdr = inject(ChangeDetectorRef);
     zone = inject(NgZone);
+    router = inject(Router);
     platformId = inject(PLATFORM_ID);
 
     // Datos del usuario y relacionados
@@ -98,11 +99,17 @@ export class Profile implements OnInit {
         }
 
         this.api.getCampuses().subscribe({
-            next: c => { this.campuses = c; this.cdr.detectChanges(); },
+            next: c => { 
+                this.campuses = c; 
+                this.cdr.detectChanges(); 
+            },
             error: e => console.error('[Profile] getCampuses error:', e),
         });
         this.api.getTowns().subscribe({
-            next: t => { this.towns = t; this.cdr.detectChanges(); },
+            next: t => { 
+                this.towns = t;
+                this.cdr.detectChanges(); 
+            },
             error: e => console.error('[Profile] getTowns error:', e),
         });
 
@@ -219,13 +226,21 @@ export class Profile implements OnInit {
         };
         this.api.updateUser(this.user.id, dto).subscribe({
             next: u => {
+                let usernameHasChanged = this.auth.getUser().username !== v.username;
                 this.user = u;
                 this.auth.saveUser(u);
                 this.editSuccess = true;
                 this.saving = false;
                 this.cdr.detectChanges();
+                if(usernameHasChanged){
+                    alert("El nombre de usuario ha cambiado, porfavor vuelva a loguearse");
+                    this.auth.logout();
+                    this.router.navigate(["/login"]);
+                }
             },
             error: e => {
+                console.log(e);
+                
                 this.editError = e?.error?.message || 'Error al guardar.';
                 this.saving = false;
                 this.cdr.detectChanges();
