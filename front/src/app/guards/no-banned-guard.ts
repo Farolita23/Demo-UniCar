@@ -7,15 +7,16 @@ import { AuthService } from '../services/auth-service';
 
 export const NoBannedGuard: CanActivateFn = () => {
     const router = inject(Router);
-    const apiService = inject(ApiService);
     const auth = inject(AuthService);
+    const apiService = inject(ApiService);
     
     if(!auth.isLoggedIn()) return true;
 
     return apiService.getMe().pipe(
         map((res: any) => {
+            console.log(res.error);
             if (res.banned) {
-                alert("Tu cuenta ha sido baneada. Contacta con soporte para más información.");
+                alert("Tu cuenta ha sido baneada.");
                 auth.logout();
                 router.navigate(['/']);
                 return false;
@@ -23,6 +24,12 @@ export const NoBannedGuard: CanActivateFn = () => {
             return true;
         }),
         catchError((err) => {
+            if(err.status === 403){
+                alert("El usuario actual no ha sido encontrado. Porfavor, vuelva a iniciar sesion");
+                auth.logout();
+                router.navigate(["/"])
+                return of(true);
+            }
             console.error(err);
             return of(true);
         })
