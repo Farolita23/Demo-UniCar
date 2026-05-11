@@ -20,18 +20,26 @@ import { Town } from '../../../models/town.model';
     styleUrl: './search-trip.css',
 })
 export class SearchTrip implements OnInit, OnDestroy {
+
+    // Inyección de servicios
     api = inject(ApiService);
     cdr = inject(ChangeDetectorRef);
     platformId = inject(PLATFORM_ID);
 
+    // Variables para almacenar los viajes, campus y pueblos obtenidos de la API
     trips: Trip[] = [];
     campuses: Campus[] = [];
     towns: Town[] = [];
+    
+    // Variable para indicar si se está cargando la búsqueda de viajes
     loading = false;
+
+    // Paginación
     totalPages = 0;
     totalTrips = 0;
     currentPage = 0;
 
+    // Filtros de búsqueda
     filters = {
         campus: null as string | null,
         campusId: null as number | null,
@@ -43,8 +51,10 @@ export class SearchTrip implements OnInit, OnDestroy {
         minFreeSeats: null as number | null,
     };
 
+    // Subject para manejar las búsquedas de viajes
     private search$ = new Subject<{ filters: any; page: number }>();
 
+    // Método para inicializar el componente y cargar los datos necesarios
     ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) return;
 
@@ -80,10 +90,17 @@ export class SearchTrip implements OnInit, OnDestroy {
         this.search();
     }
 
-    ngOnDestroy() { this.search$.complete(); }
+    // Método para limpiar recursos al destruir el componente
+    ngOnDestroy() { 
+        this.search$.complete();
+    }
 
-    setDirection(value: boolean | null) { this.filters.isToCampus = value; }
+    // Método para establecer la dirección del viaje (hacia o desde el campus, o ambos)
+    setDirection(value: boolean | null) { 
+        this.filters.isToCampus = value; 
+    }
 
+    // Método para realizar la búsqueda de viajes según los filtros actuales y la página especificada
     search(page = 0) {
         this.currentPage = page;
         const f: any = {};
@@ -92,10 +109,11 @@ export class SearchTrip implements OnInit, OnDestroy {
         if (this.filters.isToCampus !== null) f.isToCampus = this.filters.isToCampus;
         if (this.filters.departureDate) f.departureDate = this.filters.departureDate;
         if (this.filters.maxPrice) f.maxPrice = +this.filters.maxPrice;
-        if (this.filters.minFreeSeats) f.minFreeSeats = +this.filters.minFreeSeats;        
+        if (this.filters.minFreeSeats) f.minFreeSeats = +this.filters.minFreeSeats;
         this.search$.next({ filters: f, page });
     }
 
+    // Método para resetear los filtros a sus valores iniciales y realizar una nueva búsqueda
     reset() {
         this.filters = {
             campus: null, town: null,
@@ -105,6 +123,14 @@ export class SearchTrip implements OnInit, OnDestroy {
         this.search();
     }
 
-    updateTrip(updated: Trip, i: number) { this.trips[i] = updated; }
-    pages(): number[] { return Array.from({ length: this.totalPages }, (_, i) => i); }
+    // Método para actualizar un viaje específico en el array de viajes
+    updateTrip(updated: Trip, i: number) {
+        this.trips[i] = updated;
+        this.cdr.detectChanges();
+    }
+
+    // Método para generar un array de números basado en el total de páginas
+    pages(): number[] {
+        return Array.from({ length: this.totalPages }, (_, i) => i);
+    }
 }

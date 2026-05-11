@@ -12,12 +12,12 @@
     <div class="trip-card__body">
         <div class="trip-card__route">
             <div class="route-point">
-                <div class="dot dot-from"></div>
+                <div class="dot" [class.dot-from]="data.isToCampus" [class.dot-to]="!data.isToCampus"></div>
                 <span>{{ data.isToCampus ? data.townDTO.name : data.campusDTO.name }}</span>
             </div>
             <div class="route-line"></div>
             <div class="route-point">
-                <div class="dot dot-to"></div>
+                <div class="dot" [class.dot-from]="!data.isToCampus" [class.dot-to]="data.isToCampus"></div>
                 <span>{{ data.isToCampus ? data.campusDTO.name : data.townDTO.name }}</span>
             </div>
         </div>

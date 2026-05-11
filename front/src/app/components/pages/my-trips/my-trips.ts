@@ -16,19 +16,26 @@ import { TripCard } from '../../elements/trip/trip';
     templateUrl: './my-trips.html',
     styleUrl: './my-trips.css',
 })
+// Página de "Mis Viajes" que muestra los viajes del usuario como conductor y pasajero
 export class MyTrips implements OnInit {
+
+    // Inyección de servicios
     api = inject(ApiService);
     auth = inject(AuthService);
     router = inject(Router);
     cdr = inject(ChangeDetectorRef);
     platformId = inject(PLATFORM_ID);
 
+    // Listas de viajes y estados de carga
     tripsAsPassenger: Trip[] = [];
     tripsAsDriver: Trip[] = [];
     loadingPassenger = true;
     loadingDriver = true;
+
+    // Control de pestañas
     activeTab: 'passenger' | 'driver' = 'passenger';
 
+    // Métodos para navegación y lógica de viajes
     ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) {
             this.loadingPassenger = false;
@@ -48,23 +55,33 @@ export class MyTrips implements OnInit {
         });
     }
 
-    goToDetail(id: number) { this.router.navigate(['/trip-detail', id]); }
+    // Navegar a detalle del viaje
+    goToDetail(id: number) {
+        this.router.navigate(['/trip-detail', id]);
+    }
 
-    goToManage(id: number) { this.router.navigate(['/manage-trip', id]); }
+    // Navegar a gestión del viaje (solo conductor)
+    goToManage(id: number) {
+        this.router.navigate(['/manage-trip', id]);
+    }
 
+    // Navegar al perfil del conductor desde un viaje
     goToDriverProfile(trip: Trip, event: Event) {
         event.stopPropagation();
         if (trip.driverDTO?.id) this.router.navigate(['/user', trip.driverDTO.id]);
     }
 
+    // Calcular plazas libres de un viaje
     freeSeats(trip: Trip): number {
         return (trip.carDTO?.capacity ?? 0) - (trip.passengersDTO?.length ?? 0);
     }
 
+    // Verificar si un viaje está completo
     isFull(trip: Trip): boolean {
         return this.freeSeats(trip) <= 0;
     }
 
+    // Formatear fecha de viaje para mostrar
     formatDate(d: string): string {
         if (!d) return '';
         return new Date(d).toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });

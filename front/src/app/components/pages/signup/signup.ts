@@ -9,10 +9,12 @@ import { AuthService } from '../../../services/auth-service';
 import { Campus } from '../../../models/campus.model';
 import { Town } from '../../../models/town.model';
 
+// Función de validación personalizada para verificar que las contraseñas coincidan
 function passwordMatch(g: AbstractControl) {
     return g.get('password')?.value === g.get('rePassword')?.value ? null : { passwordsMismatch: true };
 }
 
+// Función de validación personalizada para verificar la fortaleza de la contraseña
 function strongPassword(control: AbstractControl): ValidationErrors | null {
     const v: string = control.value || '';
 
@@ -35,6 +37,8 @@ function strongPassword(control: AbstractControl): ValidationErrors | null {
     styleUrl: './signup.css',
 })
 export class Signup implements OnInit {
+    
+    // Inyección de servicios
     fb = inject(FormBuilder);
     api = inject(ApiService);
     auth = inject(AuthService);
@@ -42,12 +46,20 @@ export class Signup implements OnInit {
     cdr = inject(ChangeDetectorRef);
     platformId = inject(PLATFORM_ID);
 
+    // Variables para almacenar los campus y pueblos obtenidos de la API
     campuses: Campus[] = [];
     towns: Town[] = [];
+
+    // Variable para indicar si se está procesando el registro
     loading = false;
+
+    // Variable para mostrar mensajes de error en el formulario
     error = '';
+
+    // Variable para controlar la visibilidad de la contraseña en el formulario
     showPassword = false;
 
+    // Formulario de registro con validaciones
     form = this.fb.group({
         username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(16)]],
         email: ['', [Validators.required, Validators.email]],
@@ -62,6 +74,8 @@ export class Signup implements OnInit {
         password: ['', [Validators.required, strongPassword]],
         rePassword: ['', Validators.required],
     }, { validators: passwordMatch });
+
+    // Método para inicializar el componente y cargar los datos necesarios
     ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) return;
         this.api.getCampuses().subscribe({
@@ -74,7 +88,10 @@ export class Signup implements OnInit {
         });
     }
 
+    // Variable para controlar si el formulario ha sido enviado
     submited = false;
+
+    // Método para manejar el envío del formulario de registro
     submit() {
         this.submited = true;
 

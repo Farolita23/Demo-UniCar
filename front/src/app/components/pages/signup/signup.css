@@ -1,3 +1,7 @@
+/* ==================== */
+/* ESTILOS DE LA PAGINA */
+/* ==================== */
+/* ESTILOS PARA LA PÁGINA DE REGISTRO DE USUARIOS */
 :host .container {
     padding-top: 16px;
     min-height: calc(100% - 72px - 16px * 2);
@@ -5,6 +9,7 @@
     display: flex;
 }
 
+/* ESTILOS DEL PANEL DE REGISTRO */
 :host .signup-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -15,6 +20,7 @@
     margin: auto;
 }
 
+/* ESTILOS DE LA CABECERA DEL PANEL DE REGISTRO */
 :host .signup-card .auth-brand {
     display: flex;
     flex-direction: column;
@@ -22,12 +28,14 @@
     margin-bottom: 32px;
 }
 
+/* ESTILOS DEL LOGO EN LA CABECERA DEL PANEL DE REGISTRO */
 :host .signup-card .auth-brand .auth-logo {
     width: 64px;
     height: 64px;
     margin: auto;
 }
 
+/* ESTILOS DEL TITULO EN LA CABECERA DEL PANEL DE REGISTRO */
 :host .signup-card .auth-brand h1 {
     font-size: 24px;
     min-height: 24px;
@@ -35,6 +43,7 @@
     margin-bottom: 4px;
 }
 
+/* ESTILOS DEL SUBTITULO EN LA CABECERA DEL PANEL DE REGISTRO */
 :host .signup-card .auth-brand p {
     color: var(--text-2);
     font-size: 14px;
@@ -42,12 +51,14 @@
     line-height: 14px;
 }
 
+/* ESTILOS DEL FORMULARIO DE REGISTRO */
 :host .signup-card .signup-form {
     display: flex;
     flex-direction: column;
     gap: 32px;
 }
 
+/* ESTILOS DE LAS SECCIONES DEL FORMULARIO DE REGISTRO */
 :host .signup-card .signup-form .form-section {
     background: var(--bg-3);
     border: 1px solid var(--border);
@@ -58,6 +69,7 @@
     gap: 16px;
 }
 
+/* ESTILOS DE LOS TITULOS DE LAS SECCIONES DEL FORMULARIO DE REGISTRO */
 :host .signup-card .signup-form .form-section .form-section-title {
     font-size: 16px;
     text-transform: uppercase;
@@ -67,20 +79,24 @@
     font-weight: 700;
 }
 
+/* ESTILOS DE LAS FILAS DE LAS SECCIONES DEL FORMULARIO DE REGISTRO */
 :host .signup-card .signup-form .form-section .form-row-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 
+/* ESTILOS DE LOS INPUTS DE LAS FILAS DE LAS SECCIONES DEL FORMULARIO DE REGISTRO */
 :host .signup-card .signup-form .form-section .form-row-2 .input-wrap {
     position: relative;
 }
 
+/* ESTILOS DE LOS INPUTS DE LAS FILAS DE LAS SECCIONES DEL FORMULARIO DE REGISTRO */
 :host .signup-card .signup-form .form-section .form-row-2 .input-wrap input {
     padding-right: 16px;
 }
 
+/* ESTILOS DEL BOTON DE MOSTRAR CONTRASEÑA EN LOS INPUTS DE LAS FILAS DE LAS SECCIONES DEL FORMULARIO DE REGISTRO */
 :host .signup-card .signup-form .form-section .form-row-2 .input-wrap .eye-btn {
     position: absolute;
     right: 16px;
@@ -93,17 +109,20 @@
     padding: 0;
 }
 
+/* ESTILOS DE LOS TEXTAREAS DE LAS SECCIONES DEL FORMULARIO DE REGISTRO */
 textarea {
     resize: vertical;
     min-height: 80px;
 }
 
+/* ESTILOS DE LOS BOTONES DE ACCION DEL FORMULARIO DE REGISTRO */
 :host .signup-card .signup-form .actions {
     margin-top: 16px;
     display: flex;
     gap: 16px;
 }
 
+/* ESTILOS DE LOS BOTONES DE ACCION DEL FORMULARIO DE REGISTRO */
 :host .signup-card .signup-form .actions * {
     margin: auto;
     justify-content: center;
@@ -112,6 +131,7 @@ textarea {
     width: 100%;
 }
 
+/* ESTILOS DEL ENLACE DE INICIO DE SESION EN LA PARTE INFERIOR DEL PANEL DE REGISTRO */
 :host .signup-card .auth-link-bottom {
     text-align: center;
     font-size: 14px;
@@ -119,55 +139,76 @@ textarea {
     margin-top: 16px;
 }
 
+/* ESTILOS DEL ENLACE DE INICIO DE SESION EN LA PARTE INFERIOR DEL PANEL DE REGISTRO */
 :host .signup-card .auth-link-bottom a {
     color: var(--primary);
 }
 
+/* ESTILOS DE LOS MENSAJES DE ALERTA EN EL PANEL DE REGISTRO */
 .alert {
     padding: 14px 16px;
     border-radius: var(--radius-sm);
     font-size: 14px;
 }
 
+/* ESTILOS DE LOS MENSAJES DE ALERTA DE ERROR EN EL PANEL DE REGISTRO */
 .alert-error {
     background: rgba(230, 57, 70, 0.1);
     border: 1px solid rgba(230, 57, 70, 0.2);
     color: var(--danger);
 }
 
-/* Responsividad - Tablet */
-@media screen and (max-width: calc(384px + 128px)) {
 
+/* ============= */
+/* RESPONSIVIDAD */
+/* ============= */
+
+/* TABLET GRANDE */
+@media (max-width: calc(768px + 128px + 128px)) {}
+
+/* TABLET */
+@media (max-width: 768px) {}
+
+/* TELEFONO GRANDE*/
+@media (max-width: calc(384px + 128px)) {
+
+    /* AJUSTE DE LAS FILAS DE LAS SECCIONES DEL FORMULARIO DE REGISTRO EN TELEFONOS GRANDES */
     :host .signup-card .signup-form .form-section .form-row-2 {
         grid-template-columns: 1fr;
     }
 
+    /* AJUSTE DE LOS BOTONES DE ACCION DEL FORMULARIO DE REGISTRO EN TELEFONOS GRANDES */
     :host .signup-card .signup-form .actions {
         flex-direction: column;
     }
 
+    /* AJUSTE DE LOS BOTONES DE ACCION DEL FORMULARIO DE REGISTRO EN TELEFONOS GRANDES */
     :host .signup-card .signup-form .actions * {
         width: calc(100% - 32px * 2);
     }
-
 }
 
-/* Responsividad - Movil */
-@media screen and (max-width: 384px) {
+/* TELEFONO */
+@media (max-width: 384px) {
+
+    /* OCULTAR EL HEADER EN TELEFONOS */
     app-header {
         display: none;
     }
 
+    /* AJUSTE DEL CONTENEDOR PRINCIPAL EN TELEFONOS */
     :host .page-wrapper {
         height: 100dvh;
         margin-top: 0;
     }
 
+    /* AJUSTE DEL CONTENEDOR PRINCIPAL EN TELEFONOS */
     :host .page-wrapper .container {
         padding: 0;
         border: 0;
     }
 
+    /* AJUSTE DEL PANEL DE REGISTRO EN TELEFONOS */
     :host .signup-card {
         border: 0;
         padding: 16px;
@@ -175,6 +216,7 @@ textarea {
         min-height: calc(100dvh - 16px * 2);
     }
 
+    /* AJUSTE DE LAS FILAS DE LAS SECCIONES DEL FORMULARIO DE REGISTRO EN TELEFONOS */
     :host .signup-card .signup-form {
         gap: 16px;
     }

@@ -15,6 +15,7 @@ import { Trip } from '../../../models/trip.model';
 import { Campus } from '../../../models/campus.model';
 import { Town } from '../../../models/town.model';
 
+// Validador personalizado para el formato de matrícula de coche
 function plateValidator(control: AbstractControl): ValidationErrors | null {
     const v: string = (control.value || '').trim();
     const errors: ValidationErrors = {};
@@ -25,6 +26,7 @@ function plateValidator(control: AbstractControl): ValidationErrors | null {
 
     return Object.keys(errors).length ? errors : null;
 }
+
 @Component({
     selector: 'page-profile',
     standalone: true,
@@ -33,6 +35,8 @@ function plateValidator(control: AbstractControl): ValidationErrors | null {
     styleUrl: './profile.css',
 })
 export class Profile implements OnInit {
+
+    // Inyección de servicios
     fb = inject(FormBuilder);
     api = inject(ApiService);
     auth = inject(AuthService);
@@ -40,6 +44,7 @@ export class Profile implements OnInit {
     zone = inject(NgZone);
     platformId = inject(PLATFORM_ID);
 
+    // Datos del usuario y relacionados
     user: User | null = null;
     cars: Car[] = [];
     tripsAsDriver: Trip[] = [];
@@ -47,18 +52,25 @@ export class Profile implements OnInit {
     campuses: Campus[] = [];
     towns: Town[] = [];
 
-
+    // Control de pestañas
     activeTab: 'info' | 'trips-driver' | 'trips-passenger' | 'cars' | 'ratings' | 'edit' = 'info';
+
+    // Estados de carga y guardado
     loading = true;
     carsLoading = false;
     saving = false;
+
+    // Estados y controles para edición de perfil
     editSuccess = false;
     editError = '';
     editPreviewUrl: string | null = null;
+
+    // Estados y controles para gestión de vehículos
     showCarModal = false;
     carSaving = false;
     carError = '';
 
+    // Control para formulario de nuevo vehículo
     carForm = this.fb.group({
         model: ['', Validators.required],
         color: ['', Validators.required],
@@ -66,6 +78,7 @@ export class Profile implements OnInit {
         capacity: [4, [Validators.required, Validators.min(2), Validators.max(9)]],
     });
 
+    // Control para formulario de edición de perfil
     editForm = this.fb.group({
         name: ['', Validators.required],
         username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(16)]],
@@ -76,7 +89,8 @@ export class Profile implements OnInit {
         idUsualCampus: ['' as string],
         idHomeTown: ['' as string],
     });
-
+    
+    // Inicialización del componente: carga datos necesarios para mostrar el perfil
     ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) {
             this.loading = false;
@@ -101,6 +115,7 @@ export class Profile implements OnInit {
         }
     }
 
+    // Carga los datos del usuario desde la API y los guarda en el estado del componente
     loadUser(id: number) {
         this.loading = true;
         this.api.getUser(id).subscribe({
@@ -121,6 +136,7 @@ export class Profile implements OnInit {
         });
     }
 
+    // Carga los coches del usuario para mostrarlos en su perfil
     loadCars(userId: number) {
         this.carsLoading = true;
         this.api.getCarsByUser(userId).subscribe({
@@ -137,6 +153,7 @@ export class Profile implements OnInit {
         });
     }
 
+    // Carga los viajes del usuario tanto como conductor como pasajero
     loadTrips(id: number) {
         this.api.getTripsAsDriver(id).subscribe({
             next: p => { this.tripsAsDriver = p.content; this.cdr.detectChanges(); },
@@ -148,6 +165,7 @@ export class Profile implements OnInit {
         });
     }
 
+    // Rellenar el formulario de edición con los datos del usuario
     populateEditForm(u: User) {
         this.editForm.patchValue({
             username: u.username,
@@ -161,6 +179,7 @@ export class Profile implements OnInit {
         });
     }
 
+    // Manejar selección de nueva imagen de perfil y mostrar vista previa
     onProfileFileSelected(event: Event) {
         const file = (event.target as HTMLInputElement).files?.[0];
         if (!file) return;
@@ -176,6 +195,8 @@ export class Profile implements OnInit {
         };
         reader.readAsDataURL(file);
     }
+
+    // Guardar cambios en el perfil del usuario
     editSubmitted = false;
     saveProfile() {
         this.editSubmitted = true;
@@ -212,12 +233,14 @@ export class Profile implements OnInit {
         });
     }
 
+    // Abrir modal para agregar un nuevo coche
     openCarModal() {
         this.carError = '';
         this.carForm.reset({ capacity: 4 });
         this.showCarModal = true;
     }
 
+    // Guardar un nuevo coche en el perfil
     addCarSubmitted = false;
     addCar() {
         this.addCarSubmitted = true;
@@ -248,6 +271,7 @@ export class Profile implements OnInit {
         });
     }
 
+    // Eliminar un coche del perfil
     deleteCar(carId: number) {
         if (!confirm('¿Eliminar este vehículo?')) return;
         this.api.deleteCar(carId).subscribe({
@@ -262,6 +286,7 @@ export class Profile implements OnInit {
         });
     }
 
+    // Getter para calcular la valoración media del usuario
     get avgRating(): string {
         const r = this.user?.ratingsReceivedDTO;
         if (!r || r.length === 0) return '—';
@@ -269,5 +294,8 @@ export class Profile implements OnInit {
         return avg.toFixed(1);
     }
 
-    updateTrip(updated: Trip, list: Trip[], index: number) { list[index] = updated; }
+    // Método genérico para actualizar un viaje en la lista correspondiente
+    updateTrip(updated: Trip, list: Trip[], index: number) { 
+        list[index] = updated; 
+    }
 }

@@ -162,27 +162,32 @@
     font-family: 'DM Sans', sans-serif;
 }
 
+/* ESTILOS DEL ULTIMO BOTON DE NAVEGACION */
 :host .profile-sidebar .profile-nav button:last-child {
     border-bottom: none;
 }
 
+/* ESTILOS DE LOS BOTONES DE NAVEGACION AL PASAR EL RATON POR ENCIMA */
 :host .profile-sidebar .profile-nav button:hover {
     background: var(--bg-3);
     color: var(--text);
 }
 
+/* ESTILOS DEL BOTON DE NAVEGACION ACTIVO */
 :host .profile-sidebar .profile-nav button.active {
     background: rgba(230, 57, 70, 0.08);
     color: var(--primary);
     font-weight: bold;
 }
 
+/* ESTILOS DEL CONTENIDO DE CADA PESTAÑA */
 :host .tab-content {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
+/* ESTILOS DEL TITULO DE CADA PESTAÑA */
 :host .tab-content .tab-title {
     padding-top: 16px;
     font-size: 20px;
@@ -190,12 +195,14 @@
     line-height: 20px;
 }
 
+/* ESTILOS DEL ENCABEZADO DE CADA PESTAÑA */
 :host .tab-content .tab-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
+/* ESTILOS DEL TITULO DEL ENCABEZADO DE CADA PESTAÑA */
 :host .tab-content .info-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -206,6 +213,7 @@
     overflow: hidden;
 }
 
+/* ESTILOS DE CADA ITEM DE INFORMACION EN LA PESTAÑA DE INFORMACION */
 :host .tab-content .info-grid .info-item {
     background: var(--surface);
     padding: 16px;
@@ -214,6 +222,7 @@
     gap: 4px;
 }
 
+/* ESTILOS DE LA ETIQUETA DE CADA ITEM DE INFORMACION EN LA PESTAÑA DE INFORMACION */
 :host .tab-content .info-grid .info-item .info-label {
     font-size: 14px;
     text-transform: uppercase;
@@ -222,10 +231,12 @@
     font-weight: bold;
 }
 
+/* ESTILOS DEL VALOR DE CADA ITEM DE INFORMACION EN LA PESTAÑA DE INFORMACION */
 :host .tab-content .info-grid .info-item span {
     font-size: 14px;
 }
 
+/* ESTILOS DE LA ADVERTENCIA DE FALTAS EN LA PESTAÑA DE INFORMACION */
 :host .tab-content .strikes-warn {
     background: rgba(255, 183, 3, 0.1);
     border: 1px solid rgba(255, 183, 3, 0.2);
@@ -235,6 +246,7 @@
     font-size: 16px;
 }
 
+/* ESTILOS DE LA LISTA DE VIAJES EN LA PESTAÑA DE VIAJES */
 :host .tab-content .trips-list {
     display: flex;
     flex-direction: row;
@@ -242,16 +254,19 @@
     gap: 16px;
 }
 
+/* ESTILOS DE CADA VIAJE EN LA LISTA DE VIAJES DE LA PESTAÑA DE VIAJES */
 :host .tab-content .trips-list app-trip {
     width: calc((100% - 16px * 1) / 2);
 }
 
+/* ESTILOS DE LA GRILLA DE COCHES EN LA PESTAÑA DE COCHES */
 :host .tab-content .cars-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 
+/* ESTILOS DE CADA TARJETA DE COCHE EN LA GRILLA DE COCHES DE LA PESTAÑA DE COCHES */
 :host .tab-content .cars-grid .car-card-profile {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -262,26 +277,31 @@
     gap: 16px;
 }
 
+/* ESTILOS DEL ICONO DE CADA TARJETA DE COCHE EN LA GRILLA DE COCHES DE LA PESTAÑA DE COCHES */
 :host .tab-content .cars-grid .car-card-profile .car-icon {
     font-size: 32px;
 }
 
+/* ESTILOS DE LA INFORMACION DE CADA TARJETA DE COCHE EN LA GRILLA DE COCHES DE LA PESTAÑA DE COCHES */
 :host .tab-content .cars-grid .car-card-profile .car-info {
     flex: 1;
 }
 
+/* ESTILOS DEL NOMBRE DE CADA TARJETA DE COCHE EN LA GRILLA DE COCHES DE LA PESTAÑA DE COCHES */
 :host .tab-content .cars-grid .car-card-profile .car-info h4 {
     font-size: 16px;
     text-transform: uppercase;
     margin-bottom: 2px;
 }
 
+/* ESTILOS DE LOS DETALLES DE CADA TARJETA DE COCHE EN LA GRILLA DE COCHES DE LA PESTAÑA DE COCHES */
 :host .tab-content .cars-grid .car-card-profile .car-info p {
     font-size: 14px;
     color: var(--text-2);
     margin-bottom: 6px;
 }
 
+/* ESTILOS DEL BOTON DE ELIMINAR DE CADA TARJETA DE COCHE EN LA GRILLA DE COCHES DE LA PESTAÑA DE COCHES */
 :host .tab-content .cars-grid .car-card-profile .delete-btn {
     background: rgba(230, 57, 70, 0.1);
     border: 1px solid rgba(230, 57, 70, 0.2);
@@ -293,18 +313,21 @@
     font-size: 14px;
 }
 
+/* ESTILOS DEL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION */
 :host .tab-content .edit-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
+/* ESTILOS DE LAS FILAS DE FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION */
 :host .tab-content .edit-form .form-row-2 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 
+/* ESTILOS DEL AREA DE SUBIDA DE IMAGEN EN EL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION */
 :host .tab-content .edit-form .image-upload-area {
     border: 2px dashed var(--border);
     border-radius: var(--radius);
@@ -321,11 +344,13 @@
     justify-content: center;
 }
 
+/* ESTILOS DEL AREA DE SUBIDA DE IMAGEN EN EL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION AL PASAR EL RATON POR ENCIMA */
 :host .tab-content .edit-form .image-upload-area:hover {
     border-color: var(--primary);
     background: rgba(230, 57, 70, 0.04);
 }
 
+/* ESTILOS DEL PLACEHOLDER DE SUBIDA DE IMAGEN EN EL AREA DE SUBIDA DE IMAGEN EN EL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION */
 :host .tab-content .edit-form .image-upload-area .upload-placeholder {
     display: flex;
     flex-direction: column;
@@ -335,15 +360,18 @@
     font-size: 14px;
 }
 
+/* ESTILOS DEL ICONO DEL PLACEHOLDER DE SUBIDA DE IMAGEN EN EL AREA DE SUBIDA DE IMAGEN EN EL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION */
 :host .tab-content .edit-form .image-upload-area .upload-placeholder .upload-icon {
     font-size: 32px;
 }
 
+/* ESTILOS DEL TEXTO DEL PLACEHOLDER DE SUBIDA DE IMAGEN EN EL AREA DE SUBIDA DE IMAGEN EN EL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION */
 :host .tab-content .edit-form .image-upload-area .upload-placeholder small {
     color: var(--text-3);
     font-size: 14px;
 }
 
+/* ESTILOS DE LA PREVISUALIZACION DE IMAGEN SUBIDA EN EL AREA DE SUBIDA DE IMAGEN EN EL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION */
 :host .tab-content .edit-form .image-upload-area .preview-img {
     width: 128px;
     height: 128px;
@@ -352,6 +380,7 @@
     display: block;
 }
 
+/* ESTILOS DEL OVERLAY DE PREVISUALIZACION DE IMAGEN SUBIDA EN EL AREA DE SUBIDA DE IMAGEN EN EL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION */
 :host .tab-content .edit-form .image-upload-area .preview-overlay {
     position: absolute;
     inset: 0;
@@ -367,40 +396,50 @@
     transition: var(--transition);
 }
 
+/* ESTILOS DEL OVERLAY DE PREVISUALIZACION DE IMAGEN SUBIDA EN EL AREA DE SUBIDA DE IMAGEN EN EL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION AL PASAR EL RATON POR ENCIMA */
 :host .tab-content .edit-form .image-upload-area:hover .preview-overlay {
     opacity: 1;
 }
 
+/* ESTILOS DE LA ALERTA DE EXITO O ERROR EN EL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION */
 :host .tab-content .edit-form .alert {
     padding: 12px 24px;
     border-radius: var(--radius-sm);
     font-size: 14px;
 }
 
+/* ESTILOS DE LA ALERTA DE EXITO EN EL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION */
 :host .tab-content .edit-form .alert.alert-success {
     background: rgba(6, 214, 160, 0.1);
     border: 1px solid rgba(6, 214, 160, 0.2);
     color: var(--success);
 }
 
+/* ESTILOS DE LA ALERTA DE ERROR EN EL FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION */
 :host .tab-content .edit-form .alert.alert-error {
     background: rgba(230, 57, 70, 0.1);
     border: 1px solid rgba(230, 57, 70, 0.2);
     color: var(--danger);
 }
+
+/* ESTILOS DEL ESTADO DE VACIO DE CADA PESTAÑA */
 :host .empty-state {
     text-align: center;
     padding: 32px;
     color: var(--text-2);
 }
 
+/* ESTILOS DEL ESTADO DE CARGA DE CADA PESTAÑA */
 :host .loading-state {
     display: flex;
     justify-content: center;
     padding: 64px;
 }
 
+/* ===== */
 /* MODAL */
+/* ===== */
+/* ESTILOS DEL FONDO DEL MODAL */
 :host .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -412,6 +451,7 @@
     padding: 16px;
 }
 
+/* ESTILOS DEL CONTENEDOR DEL MODAL */
 :host .modal-backdrop .modal {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -421,6 +461,7 @@
     max-width: 512px;
 }
 
+/* ESTILOS DEL ENCABEZADO DEL MODAL */
 :host .modal-backdrop .modal .modal-header {
     display: flex;
     align-items: center;
@@ -428,12 +469,14 @@
     margin-bottom: 16px;
 }
 
+/* ESTILOS DEL TITULO DEL MODAL */
 :host .modal-backdrop .modal .modal-header h3 {
     font-size: 24px;
     height: 24px;
     line-height: 24px;
 }
 
+/* ESTILOS DEL BOTON DE CERRAR DEL MODAL */
 :host .modal-backdrop .modal .modal-header .modal-close {
     background: none;
     color: var(--text-2);
@@ -441,16 +484,21 @@
     cursor: pointer;
 }
 
+/* ESTILOS DEL BOTON DE CERRAR DEL MODAL AL PASAR EL RATON POR ENCIMA */
+:host .modal-backdrop .modal .modal-header .modal-close:hover {
+    color: var(--primary);
+}
+
+/* ESTILOS DEL CONTENIDO DEL MODAL */
 :host .modal-backdrop .modal .modal-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
-/* ══════════════════════════════════════
-   RATINGS TAB
-   ══════════════════════════════════════ */
-
+/* ======= */
+/* RATINGS */
+/* ======= */
 :host .tab-content .ratings-section-title {
     font-size: 16px;
     font-weight: 700;
@@ -458,18 +506,21 @@
     color: var(--text);
 }
 
+/* ESTILOS DE LA SECCION DE RESUMEN DE VALORACIONES EN LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-overview {
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid var(--border);
 }
 
+/* ESTILOS DEL CONTENIDO DEL RESUMEN DE VALORACIONES EN LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-overview .ratings-overview-avg {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
+/* ESTILOS DEL NUMERO GRANDE DE PROMEDIO DE VALORACIONES EN EL RESUMEN DE VALORACIONES EN LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-overview .ratings-overview-avg .ratings-big-number {
     font-family: 'Syne', sans-serif;
     font-size: 32px;
@@ -477,31 +528,37 @@
     color: var(--accent);
 }
 
+/* ESTILOS DE LAS ESTRELLAS DE PROMEDIO DE VALORACIONES EN EL RESUMEN DE VALORACIONES EN LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-overview .ratings-overview-avg .ratings-overview-stars {
     display: flex;
     gap: 2px;
 }
 
+/* ESTILOS DE CADA ESTRELLA DE PROMEDIO DE VALORACIONES EN EL RESUMEN DE VALORACIONES EN LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-overview .ratings-overview-avg .ratings-overview-stars .star-icon {
     font-size: 16px;
     color: var(--border);
 }
 
+/* ESTILOS DE LAS ESTRELLAS LLENAS DE PROMEDIO DE VALORACIONES EN EL RESUMEN DE VALORACIONES EN LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-overview .ratings-overview-avg .ratings-overview-stars .star-icon.filled {
     color: var(--accent);
 }
 
+/* ESTILOS DEL NUMERO DE VALORACIONES EN EL RESUMEN DE VALORACIONES EN LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-overview .ratings-overview-avg .ratings-overview-count {
     font-size: 14px;
     color: var(--text-2);
 }
 
+/* ESTILOS DE LA DISTRIBUCION DE VALORACIONES EN EL RESUMEN DE VALORACIONES EN LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-list-profile {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
+/* ESTILOS DE CADA TARJETA DE VALORACION EN LA LISTA DE VALORACIONES DE LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-list-profile .rating-card-profile {
     display: flex;
     align-items: center;
@@ -513,6 +570,7 @@
     gap: 16px;
 }
 
+/* ESTILOS DEL USUARIO DE CADA TARJETA DE VALORACION EN LA LISTA DE VALORACIONES DE LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-list-profile .rating-card-profile .rating-card-user {
     display: flex;
     align-items: center;
@@ -521,6 +579,7 @@
     min-width: 0;
 }
 
+/* ESTILOS DEL AVATAR DE CADA USUARIO DE CADA TARJETA DE VALORACION EN LA LISTA DE VALORACIONES DE LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-list-profile .rating-card-profile .rating-card-user .rating-card-avatar {
     width: 36px;
     height: 36px;
@@ -530,6 +589,7 @@
     flex-shrink: 0;
 }
 
+/* ESTILOS DE LAS INICIALES DE AVATAR DE CADA USUARIO DE CADA TARJETA DE VALORACION EN LA LISTA DE VALORACIONES DE LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-list-profile .rating-card-profile .rating-card-user .rating-card-avatar-init {
     width: 36px;
     height: 36px;
@@ -544,6 +604,7 @@
     flex-shrink: 0;
 }
 
+/* ESTILOS DEL NOMBRE DE USUARIO DE CADA USUARIO DE CADA TARJETA DE VALORACION EN LA LISTA DE VALORACIONES DE LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-list-profile .rating-card-profile .rating-card-user strong {
     font-size: 14px;
     display: block;
@@ -552,12 +613,14 @@
     text-overflow: ellipsis;
 }
 
+/* ESTILOS DEL NOMBRE REAL DE USUARIO DE CADA USUARIO DE CADA TARJETA DE VALORACION EN LA LISTA DE VALORACIONES DE LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-list-profile .rating-card-profile .rating-card-user .rating-card-username {
     font-size: 14px;
     color: var(--text-2);
     display: block;
 }
 
+/* ESTILOS DE LAS ESTRELLAS Y VALOR DE CADA TARJETA DE VALORACION EN LA LISTA DE VALORACIONES DE LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-list-profile .rating-card-profile .rating-card-stars {
     display: flex;
     align-items: center;
@@ -565,10 +628,12 @@
     flex-shrink: 0;
 }
 
+/* ESTILOS DE LAS ESTRELLAS DE CADA TARJETA DE VALORACION EN LA LISTA DE VALORACIONES DE LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-list-profile .rating-card-profile .rating-card-stars .star-icon {
     font-size: 16px;
 }
 
+/* ESTILOS DE LAS ESTRELLAS LLENAS DE CADA TARJETA DE VALORACION EN LA LISTA DE VALORACIONES DE LA PESTAÑA DE VALORACIONES */
 :host .tab-content .ratings-list-profile .rating-card-profile .rating-card-stars .rating-card-val {
     font-size: 14px;
     font-weight: 700;
@@ -585,27 +650,34 @@
 
 /* TABLET */
 @media (max-width: 768px) {
+
+    /* ESTILOS DEL CONTENEDOR PRINCIPAL EN TABLET */
     :host .container {
         grid-template-columns: 1fr;
     }
 
+    /* ESTILOS DEL PANEL EN TABLET */
     :host .profile-sidebar {
         position: static;
         top: 0;
     }
 
+    /* ESTILOS DE LA GRILLA DE FORMULARIO DE EDICION EN LA PESTAÑA DE CONFIGURACION EN TABLET */
     :host .tab-content .edit-form .form-row-2 {
         grid-template-columns: 1fr;
     }
 
+    /* ESTILOS DE LA GRILLA DE INFORMACION EN LA PESTAÑA DE INFORMACION EN TABLET */
     :host .tab-content .info-grid {
         grid-template-columns: 1fr;
     }
 
+    /* ESTILOS DE LA LISTA DE VIAJES EN LA PESTAÑA DE VIAJES EN TABLET */
     :host .tab-content .trips-list app-trip {
         width: 100%;
     }
 
+    /* ESTILOS DE LA GRILLA DE COCHES EN LA PESTAÑA DE COCHES EN TABLET */
     :host .tab-content .cars-grid {
         grid-template-columns: repeat(1, 1fr);
     }
