@@ -190,6 +190,8 @@ export class Profile implements OnInit {
     onProfileFileSelected(event: Event) {
         const file = (event.target as HTMLInputElement).files?.[0];
         if (!file) return;
+        const allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedFormats.includes(file.type)) { this.editError = 'Solo se permiten archivos de imagen (JPEG, PNG, GIF, WebP).'; return; }
         if (file.size > 5 * 1024 * 1024) { this.editError = 'La imagen no debe superar los 5MB.'; return; }
         const reader = new FileReader();
         reader.onload = (e) => {
