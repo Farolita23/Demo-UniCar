@@ -59,9 +59,9 @@
                     <h2 class="tab-title">Información personal</h2>
                     <div class="info-grid">
                         <div class="info-item"><span class="info-label">Email</span><span>{{ user.email }}</span></div>
-                        <div class="info-item"><span class="info-label">Teléfono</span><span>{{ user.phone }}</span></div>
+                        <div class="info-item"><span class="info-label">Teléfono</span><span>+34 {{ user.phone.replace(/\D/g,'').replace(/(\d{3})(\d{2})(\d{2})(\d{2})/, '$1 $2 $3 $4') }}</span></div>
                         <div class="info-item"><span class="info-label">Género</span><span>{{ user.genre }}</span></div>
-                        <div class="info-item"><span class="info-label">F. nacimiento</span><span>{{ user.birthdate }}</span></div>
+                        <div class="info-item"><span class="info-label">F. nacimiento</span><span>{{ user.birthdate | date:"dd / MM / yyyy" }}</span></div>
                         <div class="info-item"><span class="info-label">Campus</span><span>{{ user.usualCampusDTO?.name ?? '—' }}</span></div>
                         <div class="info-item"><span class="info-label">Localidad</span><span>{{ user.homeTownDTO?.name ?? '—' }}</span></div>
                     </div>

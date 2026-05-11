@@ -26,7 +26,7 @@
                     <div class="direction-badge" [class.to-campus]="trip.isToCampus">
                         {{ trip.isToCampus ? '🎓 Hacia el campus' : '🏠 Desde el campus' }}
                     </div>
-                    @if (!isFull) {
+                    @if (isFull) {
                     <span class="full-indicator">🔴 Completo</span>
                     }
                 </div>
