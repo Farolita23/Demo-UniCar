@@ -17,30 +17,35 @@ import { User, Rating } from '../../../models/user.model';
     styleUrl: './trip-detail.css',
 })
 export class TripDetail implements OnInit {
+
+    // Inyección de servicios
     api = inject(ApiService);
     auth = inject(AuthService);
     route = inject(ActivatedRoute);
     cdr = inject(ChangeDetectorRef);
     platformId = inject(PLATFORM_ID);
 
+    // Estado para manejar la carga de datos del viaje y la información del conductor
     trip: Trip | null = null;
     driver: User | null = null;
+
+    // Estados para manejar la carga de datos y las acciones del usuario (solicitar plaza, abandonar viaje, calificar, etc.)
     loading = true;
     actionLoading = false;
     actionError = '';
 
-    // ── Inline rating state ───────────────────────────────────────
-    /** Current star value shown for the driver (set from existing or hover) */
+    // Estado de calificación del conductor (si eres pasajero)
     driverRatingValue = 0;
     driverRatingLoading = false;
     driverRatingSaved = false;
 
-    /** Per-passenger: current value, loading, saved */
+    // Para manejar el estado de calificación de cada pasajero (si eres el conductor)
     pRating: { [id: number]: number } = {};
     pLoading: { [id: number]: boolean } = {};
     pSaved: { [id: number]: boolean } = {};
     pError: { [id: number]: string } = {};
 
+    // Al cargar el componente, obtener el ID del viaje de la URL, cargar los detalles del viaje y luego los datos del conductor para mostrar su información y calificaciones
     ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) { this.loading = false; return; }
 
@@ -58,6 +63,7 @@ export class TripDetail implements OnInit {
         });
     }
 
+    // Cargar los datos del conductor a partir del ID del coche para mostrar su información y calificaciones
     private loadDriver(carId: number) {
         this.api.getCarOwner(carId).subscribe({
             next: u => {
@@ -69,12 +75,11 @@ export class TripDetail implements OnInit {
         });
     }
 
+    // Inicializar el estado de las calificaciones (tanto del conductor como de los pasajeros) para mostrar las estrellas correctamente
     private initRatingState() {
-        // Pre-fill driver rating if current user already rated
         const existing = this.existingDriverRating();
         if (existing) { this.driverRatingValue = existing.rating; }
 
-        // Pre-fill passenger ratings if driver already rated them
         if (this.isDriver && this.trip?.passengersDTO) {
             for (const p of this.trip.passengersDTO) {
                 const r = this.existingPassengerRating(p.id);
@@ -83,43 +88,62 @@ export class TripDetail implements OnInit {
         }
     }
 
-    // ── Getters ───────────────────────────────────────────────────
+    // Getter para calcular el número de plazas libres en el viaje
     get freeSeats(): number {
         return (this.trip?.carDTO?.capacity ?? 0) - (this.trip?.passengersDTO?.length ?? 0);
     }
-    get isFull(): boolean { return this.freeSeats <= 0; }
-    get currentUserId(): number | null { return this.auth.getUser()?.id ?? null; }
-    get isDriver(): boolean { return !!this.driver && this.driver.id === this.currentUserId; }
+
+    // Getter para determinar si el viaje está lleno (no quedan plazas libres)
+    get isFull(): boolean {
+        return this.freeSeats <= 0;
+    }
+
+    // Getter para obtener el ID del usuario actual (o null si no está logueado)
+    get currentUserId(): number | null {
+        return this.auth.getUser()?.id ?? null;
+    }
+
+    // Getter para determinar si el usuario actual es el conductor del viaje
+    get isDriver(): boolean {
+        return !!this.driver && this.driver.id === this.currentUserId;
+    }
+
+    // Getter para determinar si el usuario actual es pasajero del viaje
     get isPassenger(): boolean {
         return this.trip?.passengersDTO?.some(p => p.id === this.currentUserId) ?? false;
     }
+
+    // Getter para determinar si el usuario ha solicitado unirse al viaje
     get hasRequested(): boolean {
         return this.trip?.requestersDTO?.some(r => r.id === this.currentUserId) ?? false;
     }
+
+    // Calificación promedio del conductor
     get avgRating(): number {
         const ratings = this.driver?.ratingsReceivedDTO;
         if (!ratings || ratings.length === 0) return 0;
         return ratings.reduce((s, r) => s + r.rating, 0) / ratings.length;
     }
 
+    // Formatear fecha y hora de forma legible
     formatDate(d: string): string {
         if (!d) return '';
         return new Date(d).toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     }
 
-    // ── Rating helpers ────────────────────────────────────────────
+    // Obtener la calificación existente que el usuario actual ha dado al conductor
     existingDriverRating(): Rating | null {
         if (!this.driver?.ratingsReceivedDTO || !this.currentUserId) return null;
         return this.driver.ratingsReceivedDTO.find(r => r.userRateDTO?.id === this.currentUserId) ?? null;
     }
 
+    // Obtener la calificación existente que el conductor ha dado a un pasajero específico
     existingPassengerRating(passengerId: number): Rating | null {
         if (!this.driver?.ratingsDoneDTO) return null;
         return this.driver.ratingsDoneDTO.find(r => r.ratedUserDTO?.id === passengerId) ?? null;
     }
 
-    // ── Auto-save: click a star → instant save ────────────────────
-
+    // Calificar al conductor (si eres pasajero)
     clickDriverStar(star: number) {
         if (!this.currentUserId || !this.driver || this.driverRatingLoading) return;
         this.driverRatingValue = star;
@@ -149,6 +173,7 @@ export class TripDetail implements OnInit {
         }
     }
 
+    // Calificar a un pasajero (solo si eres el conductor)
     clickPassengerStar(passengerId: number, star: number) {
         if (!this.currentUserId || this.pLoading[passengerId]) return;
         this.pRating[passengerId] = star;
@@ -187,7 +212,7 @@ export class TripDetail implements OnInit {
         }
     }
 
-    /** Brief "saved" flash feedback */
+    // Mostrar feedback de "Guardado" temporalmente después de calificar
     private flashSaved(target: 'driver' | 'passenger', passengerId?: number) {
         if (target === 'driver') {
             this.driverRatingLoading = false;
@@ -202,7 +227,7 @@ export class TripDetail implements OnInit {
         }
     }
 
-    // ── Trip actions ──────────────────────────────────────────────
+    // Solicitar unirse al viaje (si eres pasajero)
     requestJoin() {
         if (!this.currentUserId || this.actionLoading || !this.trip) return;
         this.actionLoading = true; this.actionError = '';
@@ -212,6 +237,7 @@ export class TripDetail implements OnInit {
         });
     }
 
+    // Cancelar solicitud (si ya la has hecho y aún no ha sido aceptada/rechazada)
     cancelRequest() {
         if (!this.currentUserId || this.actionLoading || !this.trip) return;
         this.actionLoading = true; this.actionError = '';
@@ -221,6 +247,7 @@ export class TripDetail implements OnInit {
         });
     }
 
+    // Abandonar el viaje (si eres pasajero)
     leaveTrip() {
         if (!this.currentUserId || this.actionLoading || !this.trip) return;
         this.actionLoading = true; this.actionError = '';

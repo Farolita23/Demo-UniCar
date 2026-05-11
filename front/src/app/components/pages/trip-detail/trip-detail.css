@@ -1,8 +1,13 @@
+﻿/* ==================== */
+/* ESTILOS DE LA PAGINA */
+/* ==================== */
+/* ESTILOS DEL CONTENEDOR PRINCIPAL */
 :host .container {
     padding-top: 32px;
     padding-bottom: 64px;
 }
 
+/* ESTILOS DE ENLACE DE REGRESO */
 :host .back-link {
     display: inline-flex;
     align-items: center;
@@ -15,10 +20,12 @@
     transition: var(--transition);
 }
 
+/* ESTILOS DE HOVER DEL ENLACE DE REGRESO */
 :host .back-link:hover {
     color: var(--primary);
 }
 
+/* ESTILOS DE ESTADO DE CARGA */
 :host .loading-state {
     display: flex;
     align-items: center;
@@ -27,6 +34,7 @@
     color: var(--text-2);
 }
 
+/* ESTILOS DE ESTADO VACIO */
 :host .empty-state {
     text-align: center;
     padding: 64px 32px;
@@ -36,6 +44,7 @@
     gap: 16px;
 }
 
+/* ESTILOS DEL GRID DE DETALLE */
 :host .detail-grid {
     display: grid;
     grid-template-columns: 1fr 320px;
@@ -43,8 +52,10 @@
     align-items: start;
 }
 
+/* ESTILOS DE LA COLUMNA PRINCIPAL DEL DETALLE */
 :host .detail-grid .detail-main {}
 
+/* ESTILOS DEL BLOQUE DE DIRECCION */
 :host .detail-grid .detail-main .direction-row {
     display: flex;
     align-items: center;
@@ -53,6 +64,7 @@
     flex-wrap: wrap;
 }
 
+/* ESTILOS DE LOS BADGES DE DIRECCION */
 :host .detail-grid .detail-main .direction-row .direction-badge {
     display: inline-flex;
     align-items: center;
@@ -67,12 +79,14 @@
     border: 1px solid rgba(230, 57, 70, 0.2);
 }
 
+/* ESTILOS DE LOS BADGES DE DIRECCION SEGUN EL TIPO */
 :host .detail-grid .detail-main .direction-row .direction-badge.to-campus {
     background: rgba(6, 214, 160, 0.1);
     color: var(--success);
     border-color: rgba(6, 214, 160, 0.2);
 }
 
+/* ESTILOS DEL BADGE DE LLENO */
 :host .detail-grid .detail-main .direction-row .full-indicator {
     font-size: 14px;
     font-weight: 700;
@@ -84,6 +98,7 @@
     animation: g-pulse 2s ease-in-out infinite;
 }
 
+/* ESTILOS DEL INDICADOR DE CONDUCTOR DEL VIAJE */
 :host .detail-grid .detail-main .driver-manage-banner {
     display: flex;
     align-items: center;
@@ -96,29 +111,34 @@
     margin-bottom: 16px;
 }
 
+/* ESTILOS DE LA INFORMACION DEL INDICADOR DE CONDUCTOR DEL VIAJE */
 :host .detail-grid .detail-main .driver-manage-banner .driver-manage-info {
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
+/* ESTILOS DEL ICONO DEL INDICADOR DE CONDUCTOR DEL VIAJE */
 :host .detail-grid .detail-main .driver-manage-banner .driver-manage-info .driver-manage-icon {
     font-size: 32px;
     flex-shrink: 0;
 }
 
+/* ESTILOS DEL TEXTO DEL INDICADOR DE CONDUCTOR DEL VIAJE */
 :host .detail-grid .detail-main .driver-manage-banner .driver-manage-info strong {
     display: block;
     font-size: 16px;
     margin-bottom: 2px;
 }
 
+/* ESTILOS DEL TEXTO SECUNDARIO DEL INDICADOR DE CONDUCTOR DEL VIAJE */
 :host .detail-grid .detail-main .driver-manage-banner .driver-manage-info p {
     font-size: 14px;
     color: var(--text-2);
     margin: 0;
 }
 
+/* ESTILOS DE LAS TARJETAS DE DETALLE */
 :host .detail-grid .detail-main .detail-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -127,6 +147,7 @@
     margin-bottom: 16px;
 }
 
+/* ESTILOS DE LOS TITULOS DE SECCION DENTRO DE LAS TARJETAS DE DETALLE */
 :host .detail-grid .detail-main .detail-card .detail-section-title {
     font-size: 16px;
     text-transform: uppercase;
@@ -137,6 +158,7 @@
     margin-bottom: 16px;
 }
 
+/* ESTILOS DE LOS HINTS DENTRO DE LOS TITULOS DE LAS TARJETAS DE DETALLE */
 :host .detail-grid .detail-main .detail-card .detail-section-title .section-hint {
     font-weight: 400;
     font-size: 14px;
@@ -145,18 +167,21 @@
     letter-spacing: 0;
 }
 
+/* ESTILOS DE LA VISUALIZACION DE RUTA DENTRO DE LAS TARJETAS DE DETALLE */
 :host .detail-grid .detail-main .detail-card .route-visual {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 
+/* ESTILOS DE LOS BLOQUES DE PARADA DENTRO DE LA VISUALIZACION DE RUTA */
 :host .detail-grid .detail-main .detail-card .route-visual .route-stop {
     display: flex;
     align-items: flex-start;
     gap: 16px;
 }
 
+/* ESTILOS DE LOS PUNTOS DE PARADA DENTRO DE LOS BLOQUES DE PARADA */
 :host .detail-grid .detail-main .detail-card .route-visual .route-stop .stop-dot {
     width: 14px;
     height: 14px;
@@ -165,14 +190,17 @@
     margin-top: 4px;
 }
 
+/* ESTILOS DE LOS PUNTOS DE PARADA SEGUN EL TIPO */
 :host .detail-grid .detail-main .detail-card .route-visual .route-stop .stop-from {
     background: var(--text-2);
 }
 
+/* ESTILOS DE LOS PUNTOS DE PARADA SEGUN EL TIPO */
 :host .detail-grid .detail-main .detail-card .route-visual .route-stop .stop-to {
     background: var(--primary);
 }
 
+/* ESTILOS DE LA INFORMACION DE PARADA DENTRO DE LOS BLOQUES DE PARADA */
 :host .detail-grid .detail-main .detail-card .route-visual .route-stop .stop-info {
     display: flex;
     flex-direction: column;
@@ -180,6 +208,7 @@
     padding-bottom: 16px;
 }
 
+/* ESTILOS DE LAS ETIQUETAS DE PARADA DENTRO DE LA INFORMACION DE PARADA */
 :host .detail-grid .detail-main .detail-card .route-visual .route-stop .stop-info .stop-label {
     font-size: 14px;
     color: var(--text-2);
@@ -187,22 +216,26 @@
     letter-spacing: 1px;
 }
 
+/* ESTILOS DE LOS NOMBRES DE PARADA DENTRO DE LA INFORMACION DE PARADA */
 :host .detail-grid .detail-main .detail-card .route-visual .route-stop .stop-info .stop-name {
     font-weight: 700;
     font-size: 16px;
 }
 
+/* ESTILOS DE LAS DIRECCIONES DE PARADA DENTRO DE LA INFORMACION DE PARADA */
 :host .detail-grid .detail-main .detail-card .route-visual .route-stop .stop-info .stop-address {
     font-size: 14px;
     color: var(--text-2);
 }
 
+/* ESTILOS DEL GRID DE INFORMACION META DENTRO DE LAS TARJETAS DE DETALLE */
 :host .detail-grid .detail-main .detail-card .meta-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
 }
 
+/* ESTILOS DE LOS BLOQUES DE INFORMACION META DENTRO DEL GRID DE INFORMACION */
 :host .detail-grid .detail-main .detail-card .meta-grid .meta-block {
     display: flex;
     align-items: center;
@@ -212,11 +245,13 @@
     padding: 16px;
 }
 
+/* ESTILOS DE LOS ICONOS DE LOS BLOQUES DE INFORMACION META DENTRO DEL GRID DE INFORMACION */
 :host .detail-grid .detail-main .detail-card .meta-grid .meta-block .meta-icon {
     font-size: 24px;
     flex-shrink: 0;
 }
 
+/* ESTILOS DE LAS CLAVES DE LOS BLOQUES DE INFORMACION META DENTRO DEL GRID DE INFORMACION */
 :host .detail-grid .detail-main .detail-card .meta-grid .meta-block .meta-key {
     display: block;
     font-size: 14px;
@@ -226,31 +261,37 @@
     letter-spacing: 1px;
 }
 
+/* ESTILOS DE LOS VALORES DE LOS BLOQUES DE INFORMACION META DENTRO DEL GRID DE INFORMACION */
 :host .detail-grid .detail-main .detail-card .meta-grid .meta-block .meta-val {
     display: block;
     font-weight: 700;
     font-size: 16px;
 }
 
+/* ESTILOS DE LOS VALORES DE LOS BLOQUES DE INFORMACION META AL QUEDAR POCO DEL GRID DE INFORMACION */
 :host .detail-grid .detail-main .detail-card .meta-grid .meta-block .meta-val.low {
     color: var(--danger);
 }
 
+/* ESTILOS DE LOS VALORES DE LOS BLOQUES DE INFORMACION META AL ESTAR LLENO DEL GRID DE INFORMACION */
 :host .detail-grid .detail-main .detail-card .meta-grid .meta-block .meta-val.full-val {
     color: var(--danger) !important;
 }
 
+/* ESTILOS DE LOS VALORES DE LOS BLOQUES DE INFORMACION META AL SER EL PRECIO DEL GRID DE INFORMACION */
 :host .detail-grid .detail-main .detail-card .meta-grid .meta-block .price-highlight {
     color: var(--primary);
     font-size: 16px;
 }
 
+/* ESTILOS DE LA INFORMACION DEL AUTO DENTRO DE LAS TARJETAS DE DETALLE */
 :host .detail-grid .detail-main .detail-card .car-info {
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
+/* ESTILOS DEL ICONO DEL AUTO DENTRO DE LA INFORMACION DEL AUTO DE LAS TARJETAS DE DETALLE */
 :host .detail-grid .detail-main .detail-card .car-info .car-icon-wrap {
     width: 48px;
     height: 48px;
@@ -263,6 +304,7 @@
     flex-shrink: 0;
 }
 
+/* ESTILOS DEL TEXTO DEL NOMBRE DEL AUTO DENTRO DE LA INFORMACION DEL AUTO */
 :host .detail-grid .detail-main .detail-card .car-info strong {
     display: block;
     font-weight: 700;
@@ -270,17 +312,20 @@
     margin-bottom: 4px;
 }
 
+/* ESTILOS DE LA SUBINFORMACION DEL AUTO DENTRO DE LA SECCION DE AUTO */
 :host .detail-grid .detail-main .detail-card .car-info .car-sub {
     font-size: 14px;
     color: var(--text-2);
 }
 
+/* ESTILOS DE LA LISTA DE PASAJEROS DENTRO DE LAS TARJETAS DE DETALLE */
 :host .detail-grid .detail-main .detail-card .passengers-list {
     display: flex;
     flex-direction: column;
     gap: 16px;
 }
 
+/* ESTILOS DE CADA ITEM DE PASAJERO DENTRO DE LA LISTA DE PASAJEROS */
 :host .detail-grid .detail-main .detail-card .passengers-list .passenger-item {
     display: flex;
     align-items: center;
@@ -290,10 +335,12 @@
     border-radius: var(--radius-sm);
 }
 
+/* AJUSTE ESPECIAL PARA ITEMS DE PASAJEROS QUE PUEDEN SER PUNTUADOS */
 :host .detail-grid .detail-main .detail-card .passengers-list .passenger-item.passenger-item--rateable {
     padding-right: 16px;
 }
 
+/* ESTILOS DEL AVATAR DEL PASAJERO DENTRO DE LA LISTA */
 :host .detail-grid .detail-main .detail-card .passengers-list .passenger-item .passenger-avatar {
     width: 36px;
     height: 36px;
@@ -302,6 +349,7 @@
     border: 2px solid var(--border);
 }
 
+/* ESTILOS DEL AVATAR INICIAL CUANDO NO HAY IMAGEN */
 :host .detail-grid .detail-main .detail-card .passengers-list .passenger-item .passenger-avatar-init {
     width: 36px;
     height: 36px;
@@ -316,6 +364,7 @@
     flex-shrink: 0;
 }
 
+/* ESTILOS DE LA COLUMNA DE INFORMACION DEL PASAJERO */
 :host .detail-grid .detail-main .detail-card .passengers-list .passenger-item .passenger-info-col {
     display: flex;
     flex-direction: column;
@@ -324,16 +373,19 @@
     flex: 1;
 }
 
+/* ESTILOS DEL NOMBRE DEL PASAJERO */
 :host .detail-grid .detail-main .detail-card .passengers-list .passenger-item .passenger-info-col .passenger-name {
     font-weight: 600;
     font-size: 16px;
 }
 
+/* ESTILOS DEL USUARIO DEL PASAJERO */
 :host .detail-grid .detail-main .detail-card .passengers-list .passenger-item .passenger-info-col .passenger-username {
     font-size: 14px;
     color: var(--text-2);
 }
 
+/* ESTILOS DEL BLOQUE DE VALORACIONES EN LÍNEA DEL PASAJERO */
 :host .detail-grid .detail-main .detail-card .passengers-list .passenger-item .inline-rating {
     display: flex;
     align-items: center;
@@ -342,18 +394,21 @@
     flex-shrink: 0;
 }
 
+/* ESTILOS DEL RESUMEN DE CALIFICACIONES */
 :host .detail-grid .detail-main .detail-card .ratings-summary {
     margin-bottom: 16px;
     padding-bottom: 16px;
     border-bottom: 1px solid var(--border);
 }
 
+/* ESTILOS DE LA FILA PROMEDIO DE CALIFICACIONES */
 :host .detail-grid .detail-main .detail-card .ratings-summary .ratings-avg {
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
+/* ESTILOS DEL NUMERO PROMEDIO DE ESTRELLAS */
 :host .detail-grid .detail-main .detail-card .ratings-summary .ratings-avg .ratings-avg-number {
     font-family: 'Syne', sans-serif;
     font-size: 32px;
@@ -361,26 +416,31 @@
     color: var(--accent);
 }
 
+/* ESTILOS DEL CONTENEDOR DE ESTRELLAS DEL PROMEDIO */
 :host .detail-grid .detail-main .detail-card .ratings-summary .ratings-avg .ratings-avg-stars {
     display: flex;
     gap: 2px;
 }
 
+/* ESTILOS DE CADA ESTRELLA EN EL PROMEDIO */
 :host .detail-grid .detail-main .detail-card .ratings-summary .ratings-avg .ratings-avg-stars .star {
     font-size: 16px;
 }
 
+/* ESTILOS DEL TEXTO DE CANTIDAD DE CALIFICACIONES */
 :host .detail-grid .detail-main .detail-card .ratings-summary .ratings-avg .ratings-avg-count {
     font-size: 14px;
     color: var(--text-2);
 }
 
+/* ESTILOS DE LA LISTA DE CALIFICACIONES */
 :host .detail-grid .detail-main .detail-card .ratings-list {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 16px;
 }
 
+/* ESTILOS DE CADA ITEM DE CALIFICACION */
 :host .detail-grid .detail-main .detail-card .ratings-list .rating-item {
     display: flex;
     align-items: center;
@@ -390,12 +450,14 @@
     border-radius: var(--radius-sm);
 }
 
+/* ESTILOS DEL CONTENEDOR DE USUARIO EN CADA CALIFICACION */
 :host .detail-grid .detail-main .detail-card .ratings-list .rating-item .rating-item-user {
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
+/* ESTILOS DEL AVATAR DEL USUARIO EN LA CALIFICACION */
 :host .detail-grid .detail-main .detail-card .ratings-list .rating-item .rating-item-user .rating-item-avatar {
     width: 32px;
     height: 32px;
@@ -404,6 +466,7 @@
     border: 2px solid var(--border);
 }
 
+/* ESTILOS DEL AVATAR INICIAL DEL USUARIO EN LA CALIFICACION */
 :host .detail-grid .detail-main .detail-card .ratings-list .rating-item .rating-item-user .rating-item-avatar-init {
     width: 32px;
     height: 32px;
@@ -418,26 +481,31 @@
     flex-shrink: 0;
 }
 
+/* ESTILOS DEL NOMBRE DE USUARIO EN LA CALIFICACION */
 :host .detail-grid .detail-main .detail-card .ratings-list .rating-item .rating-item-user strong {
     font-size: 16px;
     display: block;
 }
 
+/* ESTILOS DEL IDENTIFICADOR DE USUARIO EN LA CALIFICACION */
 :host .detail-grid .detail-main .detail-card .ratings-list .rating-item .rating-item-user .rating-item-username {
     font-size: 14px;
     color: var(--text-2);
     display: block;
 }
 
+/* ESTILOS DEL CONTENEDOR DE ESTRELLAS EN CADA CALIFICACION */
 :host .detail-grid .detail-main .detail-card .ratings-list .rating-item .rating-item-stars {
     display: flex;
     gap: 2px;
 }
 
+/* ESTILOS DE CADA ESTRELLA EN LA CALIFICACION */
 :host .detail-grid .detail-main .detail-card .ratings-list .rating-item .rating-item-stars .star {
     font-size: 16px;
 }
 
+/* ESTILOS DE LA TARJETA DEL CONDUCTOR EN LA BARRA LATERAL */
 :host .detail-grid .detail-sidebar .driver-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -447,10 +515,12 @@
     margin-bottom: 16px;
 }
 
+/* ESTILOS DEL CONTENEDOR DEL AVATAR DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-avatar-wrap {
     margin-bottom: 16px;
 }
 
+/* ESTILOS DEL AVATAR DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-avatar-wrap .driver-avatar {
     width: 80px;
     height: 80px;
@@ -459,6 +529,7 @@
     border: 3px solid var(--primary);
 }
 
+/* ESTILOS DEL AVATAR INICIAL DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-avatar-wrap .driver-avatar-init {
     width: 80px;
     height: 80px;
@@ -473,6 +544,7 @@
     margin: 0 auto;
 }
 
+/* ESTILOS DEL BADGE DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-badge {
     display: inline-block;
     background: rgba(230, 57, 70, 0.12);
@@ -486,17 +558,20 @@
     margin-bottom: 16px;
 }
 
+/* ESTILOS DEL NOMBRE DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-name {
     font-size: 16px;
     margin-bottom: 4px;
 }
 
+/* ESTILOS DEL NOMBRE DE USUARIO DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-username {
     color: var(--text-2);
     font-size: 14px;
     margin-bottom: 12px;
 }
 
+/* ESTILOS DEL BLOQUE DE CALIFICACION DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-rating {
     display: flex;
     align-items: center;
@@ -505,25 +580,30 @@
     margin-bottom: 16px;
 }
 
+/* ESTILOS DEL CONTENEDOR DE ESTRELLAS EN LA CALIFICACION DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-rating .stars {
     display: flex;
     gap: 2px;
 }
 
+/* ESTILOS DE CADA ESTRELLA EN LA CALIFICACION DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-rating .stars .star {
     font-size: 16px;
     color: var(--border);
 }
 
+/* ESTILOS DE LA ESTRELLA LLENA EN LA CALIFICACION DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-rating .stars .star.filled {
     color: var(--accent);
 }
 
+/* ESTILOS DEL VALOR DE CALIFICACION DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-rating .rating-val {
     font-weight: 700;
     font-size: 16px;
 }
 
+/* ESTILOS DEL BLOQUE DE CALIFICAR CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .inline-rate-driver {
     width: calc(100% - 16px * 2 - 1px * 2);
     background: rgba(255, 183, 3, 0.06);
@@ -534,6 +614,7 @@
     text-align: center;
 }
 
+/* ESTILOS DE LA ETIQUETA DEL BLOQUE DE CALIFICAR CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .inline-rate-driver .ird-label {
     display: block;
     font-size: 14px;
@@ -544,6 +625,7 @@
     font-weight: 600;
 }
 
+/* ESTILOS DEL CONTENEDOR DE ESTRELLAS EN EL BLOQUE DE CALIFICAR CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .inline-rate-driver .ird-stars {
     display: flex;
     align-items: center;
@@ -551,6 +633,7 @@
     gap: 2px;
 }
 
+/* ESTILOS DE LA BIOGRAFIA DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-bio {
     font-size: 14px;
     color: var(--text-2);
@@ -561,6 +644,7 @@
     padding: 16px;
 }
 
+/* ESTILOS DE LA LICENCIA DEL CONDUCTOR */
 :host .detail-grid .detail-sidebar .driver-card .driver-license {
     font-size: 14px;
     color: var(--text-2);
@@ -570,6 +654,7 @@
     display: inline-block;
 }
 
+/* ESTILOS DEL CONTENEDOR CTA EN LA BARRA LATERAL */
 :host .detail-grid .detail-sidebar .cta-box {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -577,6 +662,7 @@
     padding: 24px;
 }
 
+/* ESTILOS DEL PRECIO EN LA CAJA CTA */
 :host .detail-grid .detail-sidebar .cta-box .cta-price {
     display: flex;
     align-items: baseline;
@@ -585,6 +671,7 @@
     justify-content: center;
 }
 
+/* ESTILOS DE LA CANTIDAD DE PRECIO EN LA CAJA CTA */
 :host .detail-grid .detail-sidebar .cta-box .cta-price .cta-price-amount {
     font-size: 24px;
     font-weight: 800;
@@ -592,11 +679,13 @@
     color: var(--primary);
 }
 
+/* ESTILOS DE LA ETIQUETA DE PRECIO EN LA CAJA CTA */
 :host .detail-grid .detail-sidebar .cta-box .cta-price .cta-price-label {
     font-size: 14px;
     color: var(--text-2);
 }
 
+/* ESTILOS DEL BOTÓN PRINCIPAL EN LA CAJA CTA */
 :host .detail-grid .detail-sidebar .cta-box .cta-btn {
     width: calc(100% - 16px * 2);
     justify-content: center;
@@ -604,20 +693,24 @@
     font-size: 16px;
 }
 
+/* ESTILOS DEL CONTENEDOR DE COLA LLENA EN LA CAJA CTA */
 :host .detail-grid .detail-sidebar .cta-box .cta-full-wrap {
     text-align: center;
 }
 
+/* ESTILOS DEL TEXTO DE AYUDA EN LA CAJA CTA */
 :host .detail-grid .detail-sidebar .cta-box .cta-full-wrap .cta-hint {
     margin-top: 8px;
 }
 
+/* ESTILOS DEL TEXTO DE AYUDA GENERAL EN LA CAJA CTA */
 :host .detail-grid .detail-sidebar .cta-box .cta-hint {
     font-size: 12px;
     color: var(--text-2);
     text-align: center;
 }
 
+/* ESTILOS DEL BOTÓN DE LLENO EN LA CAJA CTA */
 :host .detail-grid .detail-sidebar .cta-box .cta-full {
     font-size: 16px;
     padding: 8px 16px;
@@ -626,6 +719,7 @@
     display: flex;
 }
 
+/* CONTENEDOR DE ALERTAS GENERALES */
 .alert {
     padding: 8px 16px;
     border-radius: var(--radius-sm);
@@ -633,24 +727,28 @@
     margin-bottom: 16px;
 }
 
+/* ESTILO DE ALERTA EXITOSA */
 .alert.alert-success {
     background: rgba(6, 214, 160, 0.1);
     border: 1px solid rgba(6, 214, 160, 0.2);
     color: var(--success);
 }
 
+/* ESTILO DE ALERTA DE ADVERTENCIA */
 .alert.alert-warning {
     background: rgba(255, 183, 3, 0.1);
     border: 1px solid rgba(255, 183, 3, 0.2);
     color: var(--warning);
 }
 
+/* ESTILO DE ALERTA DE ERROR */
 .alert.alert-error {
     background: rgba(230, 57, 70, 0.1);
     border: 1px solid rgba(230, 57, 70, 0.2);
     color: var(--danger);
 }
 
+/* ESTILO BASE DE LOS ICONOS DE ESTRELLA */
 .i-star {
     background: none;
     border: none;
@@ -661,19 +759,23 @@
     transition: color 0.12s, transform 0.12s;
 }
 
+/* COMPORTAMIENTO AL PASAR EL RATÓN SOBRE LAS ESTRELLAS */
 .i-star:hover {
     transform: scale(1.2);
 }
 
+/* ESTADO ACTIVO DEL ICONO DE ESTRELLA */
 .i-star.active {
     color: var(--accent);
 }
 
+/* ESTADO DISABLED DEL ICONO DE ESTRELLA */
 .i-star:disabled {
     cursor: default;
     opacity: 0.75;
 }
 
+/* ESTILO DEL TEXTO DE GUARDADO EXITOSO */
 .i-saved {
     font-size: 14px;
     font-weight: 700;
@@ -682,6 +784,7 @@
     animation: g-flashPop 0.3s ease both;
 }
 
+/* ESTILO DEL ICONO DE ERROR */
 .i-error {
     width: 18px;
     height: 18px;
@@ -697,31 +800,37 @@
     animation: flashPop 0.3s ease both;
 }
 
+/* ESTADO DE GUARDADO ACTIVADO: DESVANA ICONOS DE ESTRELLA */
 .is-saving .i-star {
     opacity: 0.5;
 }
 
-/* ── Animations ──────────────────────────────────────────────── */
+/* FADE IN ANIMATION CLASS */
 .td-fade-in {
     animation: g-fadeIn 0.5s ease both;
 }
 
+/* SLIDE UP ANIMATION CLASS */
 .td-slide-up {
     animation: g-slideUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* ANIMATION DELAY DE NIVEL 1 */
 .td-delay-1 {
     animation-delay: 0.06s;
 }
 
+/* ANIMATION DELAY DE NIVEL 2 */
 .td-delay-2 {
     animation-delay: 0.12s;
 }
 
+/* ANIMATION DELAY DE NIVEL 3 */
 .td-delay-3 {
     animation-delay: 0.18s;
 }
 
+/* ANIMATION DELAY DE NIVEL 4 */
 .td-delay-4 {
     animation-delay: 0.24s;
 }
@@ -731,14 +840,18 @@
 /* ============= */
 /* TABLET GRANDE */
 @media (max-width: calc(768px + 128px)) {
+
+    /* ESTILO DE GRID PRINCIPAL EN TABLET GRANDE */
     :host .detail-grid {
         grid-template-columns: 1fr;
     }
 
+    /* REUBICACIÓN DE LA BARRA LATERAL EN TABLET GRANDE */
     :host .detail-grid .detail-sidebar {
         order: -1;
     }
 
+    /* AJUSTE DE LA LISTA DE VALORACIONES A DOS COLUMNAS EN TABLET GRANDE */
     :host .detail-grid .detail-main .detail-card .ratings-list {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -746,14 +859,18 @@
 
 /* TABLET */
 @media (max-width: 768px) {
+
+    /* META GRID A UNA COLUMNA EN TABLET */
     :host .detail-grid .detail-main .detail-card .meta-grid {
         grid-template-columns: repeat(1, 1fr);
     }
 
+    /* LISTA DE VALORACIONES A UNA COLUMNA EN TABLET */
     :host .detail-grid .detail-main .detail-card .ratings-list {
         grid-template-columns: repeat(1, 1fr);
     }
 
+    /* VISUALIZACIÓN DE RUTA A UNA COLUMNA EN TABLET */
     :host .detail-grid .detail-main .detail-card .route-visual {
         grid-template-columns: repeat(1, 1fr);
     }
@@ -761,6 +878,8 @@
 
 /* TELEFONO GRANDE*/
 @media (max-width: calc(384px + 128px)) {
+
+    /* AJUSTE DEL BANNER DE GESTIÓN DEL CONDUCTOR EN TELEFONO GRANDE */
     :host .detail-grid .detail-main .driver-manage-banner {
         flex-direction: column;
         align-items: flex-start;
@@ -769,6 +888,7 @@
         margin-bottom: 16px;
     }
 
+    /* ESTILOS DEL BOTÓN DEL INDICADOR DE CONDUCTOR DEL VIAJE EN TELEFONO GRANDE */
     :host .detail-grid .detail-main .driver-manage-banner .btn {
         max-width: calc(100% - 16px * 2 - 1px * 2);
         justify-content: center;

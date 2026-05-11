@@ -15,6 +15,7 @@ import { AuthService } from '../../../services/auth-service';
     styleUrl: './login.css',
 })
 export class Login {
+
     // Inyección de servicios
     private cdr = inject(ChangeDetectorRef);
     fb = inject(FormBuilder);
@@ -22,19 +23,24 @@ export class Login {
     auth = inject(AuthService);
     router = inject(Router);
     route = inject(ActivatedRoute);
+
     // Formulario de login con validaciones
     form = this.fb.group({
         username: ['', [Validators.required, Validators.minLength(3)]],
         password: ['', [Validators.required]],
     });
+
     // Estado de carga y error
     loading = false;
     error = '';
+
     // Control para mostrar la contraseña
     showPassword = false;
 
-    // Control para mostrar mensaje de éxito al registrarse
+    // Control para evitar múltiples envíos del formulario
     submited = false;
+    
+    // Método para enviar el formulario de login
     submit() {
         this.submited = true;
         if (this.form.invalid || this.loading) return;
