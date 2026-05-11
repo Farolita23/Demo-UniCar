@@ -77,6 +77,8 @@
             <div class="udp-actions">
                 @if (selectedUser.banned) {
                 <button class="btn btn-success btn-sm" (click)="unbanUser(selectedUser.id)">✓ Desbanear</button>
+                } @else if (selectedUser?.role === 'ADMIN') {
+                <span class="btn">🚫 No se puede banear a un Administrador</span>
                 } @else {
                 <button class="btn btn-danger btn-sm" (click)="banUser(selectedUser.id)">🚫 Banear</button>
                 }

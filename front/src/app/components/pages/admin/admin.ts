@@ -207,7 +207,6 @@ export class Admin implements OnInit {
         this.api.adminBanUser(id).subscribe({
             next: () => {
                 this.showAction('Usuario baneado.');
-                this.loadData();
                 if (this.selectedUser?.id === id) this.selectedUser!.banned = true;
                 this.cdr.detectChanges();
             },
@@ -223,7 +222,6 @@ export class Admin implements OnInit {
         this.api.adminUnbanUser(id).subscribe({
             next: () => {
                 this.showAction('Usuario desbaneado.');
-                this.loadData();
                 if (this.selectedUser?.id === id) this.selectedUser!.banned = false;
                 this.cdr.detectChanges();
             },
@@ -239,7 +237,7 @@ export class Admin implements OnInit {
         this.api.adminAddStrike(id).subscribe({
             next: () => {
                 this.showAction('Strike añadido.');
-                this.loadData();
+                if(this.selectedUser) this.selectedUser.strikes++; 
                 this.cdr.detectChanges();
             },
             error: () => this.showActionError('Error al añadir strike.'),
