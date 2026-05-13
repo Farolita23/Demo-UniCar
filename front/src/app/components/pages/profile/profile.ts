@@ -195,12 +195,25 @@ export class Profile implements OnInit {
         if (file.size > 5 * 1024 * 1024) { this.editError = 'La imagen no debe superar los 5MB.'; return; }
         const reader = new FileReader();
         reader.onload = (e) => {
-            this.zone.run(() => {
-                const result = e.target?.result as string;
-                this.editPreviewUrl = result;
-                this.editForm.get('profileImageUrl')?.setValue(result);
-                this.cdr.detectChanges();
-            });
+            const img = new Image();
+            img.onload = () => {
+                const MAX_PX = 800;
+                let { width, height } = img;
+                if (width > MAX_PX || height > MAX_PX) {
+                    if (width > height) { height = Math.round(height * MAX_PX / width); width = MAX_PX; }
+                    else { width = Math.round(width * MAX_PX / height); height = MAX_PX; }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = width; canvas.height = height;
+                canvas.getContext('2d')!.drawImage(img, 0, 0, width, height);
+                const compressed = canvas.toDataURL('image/jpeg', 0.75);
+                this.zone.run(() => {
+                    this.editPreviewUrl = compressed;
+                    this.editForm.get('profileImageUrl')?.setValue(compressed);
+                    this.cdr.detectChanges();
+                });
+            };
+            img.src = e.target?.result as string;
         };
         reader.readAsDataURL(file);
     }

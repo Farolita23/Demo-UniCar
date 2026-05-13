@@ -115,7 +115,8 @@ public class User {
     @OneToMany(mappedBy = "driver", fetch = FetchType.LAZY)
     private Set<Car> cars;
 
-    @Column(name = "description", nullable = true)
+    @Lob
+    @Column(name = "description", nullable = true, columnDefinition = "TEXT")
     private String description;
 
     @ManyToMany(mappedBy = "passengers", fetch = FetchType.LAZY)
