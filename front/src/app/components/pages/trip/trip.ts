@@ -19,8 +19,6 @@ function verifyDate(control: AbstractControl) {
     today.setHours(0, 0, 0, 0);
     const inputDate = new Date(control.value);
     inputDate.setHours(0, 0, 0, 0);
-    console.log(today, "\n", inputDate);
-    
     return inputDate >= today ? null : { pastDate: true };
 }
 // Función de validación personalizada para verificar que la hora de salida no sea anterior a la hora actual si la fecha de salida es hoy
@@ -137,9 +135,6 @@ export class PageTrip implements OnInit {
     submit() {
         this.submited = true;
         if (this.form.invalid || this.loading) return;
-        console.log(this.form.value);
-        
-        console.log(this.form.invalid);
         
         this.loading = true;
         this.error = '';

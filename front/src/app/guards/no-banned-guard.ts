@@ -14,7 +14,6 @@ export const NoBannedGuard: CanActivateFn = () => {
 
     return apiService.getMe().pipe(
         map((res: any) => {
-            console.log(res.error);
             if (res.banned) {
                 alert("Tu cuenta ha sido baneada.");
                 auth.logout();
@@ -30,7 +29,6 @@ export const NoBannedGuard: CanActivateFn = () => {
                 router.navigate(["/"])
                 return of(true);
             }
-            console.error(err);
             return of(true);
         })
     );

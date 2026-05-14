@@ -254,8 +254,6 @@ export class Profile implements OnInit {
                 }
             },
             error: e => {
-                console.log(e);
-                
                 this.editError = e?.error?.message || 'Error al guardar.';
                 this.saving = false;
                 this.cdr.detectChanges();

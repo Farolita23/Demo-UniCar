@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-04-2026 a las 19:34:03
+-- Tiempo de generación: 14-05-2026 a las 20:56:13
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -38,19 +38,14 @@ CREATE TABLE `campus` (
 --
 
 INSERT INTO `campus` (`id`, `address`, `name`) VALUES
-(1, 'Av. Reina Mercedes, s/n, 41012 Sevilla', 'US - Reina Mercedes (Ciencias / Informática / Ingeniería)'),
-(2, 'C/ Virgen de África, 7, 41011 Sevilla', 'US - Escuela Politécnica Superior (Ingeniería)'),
-(3, 'Av. Reina Mercedes, 2, 41012 Sevilla', 'US - ETSAS - Arquitectura'),
-(4, 'C/ Enramadilla, 23, 41018 Sevilla', 'US - Ramón y Cajal (Derecho / Económicas / ETSI)'),
-(5, 'Av. Doctor Fedriani, s/n, 41009 Sevilla', 'US - Macarena (Medicina / Enfermería)'),
-(6, 'C/ Laraña, 3, 41003 Sevilla', 'US - Centro (Bellas Artes / Humanidades)'),
-(7, 'Av. Américo Vespucio, 41092 Sevilla', 'US - Cartuja (EPS Osuna / extensiones)'),
-(8, 'Ctra. de Utrera, km 1, 41013 Sevilla', 'UPO - Campus Principal'),
-(9, 'C/ Escritor Castilla Aguayo, 4, 41005 Sevilla', 'Loyola - Campus Sevilla'),
-(10, 'Av. de la Buhaira, 27, 41018 Sevilla', 'ESIC Sevilla'),
-(11, 'C/ Antonia Díaz, 1, 41001 Sevilla', 'San Isidoro (adscrito UPO)'),
-(12, 'C/ Leonardo da Vinci, 12, 41092 Sevilla', 'UNIA - Sede Sevilla (Monasterio La Cartuja)'),
-(13, 'C/ Sevilla, s/n, 41640 Osuna', 'CU Osuna (adscrito US)');
+(1, 'Avda. Reina Mercedes, s/n', 'Reina Mercedes'),
+(2, 'Avda. Ramón y Cajal / Calle Enramadilla', 'Viapol / Ramón y Cajal'),
+(3, 'Camino de los Descubrimientos, s/n', 'Cartuja'),
+(4, 'Avda. Sánchez Pizjuán, s/n', 'Macarena'),
+(5, 'Calle Virgen de África, 7', 'Politécnico'),
+(6, 'Calle San Fernando, 4', 'Rectorado / Centro'),
+(7, 'Autovía A-376, km. 1', 'UPO (Pablo de Olavide)'),
+(8, 'Calle Laraña, 3', 'Bellas Artes');
 
 -- --------------------------------------------------------
 
@@ -72,11 +67,43 @@ CREATE TABLE `car` (
 --
 
 INSERT INTO `car` (`id`, `capacity`, `color`, `license_plate`, `model`, `user_id`) VALUES
-(1, 4, 'Gris', '1234 ABC', 'Seat León', 1),
-(2, 4, 'Blanco', '5678 DEF', 'Volkswagen Polo', 2),
-(3, 5, 'Negro', '9012 GHI', 'Renault Megane', 3),
-(4, 4, 'Rojo', '3456 JKL', 'Toyota Yaris', 4),
-(5, 4, 'Azul', '7890 MNO', 'Ford Focus', 5);
+(1, 5, 'Rojo', '1234CBC', 'Seat Ibiza', 1),
+(2, 4, 'Azul', '5678 DDF', 'Ford Fiesta', 2),
+(3, 5, 'Negro', '9101GHF', 'Volkswagen Golf', 2),
+(4, 7, 'Blanco', '1122JKL', 'Renault Scenic', 4),
+(5, 5, 'Gris', '3344MNP', 'Peugeot 308', 3),
+(6, 2, 'Amarillo', '5566PQR', 'Smart Fortwo', 5),
+(7, 5, 'Verde', 'N-7788-P', 'Toyota Corolla', 3),
+(8, 5, 'Azul oscuro', 'CD-1122-EF', 'Honda Civic', 6),
+(9, 5, 'Rojo', '7788STC', 'Mazda 3', 7),
+(10, 4, 'Negro', 'FG-3456-HJ', 'Opel Corsa', 1),
+(11, 5, 'Blanco', 'KL-5678-MN', 'Hyundai i30', 6),
+(12, 7, 'Gris plata', 'PQ-7890-ST', 'Dacia Duster', 8);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `favorite`
+--
+
+CREATE TABLE `favorite` (
+  `id` bigint(20) NOT NULL,
+  `favorite_user_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `favorite`
+--
+
+INSERT INTO `favorite` (`id`, `favorite_user_id`, `user_id`) VALUES
+(6, 4, 2),
+(5, 5, 2),
+(2, 6, 2),
+(4, 7, 2),
+(7, 3, 4),
+(3, 2, 6),
+(1, 8, 6);
 
 -- --------------------------------------------------------
 
@@ -91,6 +118,25 @@ CREATE TABLE `rating` (
   `user_rate_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `rating`
+--
+
+INSERT INTO `rating` (`id`, `rating`, `rated_user_id`, `user_rate_id`) VALUES
+(1, 3, 6, 2),
+(2, 4, 2, 6),
+(3, 4, 7, 4),
+(4, 3, 5, 4),
+(5, 2, 6, 4),
+(6, 1, 2, 4),
+(7, 4, 8, 4),
+(8, 5, 3, 4),
+(9, 5, 5, 2),
+(10, 3, 4, 2),
+(11, 5, 3, 2),
+(12, 5, 7, 2),
+(13, 4, 8, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -104,6 +150,15 @@ CREATE TABLE `report` (
   `reported_user_id` bigint(20) NOT NULL,
   `user_report_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `report`
+--
+
+INSERT INTO `report` (`id`, `date`, `reason`, `reported_user_id`, `user_report_id`) VALUES
+(1, '2026-05-14', 's', 2, 6),
+(2, '2026-05-14', 'Fantasma', 2, 4),
+(3, '2026-05-14', 'Corrupto', 2, 4);
 
 -- --------------------------------------------------------
 
@@ -122,138 +177,107 @@ CREATE TABLE `town` (
 --
 
 INSERT INTO `town` (`id`, `name`, `zip_code`) VALUES
-(1, 'Sevilla - Centro / Catedral', '41001'),
-(2, 'Sevilla - Macarena', '41002'),
-(3, 'Sevilla - San Vicente / Triana Norte', '41003'),
-(4, 'Sevilla - Santa Cruz / Feria', '41004'),
-(5, 'Sevilla - Nervión', '41005'),
-(6, 'Sevilla - Cerro-Amate', '41006'),
-(7, 'Sevilla - San Pablo / Santa Justa', '41007'),
-(8, 'Sevilla - Pino Montano', '41008'),
-(9, 'Sevilla - Parque Alcosa / Sevilla Este', '41009'),
-(10, 'Sevilla - Triana', '41010'),
-(11, 'Sevilla - Los Remedios', '41011'),
-(12, 'Sevilla - Bellavista / La Palmera / Reina Mercedes', '41012'),
-(13, 'Sevilla - Tabladilla / La Plata', '41013'),
-(14, 'Sevilla - Bellavista Sur', '41014'),
-(15, 'Sevilla - Valdezorras', '41015'),
-(16, 'Sevilla - Torreblanca / Alcosa', '41016'),
-(17, 'Sevilla - La Macarena Norte', '41017'),
-(18, 'Sevilla - San Jerónimo / Nervión Norte', '41018'),
-(19, 'Sevilla - Palmete / Villegas', '41019'),
-(20, 'Sevilla - La Barzola / Norte', '41020'),
-(21, 'Almensilla', '41110'),
-(22, 'Gelves', '41120'),
-(23, 'Sanlúcar la Mayor', '41800'),
-(24, 'Olivares', '41804'),
-(25, 'Benacazón', '41805'),
-(26, 'Umbrete', '41806'),
-(27, 'Espartinas', '41807'),
-(28, 'Villanueva del Ariscal', '41808'),
-(29, 'Albaida del Aljarafe', '41809'),
-(30, 'Bollullos de la Mitación', '41816'),
-(31, 'Huévar del Aljarafe', '41817'),
-(32, 'Carrión de los Céspedes', '41820'),
-(33, 'Castilleja del Campo', '41821'),
-(34, 'Pilas', '41840'),
-(35, 'Aznalcázar', '41849'),
-(36, 'Camas', '41900'),
-(37, 'Valencina de la Concepción', '41907'),
-(38, 'Castilleja de Guzmán', '41908'),
-(39, 'Salteras', '41909'),
-(40, 'San Juan de Aznalfarache', '41920'),
-(41, 'Mairena del Aljarafe', '41927'),
-(42, 'Palomares del Río', '41928'),
-(43, 'Bormujos', '41930'),
-(44, 'Tomares', '41940'),
-(45, 'Castilleja de la Cuesta', '41950'),
-(46, 'Gines', '41960'),
-(47, 'Santiponce', '41970'),
-(48, 'Coria del Río', '41100'),
-(49, 'La Puebla del Río', '41130'),
-(50, 'Isla Mayor', '41140'),
-(51, 'Villamanrique de la Condesa', '41850'),
-(52, 'La Algaba', '41980'),
-(53, 'Guillena', '41210'),
-(54, 'El Garrobo', '41220'),
-(55, 'Castilblanco de los Arroyos', '41230'),
-(56, 'Almadén de la Plata', '41240'),
-(57, 'Alcolea del Río', '41250'),
-(58, 'Peñaflor', '41260'),
-(59, 'Tocina', '41270'),
-(60, 'La Campana', '41280'),
-(61, 'Burguillos', '41290'),
-(62, 'La Rinconada', '41300'),
-(63, 'Brenes', '41310'),
-(64, 'Cantillana', '41320'),
-(65, 'Villaverde del Río', '41329'),
-(66, 'La Puebla de los Infantes', '41330'),
-(67, 'Villanueva del Río y Minas', '41350'),
-(68, 'Lora del Río', '41440'),
-(69, 'Gerena', '41860'),
-(70, 'Aznalcóllar', '41870'),
-(71, 'Alcalá del Río', '41880'),
-(72, 'El Castillo de las Guardas', '41890'),
-(73, 'El Pedroso', '41360'),
-(74, 'Cazalla de la Sierra', '41370'),
-(75, 'Alanís', '41380'),
-(76, 'San Nicolás del Puerto', '41388'),
-(77, 'El Real de la Jara', '41389'),
-(78, 'Guadalcanal', '41390'),
-(79, 'Constantina', '41450'),
-(80, 'Las Navas de la Concepción', '41460'),
-(81, 'El Ronquillo', '41851'),
-(82, 'Écija', '41400'),
-(83, 'Carmona', '41410'),
-(84, 'Fuentes de Andalucía', '41420'),
-(85, 'La Lantejuela', '41430'),
-(86, 'La Luisiana', '41438'),
-(87, 'Cañada Rosal', '41461'),
-(88, 'Alcalá de Guadaíra', '41500'),
-(89, 'Mairena del Alcor', '41510'),
-(90, 'El Viso del Alcor', '41520'),
-(91, 'Arahal', '41600'),
-(92, 'Marchena', '41620'),
-(93, 'Paradas', '41630'),
-(94, 'Osuna', '41640'),
-(95, 'La Roda de Andalucía', '41650'),
-(96, 'Martín de la Jara', '41659'),
-(97, 'Algámitas', '41660'),
-(98, 'Villanueva de San Juan', '41661'),
-(99, 'El Saucejo', '41665'),
-(100, 'Morón de la Frontera', '41530'),
-(101, 'Casariche', '41540'),
-(102, 'Estepa', '41560'),
-(103, 'Lora de Estepa', '41562'),
-(104, 'Herrera', '41563'),
-(105, 'Marinaleda', '41564'),
-(106, 'Gilena', '41565'),
-(107, 'Pedrera', '41566'),
-(108, 'El Rubio', '41568'),
-(109, 'Badolatosa', '41569'),
-(110, 'La Puebla de Cazalla', '41570'),
-(111, 'Aguadulce', '41590'),
-(112, 'Coripe', '41690'),
-(113, 'Dos Hermanas', '41700'),
-(114, 'Utrera', '41710'),
-(115, 'Los Palacios y Villafranca', '41720'),
-(116, 'Las Cabezas de San Juan', '41730'),
-(117, 'El Coronil', '41731'),
-(118, 'Lebrija', '41740'),
-(119, 'Los Corrales', '41747'),
-(120, 'El Cuervo de Sevilla', '41749'),
-(121, 'Los Molares', '41750'),
-(122, 'Pruna', '41760'),
-(123, 'Montellano', '41770'),
-(124, 'Dos Hermanas - Montequinto', '41089'),
-(125, 'Écija - Isla Redonda / Las Colonias', '41401'),
-(126, 'Carmona - El Viar / Guadajoz', '41411'),
-(127, 'Lora del Río - Setefilla', '41441'),
-(128, 'Alcalá de Guadaíra - Gandul / Marchanilla', '41501'),
-(129, 'Osuna - El Sillero', '41641'),
-(130, 'Utrera - Guadalema de los Quintero', '41712'),
-(131, 'Los Palacios - Maribáñez', '41721'),
-(132, 'Lebrija - Las Cabezuelas', '41741');
+(1, 'Sevilla', '41001'),
+(2, 'Coria del Río', '41100'),
+(3, 'Bollullos de la Mitación', '41110'),
+(4, 'Almensilla', '41111'),
+(5, 'Gelves', '41120'),
+(6, 'La Puebla del Río', '41130'),
+(7, 'Isla Mayor', '41140'),
+(8, 'Alcalá del Río', '41200'),
+(9, 'Burguillos', '41209'),
+(10, 'Guillena', '41210'),
+(11, 'Castilblanco de los Arroyos', '41230'),
+(12, 'Almadén de la Plata', '41240'),
+(13, 'El Real de la Jara', '41250'),
+(14, 'San José de la Rinconada', '41300'),
+(15, 'La Rinconada', '41309'),
+(16, 'Brenes', '41310'),
+(17, 'Villaverde del Río', '41318'),
+(18, 'Cantillana', '41320'),
+(19, 'Villanueva del Río y Minas', '41350'),
+(20, 'El Pedroso', '41360'),
+(21, 'Cazalla de la Sierra', '41370'),
+(22, 'Alanís', '41380'),
+(23, 'San Nicolás del Puerto', '41388'),
+(24, 'Guadalcanal', '41390'),
+(25, 'Écija', '41400'),
+(26, 'Carmona', '41410'),
+(27, 'Fuentes de Andalucía', '41420'),
+(28, 'La Campana', '41429'),
+(29, 'La Luisiana', '41430'),
+(30, 'Cañada Rosal', '41439'),
+(31, 'Lora del Río', '41440'),
+(32, 'Alcolea del Río', '41449'),
+(33, 'Constantina', '41450'),
+(34, 'Las Navas de la Concepción', '41460'),
+(35, 'Peñaflor', '41470'),
+(36, 'La Puebla de los Infantes', '41479'),
+(37, 'Alcalá de Guadaíra', '41500'),
+(38, 'Mairena del Alcor', '41510'),
+(39, 'El Viso del Alcor', '41520'),
+(40, 'Morón de la Frontera', '41530'),
+(41, 'La Puebla de Cazalla', '41540'),
+(42, 'Aguadulce', '41550'),
+(43, 'Estepa', '41560'),
+(44, 'Lora de Estepa', '41564'),
+(45, 'Gilena', '41565'),
+(46, 'Pedrera', '41566'),
+(47, 'Herrera', '41567'),
+(48, 'El Rubio', '41568'),
+(49, 'Marinaleda', '41569'),
+(50, 'La Roda de Andalucía', '41590'),
+(51, 'Arahal', '41600'),
+(52, 'Paradas', '41610'),
+(53, 'Marchena', '41620'),
+(54, 'Osuna', '41630'),
+(55, 'El Saucejo', '41650'),
+(56, 'Los Corrales', '41657'),
+(57, 'Martín de la Jara', '41658'),
+(58, 'Villanueva de San Juan', '41660'),
+(59, 'Algámitas', '41661'),
+(60, 'Pruna', '41670'),
+(61, 'Dos Hermanas', '41700'),
+(62, 'Utrera', '41710'),
+(63, 'El Palmar de Troya', '41719'),
+(64, 'Los Palacios y Villafranca', '41720'),
+(65, 'Las Cabezas de San Juan', '41730'),
+(66, 'Lebrija', '41740'),
+(67, 'El Cuervo de Sevilla', '41749'),
+(68, 'Montellano', '41750'),
+(69, 'El Coronil', '41760'),
+(70, 'Coripe', '41770'),
+(71, 'Sanlúcar la Mayor', '41800'),
+(72, 'Olivares', '41804'),
+(73, 'Benacazón', '41805'),
+(74, 'Umbrete', '41806'),
+(75, 'Espartinas', '41807'),
+(76, 'Salteras', '41808'),
+(77, 'Albaida del Aljarafe', '41809'),
+(78, 'Castilleja del Campo', '41810'),
+(79, 'Carrión de los Céspedes', '41820'),
+(80, 'Huévar del Aljarafe', '41830'),
+(81, 'Pilas', '41840'),
+(82, 'Aznalcázar', '41849'),
+(83, 'Villamanrique de la Condesa', '41850'),
+(84, 'Gerena', '41860'),
+(85, 'Aznalcóllar', '41870'),
+(86, 'El Ronquillo', '41880'),
+(87, 'El Garrobo', '41889'),
+(88, 'El Castillo de las Guardas', '41890'),
+(89, 'El Madroño', '41897'),
+(90, 'Camas', '41900'),
+(91, 'Valencina de la Concepción', '41907'),
+(92, 'Castilleja de Guzmán', '41908'),
+(93, 'San Juan de Aznalfarache', '41920'),
+(94, 'Mairena del Aljarafe', '41927'),
+(95, 'Palomares del Río', '41928'),
+(96, 'Bormujos', '41930'),
+(97, 'Tomares', '41940'),
+(98, 'Castilleja de la Cuesta', '41950'),
+(99, 'Gines', '41960'),
+(100, 'Santiponce', '41970'),
+(101, 'La Algaba', '41980');
 
 -- --------------------------------------------------------
 
@@ -278,23 +302,19 @@ CREATE TABLE `trip` (
 --
 
 INSERT INTO `trip` (`id`, `departure_address`, `departure_date`, `departure_time`, `is_to_campus`, `price`, `campus_id`, `car_id`, `town_id`) VALUES
-(1, 'Av. de la Libertad, 12, Dos Hermanas', '2026-04-06', '08:00:00.000000', b'1', 2.00, 1, 1, 113),
-(2, 'Av. de la Libertad, 12, Dos Hermanas', '2026-04-07', '08:00:00.000000', b'1', 2.00, 1, 1, 113),
-(3, 'Av. de la Libertad, 12, Dos Hermanas', '2026-04-09', '08:00:00.000000', b'1', 2.00, 1, 1, 113),
-(4, 'Av. Reina Mercedes, s/n (campus)', '2026-04-06', '14:30:00.000000', b'0', 2.00, 1, 1, 113),
-(5, 'C/ Mairena, 5, Alcalá de Guadaíra', '2026-04-06', '07:45:00.000000', b'1', 1.50, 1, 2, 88),
-(6, 'C/ Mairena, 5, Alcalá de Guadaíra', '2026-04-08', '07:45:00.000000', b'1', 1.50, 1, 2, 88),
-(7, 'C/ Mairena, 5, Alcalá de Guadaíra', '2026-04-10', '07:45:00.000000', b'1', 1.50, 1, 2, 88),
-(8, 'C/ Real, 20, Mairena del Aljarafe', '2026-04-07', '08:15:00.000000', b'1', 1.00, 1, 3, 41),
-(9, 'C/ Real, 20, Mairena del Aljarafe', '2026-04-11', '08:15:00.000000', b'1', 1.00, 1, 3, 41),
-(10, 'Av. Reina Mercedes, s/n (campus)', '2026-04-07', '15:00:00.000000', b'0', 1.00, 1, 3, 41),
-(11, 'Plaza de Abastos, 3, Carmona', '2026-04-06', '07:30:00.000000', b'1', 3.00, 4, 4, 83),
-(12, 'Plaza de Abastos, 3, Carmona', '2026-04-08', '07:30:00.000000', b'1', 3.00, 4, 4, 83),
-(13, 'Plaza de Abastos, 3, Carmona', '2026-04-12', '07:30:00.000000', b'1', 3.00, 4, 4, 83),
-(14, 'C/ Larga, 8, Los Palacios y Villafranca', '2026-04-06', '08:30:00.000000', b'1', 2.50, 1, 5, 115),
-(15, 'C/ Larga, 8, Los Palacios y Villafranca', '2026-04-09', '08:30:00.000000', b'1', 2.50, 1, 5, 115),
-(16, 'C/ Larga, 8, Los Palacios y Villafranca', '2026-04-13', '08:30:00.000000', b'1', 2.50, 1, 5, 115),
-(17, 'Av. Reina Mercedes, s/n (campus)', '2026-04-09', '14:00:00.000000', b'0', 2.50, 1, 5, 115);
+(1, 'Instituto', '2026-06-01', '08:30:00.000000', b'1', 2.05, 3, 3, 9),
+(2, 'Colegio', '2026-06-02', '07:45:00.000000', b'1', 3.15, 7, 11, 12),
+(3, 'Estación Central', '2026-06-03', '07:15:00.000000', b'1', 2.50, 3, 1, 14),
+(4, 'Plaza Mayor', '2026-06-08', '13:40:00.000000', b'0', 1.75, 5, 2, 27),
+(5, 'Avenida Libertad', '2026-06-15', '18:20:00.000000', b'0', 4.10, 1, 3, 39),
+(6, 'Biblioteca Municipal', '2026-06-22', '09:05:00.000000', b'1', 0.95, 8, 4, 52),
+(7, 'Centro Comercial', '2026-07-01', '20:10:00.000000', b'0', 5.65, 2, 5, 63),
+(8, 'Parque Norte', '2026-07-07', '06:30:00.000000', b'0', 3.30, 6, 6, 71),
+(9, 'Instituto Tecnológico', '2026-07-12', '14:55:00.000000', b'1', 6.95, 4, 7, 84),
+(10, 'Calle del Sol', '2026-07-18', '11:45:00.000000', b'0', 2.15, 7, 8, 90),
+(11, 'Puerto Deportivo', '2026-07-23', '16:25:00.000000', b'0', 0.50, 5, 9, 97),
+(12, 'Hospital General', '2026-07-29', '08:50:00.000000', b'1', 4.75, 1, 10, 100),
+(13, 'Polideportivo', '2026-08-01', '19:35:00.000000', b'0', 1.20, 3, 12, 45);
 
 -- --------------------------------------------------------
 
@@ -307,6 +327,60 @@ CREATE TABLE `trip_passenger` (
   `passenger_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `trip_passenger`
+--
+
+INSERT INTO `trip_passenger` (`trip_id`, `passenger_id`) VALUES
+(1, 4),
+(1, 5),
+(1, 6),
+(1, 7),
+(2, 2),
+(2, 3),
+(2, 4),
+(2, 8),
+(3, 2),
+(3, 6),
+(3, 8),
+(4, 5),
+(4, 6),
+(4, 7),
+(5, 3),
+(5, 4),
+(5, 5),
+(5, 6),
+(5, 7),
+(6, 2),
+(6, 5),
+(6, 6),
+(6, 7),
+(6, 8),
+(7, 4),
+(7, 6),
+(7, 7),
+(8, 2),
+(8, 7),
+(9, 2),
+(9, 4),
+(9, 5),
+(9, 7),
+(10, 2),
+(10, 3),
+(10, 5),
+(10, 7),
+(10, 8),
+(11, 2),
+(11, 6),
+(12, 3),
+(12, 4),
+(12, 5),
+(12, 8),
+(13, 2),
+(13, 4),
+(13, 6),
+(13, 7);
+
 -- --------------------------------------------------------
 
 --
@@ -318,6 +392,40 @@ CREATE TABLE `trip_requester` (
   `requester_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `trip_requester`
+--
+
+INSERT INTO `trip_requester` (`trip_id`, `requester_id`) VALUES
+(1, 3),
+(1, 8),
+(2, 5),
+(2, 7),
+(3, 3),
+(3, 4),
+(3, 5),
+(3, 7),
+(4, 3),
+(4, 4),
+(4, 8),
+(6, 3),
+(7, 2),
+(7, 5),
+(7, 8),
+(8, 6),
+(9, 6),
+(9, 8),
+(10, 4),
+(11, 3),
+(11, 4),
+(11, 5),
+(11, 8),
+(12, 2),
+(12, 6),
+(12, 7),
+(13, 3),
+(13, 5);
+
 -- --------------------------------------------------------
 
 --
@@ -328,7 +436,7 @@ CREATE TABLE `user` (
   `id` bigint(20) NOT NULL,
   `banned` bit(1) NOT NULL,
   `birthdate` date NOT NULL,
-  `description` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `driving_license_year` int(11) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `genre` varchar(255) NOT NULL,
@@ -339,20 +447,23 @@ CREATE TABLE `user` (
   `strikes` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `home_town_id` bigint(20) NOT NULL,
-  `usual_campus_id` bigint(20) NOT NULL
+  `usual_campus_id` bigint(20) NOT NULL,
+  `role` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `user`
 --
 
-INSERT INTO `user` (`id`, `banned`, `birthdate`, `description`, `driving_license_year`, `email`, `genre`, `name`, `password`, `phone`, `profile_image_url`, `strikes`, `username`, `home_town_id`, `usual_campus_id`) VALUES
-(1, b'0', '1999-03-15', 'Conduzco todos los días al campus de Reina Mercedes.', 2018, 'juanma@unicar.es', 'M', 'Juan Manuel García', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '654123001', NULL, 0, 'juanma_dh', 113, 1),
-(2, b'0', '2000-07-22', 'Informática 3º. Salgo a las 8h desde Alcalá.', 2019, 'laura@unicar.es', 'F', 'Laura Pérez Ruiz', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '654123002', NULL, 0, 'laura_alcala', 88, 1),
-(3, b'0', '1998-11-05', 'Voy a Reina Mercedes desde Mairena. Coche grande.', 2017, 'carlos@unicar.es', 'M', 'Carlos López Vega', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '654123003', NULL, 0, 'carlos_mairena', 41, 1),
-(4, b'0', '2001-01-30', 'Derecho en Ramón y Cajal. Salgo de Carmona a las 7:45.', 2020, 'sofia@unicar.es', 'F', 'Sofía Martínez Blanco', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '654123004', NULL, 0, 'sofia_carmona', 83, 4),
-(5, b'0', '1999-09-12', 'Ingeniería Informática. Viajo desde Los Palacios cada día.', 2018, 'pablo@unicar.es', 'M', 'Pablo Fernández Mora', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '654123005', NULL, 0, 'pablo_palacios', 115, 1),
-(6, b'0', '2002-05-18', 'Busco viaje desde Triana o alrededores.', NULL, 'ana@unicar.es', 'F', 'Ana Sánchez Torres', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '654123006', NULL, 0, 'ana_triana', 10, 1);
+INSERT INTO `user` (`id`, `banned`, `birthdate`, `description`, `driving_license_year`, `email`, `genre`, `name`, `password`, `phone`, `profile_image_url`, `strikes`, `username`, `home_town_id`, `usual_campus_id`, `role`) VALUES
+(1, b'0', '2000-01-01', '', 2018, 'Usuario001@gmail.com', 'Hombre', 'Usuario Test 001', '$2a$10$re3DNC0KcbMZXENEXdpkh.1OTsYhSyJqifIxng73IC0xWZy8j0ieu', '600001001', NULL, 1, 'Usuario001', 92, 8, 'USER'),
+(2, b'0', '2001-01-01', '', 2019, 'Admin001@gmail.com', 'Hombre', 'Usuario Admin 001', '$2a$10$VjIy5Enm0jo/NPDyfEIL9O/fSCxGCgewfzkS8sORIEaATCtYEm26C', '700001001', '', 1, 'Admin001', 96, 8, 'ADMIN'),
+(3, b'0', '2002-02-02', '', 2020, 'Usuario002@gmail.com', 'Mujer', 'Usuario Test 002', '$2a$10$zAcRCvh8nM5rWDPq/WijK.lAW7BHESLpmsFfLpOKJJmjKOCMqCBaK', '600002002', NULL, 0, 'Usuario002', 11, 5, 'USER'),
+(4, b'0', '2003-03-03', '', 2021, 'Usuario003@gmail.com', 'Hombre', 'Usuario Test 003', '$2a$10$7xEV9pUMitMMYpXGrma1e.M8aWVvPjgzTZ.ifbkc861IJ7qFaCM.C', '600003003', NULL, 0, 'Usuario003', 32, 6, 'USER'),
+(5, b'0', '2004-04-04', '', 2022, 'Usuario004@gmail.com', 'Mujer', 'Usuario Test 004', '$2a$10$8xImPuiFPm3Lexl85vjZJ.SkHvm56Ukj.qBLZGQUnraww7kZwquO2', '600004004', NULL, 0, 'Usuario004', 30, 4, 'USER'),
+(6, b'0', '2005-05-05', '', 2023, 'Usuario005@gmail.com', 'Mujer', 'Usuario Test 005', '$2a$10$n94lhmMwaZ6m4ezFJ5RejuArITVkTX5Jk7Yb6VWoSEaFKov/rEYHG', '600005005', NULL, 0, 'Usuario005', 51, 4, 'USER'),
+(7, b'0', '2006-06-06', '', 2024, 'Usuario006@gmail.com', 'No binario', 'Usuario Test 006', '$2a$10$GGWvXemS.93sMvRuBjtS6ebI58CKbODH8OuvbvrBnSG99eoTBOUze', '600006006', NULL, 0, 'Usuario006', 13, 4, 'USER'),
+(8, b'0', '2012-02-02', '', 2025, 'Admin002@gmail.com', 'Hombre', 'Usuario Admin 002', '$2a$10$rYt60n0f/WgE.CFUpAIj0e6fpXu1qJs9jQzUkBKi4ACq3K3xeMuJS', '700002002', NULL, 0, 'Admin002', 29, 7, 'ADMIN');
 
 --
 -- Índices para tablas volcadas
@@ -370,6 +481,14 @@ ALTER TABLE `campus`
 ALTER TABLE `car`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_car_user` (`user_id`);
+
+--
+-- Indices de la tabla `favorite`
+--
+ALTER TABLE `favorite`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `UK1dolp59p8ipbychpmp8ktnitg` (`user_id`,`favorite_user_id`),
+  ADD KEY `fk_favorite_target` (`favorite_user_id`);
 
 --
 -- Indices de la tabla `rating`
@@ -435,43 +554,49 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `campus`
 --
 ALTER TABLE `campus`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `car`
 --
 ALTER TABLE `car`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT de la tabla `favorite`
+--
+ALTER TABLE `favorite`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `rating`
 --
 ALTER TABLE `rating`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `report`
 --
 ALTER TABLE `report`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `town`
 --
 ALTER TABLE `town`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT de la tabla `trip`
 --
 ALTER TABLE `trip`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Restricciones para tablas volcadas
@@ -482,6 +607,13 @@ ALTER TABLE `user`
 --
 ALTER TABLE `car`
   ADD CONSTRAINT `fk_car_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
+
+--
+-- Filtros para la tabla `favorite`
+--
+ALTER TABLE `favorite`
+  ADD CONSTRAINT `fk_favorite_target` FOREIGN KEY (`favorite_user_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `fk_favorite_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Filtros para la tabla `rating`
