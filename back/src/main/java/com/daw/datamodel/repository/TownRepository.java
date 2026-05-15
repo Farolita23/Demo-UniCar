@@ -1,5 +1,7 @@
 package com.daw.datamodel.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +20,10 @@ import com.daw.datamodel.entities.Town;
  */
 @Repository
 public interface TownRepository extends JpaRepository<Town, Long> {
-
+    /**
+     * Recupera todas las ciudades ordenadas por nombre ascendente.
+     *
+     * @return lista de ciudades ordenadas
+     */
+    List<Town> findAllByOrderByNameAsc();
 }

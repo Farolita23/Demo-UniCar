@@ -1,0 +1,76 @@
+<app-header></app-header>
+<div class="page-wrapper">
+    <div class="container">
+
+        <a routerLink="/profile" class="back-link fade-in">← Volver al perfil</a>
+        
+        <div class="page-header">
+            <h1>Mis viajes</h1>
+            <p class="page-subtitle">Todos tus viajes como conductor y pasajero</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab" [class.active]="activeTab === 'passenger'" (click)="activeTab = 'passenger'">
+                🎒 Como pasajero
+                @if (tripsAsPassenger.length > 0) {
+                <span class="tab-badge">{{ tripsAsPassenger.length }}</span>
+                }
+            </button>
+            <button class="tab" [class.active]="activeTab === 'driver'" (click)="activeTab = 'driver'">
+                🚗 Como conductor
+                @if (tripsAsDriver.length > 0) {
+                <span class="tab-badge">{{ tripsAsDriver.length }}</span>
+                }
+            </button>
+        </div>
+
+        <!-- Passenger trips -->
+        @if (activeTab === 'passenger') {
+        @if (loadingPassenger) {
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <span>Cargando viajes...</span>
+        </div>
+        } @else if (tripsAsPassenger.length === 0) {
+        <div class="empty-state">
+            <div class="empty-icon">🔍</div>
+            <h3>No tienes viajes reservados</h3>
+            <p>Busca un viaje y solicita una plaza para empezar a compartir trayecto.</p>
+            <a routerLink="/search-trip" class="btn btn-primary">Buscar viajes</a>
+        </div>
+        } @else {
+        <div class="trips-grid">
+            @for (trip of tripsAsPassenger; track trip.id) {
+            <app-trip [data]="trip"></app-trip>
+            }
+        </div>
+        }
+        }
+
+        <!-- Driver trips -->
+        @if (activeTab === 'driver') {
+        @if (loadingDriver) {
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <span>Cargando viajes...</span>
+        </div>
+        } @else if (tripsAsDriver.length === 0) {
+        <div class="empty-state anim-fade-in">
+            <div class="empty-icon">🚗</div>
+            <h3>No has publicado ningún viaje</h3>
+            <p>Comparte tu ruta hacia el campus y ayuda a otros estudiantes.</p>
+            <a routerLink="/trip" class="btn btn-primary">Publicar viaje</a>
+        </div>
+        } @else {
+        <div class="trips-grid">
+            @for (trip of tripsAsDriver; track trip.id) {
+            <app-trip [data]="trip"></app-trip>
+            }
+        </div>
+        }
+        }
+
+    </div>
+    <app-footer></app-footer>
+</div>

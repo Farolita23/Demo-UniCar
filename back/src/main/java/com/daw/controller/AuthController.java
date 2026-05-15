@@ -5,6 +5,7 @@ import com.daw.controller.dto.UserDTO;
 import com.daw.controller.dto.UserLoginDTO;
 import com.daw.datamodel.entities.User;
 import com.daw.datamodel.repository.UserRepository;
+import com.daw.exceptions.UserIsBannedException;
 import com.daw.security.JwtUtil;
 import com.daw.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -51,9 +52,12 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody UserLoginDTO dto) {
         Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+            new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
         User user = userRepository.findByUsername(auth.getName())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if(user.getBanned()) {
+            throw new UserIsBannedException("User is banned");
+        }
         return ResponseEntity.ok(Map.of("token", jwtUtil.generateToken(auth.getName(), user.getRole())));
     }
 

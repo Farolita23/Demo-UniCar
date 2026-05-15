@@ -3,6 +3,7 @@ package com.daw.controller.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -20,8 +21,10 @@ public class UserUpdateDTO {
     @NotNull
     private String phone;
 
+    @Size(max = 4000)
     private String description;
 
+    @Size(max = 200000, message = "La imagen es demasiado grande")
     private String profileImageUrl;
 
     private Long idUsualCampus;

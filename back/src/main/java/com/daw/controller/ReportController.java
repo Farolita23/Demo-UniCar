@@ -1,7 +1,8 @@
 package com.daw.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,8 +31,9 @@ public class ReportController {
     private final ReportService reportService;
 
     @GetMapping
-    public ResponseEntity<List<ReportDTO>> findAll() {
-        return ResponseEntity.ok(reportService.findAll());
+    public ResponseEntity<Page<ReportDTO>> findAll(
+        @PageableDefault(size = 10, sort = "date") Pageable pageable) {
+        return ResponseEntity.ok(reportService.findAll(pageable));
     }
 
     @GetMapping("/{id}")

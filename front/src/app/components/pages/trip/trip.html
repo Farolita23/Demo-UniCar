@@ -1,0 +1,164 @@
+<app-header></app-header>
+<div class="page-wrapper">
+    <div class="container">
+        <div class="publish-header">
+            <h1>Publicar viaje</h1>
+            <p>Comparte tu ruta hacia el campus y ayuda a otros estudiantes</p>
+        </div>
+
+        @if (success) {
+        <div class="success-state">
+            <div class="success-icon">✓</div>
+            <h2>¡Viaje publicado!</h2>
+            <p>Tu viaje ya está disponible para otros estudiantes.</p>
+        </div>
+        } @else {
+        <form [formGroup]="form" (ngSubmit)="submit()" class="publish-form">
+
+            <!-- VEHÍCULO -->
+            <div class="form-section">
+                <h3 class="form-section-title"><app-icon icon="coche" [size]="20"></app-icon> Vehículo</h3>
+                @if (carsLoading) {
+                <div class="loading-inline">
+                    <div class="spinner spinner-sm"></div><span>Cargando vehículos...</span>
+                </div>
+                } @else if (cars.length === 0) {
+                <div class="alert alert-warning">
+                    No tienes vehículos registrados.
+                    <a routerLink="/profile" [queryParams]="{tab:'cars'}">Añade uno en tu perfil.</a>
+                </div>
+                } @else {
+                <div class="cars-select">
+                    @for (car of cars; track car.id) {
+                    <label class="car-option" [class.selected]="form.get('idCar')?.value === car.id">
+                        <input type="radio" formControlName="idCar" [value]="car.id" style="display:none">
+                        <span class="car-opt-icon"><app-icon icon="coche" [size]="28"></app-icon></span>
+                        <div>
+                            <strong>{{ car.model }}</strong>
+                            <small>{{ car.color }} · {{ car.licensePlate }} · {{ car.capacity }} plazas</small>
+                        </div>
+                    </label>
+                    }
+                </div>
+                @let idCar = form.get('idCar');
+                @if ((submited || (idCar?.dirty || idCar?.touched)) && idCar?.invalid) {
+                @if (idCar?.hasError("required")) {
+                <span class="error-msg">Selecciona un vehículo para el viaje</span>
+                }
+                }
+                }
+            </div>
+
+            <!-- RUTA -->
+            <div class="form-section">
+                <h3 class="form-section-title"><app-icon icon="pin" [size]="20"></app-icon> Ruta</h3>
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label class="label required">Campus destino/origen</label>
+                        <select formControlName="idCampus">
+                            <option [value]="null" selected disabled>Seleccionar campus...</option>
+                            @for (c of campuses; track c.id) { <option [value]="c.id">{{ c.name }}</option> }
+                        </select>
+                        @let campusId = form.get('idCampus');
+                        @if ((submited || (campusId?.dirty || campusId?.touched)) && campusId?.invalid) {
+                        @if (campusId?.hasError("required")) {
+                        <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label class="label required">Localidad</label>
+                        <select formControlName="idTown">
+                            <option [value]="null" selected disabled>Seleccionar localidad...</option>
+                            @for (t of towns; track t.id) { <option [value]="t.id">{{ t.name }}</option> }
+                        </select>
+                        @let townId = form.get('idTown');
+                        @if ((submited || (townId?.dirty || townId?.touched)) && townId?.invalid) {
+                        @if (townId?.hasError("required")) {
+                        <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                        }
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="label required">Dirección del viaje</label>
+                    <div class="dir-toggle">
+                        <button type="button" [class.active]="form.get('isToCampus')?.value === true"
+                            (click)="form.get('isToCampus')?.setValue(true)">
+                            <app-icon icon="birrete" [size]="16"></app-icon> Hacia el campus
+                        </button>
+                        <button type="button" [class.active]="form.get('isToCampus')?.value === false"
+                            (click)="form.get('isToCampus')?.setValue(false)">
+                            <app-icon icon="casa" [size]="16"></app-icon> Desde el campus
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="label required">Punto de salida</label>
+                    <input type="text" formControlName="departureAddress" placeholder="Ej: Calle Mayor 5, Los Palacios">
+                    @let departureAddress = form.get('departureAddress');
+                    @if ((submited || (departureAddress?.dirty || departureAddress?.touched)) &&
+                    departureAddress?.invalid) {
+                    @if (departureAddress?.hasError("required")) {
+                    <span class="error-msg">Este campo no puede estar vacio</span>
+                    }
+                    }
+                </div>
+            </div>
+
+            <!-- FECHA Y PRECIO -->
+            <div class="form-section">
+                <h3 class="form-section-title"><app-icon icon="reloj" [size]="20"></app-icon> Fecha y precio</h3>
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label class="label required">Fecha</label>
+                        <input type="date" formControlName="departureDate">
+                        @let departureDate = form.get('departureDate');
+                        @if ((submited || (departureDate?.dirty || departureDate?.touched)) && departureDate?.invalid) {
+                        @if (departureDate?.hasError("required")) {
+                        <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                        @else if (departureDate?.hasError("pastDate")) {
+                        <span class="error-msg">La fecha no puede ser anterior a hoy</span>
+                        }
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label class="label required">Hora</label>
+                        <input type="time" formControlName="departureTime">
+                        @let departureTime = form.get('departureTime');
+                        @if ((submited || (departureTime?.dirty || departureTime?.touched)) && departureTime?.invalid) {
+                        @if (departureTime?.hasError("required")) {
+                        <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                        @else if (departureTime?.hasError("pastTime")) {
+                        <span class="error-msg">La hora no puede ser anterior a la hora actual</span>
+                        }
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label class="label required">Precio por plaza (€)</label>
+                        <input type="number" formControlName="price" placeholder="0.00" min="0.50" step="0.05">
+                        @let price = form.get('price');
+                        @if ((submited || (price?.dirty || price?.touched)) && price?.invalid) {
+                        @if (price?.hasError("required")) {
+                        <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                        @else if (price?.hasError("min")) {
+                        <span class="error-msg">El precio no puede ser menor que 0.50</span>
+                        }
+                        }
+                    </div>
+                </div>
+            </div>
+
+            @if (error) { <div class="alert alert-error">{{ error }}</div> }
+
+            <button type="submit" class="btn btn-primary submit-btn">
+                @if (loading) { <span class="spinner"></span> Publicando } @else { Publicar viaje }
+            </button>
+        </form>
+        }
+    </div>
+    <app-footer></app-footer>
+</div>

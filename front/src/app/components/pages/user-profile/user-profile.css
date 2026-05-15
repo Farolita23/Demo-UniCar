@@ -1,0 +1,606 @@
+/* ESTILOS DE CONTENEDOR PRINCIPAL */
+:host .container {
+    padding-top: 32px;
+    padding-bottom: 64px;
+}
+
+/* ESTILOS DE ENLACE DE REGRESO */
+:host .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-2);
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+/* ESTILOS DE ENLACE DE REGRESO EN HOVER */
+:host .back-link:hover {
+    color: var(--primary);
+}
+
+/* ESTILOS DE NOTIFICACIÓN TOAST */
+:host .toast {
+    position: fixed;
+    top: calc(var(--header-h) + 16px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 6000;
+    animation: slideDown 0.3s ease;
+}
+
+/* ESTILOS DE NOTIFICACIÓN TOAST EXITOSA */
+:host .toast.toast-success {
+    background: rgba(6, 214, 160, 0.15);
+    color: var(--success);
+    border: 1px solid var(--success);
+}
+
+/* ESTILOS DE LAYOUT PRINCIPAL */
+:host .up-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* SECCIÓN: BARRA LATERAL */
+/* ═══════════════════════════════════════════════════════ */
+/* ESTILOS DE BARRA LATERAL PRINCIPAL */
+:host .up-layout .up-sidebar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: sticky;
+    top: calc(0px + 16px);
+}
+
+/* ESTILOS DE CONTENEDOR DE AVATAR */
+:host .up-layout .up-sidebar .up-avatar-wrap {
+    margin-bottom: 16px;
+}
+
+/* ESTILOS DE IMAGEN DE AVATAR */
+:host .up-layout .up-sidebar .up-avatar-wrap .up-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--primary);
+}
+
+/* ESTILOS DE AVATAR CON INICIAL CUANDO NO HAY IMAGEN */
+:host .up-layout .up-sidebar .up-avatar-wrap .up-avatar-init {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 700;
+}
+
+/* ESTILOS DE NOMBRE DEL USUARIO */
+:host .up-layout .up-sidebar .up-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* ESTILOS DE NOMBRE DE USUARIO */
+:host .up-layout .up-sidebar .up-username {
+    color: var(--text-2);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+/* ESTILOS DE CONTENEDOR DE CALIFICACIÓN PROMEDIO */
+:host .up-layout .up-sidebar .up-avg-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+/* ESTILOS DE ESTRELLA LLENA EN CALIFICACIÓN */
+:host .up-layout .up-sidebar .up-avg-rating .star-filled {
+    color: #ffb703;
+    font-size: 16px;
+}
+
+/* ESTILOS DE ESTRELLA VACÍA EN CALIFICACIÓN */
+:host .up-layout .up-sidebar .up-avg-rating .star-empty {
+    color: var(--text-3);
+    font-size: 16px;
+}
+
+/* ESTILOS DE NÚMERO DE CALIFICACIÓN PROMEDIO */
+:host .up-layout .up-sidebar .up-avg-rating .up-avg-num {
+    font-weight: 700;
+    font-size: 14px;
+}
+
+/* ESTILOS DE CANTIDAD DE CALIFICACIONES */
+:host .up-layout .up-sidebar .up-avg-rating .up-avg-count {
+    color: var(--text-2);
+    font-size: 12px;
+}
+
+/* ESTILOS DE TEXTO CUANDO NO HAY CALIFICACIONES */
+:host .up-layout .up-sidebar .up-avg-rating .up-no-rating {
+    color: var(--text-3);
+    font-size: 14px;
+}
+
+/* ESTILOS DE BADGE DE CONDUCTOR */
+:host .up-layout .up-sidebar .up-driver-badge {
+    display: inline-block;
+    background: rgba(255, 183, 3, 0.12);
+    color: var(--warning);
+    font-size: 14px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 16px;
+    margin-bottom: 14px;
+}
+
+/* ESTILOS DE BIOGRAFÍA DEL USUARIO */
+:host .up-layout .up-sidebar .up-bio {
+    color: var(--text-2);
+    font-size: 14px;
+    padding-bottom: 16px;
+}
+
+/* ESTILOS DE LISTA DE INFORMACIÓN */
+:host .up-layout .up-sidebar .up-info-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+/* ESTILOS DE ITEM DE INFORMACIÓN */
+:host .up-layout .up-sidebar .up-info-list .up-info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-2);
+}
+
+/* ESTILOS DE ICONO EN ITEM DE INFORMACIÓN */
+:host .up-layout .up-sidebar .up-info-list .up-info-item .up-info-icon {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+}
+
+/* ESTILOS DE TEXTO EN ITEM DE INFORMACIÓN */
+:host .up-layout .up-sidebar .up-info-list .up-info-item span {
+    text-align: start;
+}
+
+/* ESTILOS DE CONTENEDOR DE ACCIONES */
+:host .up-layout .up-sidebar .up-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 8px;
+}
+
+/* ESTILOS DE BOTÓN DE FAVORITOS */
+:host .up-layout .up-sidebar .up-actions .up-fav-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+/* ESTILOS DE BOTÓN DE FAVORITOS EN HOVER */
+:host .up-layout .up-sidebar .up-actions .up-fav-btn:hover {
+    border-color: #ffb703;
+    color: #ffb703;
+}
+
+/* ESTILOS DE BOTÓN DE FAVORITOS ACTIVO */
+:host .up-layout .up-sidebar .up-actions .up-fav-btn.is-fav {
+    background: rgba(255, 183, 3, 0.12);
+    border-color: #ffb703;
+    color: #ffb703;
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* SECCIÓN: CONTENIDO PRINCIPAL */
+/* ═══════════════════════════════════════════════════════ */
+/* ESTILOS DE CONTENEDOR PRINCIPAL DE CONTENIDO */
+:host .up-layout .up-main {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ESTILOS DE SECCIÓN GENERAL */
+:host .up-layout .up-main .up-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+}
+
+/* ESTILOS DE TÍTULO DE SECCIÓN */
+:host .up-layout .up-main .up-section .up-section-title {
+    font-size: 16px;
+    margin: 0 0 16px;
+}
+
+/* ESTILOS DE SECCIÓN DE CALIFICACIÓN */
+:host .up-layout .up-main .up-section.up-rate-section {
+    text-align: center;
+}
+
+/* ESTILOS DE TEXTO DE AYUDA EN SECCIÓN DE CALIFICACIÓN */
+:host .up-layout .up-main .up-section.up-rate-section .up-rate-hint {
+    color: var(--text-2);
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+/* ESTILOS DE CONTENEDOR DE ESTRELLAS DE CALIFICACIÓN */
+:host .up-layout .up-main .up-section.up-rate-section .up-rate-stars {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+}
+
+/* ESTILOS DE ESTRELLAS DE CALIFICACIÓN EN ESTADO DE GUARDADO */
+:host .up-layout .up-main .up-section.up-rate-section .up-rate-stars.is-saving {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* ESTILOS DE BOTÓN DE ESTRELLA INDIVIDUAL */
+:host .up-layout .up-main .up-section.up-rate-section .up-rate-stars .up-star {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 32px;
+    color: var(--text-3);
+    transition: color 0.15s, transform 0.15s;
+    padding: 0;
+}
+
+/* ESTILOS DE ESTRELLA EN HOVER Y ESTADO ACTIVO */
+:host .up-layout .up-main .up-section.up-rate-section .up-rate-stars .up-star:hover,
+:host .up-layout .up-main .up-section.up-rate-section .up-rate-stars .up-star.active {
+    color: #ffb703;
+    transform: scale(1.15);
+}
+
+/* ESTILOS DE TEXTO DE GUARDADO EXITOSO */
+:host .up-layout .up-main .up-section.up-rate-section .up-rate-stars .up-saved {
+    color: var(--success);
+    font-weight: 700;
+    animation: flashPop 0.4s ease;
+}
+
+/* ESTILOS DE TEXTO VACÍO */
+:host .up-layout .up-main .up-section .up-empty-text {
+    color: var(--text-3);
+    font-size: 14px;
+}
+
+/* ESTILOS DE LISTA DE CALIFICACIONES */
+:host .up-layout .up-main .up-section .up-ratings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* ESTILOS DE ITEM DE CALIFICACIÓN */
+:host .up-layout .up-main .up-section .up-ratings-list .up-rating-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: var(--bg-3);
+    border-radius: var(--radius-sm);
+}
+
+/* ESTILOS DE INFORMACIÓN DE USUARIO EN CALIFICACIÓN */
+:host .up-layout .up-main .up-section .up-ratings-list .up-rating-item .up-rating-user {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* ESTILOS DE AVATAR DEL USUARIO EN CALIFICACIÓN */
+:host .up-layout .up-main .up-section .up-ratings-list .up-rating-item .up-rating-user .up-rating-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex: 0 0 auto;
+}
+
+/* ESTILOS DE AVATAR INICIAL EN CALIFICACIÓN */
+:host .up-layout .up-main .up-section .up-ratings-list .up-rating-item .up-rating-user .up-rating-avatar-init {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    flex: 0 0 auto;
+}
+
+/* ESTILOS DE NOMBRE DE USUARIO EN CALIFICACIÓN */
+:host .up-layout .up-main .up-section .up-ratings-list .up-rating-item .up-rating-user .up-rating-name {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* ESTILOS DE CONTENEDOR DE ESTRELLAS PEQUEÑAS EN CALIFICACIÓN */
+:host .up-layout .up-main .up-section .up-ratings-list .up-rating-item .up-rating-stars-sm {
+    display: flex;
+    gap: 2px;
+    font-size: 16px;
+    margin-left: auto;
+}
+
+/* ESTILOS DE ESTRELLA LLENA PEQUEÑA */
+:host .up-layout .up-main .up-section .up-ratings-list .up-rating-item .up-rating-stars-sm .star-filled {
+    color: #ffb703;
+    font-size: 16px;
+}
+
+/* ESTILOS DE ESTRELLA VACÍA PEQUEÑA */
+:host .up-layout .up-main .up-section .up-ratings-list .up-rating-item .up-rating-stars-sm .star-empty {
+    color: var(--text-3);
+    font-size: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* SECCIÓN: MODAL */
+/* ═══════════════════════════════════════════════════════ */
+/* ESTILOS DE SOBREPOSICIÓN MODAL */
+:host .modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: g-fadeIn 0.2s ease;
+}
+
+/* ESTILOS DE CONTENIDO MODAL */
+:host .modal-overlay .modal-content {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    animation: slideUp 0.25s ease;
+}
+
+/* ESTILOS DE ENCABEZADO DEL MODAL */
+:host .modal-overlay .modal-content .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ESTILOS DE TÍTULO DEL MODAL */
+:host .modal-overlay .modal-content .modal-header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+/* ESTILOS DE BOTÓN CERRAR MODAL */
+:host .modal-overlay .modal-content .modal-header .modal-close {
+    background: none;
+    border: none;
+    color: var(--text-2);
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* ESTILOS DE CUERPO DEL MODAL */
+:host .modal-overlay .modal-content .modal-body {
+    padding: 16px;
+}
+
+/* ESTILOS DE TEXTO DE AYUDA EN MODAL */
+:host .modal-overlay .modal-content .modal-body .modal-hint {
+    color: var(--text-2);
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+/* ESTILOS DE MENSAJE DE ERROR EN MODAL */
+:host .modal-overlay .modal-content .modal-body .modal-error {
+    background: rgba(230, 57, 70, 0.1);
+    color: var(--danger);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+/* ESTILOS DE TEXTAREA EN MODAL */
+:host .modal-overlay .modal-content .modal-body .modal-textarea {
+    width: calc(100% - 16px * 2 - 1px * 2);
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+}
+
+/* ESTILOS DE TEXTAREA EN MODAL ENFOCADO */
+:host .modal-overlay .modal-content .modal-body .modal-textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+/* ESTILOS DE PIE DE PÁGINA DEL MODAL */
+:host .modal-overlay .modal-content .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 16px;
+    border-top: 1px solid var(--border);
+}
+
+/* ── Animations ──────────────────────────────────────── */
+/* KEYFRAME DE ANIMACIÓN FLASHPOP */
+@keyframes flashPop {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    50% {
+        transform: scale(1.3);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* KEYFRAME DE ANIMACIÓN SLIDEUP */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* KEYFRAME DE ANIMACIÓN SLIDEDOWN */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* ESTILOS DE ANIMACIÓN FADE IN */
+.fade-in {
+    animation: g-fadeIn 0.4s ease both;
+}
+
+/* ESTILOS DE ANIMACIÓN SLIDE UP */
+.slide-up {
+    animation: slideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ESTILOS DE ANIMACIÓN SLIDE DOWN */
+.slide-down {
+    animation: slideDown 0.3s ease both;
+}
+
+/* ESTILOS DE ESTADO DE CARGA */
+:host .loading-state {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 48px 0;
+    color: var(--text-2);
+}
+
+/* ESTILOS DE ESTADO VACÍO */
+:host .empty-state {
+    text-align: center;
+    padding: 64px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+/* ============= */
+/* RESPONSIVIDAD */
+/* ============= */
+
+/* TABLET GRANDE */
+@media (max-width: calc(768px + 128px)) {}
+
+/* TABLET */
+@media (max-width: 768px) {
+
+    /* ESTILOS DE BARRA LATERAL EN TABLET */
+    :host .up-layout .up-sidebar {
+        position: unset;
+        top: unset;
+    }
+
+    /* ESTILOS DE ITEM DE CALIFICACIÓN EN TABLET */
+    :host .up-layout .up-main .up-section .up-ratings-list .up-rating-item {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    /* ESTILOS DE LAYOUT EN TABLET */
+    :host .up-layout {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    /* ESTILOS DE CONTENEDOR DE ACCIONES EN TABLET */
+    :host .up-layout .up-sidebar .up-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* TELÓFONO GRANDE */
+@media (max-width: calc(384px + 128px)) {
+
+    /* ESTILOS DE CONTENEDOR DE ACCIONES EN TELÓFONO GRANDE */
+    :host .up-layout .up-sidebar .up-actions {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/* TELEFONO */
+@media (max-width: 384px) {}

@@ -1,0 +1,487 @@
+/* ========================================
+   SECCIÓN HERO PRINCIPAL
+   ======================================== */
+
+/* Contenedor hero con fondo decorativo y bordes */
+:host .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 64px 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 64px;
+}
+
+/* Capa de fondo del hero para elementos decorativos */
+:host .hero .hero-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+/* Blobs decorativos con efecto de movimiento */
+:host .hero .hero-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(96px) brightness(12.5%);
+}
+
+/* Primer blob con color primario (arriba a la izquierda) */
+:host .hero .hero-blob.blob-1 {
+    width: 700px;
+    height: 700px;
+    background: var(--primary);
+    top: -250px;
+    left: -150px;
+    animation: hero-blob-rotation 5s linear infinite reverse;
+}
+
+/* Segundo blob con color acentuado (abajo a la derecha) */
+:host .hero .hero-blob.blob-2 {
+    width: 500px;
+    height: 500px;
+    background: var(--accent);
+    bottom: -200px;
+    right: 0;
+    animation: hero-blob-rotation 5s linear infinite;
+}
+
+/* Tercer blob con color de éxito (en el centro) */
+:host .hero .hero-blob.blob-3 {
+    width: 300px;
+    height: 300px;
+    background: var(--success);
+    top: 40%;
+    right: 30%;
+    animation: hero-blob-rotation 5s linear infinite reverse;
+}
+
+/* Animación de escala para blobs creando efecto pulsante */
+@keyframes hero-blob-rotation {
+    0% {
+        scale: 1.0;
+    }
+
+    50% {
+        scale: 1.5;
+    }
+
+    100% {
+        scale: 1.0;
+    }
+}
+
+/* Contenedor de contenido del hero con z-index para superponer blobs */
+:host .hero .hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: start;
+    padding: 0;
+}
+
+/* Badge decorativo con punto pulsante */
+:host .hero .hero-content .hero-badge {
+    height: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(230, 57, 70, 0.08);
+    border: 1px solid rgba(230, 57, 70, 0.15);
+    padding: 8px 16px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-light);
+}
+
+/* Punto pulsante dentro del badge */
+:host .hero .hero-content .hero-badge .badge-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: pulseRing 2s ease infinite;
+}
+
+/* Título principal del hero con tamaño grande */
+:host .hero .hero-content .hero-title {
+    font-size: 64px;
+    line-height: 1.05;
+}
+
+/* Texto destacado dentro del título */
+:host .hero .hero-content .hero-title .hero-highlight {
+    color: var(--primary);
+}
+
+/* Subtítulo descriptivo del hero */
+:host .hero .hero-content .hero-sub {
+    color: var(--text-2);
+    font-size: 18px;
+    line-height: 24px;
+    margin-bottom: 32px;
+    max-width: 45%;
+}
+
+/* Grid de botones de acción en el hero */
+:host .hero .hero-content .hero-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+/* Botones de acción dentro del hero */
+:host .hero .hero-content .hero-actions .hero-btn {
+    padding: 16px 32px;
+    font-size: 16px;
+}
+
+/* ========================================
+   ENCABEZADOS DE SECCIÓN
+   ======================================== */
+
+/* Contenedor centrado para encabezados de secciones */
+:host .section-head {
+    text-align: center;
+    margin: 32px 0;
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Badge principal de sección */
+:host .section-head .section-badge {
+    height: 16px;
+    font-size: 16px;
+    line-height: 16px;
+    display: block;
+    background: rgba(230, 57, 70, 0.15);
+    border: 1px solid rgba(230, 57, 70, 0.08);
+    padding: 8px 16px;
+    border-radius: 100px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--primary-light);
+}
+
+/* Badge alternativo con color acentuado */
+:host .section-head .section-badge-accent {
+    background: rgba(255, 183, 3, 0.1);
+    border-color: rgba(255, 183, 3, 0.2);
+    color: var(--accent);
+}
+
+/* Título principal de la sección */
+:host .section-head .section-title {
+    font-size: 32px;
+}
+
+/* Subtítulo descriptivo de la sección */
+:host .section-head .section-sub {
+    color: var(--text-2);
+    font-size: 16px;
+    max-width: 100%;
+    width: 512px;
+    margin-top: -16px;
+}
+
+/* ========================================
+   SECCIÓN ¿CÓMO FUNCIONA? (HOW)
+   ======================================== */
+
+/* Contenedor de la sección de pasos */
+:host .how-section {
+    padding-bottom: 64px;
+}
+
+/* Grid de 3 columnas para tarjetas de pasos */
+:host .how-section .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+/* Tarjeta individual de paso */
+:host .how-section .steps-grid .step-card {
+    width: calc(100% - 32px * 2 - 1px * 2);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Efecto hover en tarjeta de paso con elevación */
+:host .how-section .steps-grid .step-card:hover {
+    border-color: rgba(230, 57, 70, 0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s;
+}
+
+/* Contenedor del icono y número del paso */
+:host .how-section .steps-grid .step-card .step-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0;
+}
+
+/* Icono del paso en cuadrado redondeado */
+:host .how-section .steps-grid .step-card .step-icon-wrap .step-icon {
+    font-size: 32px;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(230, 57, 70, 0.08);
+    border-radius: var(--radius-sm);
+}
+
+/* Número grande y destacado del paso */
+:host .how-section .steps-grid .step-card .step-icon-wrap .step-num {
+    font-family: 'Syne', sans-serif;
+    height: 64px;
+    font-size: 64px;
+    line-height: 64px;
+    font-weight: 800;
+    color: var(--primary-light);
+    text-shadow: 1px 2px 8px var(--primary);
+}
+
+/* Título del paso */
+:host .how-section .steps-grid .step-card .step-title {
+    font-size: 24px;
+}
+
+/* Descripción del paso */
+:host .how-section .steps-grid .step-card .step-desc {
+    margin-top: -8px;
+    color: var(--text-2);
+    font-size: 16px;
+    line-height: 24px;
+}
+
+/* ========================================
+   SECCIÓN VIAJES SUGERIDOS
+   ======================================== */
+
+/* Contenedor de la sección de viajes sugeridos */
+:host .suggested-section {
+    padding-bottom: 64px;
+}
+
+/* Grid flexible para tarjetas de viajes */
+:host .suggested-section .suggested-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-bottom: 32px;
+    gap: 16px;
+}
+
+/* Componentes de viaje en grid de 3 columnas */
+:host .suggested-section .suggested-grid app-trip {
+    width: calc((100% - 16px * 2) / 3);
+}
+
+/* Contenedor de estado de carga */
+:host .suggested-section .trips-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 48px 0;
+    color: var(--text-2);
+}
+
+/* Contenedor de estado vacío con iconografía */
+:host .suggested-section .trips-empty {
+    text-align: center;
+    padding: 64px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+/* Ícono del estado vacío */
+:host .suggested-section .trips-empty-icon {
+    font-size: 48px;
+}
+
+/* Título del estado vacío */
+:host .suggested-section .trips-empty h3 {
+    font-size: 24px;
+}
+
+/* Texto descriptivo del estado vacío */
+:host .suggested-section .trips-empty p {
+    color: var(--text-2);
+    max-width: 256px;
+}
+
+/* Enlace "Ver todos" los viajes */
+:host .suggested-section .trips-see-all {
+    text-align: center;
+}
+
+/* ========================================
+   SECCIÓN CALL-TO-ACTION (CTA)
+   ======================================== */
+
+/* Contenedor de la sección CTA */
+:host .cta-section {
+    padding-bottom: 64px;
+}
+
+/* Contenedor interno del CTA con gradiente y bordes */
+:host .cta-section .cta-inner {
+    background: linear-gradient(135deg, rgba(230, 57, 70, 0.08), rgba(255, 183, 3, 0.06));
+    border: 1px solid rgba(230, 57, 70, 0.12);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+/* Contenedor de texto del CTA */
+:host .cta-section .cta-inner .cta-text {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Título del CTA */
+:host .cta-section .cta-inner .cta-text h2 {
+    font-size: 24px;
+}
+
+/* Descripción del CTA */
+:host .cta-section .cta-inner .cta-text p {
+    color: var(--text-2);
+    font-size: 16px;
+    line-height: 20px;
+    width: 512px;
+    max-width: 100%;
+}
+
+/* Botón de acción del CTA */
+:host .cta-section .cta-inner .cta-action {
+    flex-shrink: 0;
+    padding: 16px 32px;
+    font-size: 16px;
+    height: 32px;
+    margin: 16px;
+}
+
+/* ========================================
+   MEDIA QUERIES - RESPONSIVIDAD
+   ======================================== */
+
+/* Tablets grandes (1024px o menos) - Cambios en layout */
+@media (max-width: calc(768px + 256px)) {
+    /* Grid de pasos en flex */
+    :host .how-section .steps-grid {
+        display: flex;
+    }
+
+    /* Tarjetas de pasos en 2 columnas */
+    :host .how-section .steps-grid .step-card {
+        width: calc((100% - 16px * 1 - 1px * 4 - 32px * 4) / 2);
+    }
+
+    /* Viajes en 2 columnas */
+    :host .suggested-section .suggested-grid app-trip {
+        width: calc((100% - 16px * 1) / 2);
+    }
+
+    /* CTA apilado verticalmente */
+    :host .cta-section .cta-inner {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    /* Texto del CTA con ancho completo */
+    :host .cta-section .cta-inner .cta-text {
+        width: calc(100% - 16px * 2);
+    }
+
+    /* Título del CTA centrado */
+    :host .cta-section .cta-inner .cta-text h2 {
+        text-align: center;
+    }
+
+    /* Descripción del CTA con ancho completo */
+    :host .cta-section .cta-inner .cta-text p {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Tablets (768px o menos) - Una columna */
+@media (max-width: 768px) {
+    /* Reducir tamaño del título hero */
+    :host .hero .hero-content .hero-title {
+        font-size: 48px;
+    }
+
+    /* Subtítulo hero con ancho completo */
+    :host .hero .hero-content .hero-sub {
+        max-width: 100%;
+    }
+
+    /* Grid de pasos en una sola columna */
+    :host .how-section .steps-grid {
+        flex-direction: column;
+    }
+
+    /* Tarjetas de pasos a ancho completo */
+    :host .how-section .steps-grid .step-card {
+        width: calc((100% - 16px * 0 - 1px * 2 - 32px * 2) / 1);
+    }
+
+    /* Viajes en una sola columna */
+    :host .suggested-section .suggested-grid {
+        flex-direction: column;
+    }
+
+    /* Viajes a ancho completo */
+    :host .suggested-section .suggested-grid app-trip {
+        width: 100%;
+    }
+
+    /* CTA apilado verticalmente */
+    :host .cta-section .cta-inner {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+/* Dispositivos móviles pequeños (384px o menos) */
+@media (max-width: 384px) {
+    /* Botones del hero en una sola columna */
+    :host .hero .hero-content .hero-actions {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+
+    /* Botones con ancho casi completo */
+    :host .hero .hero-content .hero-actions .hero-btn {
+        width: calc(100% - 32px * 2);
+    }
+}

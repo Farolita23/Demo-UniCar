@@ -2,6 +2,9 @@ package com.daw.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,11 +49,14 @@ public class AdminController {
      * Busca usuarios cuyo nombre o nombre de usuario contenga el término proporcionado.
      *
      * @param q término de búsqueda parcial
+     * @param pageable información de paginación y ordenación
      * @return {@code 200 OK} con la lista de {@link UserDTO} coincidentes
      */
     @GetMapping("/users/search")
-    public ResponseEntity<List<UserDTO>> searchUsers(@RequestParam String q) {
-        return ResponseEntity.ok(userService.searchUsers(q));
+    public ResponseEntity<Page<UserDTO>> searchUsers(
+        @RequestParam String q,
+        @PageableDefault(size = 2, sort = "name") Pageable pageable) {
+        return ResponseEntity.ok(userService.searchUsers(q, pageable));
     }
 
     /**
@@ -59,8 +65,10 @@ public class AdminController {
      * @return {@code 200 OK} con la lista de {@link ReportDTO}
      */
     @GetMapping("/reports")
-    public ResponseEntity<List<ReportDTO>> getAllReports() {
-        return ResponseEntity.ok(reportService.findAll());
+    public ResponseEntity<Page<ReportDTO>> getAllReports(
+        @PageableDefault(size = 2, sort = "date") Pageable pageable
+    ) {
+        return ResponseEntity.ok(reportService.findAll(pageable));
     }
 
     /**

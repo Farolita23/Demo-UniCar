@@ -25,6 +25,9 @@ replay_pid*
 /.metadata/
 
 back/src/main/resources/application.properties
+back\target
+back/logs
+logs
 .env
 
 .claude

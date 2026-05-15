@@ -44,7 +44,7 @@ public class TownService {
 	 * @return lista de {@link TownDTO} con todas las localidades disponibles
 	 */
 	public List<TownDTO> findAll() {
-		return townMapper.toListDto(townRepository.findAll());
+		return townMapper.toListDto(townRepository.findAllByOrderByNameAsc());
 	}
 
 	/**

@@ -1,0 +1,101 @@
+/* ========================================
+   CONTENEDOR PRINCIPAL
+   ======================================== */
+
+/* Contenedor principal con ancho máximo y padding */
+:host .container {
+    max-width: 720px;
+    padding: 64px 16px 32px 16px;
+}
+
+/* ========================================
+   ENCABEZADO FAQ
+   ======================================== */
+
+/* Sección de encabezado con título y descripción */
+:host .faq-header {
+    margin-bottom: 32px;
+}
+
+/* Título principal de la página FAQ */
+:host .faq-header h1 {
+    font-size: 36px;
+}
+
+/* Texto descriptivo debajo del título */
+:host .faq-header p {
+    color: var(--text-2);
+    margin-top: 8px;
+}
+
+/* ========================================
+   LISTA DE PREGUNTAS FAQ
+   ======================================== */
+
+/* Contenedor de todos los items FAQ con separadores visuales */
+:host .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background-color: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+/* Item individual de pregunta-respuesta */
+:host .faq-list .faq-item {
+    padding: 16px 32px;
+    background: var(--surface);
+    cursor: pointer;
+    transition: var(--transition);
+    animation: faqFadeIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Estilos cuando el item está abierto (expandido) */
+:host .faq-list .faq-item.open {
+    background: var(--surface-2);
+}
+
+/* Contenedor de la pregunta con ícono y texto */
+:host .faq-list .faq-item .faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 16px;
+    gap: 16px;
+}
+
+/* Ícono indicador de pregunta/estado */
+:host .faq-list .faq-item .faq-question .faq-icon {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 300;
+    flex-shrink: 0;
+}
+
+/* Contenido de la respuesta (oculto o visible) */
+:host .faq-list .faq-item .faq-answer {
+    padding-top: 16px;
+    color: var(--text-2);
+    font-size: 14px;
+    line-height: 18px;
+}
+
+/* ========================================
+   ANIMACIONES
+   ======================================== */
+
+/* Animación de entrada suave para items FAQ */
+@keyframes faqFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

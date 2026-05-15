@@ -2,6 +2,8 @@ package com.daw.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -214,8 +216,10 @@ public class UserService {
      * @param query término de búsqueda (parcial, sin distinción de mayúsculas/minúsculas)
      * @return lista de {@link UserDTO} coincidentes; vacía si no hay resultados
      */
-    public List<UserDTO> searchUsers(String query) {
-        return userMapper.toListDto(userRepository.searchByNameOrUsername(query));
+    public Page<UserDTO> searchUsers(String query, Pageable pageable) {
+        return userMapper.toPageDto(
+            userRepository.searchByNameOrUsername(query, pageable)
+        );
     }
 
     /**

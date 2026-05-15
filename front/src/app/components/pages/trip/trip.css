@@ -1,0 +1,248 @@
+/* ==================== */
+/* ESTILOS DE LA PAGINA */
+/* ==================== */
+/* ESTILOS PARA LA PÁGINA DE PUBLICACIÓN DE VIAJES */
+:host .container {
+    max-width: 768px;
+    margin: 32px auto;
+}
+
+/* ESTILOS DEL ENCABEZADO DE LA PÁGINA DE PUBLICACIÓN DE VIAJES */
+:host .publish-header {
+    margin-bottom: 32px;
+}
+
+/* ESTILOS DEL TITULO EN EL ENCABEZADO DE LA PÁGINA DE PUBLICACIÓN DE VIAJES */
+:host .publish-header h1 {
+    font-size: 32px;
+}
+
+/* ESTILOS DEL SUBTITULO EN EL ENCABEZADO DE LA PÁGINA DE PUBLICACIÓN DE VIAJES */
+:host .publish-header p {
+    color: var(--text-2);
+    margin-top: 8px;
+}
+
+/* ESTILOS DEL ESTADO DE EXITO DE LA PÁGINA DE PUBLICACIÓN DE VIAJES */
+:host .success-state {
+    text-align: center;
+    padding: 48px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+/* ESTILOS DEL ICONO DE EXITO EN EL ESTADO DE EXITO DE LA PÁGINA DE PUBLICACIÓN DE VIAJES */
+:host .success-state .success-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(6, 214, 160, 0.15);
+    color: var(--success);
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+/* ESTILOS DEL TITULO EN EL ESTADO DE EXITO DE LA PÁGINA DE PUBLICACIÓN DE VIAJES */
+:host .success-state h2 {
+    margin-bottom: 8px;
+}
+
+/* ESTILOS DEL TEXTO EN EL ESTADO DE EXITO DE LA PÁGINA DE PUBLICACIÓN DE VIAJES */
+:host .success-state p {
+    color: var(--text-2);
+}
+
+/* ESTILOS DEL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ESTILOS DE LAS SECCIONES DEL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ESTILOS DE LOS TITULOS DE LAS SECCIONES DEL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .form-section-title {
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--primary);
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* ESTILOS DE LAS FILAS DE LAS SECCIONES DEL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .form-row-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+/* ESTILOS DE LAS FILAS DE 3 COLUMNAS EN LAS SECCIONES DEL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .form-row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+/* ESTILOS DE LA SECCIÓN DE SELECCIÓN DE COCHE EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .cars-select {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+/* ESTILOS DE LAS OPCIONES DE COCHE EN LA SECCIÓN DE SELECCIÓN DE COCHE EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .cars-select .car-option {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+/* ESTILOS DE LAS OPCIONES DE COCHE SELECCIONADAS EN LA SECCIÓN DE SELECCIÓN DE COCHE EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .cars-select .car-option.selected {
+    border-color: var(--primary);
+    background: rgba(230, 57, 70, 0.06);
+}
+
+/* ESTILOS DE LOS ICONOS EN LAS OPCIONES DE COCHE EN LA SECCIÓN DE SELECCIÓN DE COCHE EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .cars-select .car-option .car-opt-icon {
+    font-size: 24px;
+}
+
+/* ESTILOS DE LOS TEXTOS EN LAS OPCIONES DE COCHE EN LA SECCIÓN DE SELECCIÓN DE COCHE EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .cars-select .car-option strong {
+    display: block;
+    font-size: 16px;
+}
+
+/* ESTILOS DE LOS SUBTEXTOS EN LAS OPCIONES DE COCHE EN LA SECCIÓN DE SELECCIÓN DE COCHE EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .cars-select .car-option small {
+    font-size: 14px;
+    color: var(--text-2);
+}
+
+/* ESTILOS DE LA SECCIÓN DE SELECCIÓN DE DIRECCIÓN EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .dir-toggle {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+/* ESTILOS DE LOS BOTONES DE DIRECCIÓN EN LA SECCIÓN DE SELECCIÓN DE DIRECCIÓN EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .dir-toggle button {
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* ESTILOS DE LOS BOTONES DE DIRECCIÓN ACTIVADOS EN LA SECCIÓN DE SELECCIÓN DE DIRECCIÓN EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .form-section .dir-toggle button.active {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: rgba(230, 57, 70, 0.06);
+}
+
+/* ESTILOS DEL BOTÓN DE ENVÍO DEL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+:host .publish-form .submit-btn {
+    width: calc(100% - 16px * 2);
+    justify-content: center;
+    padding: 16px;
+    font-size: 16px;
+}
+
+/* ESTILOS DE LOS MENSAJES DE ALERTA EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+.alert {
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 14px;
+}
+
+/* ESTILOS DE LOS MENSAJES DE ALERTA DE ERROR EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+.alert.alert-error {
+    background: rgba(230, 57, 70, 0.1);
+    border: 1px solid rgba(230, 57, 70, 0.2);
+    color: var(--danger);
+}
+
+/* ESTILOS DE LOS MENSAJES DE ALERTA DE ADVERTENCIA EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+.alert.alert-warning {
+    background: rgba(255, 183, 3, 0.1);
+    border: 1px solid rgba(255, 183, 3, 0.2);
+    color: var(--warning);
+}
+
+/* ESTILOS DE LOS ENLACES EN LOS MENSAJES DE ALERTA DE ADVERTENCIA EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
+.alert.alert-warning a {
+    color: var(--warning);
+    font-weight: 600;
+}
+
+/* ============= */
+/* RESPONSIVIDAD */
+/* ============= */
+
+/* TABLET GRANDE */
+@media (max-width: calc(768px + 128px)) {}
+
+/* TABLET */
+@media (max-width: 768px) {
+
+    /* AJUSTE DE LAS FILAS DE LAS SECCIONES DEL FORMULARIO DE PUBLICACIÓN DE VIAJES EN TABLET */
+    :host .publish-form .form-section .form-row-2 {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    /* AJUSTE DE LAS FILAS DE 3 COLUMNAS EN LAS SECCIONES DEL FORMULARIO DE PUBLICACIÓN DE VIAJES EN TABLET */
+    :host .publish-form .form-section .form-row-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* AJUSTE DE LA SECCIÓN DE SELECCIÓN DE COCHE EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES EN TABLET */
+    :host .publish-form .form-section .cars-select {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/* TELEFONO GRANDE*/
+@media (max-width: calc(384px + 128px)) {
+
+    /* AJUSTE DE LAS FILAS DE LAS SECCIONES DEL FORMULARIO DE PUBLICACIÓN EN TELEFONOS GRANDES */
+    :host .publish-form .form-section .form-row-3 {
+        grid-template-columns: repeat(1, 1fr);
+    }
+
+    /* AJUSTE DE LA SECCIÓN DE SELECCIÓN DE COCHE EN TELEFONOS GRANDES */
+    :host .publish-form .form-section .dir-toggle {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/* TELEFONO */
+@media (max-width: 384px) {}

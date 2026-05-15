@@ -1,5 +1,7 @@
 package com.daw.datamodel.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,5 +20,10 @@ import com.daw.datamodel.entities.Campus;
  */
 @Repository
 public interface CampusRepository extends JpaRepository<Campus, Long> {
-
+    /**
+     * Recupera todas los campuses ordenados por nombre ascendente.
+     *
+     * @return lista de campuses ordenadas
+     */
+    List<Campus> findAllByOrderByNameAsc();
 }

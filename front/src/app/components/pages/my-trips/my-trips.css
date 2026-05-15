@@ -1,0 +1,123 @@
+/* ==================== */
+/* ESTILOS DE LA PAGINA */
+/* ==================== */
+/* ESTILOS DEL CONTENEDOR PRINCIPAL */
+:host .container {
+    padding: 16px;
+}
+
+/* ESTILOS DE LA CABECERA */
+:host .page-header {
+    padding: 32px 16px;
+}
+
+/* ESTILOS DEL BACK LINK */
+:host .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px;
+    color: var(--text-2);
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+/* ESTILOS DEL HOVER DEL BACK LINK */
+:host .back-link:hover {
+    color: var(--primary);
+}
+
+/* ESTILOS DEL TITULO */
+:host .page-header h1 {
+    font-size: 32px;
+}
+
+/* ESTILOS DEL SUBTITULO */
+:host .page-header .page-subtitle {
+    color: var(--text-2);
+    margin-top: 8px;
+}
+
+/* ================================= */
+/* ESTILOS DE LA "PANTALLA" DE CARGA */
+/* ================================= */
+
+/* ESTILOS PRINCIPAL */
+:host .loading-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+    padding-bottom: 32px;
+    color: var(--text-2);
+}
+
+/* ================================= */
+/* ESTILOS DE LA "PANTALLA" DE VACIO */
+/* ================================= */
+
+/* ESTILOS PRINCIPAL */
+:host .empty-state {
+    text-align: center;
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+/* ESTILOS DEL ICONO */
+:host .empty-state .empty-icon {
+    font-size: 48px;
+}
+
+/* ESTILOS DEL ENCABEZADO */
+:host .empty-state h3 {
+    font-size: 24px;
+}
+
+/* ESTILOS DE LA DESCRIPCION */
+:host .empty-state p {
+    color: var(--text-2);
+    max-width: 384px;
+}
+
+/* ====================================== */
+/* ESTILOS DE LA "PANTALLA" DE LOS VIAJES */
+/* ====================================== */
+
+/* ESTILOS DEL GRID */
+:host .trips-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+/* ESTILOS DEL HOVER DE LOS VIAJES */
+:host .trips-grid app-trip:hover {
+    border-color: rgba(255, 183, 3, 0.3);
+}
+
+/* ============= */
+/* RESPONSIVIDAD */
+/* ============= */
+
+/* TABLET GRANDE */
+@media (max-width: calc(768px + 128px)) {
+    :host .trips-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/* TABLET */
+@media (max-width: 768px) {}
+
+/* TELEFONO GRANDE*/
+@media (max-width: calc(384px + 128px)) {}
+
+/* TELEFONO */
+@media (max-width: 384px) {}

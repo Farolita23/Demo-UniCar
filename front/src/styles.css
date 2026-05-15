@@ -39,7 +39,8 @@
 }
 
 html {
-    overflow: hidden; /* By Moises */
+    overflow: hidden;
+    /* By Moises */
     scroll-behavior: smooth;
 }
 
@@ -84,10 +85,12 @@ a:hover {
     outline: none;
     transition: var(--transition);
 }
+
 .label.required::after {
     content: " *";
     color: var(--primary);
 }
+
 input::placeholder,
 textarea::placeholder {
     color: var(--text-3);
@@ -208,6 +211,7 @@ button {
 .form-group {
     /* margin-bottom: 16px; */
 }
+
 .form-group .label {
     display: block;
     font-size: 14px;
@@ -215,7 +219,7 @@ button {
     color: var(--text-2);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 4px; 
+    margin-bottom: 4px;
 }
 
 .error-msg {
@@ -294,6 +298,56 @@ button {
     animation: fadeUp 0.5s ease forwards;
 }
 
+
+
+
+.page-wrapper .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+}
+
+.page-wrapper .tabs .tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-2);
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+/* ====================*/
+/* GLOBAL PAGE-WRAPPER */
+/* ====================*/
+.page-wrapper .tabs .tab:hover {
+    color: var(--text);
+}
+
+.page-wrapper .tabs .tab.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.page-wrapper .tabs .tab .tab-badge {
+    background: var(--primary);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 16px;
+}
+
+
+
 /* Loading spinner */
 .spinner {
     width: 28px;
@@ -331,6 +385,10 @@ button {
     }
 }
 
+.anim-fade-in {
+    animation: g-fadeIn 0.5s ease both;
+}
+
 @keyframes g-slideUp {
     from {
         opacity: 0;
@@ -365,6 +423,61 @@ button {
         opacity: 1;
         transform: scale(1);
     }
+}
+
+@keyframes g-slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.anim-slide-up {
+    animation: g-slideUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes g-pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.85;
+        transform: scale(1.04);
+    }
+}
+
+@keyframes flashPop {
+    0% {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+
+    40% {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.anim-flash-pop {
+    animation: g-flashPop 0.3s ease both;
+}
+
+.anim-pulse {
+    animation: g-pulse 2s ease-in-out infinite;
 }
 
 /* Badge utilities */

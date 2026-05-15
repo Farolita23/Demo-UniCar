@@ -28,3 +28,4 @@ public interface UserUpdateMapper {
     void updateEntityFromDto(UserUpdateDTO dto, @MappingTarget User entity);
 
 }
+
