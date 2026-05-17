@@ -67,7 +67,7 @@
                                 <button type="button" class="eye-btn" (click)="showPassword=!showPassword">{{ showPassword ? '🙈' : '👁️' }}</button>
                             </div>
                             @let rePassword = form.get('rePassword');
-                            @if ((submited || (rePassword?.dirty || rePassword?.touched)) && form?.invalid) {
+                            @if ((submited || (rePassword?.dirty || rePassword?.touched)) && form.invalid) {
                                 @if (form.errors?.['passwordsMismatch']) {
                                     <span class="error-msg">Las contraseñas no coinciden</span>
                                 } @else if (rePassword?.hasError("required")) {
