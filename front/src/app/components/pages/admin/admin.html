@@ -77,12 +77,14 @@
             <div class="udp-actions">
                 @if (selectedUser.banned) {
                 <button class="btn btn-success btn-sm" (click)="unbanUser(selectedUser.id)">✓ Desbanear</button>
-                } @else if (selectedUser?.role === 'ADMIN') {
+                } @else if (selectedUser.role === 'ADMIN') {
                 <span class="btn">🚫 No se puede banear a un Administrador</span>
                 } @else {
                 <button class="btn btn-danger btn-sm" (click)="banUser(selectedUser.id)">🚫 Banear</button>
                 }
+                @if (selectedUser.role !== 'ADMIN') {
                 <button class="btn btn-warning btn-sm" (click)="addStrike(selectedUser.id)">⚡ Añadir strike</button>
+                }
                 <a [routerLink]="['/user', selectedUser.id]" class="btn btn-ghost btn-sm">👁 Ver perfil</a>
             </div>
         </div>
