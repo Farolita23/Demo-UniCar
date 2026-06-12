@@ -70,13 +70,13 @@ export class Faq {
             a: 'Sí. Desde los detalles del viaje puedes abandonarlo si ya eras pasajero, o cancelar tu solicitud si todavía está pendiente de aprobación.'
         }, {
             q: '¿Qué son los "strikes"?',
-            a: 'Los strikes son advertencias que reciben los usuarios por comportamiento inadecuado. Acumular varios strikes puede resultar en la suspensión de la cuenta.'
+            a: 'Los strikes son advertencias que reciben los usuarios por comportamiento inadecuado. Acumular varios strikes puede resultar en la suspensión de la cuenta. Un administrador mirara tu caso y decidira si es necesario mantener la suspension o eliminar los strikes.'
         }, {
             q: '¿Puedo valorar al conductor o pasajero?',
-            a: 'Sí. Después de compartir un viaje con alguien puedes dejarle una valoración de 1 a 5 estrellas para ayudar a la comunidad.'
+            a: 'Sí. Después de compartir un viaje con alguien puedes dejarle una valoración de 1 a 5 estrellas para ayudar a la comunidad. No podras valorar a alguien con quien no te hayas subido nunca'
         }, {
             q: '¿Es seguro usar UniCar?',
-            a: 'Todos los usuarios se registran con sus datos reales. Además, el sistema de valoraciones y reportes permite mantener la calidad y seguridad de la comunidad.'
+            a: 'Todos los datos introducidos en UniCar estan cifrados y protegidos.'
         },
     ];
 }

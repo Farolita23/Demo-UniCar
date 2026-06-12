@@ -1,6 +1,6 @@
 <div class="content">
 
-    <a routerLink="/" class="logo">Uni<span class="logo-accent">Car</span></a>
+    <a routerLink="/" class="logo">Uni<span class="logo-accent">Car</span><span class="logo-city">SEVILLA</span></a>
 
     <nav class="main-nav" [class.open]="showNav">
         <a routerLink="/"            routerLinkActive="active" (click)="showNav=false" [routerLinkActiveOptions]="{exact:true}">Inicio</a>
@@ -60,15 +60,15 @@
                             <span class="dropdown-username">@{{ auth.getUser()?.username }}</span>
                         </div>
                         <div class="dropdown-divider"></div>
-                        <a routerLink="/profile" class="dropdown-item"><span class="dropdown-icon">👤</span><span>Perfil</span></a>
-                        <a routerLink="/my-trips" class="dropdown-item"><span class="dropdown-icon">🚗</span><span>Mis viajes</span></a>
-                        <a routerLink="/favorites" class="dropdown-item"><span class="dropdown-icon">⭐</span><span>Favoritos</span></a>
+                        <a routerLink="/profile" class="dropdown-item"><span class="dropdown-icon"><app-icon icon="usuario"></app-icon></span><span>Perfil</span></a>
+                        <a routerLink="/my-trips" class="dropdown-item"><span class="dropdown-icon"><app-icon icon="coche"></app-icon></span><span>Mis viajes</span></a>
+                        <a routerLink="/favorites" class="dropdown-item"><span class="dropdown-icon"><app-icon icon="estrella"></app-icon></span><span>Favoritos</span></a>
                         @if (isAdmin) {
                             <div class="dropdown-divider"></div>
-                            <a routerLink="/admin" class="dropdown-item dropdown-item--admin"><span class="dropdown-icon">🛡</span><span>Panel de admin</span></a>
+                            <a routerLink="/admin" class="dropdown-item dropdown-item--admin"><span class="dropdown-icon"><app-icon icon="admin"></app-icon></span><span>Panel de admin</span></a>
                         }
                         <div class="dropdown-divider"></div>
-                        <a routerLink="/logout" class="dropdown-item dropdown-item--danger"><span class="dropdown-icon">🚪</span><span>Cerrar sesión</span></a>
+                        <a routerLink="/logout" class="dropdown-item dropdown-item--danger"><span class="dropdown-icon"><app-icon icon="logout"></app-icon></span><span>Cerrar sesión</span></a>
                     </div>
                 }
             </div>

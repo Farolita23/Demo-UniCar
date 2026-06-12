@@ -36,6 +36,15 @@
 :host .content .logo .logo-accent {
     color: var(--primary);
 }
+:host .content .logo .logo-city {
+    font-size: 8px;
+    font-weight: 800;
+    font-family: 'Syne', sans-serif;
+    letter-spacing: 0px;
+    vertical-align: baseline;
+    margin-left: 3px;
+    color: var(--text-muted);
+}
 /* Estilos de la barra de navegacion */
 :host .content .main-nav {
     width: 100%;

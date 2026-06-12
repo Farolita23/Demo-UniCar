@@ -27,6 +27,9 @@ import { AuthService } from '../../../services/auth-service';
 // Importaciones de modelos
 import { Trip } from '../../../models/trip.model';
 
+//Importacion iconos
+import { AppIcon, IconName } from '../../elements/icon/icon';
+
 /**
  * Componente Home
  * 
@@ -39,7 +42,7 @@ import { Trip } from '../../../models/trip.model';
   // Componente standalone sin necesidad de módulo
   standalone: true,
   // Módulos y componentes importados
-  imports: [RouterLink, CommonModule, Header, Footer, TripCard],
+  imports: [RouterLink, CommonModule, Header, Footer, TripCard, AppIcon],
   // Archivo HTML de la plantilla
   templateUrl: './home.html',
   // Archivo CSS de estilos
@@ -65,22 +68,11 @@ export class Home implements OnInit {
    * Array de características principales de la plataforma
    * Cada objeto contiene: icon, title, desc
    */
-  features = [
-    { icon: '🔍', title: 'Busca viajes', desc: 'Filtra por campus, localidad, fecha y dirección para encontrar el trayecto perfecto.' },
-    { icon: '🚗', title: 'Publica el tuyo', desc: 'Ofrece plazas libres en tu coche, fija un precio y gestiona quién viaja contigo.' },
-    { icon: '✅', title: 'Confirma y viaja', desc: 'Solicita plaza, el conductor acepta y compartes el camino. Así de fácil.' },
-  ];
-
-  /**
-   * Array de estadísticas de la plataforma
-   * Cada objeto contiene: value, label, icon
-   */
-  stats = [
-    { value: '500+',  label: 'Usuarios activos', icon: '👥' },
-    { value: '1200+', label: 'Viajes realizados', icon: '🛣' },
-    { value: '25+',   label: 'Campus conectados', icon: '🎓' },
-    { value: '4.8★',  label: 'Valoración media',  icon: '⭐' },
-  ];
+features = [
+  { icon: 'lupa'    as IconName, title: 'Busca viajes',    desc: 'Filtra por campus, localidad, fecha y dirección para encontrar tu pana de viaje perfecto.' },
+  { icon: 'coche'   as IconName, title: 'Publica el tuyo', desc: 'Ofrece plazas libres en tu coche, fija un precio y gestiona quién viaja contigo.' },
+  { icon: 'estrella' as IconName, title: 'Confirma y viaja', desc: 'Solicita plaza, el conductor acepta y compartes el camino. Así de fácil.' },
+];
 
   /**
    * Hook de ciclo de vida de Angular

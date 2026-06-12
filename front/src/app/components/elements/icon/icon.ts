@@ -11,7 +11,11 @@ export type IconName =
   | 'busqueda'
   | 'calendario'
   | 'estrella'
-  | 'casa';
+  | 'casa'
+  | 'lupa'
+  | 'usuario'
+  | 'admin'
+  | 'logout';
 
 @Component({
   selector: 'app-icon',
@@ -127,6 +131,47 @@ export type IconName =
           <rect x="14" y="24" width="8" height="7" rx="1.5" fill="#F09595" opacity="0.5"/>
           <rect x="26" y="24" width="8" height="7" rx="1.5" fill="#F09595" opacity="0.5"/>
         </ng-container>
+        <!-- LUPA -->
+        <ng-container *ngSwitchCase="'lupa'">
+          <circle cx="21" cy="21" r="13" fill="#A32D2D"/>
+          <circle cx="21" cy="21" r="13" fill="#791F1F" opacity="0.25"/>
+          <circle cx="21" cy="21" r="9"  fill="#791F1F" opacity="0.35"/>
+          <circle cx="21" cy="21" r="5.5" fill="#FCEBEB" opacity="0.13"/>
+          <circle cx="17" cy="17" r="3.5" fill="#FCEBEB" opacity="0.08"/>
+          <line x1="30.5" y1="30.5" x2="40.5" y2="40.5"
+                stroke="#501313" stroke-width="4.5" stroke-linecap="round"/>
+          <line x1="30.5" y1="30.5" x2="40.5" y2="40.5"
+                stroke="#791F1F" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+          <circle cx="38" cy="10" r="2.5" fill="#E24B4A"/>
+        </ng-container>
+        <!-- USUARIO -->
+<ng-container *ngSwitchCase="'usuario'">
+  <circle cx="24" cy="18" r="9" fill="#FCEBEB"/>
+  <path d="M10 42 C10 30 38 30 38 42" fill="#FCEBEB"/>
+  <circle cx="24" cy="18" r="11" fill="#A32D2D"/>
+  <circle cx="24" cy="18" r="11" fill="#791F1F" opacity="0.25"/>
+  <circle cx="24" cy="17" r="7" fill="#FCEBEB"/>
+  <path d="M13 36 C13 27 35 27 35 36" fill="#FCEBEB"/>
+  <path d="M13 36 C13 27 35 27 35 36" fill="#F09595" opacity="0.3"/>
+</ng-container>
+
+<!-- ADMIN -->
+<ng-container *ngSwitchCase="'admin'">
+  <path d="M24 4 L42 12 L42 24 C42 34 34 41 24 44 C14 41 6 34 6 24 L6 12 Z" fill="#A32D2D"/>
+  <path d="M24 4 L42 12 L42 24 C42 34 34 41 24 44 C14 41 6 34 6 24 L6 12 Z" fill="#791F1F" opacity="0.25"/>
+  <path d="M24 10 L38 17 L38 24 C38 31 32 37 24 40 C16 37 10 31 10 24 L10 17 Z" fill="#791F1F" opacity="0.3"/>
+  <polygon points="24,13 27,21 36,21 29,26 32,34 24,29 16,34 19,26 12,21 21,21" fill="#FCEBEB" opacity="0.9"/>
+</ng-container>
+
+<!-- LOGOUT -->
+<ng-container *ngSwitchCase="'logout'">
+  <rect x="6" y="8" width="22" height="32" rx="4" fill="#A32D2D"/>
+  <rect x="6" y="8" width="22" height="32" rx="4" fill="#501313" opacity="0.3"/>
+  <circle cx="17" cy="24" r="2.5" fill="#F09595" opacity="0.7"/>
+  <rect x="26" y="8" width="4" height="32" fill="#791F1F" opacity="0.5"/>
+  <line x1="30" y1="24" x2="43" y2="24" stroke="#A32D2D" stroke-width="2.5" stroke-linecap="round"/>
+  <polyline points="37,18 43,24 37,30" fill="none" stroke="#A32D2D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</ng-container>
 
       </ng-container>
     </svg>

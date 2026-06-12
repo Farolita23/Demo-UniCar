@@ -8,6 +8,7 @@ import { AuthService } from '../../../services/auth-service';
 import { ApiService } from '../../../services/api-service';
 import { User } from '../../../models/user.model';
 import { Subject, debounceTime, switchMap, of } from 'rxjs';
+import { AppIcon } from '../icon/icon';
 
 /**
  * Componente de encabezado global de la aplicación.
@@ -16,7 +17,7 @@ import { Subject, debounceTime, switchMap, of } from 'rxjs';
 @Component({
     selector: 'app-header',
     standalone: true,
-    imports: [RouterLink, RouterLinkActive, CommonModule, FormsModule],
+    imports: [RouterLink, RouterLinkActive, CommonModule, FormsModule, AppIcon],
     templateUrl: './header.html',
     styleUrl: './header.css',
 })

@@ -12,8 +12,6 @@
         </div>
         <!-- Contenido principal del hero -->
         <div class="container hero-content">
-            <!-- Badge informativo -->
-            <div class="hero-badge"><span class="badge-dot"></span> Carpooling universitario</div>
             <!-- Título principal -->
             <h1 class="hero-title">Comparte el camino<br><span class="hero-highlight">hacia la uni</span></h1>
             <!-- Subtítulo -->
@@ -53,7 +51,7 @@
                 <div class="step-card anim-rise-stagger">
                     <!-- Icono y número -->
                     <div class="step-icon-wrap">
-                        <span class="step-icon">{{ feat.icon }}</span>
+                        <app-icon [icon]="feat.icon" [size]="54"></app-icon>
                         <span class="step-num">0{{ i + 1 }}</span>
                     </div>
                     <!-- Título del paso -->
@@ -89,7 +87,7 @@
         <!-- Estado: vacío -->
         } @else if (suggestedTrips.length === 0) {
             <div class="trips-empty">
-                <div class="trips-empty-icon">🔍</div>
+                <div class="trips-empty-icon"><app-icon icon="lupa" [size]="82"></app-icon></div>
                 <h3>No hay viajes disponibles ahora</h3>
                 <p>Sé el primero en publicar un viaje para tu campus.</p>
                 <a routerLink="/trip" class="btn btn-primary">Publicar viaje</a>

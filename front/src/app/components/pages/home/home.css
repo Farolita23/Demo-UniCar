@@ -81,21 +81,6 @@
     padding: 0;
 }
 
-/* Badge decorativo con punto pulsante */
-:host .hero .hero-content .hero-badge {
-    height: 14px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(230, 57, 70, 0.08);
-    border: 1px solid rgba(230, 57, 70, 0.15);
-    padding: 8px 16px;
-    border-radius: 16px;
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--primary-light);
-}
-
 /* Punto pulsante dentro del badge */
 :host .hero .hero-content .hero-badge .badge-dot {
     width: 7px;
