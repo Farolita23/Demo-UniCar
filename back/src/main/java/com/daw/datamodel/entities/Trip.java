@@ -43,7 +43,7 @@ import lombok.ToString;
 @Table(name = "trip")
 @Getter
 @Setter
-@ToString(exclude = {"passengers", "requesters"})
+@ToString(exclude = {"passengers", "requesters", "periodicTrip"})
 public class Trip {
 
     @Id
@@ -106,6 +106,17 @@ public class Trip {
         inverseJoinColumns = @JoinColumn(name = "requester_id")
     )
     private Set<User> requesters = new HashSet<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+        name = "periodic_trip_id",
+        nullable = true,
+        foreignKey = @ForeignKey(
+            name = "fk_trip_periodic_trip",
+            foreignKeyDefinition = "FOREIGN KEY (periodic_trip_id) REFERENCES periodic_trip(id) ON DELETE SET NULL"
+        )
+    )
+    private PeriodicTrip periodicTrip;
 
     @Override
     public boolean equals(Object o) {
