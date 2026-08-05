@@ -3,12 +3,14 @@
 <!-- Contenedor principal de la página -->
 <div class="page-wrapper">
     <!-- Sección HERO (presentación principal) -->
-    <section class="hero">
-        <!-- Fondo decorativo con blobs -->
+    <section class="hero" (mousemove)="onHeroMouseMove($event, heroCanvas)" (mouseleave)="onHeroMouseLeave()">
+        <!-- Fondo interactivo: red de nodos que se conectan entre sí y con el cursor -->
         <div class="hero-bg">
-            <div class="hero-blob blob-1"></div>
-            <div class="hero-blob blob-2"></div>
-            <div class="hero-blob blob-3"></div>
+            <canvas class="hero-canvas" #heroCanvas></canvas>
+            <!-- Grano cinematográfico sutil -->
+            <div class="hero-grain"></div>
+            <!-- Viñeta que enmarca la escena y da profundidad -->
+            <div class="hero-vignette"></div>
         </div>
         <!-- Contenido principal del hero -->
         <div class="container hero-content">
