@@ -192,12 +192,10 @@
 /* Tarjeta individual de paso */
 :host .how-section .steps-grid .step-card {
     width: calc(100% - 32px * 2 - 1px * 2);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
     padding: 32px;
     overflow: hidden;
     position: relative;
+    align-items: center;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -215,7 +213,6 @@
 :host .how-section .steps-grid .step-card .step-icon-wrap {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     margin-bottom: 0;
 }
 
