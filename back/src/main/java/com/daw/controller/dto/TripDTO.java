@@ -35,4 +35,7 @@ public class TripDTO {
 
     private Set<UserSummaryDTO> requestersDTO;
 
+    /** Identificador de la plantilla periódica que generó este viaje, o {@code null} si es puntual. */
+    private Long periodicTripId;
+
 }

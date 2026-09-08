@@ -4,6 +4,7 @@ import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl, Validati
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
+import { AppIcon } from '../../elements/icon/icon';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 import { Campus } from '../../../models/campus.model';
@@ -35,7 +36,7 @@ function strongPassword(control: AbstractControl): ValidationErrors | null {
 @Component({
     selector: 'page-signup',
     standalone: true,
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, Header],
+    imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, AppIcon],
     templateUrl: './signup.html',
     styleUrl: './signup.css',
 })

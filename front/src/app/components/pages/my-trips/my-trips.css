@@ -102,6 +102,132 @@
     border-color: rgba(255, 183, 3, 0.3);
 }
 
+/* ============================ */
+/* ESTILOS DE SERIES PERIÓDICAS */
+/* ============================ */
+
+:host .periodic-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+:host .periodic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+:host .periodic-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+:host .periodic-card__head .periodic-route {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+:host .periodic-card__head .periodic-dir {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-2);
+    font-weight: 700;
+}
+
+:host .periodic-card__head .periodic-route strong {
+    font-size: 16px;
+}
+
+:host .periodic-card__head .periodic-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    white-space: nowrap;
+}
+
+:host .periodic-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    font-size: 13px;
+    color: var(--text-2);
+}
+
+:host .periodic-card__days {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+:host .periodic-card__days .day-pill {
+    width: 28px;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    color: var(--text-3);
+}
+
+:host .periodic-card__days .day-pill.on {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+:host .periodic-card__days .periodic-interval {
+    font-size: 13px;
+    color: var(--text-2);
+    margin-left: 4px;
+}
+
+:host .periodic-card__range {
+    font-size: 13px;
+    color: var(--text-2);
+}
+
+:host .periodic-card__range .gen-count {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+:host .periodic-card__actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+:host .periodic-card__actions .danger {
+    color: var(--danger);
+    border-color: rgba(230, 57, 70, 0.3);
+}
+
+:host .periodic-card__generated {
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    margin-top: 4px;
+}
+
+:host .periodic-card__generated .muted {
+    color: var(--text-3);
+    font-size: 14px;
+}
+
 /* ============= */
 /* RESPONSIVIDAD */
 /* ============= */

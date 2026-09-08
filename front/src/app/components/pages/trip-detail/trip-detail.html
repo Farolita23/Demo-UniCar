@@ -24,10 +24,19 @@
                 <!-- Direction badge + full indicator -->
                 <div class="direction-row td-fade-in">
                     <div class="direction-badge" [class.to-campus]="trip.isToCampus">
-                        {{ trip.isToCampus ? '🎓 Hacia el campus' : '🏠 Desde el campus' }}
+                        @if (trip.isToCampus) {
+                        <app-icon icon="birrete" [size]="16"></app-icon> Hacia el campus
+                        } @else {
+                        <app-icon icon="casa" [size]="16"></app-icon> Desde el campus
+                        }
                     </div>
+                    @if (trip.periodicTripId) {
+                    <span class="full-indicator" title="Viaje de una serie periódica">
+                        <app-icon icon="repetir" [size]="14"></app-icon> Viaje periódico
+                    </span>
+                    }
                     @if (isFull) {
-                    <span class="full-indicator">🔴 Completo</span>
+                    <span class="full-indicator"><app-icon icon="asiento" [size]="14"></app-icon> Completo</span>
                     }
                 </div>
 
@@ -35,7 +44,7 @@
                 @if (isDriver) {
                 <div class="driver-manage-banner td-slide-up">
                     <div class="driver-manage-info">
-                        <span class="driver-manage-icon">⚙</span>
+                        <span class="driver-manage-icon"><app-icon icon="ajustes" [size]="22"></app-icon></span>
                         <div>
                             <strong>Eres el conductor de este viaje</strong>
                             <p>Gestiona solicitudes y pasajeros desde el panel de gestión.</p>
@@ -74,21 +83,21 @@
                     <h2 class="detail-section-title">Detalles del viaje</h2>
                     <div class="meta-grid">
                         <div class="meta-block">
-                            <span class="meta-icon">📅</span>
+                            <span class="meta-icon"><app-icon icon="calendario" [size]="22"></app-icon></span>
                             <div>
                                 <span class="meta-key">Fecha</span>
                                 <span class="meta-val">{{ formatDate(trip.departureDate) }}</span>
                             </div>
                         </div>
                         <div class="meta-block">
-                            <span class="meta-icon">⏰</span>
+                            <span class="meta-icon"><app-icon icon="reloj" [size]="22"></app-icon></span>
                             <div>
                                 <span class="meta-key">Hora de salida</span>
                                 <span class="meta-val">{{ trip.departureTime }}</span>
                             </div>
                         </div>
                         <div class="meta-block">
-                            <span class="meta-icon">💺</span>
+                            <span class="meta-icon"><app-icon icon="asiento" [size]="22"></app-icon></span>
                             <div>
                                 <span class="meta-key">Plazas libres</span>
                                 <span class="meta-val" [class.low]="freeSeats <= 1" [class.full-val]="isFull">
@@ -101,7 +110,7 @@
                             </div>
                         </div>
                         <div class="meta-block">
-                            <span class="meta-icon">💰</span>
+                            <span class="meta-icon"><app-icon icon="moneda" [size]="22"></app-icon></span>
                             <div>
                                 <span class="meta-key">Precio por persona</span>
                                 <span class="meta-val price-highlight">{{ trip.price | number:'1.2-2' }}€</span>
@@ -112,9 +121,9 @@
 
                 <!-- Car card -->
                 <div class="detail-card td-slide-up td-delay-3">
-                    <h2 class="detail-section-title">🚗 Vehículo</h2>
+                    <h2 class="detail-section-title"><app-icon icon="coche" [size]="20"></app-icon> Vehículo</h2>
                     <div class="car-info">
-                        <div class="car-icon-wrap">🚗</div>
+                        <div class="car-icon-wrap"><app-icon icon="coche" [size]="28"></app-icon></div>
                         <div>
                             <strong>{{ trip.carDTO.model }}</strong>
                             <span class="car-sub">{{ trip.carDTO.color }} · {{ trip.carDTO.licensePlate }} · {{
@@ -127,7 +136,7 @@
                 @if (trip.passengersDTO.length > 0) {
                 <div class="detail-card td-slide-up td-delay-4">
                     <h2 class="detail-section-title">
-                        👥 Pasajeros confirmados ({{ trip.passengersDTO.length }})
+                        <app-icon icon="usuario" [size]="18"></app-icon> Pasajeros confirmados ({{ trip.passengersDTO.length }})
                         @if (isDriver) {
                         <span class="section-hint">— toca las estrellas para valorar</span>
                         }
@@ -169,7 +178,7 @@
                 <!-- Existing ratings list for the driver -->
                 @if (driver && driver.ratingsReceivedDTO && driver.ratingsReceivedDTO.length > 0) {
                 <div class="detail-card td-slide-up td-delay-4">
-                    <h2 class="detail-section-title">📊 Valoraciones del conductor ({{ driver.ratingsReceivedDTO.length
+                    <h2 class="detail-section-title"><app-icon icon="estrella" [size]="18"></app-icon> Valoraciones del conductor ({{ driver.ratingsReceivedDTO.length
                         }})</h2>
                     <div class="ratings-summary">
                         <div class="ratings-avg">
@@ -258,7 +267,7 @@
 
                     @if (driver?.drivingLicenseYear) {
                     <div class="driver-license">
-                        🪪 Carné desde {{ driver?.drivingLicenseYear }}
+                        <app-icon icon="documento" [size]="16"></app-icon> Carné desde {{ driver?.drivingLicenseYear }}
                     </div>
                     }
                 </div>
@@ -272,27 +281,27 @@
 
                     @if (isDriver) {
                     <a [routerLink]="['/manage-trip', trip.id]" class="btn btn-primary cta-btn">
-                        ⚙ Gestionar viaje
+                        <app-icon icon="ajustes" [size]="16"></app-icon> Gestionar viaje
                     </a>
                     } @else if (auth.isLoggedIn()) {
                     @if (isPassenger) {
-                    <div class="alert alert-success">✅ Eres pasajero de este viaje</div>
+                    <div class="alert alert-success"><app-icon icon="check" [size]="16"></app-icon> Eres pasajero de este viaje</div>
                     <button class="btn btn-ghost cta-btn" (click)="leaveTrip()" [disabled]="actionLoading">
                         {{ actionLoading ? 'Procesando...' : 'Abandonar viaje' }}
                     </button>
                     } @else if (hasRequested) {
-                    <div class="alert alert-warning">⏳ Solicitud enviada — pendiente de confirmación</div>
+                    <div class="alert alert-warning"><app-icon icon="reloj" [size]="16"></app-icon> Solicitud enviada — pendiente de confirmación</div>
                     <button class="btn btn-ghost cta-btn" (click)="cancelRequest()" [disabled]="actionLoading">
                         {{ actionLoading ? 'Procesando...' : 'Cancelar solicitud' }}
                     </button>
                     } @else if (freeSeats > 0) {
                     <button class="btn btn-primary cta-btn" (click)="requestJoin()" [disabled]="actionLoading">
-                        {{ actionLoading ? 'Enviando...' : '🚀 Solicitar plaza' }}
+                        {{ actionLoading ? 'Enviando...' : 'Solicitar plaza' }}
                     </button>
                     <p class="cta-hint">El conductor deberá aceptar tu solicitud</p>
                     } @else {
                     <div class="cta-full-wrap">
-                        <span class="badge badge-danger cta-full">🔴 Sin plazas libres</span>
+                        <span class="badge badge-danger cta-full"><app-icon icon="asiento" [size]="14"></app-icon> Sin plazas libres</span>
                         <p class="cta-hint">Todas las plazas están ocupadas</p>
                     </div>
                     }

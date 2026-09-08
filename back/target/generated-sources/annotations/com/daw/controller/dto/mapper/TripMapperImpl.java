@@ -3,6 +3,7 @@ package com.daw.controller.dto.mapper;
 import com.daw.controller.dto.TripDTO;
 import com.daw.controller.dto.UserSummaryDTO;
 import com.daw.datamodel.entities.Car;
+import com.daw.datamodel.entities.PeriodicTrip;
 import com.daw.datamodel.entities.Trip;
 import com.daw.datamodel.entities.User;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-07-10T04:37:36+0200",
+    date = "2026-09-08T15:16:39+0200",
     comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.46.100.v20260624-0231, environment: Java 21.0.11 (Eclipse Adoptium)"
 )
 @Component
@@ -44,11 +45,12 @@ public class TripMapperImpl implements TripMapper {
         tripDTO.setDriverDTO( userSummaryMapper.toDto( tripCarDriver( trip ) ) );
         tripDTO.setPassengersDTO( userSetToUserSummaryDTOSet( trip.getPassengers() ) );
         tripDTO.setRequestersDTO( userSetToUserSummaryDTOSet( trip.getRequesters() ) );
-        tripDTO.setDepartureAddress( trip.getDepartureAddress() );
-        tripDTO.setDepartureDate( trip.getDepartureDate() );
-        tripDTO.setDepartureTime( trip.getDepartureTime() );
+        tripDTO.setPeriodicTripId( tripPeriodicTripId( trip ) );
         tripDTO.setId( trip.getId() );
         tripDTO.setIsToCampus( trip.getIsToCampus() );
+        tripDTO.setDepartureDate( trip.getDepartureDate() );
+        tripDTO.setDepartureTime( trip.getDepartureTime() );
+        tripDTO.setDepartureAddress( trip.getDepartureAddress() );
         tripDTO.setPrice( trip.getPrice() );
 
         return tripDTO;
@@ -87,5 +89,13 @@ public class TripMapperImpl implements TripMapper {
         }
 
         return set1;
+    }
+
+    private Long tripPeriodicTripId(Trip trip) {
+        PeriodicTrip periodicTrip = trip.getPeriodicTrip();
+        if ( periodicTrip == null ) {
+            return null;
+        }
+        return periodicTrip.getId();
     }
 }

@@ -85,6 +85,14 @@ public class TripSpecification {
                 predicates.add(cb.greaterThanOrEqualTo(freeSeats, filters.getMinFreeSeats()));
             }
 
+            if (filters.getPeriodic() != null) {
+                if (Boolean.TRUE.equals(filters.getPeriodic())) {
+                    predicates.add(cb.isNotNull(root.get("periodicTrip")));
+                } else {
+                    predicates.add(cb.isNull(root.get("periodicTrip")));
+                }
+            }
+
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }

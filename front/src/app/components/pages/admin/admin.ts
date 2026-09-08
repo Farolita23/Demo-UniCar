@@ -15,6 +15,7 @@ import { RouterLink, Router } from '@angular/router';
 // Importaciones de componentes compartidos
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
+import { AppIcon } from '../../elements/icon/icon';
 
 // Importaciones de servicios
 import { ApiService } from '../../../services/api-service';
@@ -35,7 +36,7 @@ import { User, Report } from '../../../models/user.model';
     // Componente standalone sin necesidad de módulo
     standalone: true,
     // Módulos y componentes importados
-    imports: [CommonModule, FormsModule, RouterLink, Header, Footer],
+    imports: [CommonModule, FormsModule, RouterLink, Header, Footer, AppIcon],
     // Archivo HTML de la plantilla
     templateUrl: './admin.html',
     // Archivo CSS de estilos

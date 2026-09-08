@@ -55,6 +55,20 @@ public class PeriodicTripController {
     }
 
     /**
+     * Recupera los viajes periódicos publicados por un conductor concreto.
+     *
+     * @param driverId identificador del conductor
+     * @param pageable configuración de paginación
+     * @return página de {@link PeriodicTripDTO} del conductor
+     */
+    @GetMapping("/as-driver/{driverId}")
+    public ResponseEntity<Page<PeriodicTripDTO>> findByDriver(
+            @PathVariable Long driverId,
+            @PageableDefault(size = 20, sort = "startDate") Pageable pageable) {
+        return ResponseEntity.ok(periodicTripService.findByDriver(driverId, pageable));
+    }
+
+    /**
      * Recupera un viaje periódico por su identificador.
      *
      * @param id identificador del viaje periódico

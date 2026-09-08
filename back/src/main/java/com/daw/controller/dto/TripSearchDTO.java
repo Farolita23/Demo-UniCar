@@ -17,6 +17,13 @@ public class TripSearchDTO {
     private LocalTime departureTime;
  
     private BigDecimal maxPrice;
- 
+
     private Integer minFreeSeats; // mínimo huecos libres requeridos
+
+    /**
+     * Filtro por tipo de viaje según su origen:
+     * {@code null} = todos, {@code true} = solo viajes de una serie periódica,
+     * {@code false} = solo viajes puntuales (no generados por una periódica).
+     */
+    private Boolean periodic;
 }

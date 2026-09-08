@@ -49,6 +49,7 @@ export class SearchTrip implements OnInit, OnDestroy {
         departureDate: '',
         maxPrice: 100 as number | null,
         minFreeSeats: null as number | null,
+        tripType: 'all' as 'all' | 'single' | 'periodic',
     };
 
     // Subject para manejar las búsquedas de viajes
@@ -96,8 +97,13 @@ export class SearchTrip implements OnInit, OnDestroy {
     }
 
     // Método para establecer la dirección del viaje (hacia o desde el campus, o ambos)
-    setDirection(value: boolean | null) { 
-        this.filters.isToCampus = value; 
+    setDirection(value: boolean | null) {
+        this.filters.isToCampus = value;
+    }
+
+    // Método para filtrar por tipo de viaje: todos, puntuales o periódicos
+    setTripType(value: 'all' | 'single' | 'periodic') {
+        this.filters.tripType = value;
     }
 
     // Método para realizar la búsqueda de viajes según los filtros actuales y la página especificada
@@ -110,6 +116,8 @@ export class SearchTrip implements OnInit, OnDestroy {
         if (this.filters.departureDate) f.departureDate = this.filters.departureDate;
         if (this.filters.maxPrice) f.maxPrice = +this.filters.maxPrice;
         if (this.filters.minFreeSeats) f.minFreeSeats = +this.filters.minFreeSeats;
+        if (this.filters.tripType === 'periodic') f.periodic = true;
+        else if (this.filters.tripType === 'single') f.periodic = false;
         this.search$.next({ filters: f, page });
     }
 
@@ -118,7 +126,7 @@ export class SearchTrip implements OnInit, OnDestroy {
         this.filters = {
             campus: null, town: null,
             campusId: null, townId: null, isToCampus: null,
-            departureDate: '', maxPrice: 100, minFreeSeats: null
+            departureDate: '', maxPrice: 100, minFreeSeats: null, tripType: 'all'
         };
         this.search();
     }

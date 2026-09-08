@@ -44,7 +44,9 @@
                             <label class="label required">Contraseña</label>
                             <div class="input-wrap">
                                 <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Mín. 8 caracteres">
-                                <button type="button" class="eye-btn" (click)="showPassword=!showPassword">{{ showPassword ? '🙈' : '👁️' }}</button>
+                                <button type="button" class="eye-btn" (click)="showPassword=!showPassword">
+                                    <app-icon [icon]="showPassword ? 'ojo-cerrado' : 'ojo'" [size]="18"></app-icon>
+                                </button>
                             </div>
                             @let password = form.get('password');
                             @if ((submited || (password?.dirty || password?.touched)) && password?.invalid) {
@@ -64,7 +66,9 @@
                             <label class="label required">Confirmar contraseña</label>
                             <div class="input-wrap">
                                 <input [type]="showPassword ? 'text' : 'password'" formControlName="rePassword" placeholder="Repite la contraseña">
-                                <button type="button" class="eye-btn" (click)="showPassword=!showPassword">{{ showPassword ? '🙈' : '👁️' }}</button>
+                                <button type="button" class="eye-btn" (click)="showPassword=!showPassword">
+                                    <app-icon [icon]="showPassword ? 'ojo-cerrado' : 'ojo'" [size]="18"></app-icon>
+                                </button>
                             </div>
                             @let rePassword = form.get('rePassword');
                             @if ((submited || (rePassword?.dirty || rePassword?.touched)) && form.invalid) {

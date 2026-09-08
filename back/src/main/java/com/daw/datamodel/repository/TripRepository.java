@@ -169,4 +169,12 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
            "ORDER BY t.departureDate ASC, t.departureTime ASC")
     Page<Trip> findByPeriodicTripId(@Param("periodicTripId") Long periodicTripId, Pageable pageable);
 
+    /**
+     * Cuenta los viajes individuales generados a partir de un viaje periódico.
+     *
+     * @param periodicTripId identificador del viaje periódico
+     * @return número de viajes vinculados a esa plantilla
+     */
+    long countByPeriodicTripId(Long periodicTripId);
+
 }

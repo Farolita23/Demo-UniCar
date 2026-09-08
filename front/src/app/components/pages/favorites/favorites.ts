@@ -14,6 +14,7 @@ import { RouterLink, Router } from '@angular/router';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
 import { TripCard } from '../../elements/trip/trip';
+import { AppIcon } from '../../elements/icon/icon';
 
 // Importaciones de servicios
 import { ApiService } from '../../../services/api-service';
@@ -35,7 +36,7 @@ import { Trip } from '../../../models/trip.model';
   // Componente standalone sin necesidad de módulo
   standalone: true,
   // Módulos y componentes importados
-  imports: [CommonModule, RouterLink, Header, Footer, TripCard],
+  imports: [CommonModule, RouterLink, Header, Footer, TripCard, AppIcon],
   // Archivo HTML de la plantilla
   templateUrl: './favorites.html',
   // Archivo CSS de estilos

@@ -12,15 +12,21 @@
         <!-- Tabs -->
         <div class="tabs">
             <button class="tab" [class.active]="activeTab === 'passenger'" (click)="activeTab = 'passenger'">
-                🎒 Como pasajero
+                <app-icon icon="asiento" [size]="16"></app-icon> Como pasajero
                 @if (tripsAsPassenger.length > 0) {
                 <span class="tab-badge">{{ tripsAsPassenger.length }}</span>
                 }
             </button>
             <button class="tab" [class.active]="activeTab === 'driver'" (click)="activeTab = 'driver'">
-                🚗 Como conductor
+                <app-icon icon="coche" [size]="16"></app-icon> Como conductor
                 @if (tripsAsDriver.length > 0) {
                 <span class="tab-badge">{{ tripsAsDriver.length }}</span>
+                }
+            </button>
+            <button class="tab" [class.active]="activeTab === 'periodic'" (click)="activeTab = 'periodic'">
+                <app-icon icon="repetir" [size]="16"></app-icon> Periódicos
+                @if (periodicTrips.length > 0) {
+                <span class="tab-badge">{{ periodicTrips.length }}</span>
                 }
             </button>
         </div>
@@ -34,7 +40,7 @@
         </div>
         } @else if (tripsAsPassenger.length === 0) {
         <div class="empty-state">
-            <div class="empty-icon">🔍</div>
+            <div class="empty-icon"><app-icon icon="busqueda" [size]="48"></app-icon></div>
             <h3>No tienes viajes reservados</h3>
             <p>Busca un viaje y solicita una plaza para empezar a compartir trayecto.</p>
             <a routerLink="/search-trip" class="btn btn-primary">Buscar viajes</a>
@@ -57,7 +63,7 @@
         </div>
         } @else if (tripsAsDriver.length === 0) {
         <div class="empty-state anim-fade-in">
-            <div class="empty-icon">🚗</div>
+            <div class="empty-icon"><app-icon icon="coche" [size]="48"></app-icon></div>
             <h3>No has publicado ningún viaje</h3>
             <p>Comparte tu ruta hacia el campus y ayuda a otros estudiantes.</p>
             <a routerLink="/trip" class="btn btn-primary">Publicar viaje</a>
@@ -66,6 +72,91 @@
         <div class="trips-grid">
             @for (trip of tripsAsDriver; track trip.id) {
             <app-trip [data]="trip"></app-trip>
+            }
+        </div>
+        }
+        }
+
+        <!-- Periodic series -->
+        @if (activeTab === 'periodic') {
+        @if (loadingPeriodic) {
+        <div class="loading-state">
+            <div class="spinner"></div>
+            <span>Cargando series periódicas...</span>
+        </div>
+        } @else if (periodicTrips.length === 0) {
+        <div class="empty-state anim-fade-in">
+            <div class="empty-icon"><app-icon icon="repetir" [size]="48"></app-icon></div>
+            <h3>No tienes viajes periódicos</h3>
+            <p>Crea una ruta recurrente y se generarán automáticamente todos los viajes del periodo.</p>
+            <a routerLink="/trip" class="btn btn-primary">Crear viaje periódico</a>
+        </div>
+        } @else {
+        <div class="periodic-list">
+            @for (pt of periodicTrips; track pt.id) {
+            <article class="periodic-card">
+                <div class="periodic-card__head">
+                    <div class="periodic-route">
+                        <span class="periodic-dir">
+                            @if (pt.isToCampus) {
+                            <app-icon icon="birrete" [size]="14"></app-icon> Hacia campus
+                            } @else {
+                            <app-icon icon="casa" [size]="14"></app-icon> Desde campus
+                            }
+                        </span>
+                        <strong>
+                            {{ pt.isToCampus ? pt.townDTO.name : pt.campusDTO.name }}
+                            →
+                            {{ pt.isToCampus ? pt.campusDTO.name : pt.townDTO.name }}
+                        </strong>
+                    </div>
+                    <span class="periodic-price">{{ pt.price | number:'1.2-2' }}€</span>
+                </div>
+
+                <div class="periodic-card__meta">
+                    <span><app-icon icon="pin" [size]="14"></app-icon> {{ pt.departureAddress }}</span>
+                    <span><app-icon icon="reloj" [size]="14"></app-icon> {{ pt.departureTime }}</span>
+                    <span><app-icon icon="coche" [size]="14"></app-icon> {{ pt.carDTO.model }} · {{ pt.carDTO.color }}</span>
+                </div>
+
+                <div class="periodic-card__days">
+                    @for (d of weekDays; track d.value) {
+                    <span class="day-pill" [class.on]="pt.daysOfWeek.includes(d.value)">{{ d.short }}</span>
+                    }
+                    <span class="periodic-interval">· {{ intervalLabel(pt) }}</span>
+                </div>
+
+                <div class="periodic-card__range">
+                    Del <strong>{{ formatShort(pt.startDate) }}</strong> al <strong>{{ formatShort(pt.endDate) }}</strong>
+                    · <span class="gen-count">{{ pt.tripsGenerated }} viaje{{ pt.tripsGenerated === 1 ? '' : 's' }} generado{{ pt.tripsGenerated === 1 ? '' : 's' }}</span>
+                </div>
+
+                <div class="periodic-card__actions">
+                    <button class="btn btn-ghost btn-sm" (click)="toggleGenerated(pt)">
+                        {{ expandedPeriodic === pt.id ? 'Ocultar viajes' : 'Ver viajes generados' }}
+                    </button>
+                    <button class="btn btn-ghost btn-sm danger" (click)="deletePeriodic(pt)"
+                        [disabled]="deletingPeriodic[pt.id]">
+                        {{ deletingPeriodic[pt.id] ? 'Eliminando…' : 'Eliminar serie' }}
+                    </button>
+                </div>
+
+                @if (expandedPeriodic === pt.id) {
+                <div class="periodic-card__generated">
+                    @if (loadingGenerated[pt.id]) {
+                    <div class="loading-state"><div class="spinner"></div><span>Cargando viajes...</span></div>
+                    } @else if ((generatedTrips[pt.id] || []).length === 0) {
+                    <p class="muted">No hay viajes generados para esta serie.</p>
+                    } @else {
+                    <div class="trips-grid">
+                        @for (trip of generatedTrips[pt.id]; track trip.id) {
+                        <app-trip [data]="trip"></app-trip>
+                        }
+                    </div>
+                    }
+                </div>
+                }
+            </article>
             }
         </div>
         }

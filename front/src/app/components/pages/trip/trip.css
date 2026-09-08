@@ -177,6 +177,42 @@
     font-size: 16px;
 }
 
+/* MODO PERIÓDICO: pista de ayuda bajo el selector de tipo */
+:host .publish-form .form-section .mode-hint,
+:host .publish-form .form-section .field-hint {
+    font-size: 13px;
+    color: var(--text-2);
+}
+:host .publish-form .form-section .field-hint {
+    display: block;
+    margin-top: 4px;
+}
+
+/* MODO PERIÓDICO: selector de días de la semana */
+:host .publish-form .form-section .days-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+:host .publish-form .form-section .days-select .day-chip {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: 'DM Sans', sans-serif;
+}
+:host .publish-form .form-section .days-select .day-chip.active {
+    border-color: var(--primary);
+    color: #fff;
+    background: var(--primary);
+}
+
 /* ESTILOS DE LOS MENSAJES DE ALERTA EN EL FORMULARIO DE PUBLICACIÓN DE VIAJES */
 .alert {
     padding: 8px 16px;

@@ -16,6 +16,8 @@ export interface Trip {
   price: number;
   passengersDTO: UserSummary[];
   requestersDTO: UserSummary[];
+  /** Id de la plantilla periódica que generó el viaje; null/undefined si es puntual. */
+  periodicTripId?: number | null;
 }
 
 export interface Page<T> {
