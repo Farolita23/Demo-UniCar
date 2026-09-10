@@ -66,7 +66,7 @@
                         <div class="info-item"><span class="info-label">Localidad</span><span>{{ user.homeTownDTO?.name ?? '—' }}</span></div>
                     </div>
                     @if (user.strikes && user.strikes > 0) {
-                        <div class="strikes-warn">⚠️ Tienes {{ user.strikes }} strike{{ user.strikes > 1 ? 's' : '' }} en tu cuenta</div>
+                        <div class="strikes-warn"><app-icon icon="alerta" [size]="16"></app-icon> Tienes {{ user.strikes }} strike{{ user.strikes > 1 ? 's' : '' }} en tu cuenta</div>
                     }
                 </div>
                 }
@@ -311,7 +311,7 @@
                                             <div class="preview-overlay">Cambiar foto</div>
                                         } @else {
                                             <div class="upload-placeholder">
-                                                <span class="upload-icon">📷</span>
+                                                <span class="upload-icon"><app-icon icon="camara" [size]="32"></app-icon></span>
                                                 <span>Haz clic para subir una imagen</span>
                                                 <small>JPG, PNG, GIF — máx. 5MB</small>
                                             </div>
@@ -325,7 +325,7 @@
                                 </div>
                             </div>
                             @if (editSuccess) {
-                                <div class="alert alert-success">✓ Perfil actualizado correctamente</div>
+                                <div class="alert alert-success"><app-icon icon="check" [size]="15"></app-icon> Perfil actualizado correctamente</div>
                             }
                             @if (editError) {
                                 <div class="alert alert-error">{{ editError }}</div>

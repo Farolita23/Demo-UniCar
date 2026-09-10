@@ -4,13 +4,14 @@ import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
+import { AppIcon } from '../../elements/icon/icon';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 
 @Component({
     selector: 'page-login',
     standalone: true,
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, Header],
+    imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, AppIcon],
     templateUrl: './login.html',
     styleUrl: './login.css',
 })

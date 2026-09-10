@@ -18,19 +18,23 @@
             <div class="manage-header__left">
                 <h1 class="manage-title">Gestionar viaje</h1>
                 <div class="direction-badge" [class.to-campus]="trip.isToCampus">
-                    {{ trip.isToCampus ? '🎓 Hacia el campus' : '🏠 Desde el campus' }}
+                    @if (trip.isToCampus) {
+                    <app-icon icon="birrete" [size]="16"></app-icon> Hacia el campus
+                    } @else {
+                    <app-icon icon="casa" [size]="16"></app-icon> Desde el campus
+                    }
                 </div>
             </div>
             <div class="manage-header__actions">
-                <a [routerLink]="['/trip-detail', trip.id]" class="btn btn-ghost">👁 Ver</a>
-                <button class="btn btn-danger-outline" (click)="deleteTrip()">🗑 Eliminar</button>
+                <a [routerLink]="['/trip-detail', trip.id]" class="btn btn-ghost"><app-icon icon="ojo" [size]="15"></app-icon> Ver</a>
+                <button class="btn btn-danger-outline" (click)="deleteTrip()"><app-icon icon="papelera" [size]="15"></app-icon> Eliminar</button>
             </div>
         </div>
         <!-- Status overview cards -->
         <div class="status-grid slide-up">
             <div class="status-card">
                 <div class="status-info">
-                    <div class="status-icon">🛣</div>
+                    <div class="status-icon"><app-icon icon="pin" [size]="20"></app-icon></div>
                     <span class="status-label">Ruta</span>
                 </div>
                 <span class="status-value"><span class="accent">Desde </span>{{ trip.townDTO.name }}<span
@@ -38,21 +42,21 @@
             </div>
             <div class="status-card">
                 <div class="status-info">
-                    <div class="status-icon">📅</div>
+                    <div class="status-icon"><app-icon icon="calendario" [size]="20"></app-icon></div>
                     <span class="status-label">Fecha</span>
                 </div>
                 <span class="status-value">{{ formatDate(trip.departureDate) }}</span>
             </div>
             <div class="status-card">
                 <div class="status-info">
-                    <div class="status-icon">⏰</div>
+                    <div class="status-icon"><app-icon icon="reloj" [size]="20"></app-icon></div>
                     <span class="status-label">Hora</span>
                 </div>
                 <span class="status-value">{{ trip.departureTime }}</span>
             </div>
             <div class="status-card">
                 <div class="status-info">
-                    <div class="status-icon">💰</div>
+                    <div class="status-icon"><app-icon icon="moneda" [size]="20"></app-icon></div>
                     <span class="status-label">Precio</span>
                 </div>
                 <span class="status-value price-val">{{ trip.price | number:'1.2-2' }}€</span>
@@ -61,7 +65,7 @@
         <!-- Occupancy bar -->
         <div class="occupancy-card slide-up delay-1">
             <div class="section-header occupancy-header">
-                <h2 class="occupancy-title">💺 Ocupación del vehículo</h2>
+                <h2 class="occupancy-title"><app-icon icon="asiento" [size]="18"></app-icon> Ocupación del vehículo</h2>
                 <div class="occupancy-numbers">
                     <span class="occupancy-current">{{ occupiedSeats }}</span>
                     <span class="occupancy-sep">/</span>
@@ -77,34 +81,34 @@
             <div class="occupancy-footer">
                 @if (isFull) {
                 <span class="occupancy-status full-status pulse">
-                    🔴 Vehículo completo — No se pueden aceptar más solicitudes
+                    <app-icon icon="asiento" [size]="15"></app-icon> Vehículo completo — No se pueden aceptar más solicitudes
                 </span>
                 } @else if (freeSeats === 1) {
                 <span class="occupancy-status almost-status">
-                    🟡 Queda {{ freeSeats }} plaza libre
+                    <app-icon icon="asiento" [size]="15"></app-icon> Queda {{ freeSeats }} plaza libre
                 </span>
                 } @else {
                 <span class="occupancy-status free-status">
-                    🟢 {{ freeSeats }} plazas libres
+                    <app-icon icon="asiento" [size]="15"></app-icon> {{ freeSeats }} plazas libres
                 </span>
                 }
             </div>
             <div class="car-detail-row">
-                <span>🚗 {{ trip.carDTO.model }}</span>
-                <span>🎨 {{ trip.carDTO.color }}</span>
-                <span>📋 {{ trip.carDTO.licensePlate }}</span>
+                <span><app-icon icon="coche" [size]="14"></app-icon> {{ trip.carDTO.model }}</span>
+                <span>{{ trip.carDTO.color }}</span>
+                <span><app-icon icon="documento" [size]="14"></app-icon> {{ trip.carDTO.licensePlate }}</span>
             </div>
         </div>
         <!-- Toast messages -->
         @if (actionSuccess) {
         <div class="toast toast-success slide-down">
-            <span class="toast-icon">✅</span>
+            <span class="toast-icon"><app-icon icon="check" [size]="18"></app-icon></span>
             <span>{{ actionSuccess }}</span>
         </div>
         }
         @if (actionError) {
         <div class="toast toast-error slide-down">
-            <span class="toast-icon">❌</span>
+            <span class="toast-icon"><app-icon icon="cerrar" [size]="18"></app-icon></span>
             <span>{{ actionError }}</span>
         </div>
         }
@@ -112,14 +116,14 @@
             <!-- Pending requests section -->
             <div class="manage-section slide-up delay-2">
                 <div class="section-header">
-                    <h2 class="section-title">⏳ Solicitudes pendientes</h2>
+                    <h2 class="section-title"><app-icon icon="reloj" [size]="18"></app-icon> Solicitudes pendientes</h2>
                     @if (requesters.length > 0) {
                         <span class="count-badge pending-count">{{ requesters.length }}</span>
                     }
                 </div>
                 @if (requesters.length === 0) {
                     <div class="empty-section">
-                        <div class="empty-section-icon">📭</div>
+                        <div class="empty-section-icon"><app-icon icon="usuario" [size]="36"></app-icon></div>
                         <p>No hay solicitudes pendientes</p>
                     </div>
                 } @else {
@@ -149,7 +153,7 @@
                                 @if (isActionLoading(requester.id, 'accept')) {
                                 <span class="btn-spinner"></span>
                                 } @else {
-                                ✓
+                                <app-icon icon="check" [size]="16"></app-icon>
                                 }
                             </button>
                             }
@@ -158,7 +162,7 @@
                                 @if (isActionLoading(requester.id, 'reject')) {
                                 <span class="btn-spinner"></span>
                                 } @else {
-                                ✗ 
+                                <app-icon icon="cerrar" [size]="16"></app-icon>
                                 }
                             </button>
                         </div>
@@ -170,14 +174,14 @@
             <!-- Confirmed passengers section -->
             <div class="manage-section slide-up delay-3">
                 <div class="section-header">
-                    <h2 class="section-title">👥 Pasajeros confirmados</h2>
+                    <h2 class="section-title"><app-icon icon="usuario" [size]="18"></app-icon> Pasajeros confirmados</h2>
                     @if (passengers.length > 0) {
                     <span class="count-badge confirmed-count">{{ passengers.length }}</span>
                     }
                 </div>
                 @if (passengers.length === 0) {
                 <div class="empty-section">
-                    <div class="empty-section-icon">🪑</div>
+                    <div class="empty-section-icon"><app-icon icon="asiento" [size]="36"></app-icon></div>
                     <p>Aún no hay pasajeros confirmados</p>
                 </div>
                 } @else {

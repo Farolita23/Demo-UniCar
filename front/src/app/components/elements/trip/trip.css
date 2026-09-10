@@ -36,6 +36,16 @@
 .free-seats.low { background: rgba(230,57,70,0.15); color: var(--danger); }
 .free-seats.full-seats { background: rgba(230,57,70,0.2); color: var(--danger); font-weight: 700; }
 
+.periodic-badge {
+  background: rgba(99,102,241,0.16);
+  color: #a5b4fc;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .trip-card__body { padding: 1.25rem; flex: 1; }
 
 .trip-card__route {

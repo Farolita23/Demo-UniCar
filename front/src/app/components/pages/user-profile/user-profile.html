@@ -18,7 +18,7 @@
 
         <!-- Toast -->
         @if (reportSuccess) {
-        <div class="toast toast-success slide-down">✅ {{ reportSuccess }}</div>
+        <div class="toast toast-success slide-down"><app-icon icon="check" [size]="16"></app-icon> {{ reportSuccess }}</div>
         }
 
         <div class="up-layout fade-in">
@@ -55,7 +55,7 @@
                 </div>
 
                 @if (isDriver) {
-                <span class="up-driver-badge">🚗 Conductor · desde {{ user.drivingLicenseYear }}</span>
+                <span class="up-driver-badge"><app-icon icon="coche" [size]="14"></app-icon> Conductor · desde {{ user.drivingLicenseYear }}</span>
                 }
 
                 @if (user.description) {
@@ -66,13 +66,13 @@
                 <div class="up-info-list">
                     @if (user.usualCampusDTO) {
                     <div class="up-info-item">
-                        <span class="up-info-icon">🎓</span>
+                        <span class="up-info-icon"><app-icon icon="birrete" [size]="18"></app-icon></span>
                         <span>{{ user.usualCampusDTO.name }}</span>
                     </div>
                     }
                     @if (user.homeTownDTO) {
                     <div class="up-info-item">
-                        <span class="up-info-icon">📍</span>
+                        <span class="up-info-icon"><app-icon icon="pin" [size]="18"></app-icon></span>
                         <span>{{ user.homeTownDTO.name }}</span>
                     </div>
                     }
@@ -86,7 +86,7 @@
                         {{ isFavorite ? '★ Favorito' : '☆ Añadir a favoritos' }}
                     </button>
                     <button class="btn btn-danger-outline btn-sm" (click)="openReport()">
-                        🚩 Reportar
+                        <app-icon icon="bandera" [size]="14"></app-icon> Reportar
                     </button>
                 </div>
                 }

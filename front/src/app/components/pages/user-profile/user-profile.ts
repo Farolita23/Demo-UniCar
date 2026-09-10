@@ -17,6 +17,9 @@ import {
     Footer
 } from '../../elements/footer/footer';
 import {
+    AppIcon
+} from '../../elements/icon/icon';
+import {
     ApiService
 } from '../../../services/api-service';
 import {
@@ -29,7 +32,7 @@ import {
 @Component({
     selector: 'page-user-profile',
     standalone: true,
-    imports: [CommonModule, RouterLink, FormsModule, Header, Footer],
+    imports: [CommonModule, RouterLink, FormsModule, Header, Footer, AppIcon],
     templateUrl: './user-profile.html',
     styleUrl: './user-profile.css',
 })

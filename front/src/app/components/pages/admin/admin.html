@@ -3,24 +3,24 @@
     <div class="container">
 
         <div class="page-header">
-            <h1>🛡 Panel de administración</h1>
+            <h1><app-icon icon="admin" [size]="28"></app-icon> Panel de administración</h1>
             <p class="page-subtitle">Gestión de usuarios, reportes y avisos</p>
         </div>
 
         <!-- Toasts -->
         @if (actionSuccess) {
-        <div class="toast toast-success slide-down">✅ {{ actionSuccess }}</div>
+        <div class="toast toast-success slide-down"><app-icon icon="check" [size]="16"></app-icon> {{ actionSuccess }}</div>
         }
         @if (actionError) {
-        <div class="toast toast-error slide-down">❌ {{ actionError }}</div>
+        <div class="toast toast-error slide-down"><app-icon icon="cerrar" [size]="16"></app-icon> {{ actionError }}</div>
         }
 
         <!-- Tabs -->
         <div class="tabs">
-            <button class="tab" [class.active]="activeTab === 'users'" (click)="activeTab = 'users'">👥 Usuarios
+            <button class="tab" [class.active]="activeTab === 'users'" (click)="activeTab = 'users'"><app-icon icon="usuario" [size]="16"></app-icon> Usuarios
                 <span class="tab-badge">{{ totalUsers }}</span>
             </button>
-            <button class="tab" [class.active]="activeTab === 'reports'" (click)="activeTab = 'reports'">🚩 Reportes
+            <button class="tab" [class.active]="activeTab === 'reports'" (click)="activeTab = 'reports'"><app-icon icon="bandera" [size]="16"></app-icon> Reportes
                 @if (totalReports > 0) {
                 <span class="tab-badge danger-badge">{{ totalReports }}</span>
                 }
@@ -76,16 +76,16 @@
 
             <div class="udp-actions">
                 @if (selectedUser.banned) {
-                <button class="btn btn-success btn-sm" (click)="unbanUser(selectedUser.id)">✓ Desbanear</button>
+                <button class="btn btn-success btn-sm" (click)="unbanUser(selectedUser.id)"><app-icon icon="check" [size]="14"></app-icon> Desbanear</button>
                 } @else if (selectedUser.role === 'ADMIN') {
-                <span class="btn">🚫 No se puede banear a un Administrador</span>
+                <span class="btn"><app-icon icon="prohibido" [size]="14"></app-icon> No se puede banear a un Administrador</span>
                 } @else {
-                <button class="btn btn-danger btn-sm" (click)="banUser(selectedUser.id)">🚫 Banear</button>
+                <button class="btn btn-danger btn-sm" (click)="banUser(selectedUser.id)"><app-icon icon="prohibido" [size]="14"></app-icon> Banear</button>
                 }
                 @if (selectedUser.role !== 'ADMIN') {
-                <button class="btn btn-warning btn-sm" (click)="addStrike(selectedUser.id)">⚡ Añadir strike</button>
+                <button class="btn btn-warning btn-sm" (click)="addStrike(selectedUser.id)"><app-icon icon="rayo" [size]="14"></app-icon> Añadir strike</button>
                 }
-                <a [routerLink]="['/user', selectedUser.id]" class="btn btn-ghost btn-sm">👁 Ver perfil</a>
+                <a [routerLink]="['/user', selectedUser.id]" class="btn btn-ghost btn-sm"><app-icon icon="ojo" [size]="14"></app-icon> Ver perfil</a>
             </div>
         </div>
 
@@ -113,7 +113,7 @@
                     <span class="aur-banned">Baneado</span>
                     }
                     @if (u.strikes > 0) {
-                    <span class="aur-strikes">{{ u.strikes }}⚡</span>
+                    <span class="aur-strikes">{{ u.strikes }} <app-icon icon="rayo" [size]="12"></app-icon></span>
                     }
                 </div>
                 <div class="aur-actions">
@@ -135,7 +135,7 @@
         @if (activeTab === 'reports') {
         @if (totalReports === 0) {
         <div class="empty-state">
-            <div class="empty-icon">🎉</div>
+            <div class="empty-icon"><app-icon icon="check" [size]="48"></app-icon></div>
             <h3>Sin reportes pendientes</h3>
             <p>No hay reportes de usuarios por revisar.</p>
         </div>

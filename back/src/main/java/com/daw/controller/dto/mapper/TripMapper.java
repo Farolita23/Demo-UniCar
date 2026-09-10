@@ -15,12 +15,13 @@ import com.daw.datamodel.entities.Trip;
                                             TownMapper.class})
 public interface TripMapper {
 
-    @Mapping(target = "carDTO",        source = "car")
-    @Mapping(target = "townDTO",       source = "town")
-    @Mapping(target = "campusDTO",     source = "campus")
-    @Mapping(target = "driverDTO",     source = "car.driver")
-    @Mapping(target = "passengersDTO", source = "passengers")
-    @Mapping(target = "requestersDTO", source = "requesters")
+    @Mapping(target = "carDTO",         source = "car")
+    @Mapping(target = "townDTO",        source = "town")
+    @Mapping(target = "campusDTO",      source = "campus")
+    @Mapping(target = "driverDTO",      source = "car.driver")
+    @Mapping(target = "passengersDTO",  source = "passengers")
+    @Mapping(target = "requestersDTO",  source = "requesters")
+    @Mapping(target = "periodicTripId", source = "periodicTrip.id")
     TripDTO toDto(Trip trip);
 
     List<TripDTO> toListDto(List<Trip> trips);

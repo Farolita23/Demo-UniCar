@@ -4,6 +4,11 @@
             <app-icon [icon]="data.isToCampus ? 'birrete' : 'casa'" [size]="22"></app-icon>
         </span>
         <span class="dir-label">{{ direction }}</span>
+        @if (data.periodicTripId) {
+        <span class="periodic-badge" title="Viaje de una serie periódica">
+            <app-icon icon="repetir" [size]="12"></app-icon> Periódico
+        </span>
+        }
         <span class="free-seats" [class.low]="freeSeats <= 1" [class.full-seats]="freeSeats <= 0">
             <app-icon icon="asiento" [size]="14"></app-icon>
             @if (freeSeats <= 0) { Completo } @else { {{ freeSeats }} plazas libres } </span>
@@ -52,12 +57,14 @@
         <div class="trip-card__actions">
             @if (driverId && !isOwnTrip) {
             <button class="btn btn-ghost trip-btn trip-btn-profile" (click)="goToDriverProfile($event)">
-                👤 Perfil
+                <app-icon icon="usuario" [size]="15"></app-icon> Perfil
             </button>
             }
             @if (auth.isLoggedIn()) {
             @if(isOwnTrip){
-            <button class="btn btn-ghost trip-btn" (click)="goToManage()">⚙ Gestionar</button>
+            <button class="btn btn-ghost trip-btn" (click)="goToManage()">
+                <app-icon icon="ajustes" [size]="15"></app-icon> Gestionar
+            </button>
             } @else if (isPassenger) {
             <button class="btn btn-ghost trip-btn" (click)="leaveTrip()" [disabled]="loading">
                 {{ loading ? '...' : 'Abandonar' }}

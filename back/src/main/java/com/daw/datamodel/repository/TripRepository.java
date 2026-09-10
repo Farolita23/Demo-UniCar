@@ -158,4 +158,23 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
     @Query("SELECT DISTINCT t.town.id FROM Trip t JOIN t.requesters r WHERE r.id = :userId")
     List<Long> findTownIdsByRequester(@Param("userId") Long userId);
 
+    /**
+     * Recupera todos los viajes generados a partir de un viaje periódico.
+     *
+     * @param periodicTripId identificador del viaje periódico
+     * @param pageable configuración de paginación
+     * @return página de viajes generados
+     */
+    @Query("SELECT t FROM Trip t WHERE t.periodicTrip.id = :periodicTripId " +
+           "ORDER BY t.departureDate ASC, t.departureTime ASC")
+    Page<Trip> findByPeriodicTripId(@Param("periodicTripId") Long periodicTripId, Pageable pageable);
+
+    /**
+     * Cuenta los viajes individuales generados a partir de un viaje periódico.
+     *
+     * @param periodicTripId identificador del viaje periódico
+     * @return número de viajes vinculados a esa plantilla
+     */
+    long countByPeriodicTripId(Long periodicTripId);
+
 }

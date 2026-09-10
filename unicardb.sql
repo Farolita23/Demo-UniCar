@@ -657,6 +657,203 @@ ALTER TABLE `trip_requester`
 ALTER TABLE `user`
   ADD CONSTRAINT `fk_user_campus` FOREIGN KEY (`usual_campus_id`) REFERENCES `campus` (`id`),
   ADD CONSTRAINT `fk_user_town` FOREIGN KEY (`home_town_id`) REFERENCES `town` (`id`);
+
+-- =====================================================================
+--  AMPLIACION PARA PRUEBAS (viajes periodicos + datos con fechas lejanas)
+--  Anadido el 2026-09-08. Contrasena de todos los usuarios *Test: Test1234!
+-- =====================================================================
+
+-- --------------------------------------------------------
+-- Estructura de tabla para la tabla `periodic_trip`
+-- (la genera Hibernate con ddl-auto=update; se crea aqui para poder
+--  sembrar datos en el arranque del contenedor de base de datos)
+-- --------------------------------------------------------
+
+CREATE TABLE `periodic_trip` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `departure_address` varchar(255) NOT NULL,
+  `departure_time` time(6) NOT NULL,
+  `end_date` date NOT NULL,
+  `is_to_campus` bit(1) NOT NULL,
+  `price` decimal(4,2) NOT NULL,
+  `repeat_interval_weeks` int(11) NOT NULL,
+  `start_date` date NOT NULL,
+  `car_id` bigint(20) NOT NULL,
+  `campus_id` bigint(20) NOT NULL,
+  `town_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_periodic_trip_car` FOREIGN KEY (`car_id`) REFERENCES `car` (`id`),
+  CONSTRAINT `fk_periodic_trip_campus` FOREIGN KEY (`campus_id`) REFERENCES `campus` (`id`),
+  CONSTRAINT `fk_periodic_trip_town` FOREIGN KEY (`town_id`) REFERENCES `town` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `periodic_trip_days` (
+  `periodic_trip_id` bigint(20) NOT NULL,
+  `day_of_week` varchar(255) DEFAULT NULL,
+  KEY `idx_ptd_ptid` (`periodic_trip_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- FK nullable de trip hacia su plantilla periodica
+ALTER TABLE `trip`
+  ADD COLUMN `periodic_trip_id` bigint(20) DEFAULT NULL,
+  ADD CONSTRAINT `fk_trip_periodic_trip` FOREIGN KEY (`periodic_trip_id`) REFERENCES `periodic_trip` (`id`) ON DELETE SET NULL;
+
+-- --------------------------------------------------------
+-- Usuarios de prueba (id 9-16). Password en claro: Test1234!
+-- --------------------------------------------------------
+
+INSERT INTO `user` (`id`, `banned`, `birthdate`, `description`, `driving_license_year`, `email`, `genre`, `name`, `password`, `phone`, `profile_image_url`, `strikes`, `username`, `home_town_id`, `usual_campus_id`, `role`) VALUES
+(9,  b'0', '1999-04-12', 'Conductora habitual ruta Aljarafe', 2017, 'lucia.test@unicar.dev',  'Mujer',      'Lucia Prueba',        '$2y$10$kQD1VPSVrLN/Dm3OZRZVkOEj.3wLzeZ7HYG9bjDySBYYZOzgUcH2S', '611000009', NULL, 0, 'luciaTest', 96,  3, 'USER'),
+(10, b'0', '1998-11-23', 'Disponible por las mananas',        2016, 'marco.test@unicar.dev',  'Hombre',     'Marco Prueba',        '$2y$10$kQD1VPSVrLN/Dm3OZRZVkOEj.3wLzeZ7HYG9bjDySBYYZOzgUcH2S', '611000010', NULL, 0, 'marcoTest', 61,  1, 'USER'),
+(11, b'0', '2001-07-05', '',                                  2020, 'sara.test@unicar.dev',   'Mujer',      'Sara Prueba',         '$2y$10$kQD1VPSVrLN/Dm3OZRZVkOEj.3wLzeZ7HYG9bjDySBYYZOzgUcH2S', '611000011', NULL, 0, 'saraTest',  37,  4, 'USER'),
+(12, b'0', '2000-02-18', 'Voy a Cartuja casi todos los dias', 2019, 'diego.test@unicar.dev',  'Hombre',     'Diego Prueba',        '$2y$10$kQD1VPSVrLN/Dm3OZRZVkOEj.3wLzeZ7HYG9bjDySBYYZOzgUcH2S', '611000012', NULL, 0, 'diegoTest', 90,  3, 'USER'),
+(13, b'0', '1997-09-30', '',                                  2015, 'noa.test@unicar.dev',    'No binario', 'Noa Prueba',          '$2y$10$kQD1VPSVrLN/Dm3OZRZVkOEj.3wLzeZ7HYG9bjDySBYYZOzgUcH2S', '611000013', NULL, 0, 'noaTest',   94,  5, 'USER'),
+(14, b'0', '2002-05-14', 'Nueva en la plataforma',            NULL, 'irene.test@unicar.dev',  'Mujer',      'Irene Prueba',        '$2y$10$kQD1VPSVrLN/Dm3OZRZVkOEj.3wLzeZ7HYG9bjDySBYYZOzgUcH2S', '611000014', NULL, 0, 'ireneTest', 62,  2, 'USER'),
+(15, b'0', '1996-12-01', 'Conductor los fines de semana',     2014, 'pablo.test@unicar.dev',  'Hombre',     'Pablo Prueba',        '$2y$10$kQD1VPSVrLN/Dm3OZRZVkOEj.3wLzeZ7HYG9bjDySBYYZOzgUcH2S', '611000015', NULL, 1, 'pabloTest', 100, 3, 'USER'),
+(16, b'0', '1999-08-08', 'Cuenta de administracion de pruebas',2018, 'admin.test@unicar.dev',  'Mujer',      'Ada Prueba (Admin)',  '$2y$10$kQD1VPSVrLN/Dm3OZRZVkOEj.3wLzeZ7HYG9bjDySBYYZOzgUcH2S', '611000016', NULL, 0, 'adminTest', 1,   6, 'ADMIN');
+
+-- --------------------------------------------------------
+-- Coches de los usuarios de prueba (id 13-24)
+-- --------------------------------------------------------
+
+INSERT INTO `car` (`id`, `capacity`, `color`, `license_plate`, `model`, `user_id`) VALUES
+(13, 4, 'Blanco',   '1001 KLM', 'Seat Leon',           9),
+(14, 5, 'Gris',     '1002 KLM', 'Renault Megane',      10),
+(15, 4, 'Azul',     '1003 KLM', 'Peugeot 208',         11),
+(16, 5, 'Negro',    '1004 KLM', 'Volkswagen Polo',     12),
+(17, 7, 'Rojo',     '1005 KLM', 'Citroen C4 Picasso',  13),
+(18, 4, 'Verde',    '1006 KLM', 'Toyota Yaris',        14),
+(19, 5, 'Blanco',   '1007 KLM', 'Kia Ceed',            15),
+(20, 5, 'Plata',    '1008 KLM', 'Hyundai i20',         16),
+(21, 2, 'Amarillo', '1009 KLM', 'Fiat 500',            9),
+(22, 5, 'Azul',     '1010 KLM', 'Mazda 2',             10),
+(23, 4, 'Gris',     '1011 KLM', 'Opel Astra',          11),
+(24, 6, 'Negro',    '1012 KLM', 'Ford Focus SW',       12);
+
+-- --------------------------------------------------------
+-- Viajes sueltos con fechas lejanas (id 14-25)
+-- --------------------------------------------------------
+
+INSERT INTO `trip` (`id`, `departure_address`, `departure_date`, `departure_time`, `is_to_campus`, `price`, `campus_id`, `car_id`, `town_id`) VALUES
+(14, 'Av. de Europa 12',      '2027-02-15', '07:50:00.000000', b'1', 2.20, 3, 13, 96),
+(15, 'Plaza del Pueblo',      '2027-03-20', '08:10:00.000000', b'1', 1.80, 1, 14, 61),
+(16, 'C/ Mayor 4',            '2027-04-10', '14:30:00.000000', b'0', 2.75, 4, 15, 37),
+(17, 'Estacion de Cercanias', '2027-05-12', '07:30:00.000000', b'1', 3.40, 3, 16, 90),
+(18, 'Rotonda Sur',           '2027-06-01', '18:15:00.000000', b'0', 1.50, 5, 17, 94),
+(19, 'C/ Sevilla 20',         '2027-07-15', '09:00:00.000000', b'1', 4.10, 2, 18, 62),
+(20, 'Parque Tecnologico',    '2027-09-21', '15:45:00.000000', b'0', 2.00, 3, 19, 100),
+(21, 'Av. Blas Infante',      '2027-11-05', '08:25:00.000000', b'1', 3.15, 6, 20, 1),
+(22, 'C/ Real 8',             '2027-12-18', '13:20:00.000000', b'0', 1.95, 3, 21, 96),
+(23, 'Mercado de Abastos',    '2028-01-10', '07:40:00.000000', b'1', 2.60, 1, 22, 61),
+(24, 'Poligono Industrial',   '2028-02-14', '16:05:00.000000', b'0', 5.20, 4, 23, 37),
+(25, 'Av. de la Paz 30',      '2028-03-01', '08:00:00.000000', b'1', 2.35, 3, 24, 90);
+
+-- --------------------------------------------------------
+-- Plantillas de viajes periodicos (id 1-3)
+-- --------------------------------------------------------
+
+INSERT INTO `periodic_trip` (`id`, `departure_address`, `departure_time`, `end_date`, `is_to_campus`, `price`, `repeat_interval_weeks`, `start_date`, `car_id`, `campus_id`, `town_id`) VALUES
+(1, 'Parada Autobus Norte', '07:45:00.000000', '2027-03-31', b'1', 2.50, 1, '2027-03-01', 17, 3, 96),
+(2, 'Puerta Facultad B',    '14:15:00.000000', '2027-04-30', b'0', 3.00, 1, '2027-04-01', 19, 2, 62),
+(3, 'Rotonda Este',         '08:05:00.000000', '2027-10-29', b'1', 1.75, 1, '2027-10-04', 24, 4, 37);
+
+INSERT INTO `periodic_trip_days` (`periodic_trip_id`, `day_of_week`) VALUES
+(1, 'MONDAY'),
+(1, 'WEDNESDAY'),
+(2, 'FRIDAY'),
+(3, 'TUESDAY'),
+(3, 'THURSDAY');
+
+-- --------------------------------------------------------
+-- Viajes individuales generados a partir de cada plantilla periodica
+--   Periodica 1 -> lunes y miercoles de marzo 2027   (id 26-35)
+--   Periodica 2 -> viernes de abril 2027             (id 36-40)
+--   Periodica 3 -> martes y jueves de octubre 2027   (id 41-48)
+-- --------------------------------------------------------
+
+INSERT INTO `trip` (`id`, `departure_address`, `departure_date`, `departure_time`, `is_to_campus`, `price`, `campus_id`, `car_id`, `town_id`, `periodic_trip_id`) VALUES
+(26, 'Parada Autobus Norte', '2027-03-01', '07:45:00.000000', b'1', 2.50, 3, 17, 96, 1),
+(27, 'Parada Autobus Norte', '2027-03-03', '07:45:00.000000', b'1', 2.50, 3, 17, 96, 1),
+(28, 'Parada Autobus Norte', '2027-03-08', '07:45:00.000000', b'1', 2.50, 3, 17, 96, 1),
+(29, 'Parada Autobus Norte', '2027-03-10', '07:45:00.000000', b'1', 2.50, 3, 17, 96, 1),
+(30, 'Parada Autobus Norte', '2027-03-15', '07:45:00.000000', b'1', 2.50, 3, 17, 96, 1),
+(31, 'Parada Autobus Norte', '2027-03-17', '07:45:00.000000', b'1', 2.50, 3, 17, 96, 1),
+(32, 'Parada Autobus Norte', '2027-03-22', '07:45:00.000000', b'1', 2.50, 3, 17, 96, 1),
+(33, 'Parada Autobus Norte', '2027-03-24', '07:45:00.000000', b'1', 2.50, 3, 17, 96, 1),
+(34, 'Parada Autobus Norte', '2027-03-29', '07:45:00.000000', b'1', 2.50, 3, 17, 96, 1),
+(35, 'Parada Autobus Norte', '2027-03-31', '07:45:00.000000', b'1', 2.50, 3, 17, 96, 1),
+(36, 'Puerta Facultad B',    '2027-04-02', '14:15:00.000000', b'0', 3.00, 2, 19, 62, 2),
+(37, 'Puerta Facultad B',    '2027-04-09', '14:15:00.000000', b'0', 3.00, 2, 19, 62, 2),
+(38, 'Puerta Facultad B',    '2027-04-16', '14:15:00.000000', b'0', 3.00, 2, 19, 62, 2),
+(39, 'Puerta Facultad B',    '2027-04-23', '14:15:00.000000', b'0', 3.00, 2, 19, 62, 2),
+(40, 'Puerta Facultad B',    '2027-04-30', '14:15:00.000000', b'0', 3.00, 2, 19, 62, 2),
+(41, 'Rotonda Este',         '2027-10-05', '08:05:00.000000', b'1', 1.75, 4, 24, 37, 3),
+(42, 'Rotonda Este',         '2027-10-07', '08:05:00.000000', b'1', 1.75, 4, 24, 37, 3),
+(43, 'Rotonda Este',         '2027-10-12', '08:05:00.000000', b'1', 1.75, 4, 24, 37, 3),
+(44, 'Rotonda Este',         '2027-10-14', '08:05:00.000000', b'1', 1.75, 4, 24, 37, 3),
+(45, 'Rotonda Este',         '2027-10-19', '08:05:00.000000', b'1', 1.75, 4, 24, 37, 3),
+(46, 'Rotonda Este',         '2027-10-21', '08:05:00.000000', b'1', 1.75, 4, 24, 37, 3),
+(47, 'Rotonda Este',         '2027-10-26', '08:05:00.000000', b'1', 1.75, 4, 24, 37, 3),
+(48, 'Rotonda Este',         '2027-10-28', '08:05:00.000000', b'1', 1.75, 4, 24, 37, 3);
+
+-- --------------------------------------------------------
+-- Pasajeros confirmados y solicitantes en los nuevos viajes
+-- --------------------------------------------------------
+
+INSERT INTO `trip_passenger` (`trip_id`, `passenger_id`) VALUES
+(14, 10), (14, 11), (14, 12),
+(15, 9),  (15, 13),
+(16, 12), (16, 14),
+(17, 9),  (17, 10),
+(20, 11), (20, 16),
+(26, 9),  (26, 10),
+(27, 11), (27, 12),
+(36, 9),  (36, 14),
+(41, 10), (41, 13);
+
+INSERT INTO `trip_requester` (`trip_id`, `requester_id`) VALUES
+(14, 13), (14, 14),
+(20, 9),  (20, 10),
+(26, 15),
+(36, 11);
+
+-- --------------------------------------------------------
+-- Favoritos y valoraciones entre usuarios de prueba
+-- --------------------------------------------------------
+
+INSERT INTO `favorite` (`id`, `favorite_user_id`, `user_id`) VALUES
+(9,  10, 9),
+(10, 11, 9),
+(11, 9,  10),
+(12, 13, 12),
+(13, 16, 15),
+(14, 12, 11);
+
+INSERT INTO `rating` (`id`, `rating`, `rated_user_id`, `user_rate_id`) VALUES
+(14, 5, 10, 9),
+(15, 4, 9,  10),
+(16, 3, 11, 9),
+(17, 5, 12, 11),
+(18, 4, 9,  13),
+(19, 2, 14, 12),
+(20, 5, 16, 11),
+(21, 4, 13, 10);
+
+INSERT INTO `report` (`id`, `date`, `reason`, `reported_user_id`, `user_report_id`) VALUES
+(4, '2027-02-20', 'No se presento al punto de encuentro', 12, 9),
+(5, '2027-03-05', 'Conduccion temeraria', 15, 11);
+
+-- --------------------------------------------------------
+-- Ajuste de los contadores AUTO_INCREMENT
+-- --------------------------------------------------------
+
+ALTER TABLE `user`     AUTO_INCREMENT = 17;
+ALTER TABLE `car`      AUTO_INCREMENT = 25;
+ALTER TABLE `trip`     AUTO_INCREMENT = 49;
+ALTER TABLE `favorite` AUTO_INCREMENT = 15;
+ALTER TABLE `rating`   AUTO_INCREMENT = 22;
+ALTER TABLE `report`   AUTO_INCREMENT = 6;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

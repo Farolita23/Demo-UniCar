@@ -355,4 +355,15 @@ public class TripService {
     public Page<TripDTO> findFutureTrips(Pageable pageable) {
         return tripMapper.toPageDto(tripRepository.findFutureTrips(pageable));
     }
+
+    /**
+     * Recupera todos los viajes generados a partir de un viaje periódico.
+     *
+     * @param periodicTripId identificador del viaje periódico
+     * @param pageable configuración de paginación
+     * @return página de {@link TripDTO} generados
+     */
+    public Page<TripDTO> findByPeriodicTripId(Long periodicTripId, Pageable pageable) {
+        return tripMapper.toPageDto(tripRepository.findByPeriodicTripId(periodicTripId, pageable));
+    }
 }

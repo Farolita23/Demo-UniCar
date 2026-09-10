@@ -2,18 +2,45 @@
 <div class="page-wrapper">
     <div class="container">
         <div class="publish-header">
-            <h1>Publicar viaje</h1>
-            <p>Comparte tu ruta hacia el campus y ayuda a otros estudiantes</p>
+            <h1>{{ mode === 'periodic' ? 'Publicar viaje periódico' : 'Publicar viaje' }}</h1>
+            <p>
+                @if (mode === 'periodic') {
+                Define una ruta recurrente y se generarán automáticamente todos los viajes del periodo.
+                } @else {
+                Comparte tu ruta hacia el campus y ayuda a otros estudiantes.
+                }
+            </p>
         </div>
 
         @if (success) {
         <div class="success-state">
-            <div class="success-icon">✓</div>
+            <div class="success-icon"><app-icon icon="check" [size]="40"></app-icon></div>
+            @if (mode === 'periodic') {
+            <h2>¡Viaje periódico creado!</h2>
+            <p>Se han generado <strong>{{ generatedCount }}</strong> viaje{{ generatedCount === 1 ? '' : 's' }} para el periodo indicado.</p>
+            } @else {
             <h2>¡Viaje publicado!</h2>
             <p>Tu viaje ya está disponible para otros estudiantes.</p>
+            }
         </div>
         } @else {
         <form [formGroup]="form" (ngSubmit)="submit()" class="publish-form">
+
+            <!-- MODO -->
+            <div class="form-section">
+                <h3 class="form-section-title"><app-icon icon="calendario" [size]="20"></app-icon> Tipo de viaje</h3>
+                <div class="dir-toggle">
+                    <button type="button" [class.active]="mode === 'single'" (click)="setMode('single')">
+                        <app-icon icon="pin" [size]="16"></app-icon> Puntual
+                    </button>
+                    <button type="button" [class.active]="mode === 'periodic'" (click)="setMode('periodic')">
+                        <app-icon icon="calendario" [size]="16"></app-icon> Periódico
+                    </button>
+                </div>
+                @if (mode === 'periodic') {
+                <p class="mode-hint">Ej.: cada lunes y miércoles del 1 de marzo al 30 de junio.</p>
+                }
+            </div>
 
             <!-- VEHÍCULO -->
             <div class="form-section">
@@ -108,7 +135,10 @@
 
             <!-- FECHA Y PRECIO -->
             <div class="form-section">
-                <h3 class="form-section-title"><app-icon icon="reloj" [size]="20"></app-icon> Fecha y precio</h3>
+                <h3 class="form-section-title"><app-icon icon="reloj" [size]="20"></app-icon>
+                    {{ mode === 'periodic' ? 'Periodicidad y precio' : 'Fecha y precio' }}</h3>
+
+                @if (mode === 'single') {
                 <div class="form-row-3">
                     <div class="form-group">
                         <label class="label required">Fecha</label>
@@ -150,12 +180,90 @@
                         }
                     </div>
                 </div>
+                } @else {
+                <!-- DÍAS DE LA SEMANA -->
+                <div class="form-group">
+                    <label class="label required">Días de la semana</label>
+                    <div class="days-select">
+                        @for (d of weekDays; track d.value) {
+                        <button type="button" class="day-chip" [class.active]="selectedDays[d.value]"
+                            (click)="toggleDay(d.value)" [attr.title]="d.label">{{ d.short }}</button>
+                        }
+                    </div>
+                    @if (submited && daysError) {
+                    <span class="error-msg">Selecciona al menos un día</span>
+                    }
+                </div>
+
+                <div class="form-row-3">
+                    <div class="form-group">
+                        <label class="label required">Fecha de inicio</label>
+                        <input type="date" formControlName="startDate">
+                        @let startDate = form.get('startDate');
+                        @if ((submited || startDate?.touched) && startDate?.invalid) {
+                        @if (startDate?.hasError("required")) {
+                        <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                        @else if (startDate?.hasError("pastDate")) {
+                        <span class="error-msg">La fecha no puede ser anterior a hoy</span>
+                        }
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label class="label required">Fecha de fin</label>
+                        <input type="date" formControlName="endDate">
+                        @let endDate = form.get('endDate');
+                        @if ((submited || endDate?.touched) && endDate?.invalid && endDate?.hasError("required")) {
+                        <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label class="label required">Hora</label>
+                        <input type="time" formControlName="departureTime">
+                        @let ptime = form.get('departureTime');
+                        @if ((submited || ptime?.touched) && ptime?.invalid && ptime?.hasError("required")) {
+                        <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                    </div>
+                </div>
+
+                <div class="form-row-2">
+                    <div class="form-group">
+                        <label class="label required">Precio por plaza (€)</label>
+                        <input type="number" formControlName="price" placeholder="0.00" min="0.50" step="0.05">
+                        @let pprice = form.get('price');
+                        @if ((submited || pprice?.touched) && pprice?.invalid) {
+                        @if (pprice?.hasError("required")) {
+                        <span class="error-msg">Este campo no puede estar vacio</span>
+                        }
+                        @else if (pprice?.hasError("min")) {
+                        <span class="error-msg">El precio no puede ser menor que 0.50</span>
+                        }
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label class="label required">Repetir cada (semanas)</label>
+                        <input type="number" formControlName="repeatIntervalWeeks" min="1" step="1" placeholder="1">
+                        <small class="field-hint">1 = todas las semanas · 2 = semanas alternas</small>
+                        @let riw = form.get('repeatIntervalWeeks');
+                        @if ((submited || riw?.touched) && riw?.invalid) {
+                        <span class="error-msg">Debe ser un número igual o mayor que 1</span>
+                        }
+                    </div>
+                </div>
+
+                @if (dateRangeError) { <span class="error-msg">{{ dateRangeError }}</span> }
+                }
             </div>
 
             @if (error) { <div class="alert alert-error">{{ error }}</div> }
 
             <button type="submit" class="btn btn-primary submit-btn">
-                @if (loading) { <span class="spinner"></span> Publicando } @else { Publicar viaje }
+                @if (loading) {
+                <span class="spinner"></span> {{ mode === 'periodic' ? 'Generando viajes' : 'Publicando' }}
+                } @else {
+                {{ mode === 'periodic' ? 'Crear viaje periódico' : 'Publicar viaje' }}
+                }
             </button>
         </form>
         }

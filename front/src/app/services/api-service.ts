@@ -8,6 +8,7 @@ import { User, Favorite, Report } from '../models/user.model';
 import { Campus } from '../models/campus.model';
 import { Town } from '../models/town.model';
 import { Car } from '../models/car.model';
+import { PeriodicTrip, PeriodicTripCreate } from '../models/periodic-trip.model';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -136,6 +137,32 @@ export class ApiService {
 
     leaveTrip(tripId: number, userId: number): Observable<Trip> {
         return this.http.delete<Trip>(`${this.URL}/api/trip/${tripId}/leave/${userId}`, { headers: this.authHeaders() });
+    }
+
+    // ── PERIODIC TRIPS ────────────────────────────────────────────────────────
+    /** Crea una plantilla de viaje periódico. El backend genera los viajes individuales. */
+    createPeriodicTrip(dto: PeriodicTripCreate | any): Observable<PeriodicTrip> {
+        return this.http.post<PeriodicTrip>(`${this.URL}/api/periodic-trip`, dto, { headers: this.authHeaders() });
+    }
+
+    getPeriodicTripById(id: number): Observable<PeriodicTrip> {
+        return this.http.get<PeriodicTrip>(`${this.URL}/api/periodic-trip/${id}`, { headers: this.authHeaders() });
+    }
+
+    /** Plantillas periódicas publicadas por un conductor. */
+    getPeriodicTripsAsDriver(driverId: number, page = 0, size = 20): Observable<Page<PeriodicTrip>> {
+        const params = new HttpParams().set('page', page).set('size', size);
+        return this.http.get<Page<PeriodicTrip>>(`${this.URL}/api/periodic-trip/as-driver/${driverId}`, { headers: this.authHeaders(), params });
+    }
+
+    /** Viajes individuales generados a partir de una plantilla periódica. */
+    getPeriodicTripGeneratedTrips(id: number, page = 0, size = 50): Observable<Page<Trip>> {
+        const params = new HttpParams().set('page', page).set('size', size).set('sort', 'departureDate,asc');
+        return this.http.get<Page<Trip>>(`${this.URL}/api/periodic-trip/${id}/trips`, { headers: this.authHeaders(), params });
+    }
+
+    deletePeriodicTrip(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.URL}/api/periodic-trip/${id}`, { headers: this.authHeaders() });
     }
 
     // ── CAMPUS & TOWNS ────────────────────────────────────────────────────────

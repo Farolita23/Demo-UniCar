@@ -43,6 +43,19 @@
             </div>
 
             <div class="filter-group">
+                <label class="label">Tipo de viaje</label>
+                <div class="dir-btns">
+                    <button class="dir-btn" [class.active]="filters.tripType === 'all'"
+                        (click)="setTripType('all')">Todos</button>
+                    <button class="dir-btn" [class.active]="filters.tripType === 'single'"
+                        (click)="setTripType('single')"><app-icon icon="pin" [size]="16"></app-icon> Puntuales</button>
+                    <button class="dir-btn" [class.active]="filters.tripType === 'periodic'"
+                        (click)="setTripType('periodic')"><app-icon icon="calendario" [size]="16"></app-icon>
+                        Periódicos</button>
+                </div>
+            </div>
+
+            <div class="filter-group">
                 <label class="label">Fecha de salida</label>
                 <input type="date" [(ngModel)]="filters.departureDate">
             </div>

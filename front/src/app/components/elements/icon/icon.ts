@@ -15,7 +15,21 @@ export type IconName =
   | 'lupa'
   | 'usuario'
   | 'admin'
-  | 'logout';
+  | 'logout'
+  | 'ajustes'
+  | 'repetir'
+  | 'papelera'
+  | 'ojo'
+  | 'ojo-cerrado'
+  | 'moneda'
+  | 'check'
+  | 'cerrar'
+  | 'bandera'
+  | 'prohibido'
+  | 'rayo'
+  | 'camara'
+  | 'alerta'
+  | 'documento';
 
 @Component({
   selector: 'app-icon',
@@ -171,6 +185,132 @@ export type IconName =
   <rect x="26" y="8" width="4" height="32" fill="#791F1F" opacity="0.5"/>
   <line x1="30" y1="24" x2="43" y2="24" stroke="#A32D2D" stroke-width="2.5" stroke-linecap="round"/>
   <polyline points="37,18 43,24 37,30" fill="none" stroke="#A32D2D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</ng-container>
+
+<!-- AJUSTES / ENGRANAJE -->
+<ng-container *ngSwitchCase="'ajustes'">
+  <circle cx="24" cy="24" r="11" fill="#A32D2D"/>
+  <circle cx="24" cy="24" r="11" fill="#791F1F" opacity="0.28"/>
+  <circle cx="24" cy="6"  r="3.5" fill="#A32D2D"/>
+  <circle cx="24" cy="42" r="3.5" fill="#A32D2D"/>
+  <circle cx="6"  cy="24" r="3.5" fill="#A32D2D"/>
+  <circle cx="42" cy="24" r="3.5" fill="#A32D2D"/>
+  <circle cx="11.5" cy="11.5" r="3.5" fill="#A32D2D"/>
+  <circle cx="36.5" cy="11.5" r="3.5" fill="#A32D2D"/>
+  <circle cx="11.5" cy="36.5" r="3.5" fill="#A32D2D"/>
+  <circle cx="36.5" cy="36.5" r="3.5" fill="#A32D2D"/>
+  <circle cx="24" cy="24" r="4.5" fill="#FCEBEB"/>
+</ng-container>
+
+<!-- REPETIR / PERIÓDICO -->
+<ng-container *ngSwitchCase="'repetir'">
+  <path d="M10 21a14 14 0 0 1 24-8" fill="none" stroke="#A32D2D" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="34,5 37,15 27,14" fill="#A32D2D"/>
+  <path d="M38 27a14 14 0 0 1-24 8" fill="none" stroke="#A32D2D" stroke-width="4" stroke-linecap="round"/>
+  <polygon points="14,43 11,33 21,34" fill="#A32D2D"/>
+  <path d="M38 27a14 14 0 0 1-24 8" fill="none" stroke="#791F1F" stroke-width="1.6" stroke-linecap="round" opacity="0.4"/>
+</ng-container>
+
+<!-- PAPELERA -->
+<ng-container *ngSwitchCase="'papelera'">
+  <rect x="12" y="14" width="24" height="28" rx="3" fill="#A32D2D"/>
+  <rect x="12" y="14" width="24" height="28" rx="3" fill="#791F1F" opacity="0.25"/>
+  <rect x="8" y="9" width="32" height="5" rx="2.5" fill="#791F1F"/>
+  <rect x="19" y="4" width="10" height="6" rx="2" fill="#791F1F"/>
+  <rect x="17" y="20" width="3.5" height="16" rx="1.75" fill="#FCEBEB" opacity="0.85"/>
+  <rect x="22.25" y="20" width="3.5" height="16" rx="1.75" fill="#FCEBEB" opacity="0.85"/>
+  <rect x="27.5" y="20" width="3.5" height="16" rx="1.75" fill="#FCEBEB" opacity="0.85"/>
+</ng-container>
+
+<!-- OJO -->
+<ng-container *ngSwitchCase="'ojo'">
+  <path d="M4 24s8-13 20-13 20 13 20 13-8 13-20 13S4 24 4 24Z" fill="#A32D2D"/>
+  <path d="M4 24s8-13 20-13 20 13 20 13-8 13-20 13S4 24 4 24Z" fill="#791F1F" opacity="0.3"/>
+  <circle cx="24" cy="24" r="7" fill="#FCEBEB"/>
+  <circle cx="24" cy="24" r="3.5" fill="#A32D2D"/>
+</ng-container>
+
+<!-- OJO CERRADO -->
+<ng-container *ngSwitchCase="'ojo-cerrado'">
+  <path d="M4 24s8-13 20-13 20 13 20 13-8 13-20 13S4 24 4 24Z" fill="#A32D2D" opacity="0.45"/>
+  <circle cx="24" cy="24" r="7" fill="#FCEBEB" opacity="0.55"/>
+  <circle cx="24" cy="24" r="3.5" fill="#A32D2D" opacity="0.55"/>
+  <line x1="8" y1="40" x2="40" y2="8" stroke="#501313" stroke-width="4" stroke-linecap="round"/>
+</ng-container>
+
+<!-- MONEDA / PRECIO -->
+<ng-container *ngSwitchCase="'moneda'">
+  <circle cx="24" cy="24" r="18" fill="#A32D2D"/>
+  <circle cx="24" cy="24" r="18" fill="#791F1F" opacity="0.25"/>
+  <circle cx="24" cy="24" r="13" fill="#791F1F" opacity="0.3"/>
+  <path d="M31 16a9 9 0 1 0 0 16" fill="none" stroke="#FCEBEB" stroke-width="3" stroke-linecap="round"/>
+  <line x1="15" y1="22" x2="28" y2="22" stroke="#FCEBEB" stroke-width="3" stroke-linecap="round"/>
+  <line x1="15" y1="27" x2="28" y2="27" stroke="#FCEBEB" stroke-width="3" stroke-linecap="round"/>
+</ng-container>
+
+<!-- CHECK / OK -->
+<ng-container *ngSwitchCase="'check'">
+  <circle cx="24" cy="24" r="18" fill="#A32D2D"/>
+  <circle cx="24" cy="24" r="18" fill="#791F1F" opacity="0.25"/>
+  <polyline points="15,25 21,31 33,17" fill="none" stroke="#FCEBEB" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</ng-container>
+
+<!-- CERRAR / X -->
+<ng-container *ngSwitchCase="'cerrar'">
+  <circle cx="24" cy="24" r="18" fill="#A32D2D"/>
+  <circle cx="24" cy="24" r="18" fill="#791F1F" opacity="0.25"/>
+  <line x1="17" y1="17" x2="31" y2="31" stroke="#FCEBEB" stroke-width="4" stroke-linecap="round"/>
+  <line x1="31" y1="17" x2="17" y2="31" stroke="#FCEBEB" stroke-width="4" stroke-linecap="round"/>
+</ng-container>
+
+<!-- BANDERA / REPORTE -->
+<ng-container *ngSwitchCase="'bandera'">
+  <line x1="12" y1="6" x2="12" y2="43" stroke="#501313" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M12 8h23l-6 8 6 8H12Z" fill="#A32D2D"/>
+  <path d="M12 8h23l-6 8 6 8H12Z" fill="#791F1F" opacity="0.3"/>
+</ng-container>
+
+<!-- PROHIBIDO -->
+<ng-container *ngSwitchCase="'prohibido'">
+  <circle cx="24" cy="24" r="18" fill="#A32D2D"/>
+  <circle cx="24" cy="24" r="18" fill="#791F1F" opacity="0.25"/>
+  <circle cx="24" cy="24" r="12" fill="none" stroke="#FCEBEB" stroke-width="4"/>
+  <line x1="15" y1="15" x2="33" y2="33" stroke="#FCEBEB" stroke-width="4" stroke-linecap="round"/>
+</ng-container>
+
+<!-- RAYO / STRIKE -->
+<ng-container *ngSwitchCase="'rayo'">
+  <polygon points="26,4 10,26 22,26 18,44 38,20 24,20" fill="#A32D2D"/>
+  <polygon points="26,4 10,26 22,26 18,44 38,20 24,20" fill="#791F1F" opacity="0.3"/>
+  <polygon points="24,12 16,24 24,24 22,34 32,21 25,21" fill="#E24B4A" opacity="0.55"/>
+</ng-container>
+
+<!-- CÁMARA -->
+<ng-container *ngSwitchCase="'camara'">
+  <rect x="5" y="14" width="38" height="26" rx="5" fill="#A32D2D"/>
+  <rect x="5" y="14" width="38" height="26" rx="5" fill="#791F1F" opacity="0.25"/>
+  <path d="M17 14l3-5h8l3 5Z" fill="#791F1F"/>
+  <circle cx="24" cy="27" r="8" fill="#FCEBEB"/>
+  <circle cx="24" cy="27" r="4" fill="#A32D2D"/>
+  <circle cx="37" cy="19" r="1.8" fill="#F09595"/>
+</ng-container>
+
+<!-- ALERTA / AVISO -->
+<ng-container *ngSwitchCase="'alerta'">
+  <path d="M24 6 44 40H4Z" fill="#A32D2D"/>
+  <path d="M24 6 44 40H4Z" fill="#791F1F" opacity="0.3"/>
+  <rect x="21.5" y="18" width="5" height="12" rx="2.5" fill="#FCEBEB"/>
+  <circle cx="24" cy="35" r="2.75" fill="#FCEBEB"/>
+</ng-container>
+
+<!-- DOCUMENTO / MATRÍCULA -->
+<ng-container *ngSwitchCase="'documento'">
+  <path d="M12 5h15l9 9v28a1 1 0 0 1-1 1H12a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" fill="#A32D2D"/>
+  <path d="M12 5h15l9 9v28a1 1 0 0 1-1 1H12a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" fill="#791F1F" opacity="0.25"/>
+  <path d="M27 5l9 9h-9Z" fill="#FCEBEB" opacity="0.5"/>
+  <rect x="16" y="22" width="16" height="3" rx="1.5" fill="#FCEBEB" opacity="0.85"/>
+  <rect x="16" y="29" width="16" height="3" rx="1.5" fill="#FCEBEB" opacity="0.85"/>
+  <rect x="16" y="36" width="10" height="3" rx="1.5" fill="#FCEBEB" opacity="0.6"/>
 </ng-container>
 
       </ng-container>

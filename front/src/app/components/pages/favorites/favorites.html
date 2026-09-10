@@ -8,13 +8,13 @@
         <!-- Tabs -->
         <div class="tabs">
             <button class="tab" [class.active]="activeTab === 'people'" (click)="activeTab = 'people'">
-                👥 Personas
+                <app-icon icon="usuario" [size]="16"></app-icon> Personas
                 @if (favorites.length > 0) {
                 <span class="tab-badge">{{ favorites.length }}</span>
                 }
             </button>
             <button class="tab" [class.active]="activeTab === 'trips'" (click)="activeTab = 'trips'">
-                🚗 Sus viajes
+                <app-icon icon="coche" [size]="16"></app-icon> Sus viajes
                 @if (favoriteTrips.length > 0) {
                 <span class="tab-badge">{{ favoriteTrips.length }}</span>
                 }
@@ -29,7 +29,7 @@
         </div>
         } @else if (favorites.length === 0) {
         <div class="empty-state">
-            <div class="empty-icon">⭐</div>
+            <div class="empty-icon"><app-icon icon="estrella" [size]="48"></app-icon></div>
             <h3>No tienes favoritos</h3>
             <p>Visita el perfil de otros usuarios y márcalos como favoritos para seguir sus viajes.</p>
         </div>
@@ -66,7 +66,7 @@
         </div>
         } @else if (favoriteTrips.length === 0) {
         <div class="empty-state">
-            <div class="empty-icon">🚗</div>
+            <div class="empty-icon"><app-icon icon="coche" [size]="48"></app-icon></div>
             <h3>Sin viajes de favoritos</h3>
             <p>Tus usuarios favoritos aún no han publicado viajes.</p>
         </div>

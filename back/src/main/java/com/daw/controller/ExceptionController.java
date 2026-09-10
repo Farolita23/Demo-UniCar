@@ -22,6 +22,8 @@ import com.daw.exceptions.EntityWithDependenciesException;
 import com.daw.exceptions.HasPassengersException;
 import com.daw.exceptions.InvalidRatingException;
 import com.daw.exceptions.InvalidReportException;
+import com.daw.exceptions.PeriodicTripException;
+import com.daw.exceptions.PeriodicTripNotFoundException;
 import com.daw.exceptions.RatingAlreadyExistsException;
 import com.daw.exceptions.RatingNotFoundException;
 import com.daw.exceptions.ReportNotFoundException;
@@ -111,6 +113,12 @@ public class ExceptionController {
         return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
+    /** @see PeriodicTripNotFoundException */
+    @ExceptionHandler(PeriodicTripNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handlePeriodicTripNotFound(PeriodicTripNotFoundException ex) {
+        return buildError(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
     // ─── 409 Conflict ─────────────────────────────────────────────────────────
 
     /** @see DuplicateUsernameException */
@@ -166,6 +174,12 @@ public class ExceptionController {
     /** @see InvalidReportException */
     @ExceptionHandler(InvalidReportException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidReport(InvalidReportException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    /** @see PeriodicTripException */
+    @ExceptionHandler(PeriodicTripException.class)
+    public ResponseEntity<Map<String, Object>> handlePeriodicTrip(PeriodicTripException ex) {
         return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 

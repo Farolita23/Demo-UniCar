@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
+import { AppIcon } from '../../elements/icon/icon';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 import { Trip } from '../../../models/trip.model';
@@ -12,7 +13,7 @@ import { User, UserSummary, Rating } from '../../../models/user.model';
 @Component({
     selector: 'page-manage-trip',
     standalone: true,
-    imports: [CommonModule, RouterLink, Header, Footer],
+    imports: [CommonModule, RouterLink, Header, Footer, AppIcon],
     templateUrl: './manage-trip.html',
     styleUrl: './manage-trip.css',
 })

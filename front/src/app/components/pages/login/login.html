@@ -41,7 +41,9 @@
                         <!-- Input contraseña (toggle visible/oculta) -->
                         <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Tu contraseña">
                         <!-- Botón mostrar/ocultar contraseña -->
-                        <button type="button" class="eye-btn" (click)="showPassword = !showPassword">{{ showPassword ? '🙈' : '👁️' }}</button>
+                        <button type="button" class="eye-btn" (click)="showPassword = !showPassword">
+                            <app-icon [icon]="showPassword ? 'ojo-cerrado' : 'ojo'" [size]="18"></app-icon>
+                        </button>
                     </div>
                     <!-- Validación contraseña -->
                     @if ((submited || form.get('password')?.touched) && form.get('password')?.invalid) {
