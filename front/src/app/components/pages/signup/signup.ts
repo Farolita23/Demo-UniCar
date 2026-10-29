@@ -98,12 +98,20 @@ export class Signup implements OnInit {
     ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) return;
         const state = history.state as { google?: GoogleSignupState } | null;
-        if (state?.google) {
-            this.googleState = state.google;
+        let google = state?.google ?? null;
+        if (!google) {
+            try {
+                const saved = JSON.parse(sessionStorage.getItem('unicar_google_signup') || 'null');
+                // El ID token de Google caduca pronto: solo se reutiliza si es reciente (10 min)
+                google = saved && Date.now() - saved.at < 10 * 60 * 1000 ? saved : null;
+            } catch { google = null; }
+        }
+        if (google) {
+            this.googleState = google;
             // Sin contraseña propia: el acceso es con Google
             (this.form as any).removeControl('password');
             (this.form as any).removeControl('rePassword');
-            this.form.patchValue({ email: state.google.email, name: state.google.name });
+            this.form.patchValue({ email: google.email, name: google.name });
         }
         this.api.getCampuses().subscribe({
             next: c => { this.campuses = c; this.cdr.detectChanges(); },
@@ -161,6 +169,7 @@ export class Signup implements OnInit {
             const { email, password, ...profile } = dto as any;
             this.api.googleRegister({ ...profile, idToken: this.googleState.idToken }).subscribe({
                 next: (res) => {
+                    try { sessionStorage.removeItem('unicar_google_signup'); } catch { }
                     this.auth.saveToken(res.token);
                     this.api.getMe().subscribe({
                         next: (user) => { this.auth.saveUser(user); this.loading = false; this.router.navigate(['/']); },
