@@ -4,13 +4,31 @@
         <div class="signup-card">
             <div class="auth-brand">
                 <img src="/assets/media/icon-dark.png" alt="UniCar" class="auth-logo">
-                <h1>Crea tu cuenta</h1>
-                <p>Únete a la comunidad de carpooling universitario</p>
+                @if (googleState) {
+                    <h1>¡Casi listo, {{ googleState.name.split(' ')[0] }}!</h1>
+                    <p>Rellena estos datos una vez para crear tu cuenta</p>
+                } @else {
+                    <h1>Crea tu cuenta</h1>
+                    <p>Únete a la comunidad de carpooling universitario</p>
+                }
             </div>
+
+            @if (googleState) {
+                <div class="google-chip">
+                    @if (googleState.picture) {
+                        <img [src]="googleState.picture" alt="" class="google-chip-img" referrerpolicy="no-referrer">
+                    }
+                    <div class="google-chip-info">
+                        <span class="google-chip-name">{{ googleState.name }}</span>
+                        <span class="google-chip-email">{{ googleState.email }}</span>
+                    </div>
+                    <span class="google-chip-tag">Cuenta de Google</span>
+                </div>
+            }
 
             <form [formGroup]="form" (ngSubmit)="submit()" class="signup-form">
                 <div class="form-section">
-                    <h3 class="form-section-title">Datos de acceso</h3>
+                    <h3 class="form-section-title">{{ googleMode ? 'Elige tu usuario' : 'Datos de acceso' }}</h3>
                     <div class="form-row-2">
                         <div class="form-group">
                             <label class="label required">Usuario</label>
@@ -26,18 +44,20 @@
                                 }
                             }
                         </div>
-                        <div class="form-group">
-                            <label class="label required">Email</label>
-                            <input type="email" formControlName="email" placeholder="correo@universidad.es" [readonly]="googleMode">
-                            @let email = form.get('email');
-                            @if ((submited || (email?.dirty || email?.touched)) && email?.invalid) {
-                                @if (email?.hasError("required")) {
-                                    <span class="error-msg">Este campo no puede estar vacio</span>
-                                } @else if (email?.hasError("email")) {
-                                    <span class="error-msg">Email inválido</span>
+                        @if (!googleMode) {
+                            <div class="form-group">
+                                <label class="label required">Email</label>
+                                <input type="email" formControlName="email" placeholder="correo@universidad.es">
+                                @let email = form.get('email');
+                                @if ((submited || (email?.dirty || email?.touched)) && email?.invalid) {
+                                    @if (email?.hasError("required")) {
+                                        <span class="error-msg">Este campo no puede estar vacio</span>
+                                    } @else if (email?.hasError("email")) {
+                                        <span class="error-msg">Email inválido</span>
+                                    }
                                 }
-                            }
-                        </div>
+                            </div>
+                        }
                     </div>
                     @if (!googleMode) {
                     <div class="form-row-2">
@@ -189,11 +209,15 @@
                 }
 
                 <div class="actions">
-                    <button type="submit" class="btn btn-primary submit-btn" [disabled]="loading">@if (loading) { <span class="spinner"></span> } @else { Crear cuenta }</button>
+                    <button type="submit" class="btn btn-primary submit-btn" [disabled]="loading">@if (loading) { <span class="spinner"></span> } @else { {{ googleMode ? 'Crear mi cuenta' : 'Crear cuenta' }} }</button>
                     <button type="button" class="btn btn-ghost submit-btn" routerLink="/">Volver</button>
                 </div>
             </form>
-            <p class="auth-link-bottom">¿Ya tienes cuenta? <a routerLink="/login">¡Inicia sesión!</a></p>
+            @if (googleMode) {
+                <p class="auth-link-bottom">¿No eres tú? <a routerLink="/login">Usar otra cuenta</a></p>
+            } @else {
+                <p class="auth-link-bottom">¿Ya tienes cuenta? <a routerLink="/login">¡Inicia sesión!</a></p>
+            }
         </div>
     </div>
 </div>
