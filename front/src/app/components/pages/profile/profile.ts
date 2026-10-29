@@ -6,6 +6,7 @@ import { Router, RouterLink } from '@angular/router';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
 import { TripCard } from '../../elements/trip/trip';
+import { SearchSelect } from '../../elements/search-select/search-select';
 import { AppIcon } from '../../elements/icon/icon';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
@@ -30,7 +31,7 @@ function plateValidator(control: AbstractControl): ValidationErrors | null {
 @Component({
     selector: 'page-profile',
     standalone: true,
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, Footer, TripCard, AppIcon],
+    imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, Footer, TripCard, AppIcon, SearchSelect],
     templateUrl: './profile.html',
     styleUrl: './profile.css',
 })
