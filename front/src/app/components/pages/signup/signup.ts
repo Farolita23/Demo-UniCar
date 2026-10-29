@@ -100,13 +100,18 @@ export class Signup implements OnInit {
         if (!isPlatformBrowser(this.platformId)) return;
         const state = history.state as { google?: GoogleSignupState } | null;
         let google = state?.google ?? null;
-        if (!google) {
+        // La copia guardada solo sirve al recargar la página en pleno registro con Google.
+        // En cualquier otra entrada (por ejemplo "Únete" tras volver atrás) se descarta,
+        // para que se vea el formulario normal.
+        const reloaded = (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined)?.type === 'reload';
+        if (!google && reloaded) {
             try {
                 const saved = JSON.parse(sessionStorage.getItem('unicar_google_signup') || 'null');
                 // El ID token de Google caduca pronto: solo se reutiliza si es reciente (10 min)
                 google = saved && Date.now() - saved.at < 10 * 60 * 1000 ? saved : null;
             } catch { google = null; }
         }
+        if (!google) this.clearGoogleSignup();
         if (google) {
             this.googleState = google;
             // Sin contraseña propia: el acceso es con Google
@@ -131,6 +136,11 @@ export class Signup implements OnInit {
         if (controls.some(c => c.invalid)) return;
         if (this.step < this.googleSteps.length - 1) { this.step++; return; }
         this.submit();
+    }
+
+    // Descarta la cuenta de Google guardada (al cancelar o cambiar de cuenta)
+    clearGoogleSignup() {
+        try { sessionStorage.removeItem('unicar_google_signup'); } catch { }
     }
 
     prevStep() {
