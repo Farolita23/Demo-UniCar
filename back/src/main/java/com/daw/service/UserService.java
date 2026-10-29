@@ -7,7 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.daw.controller.dto.GoogleRegisterDTO;
 import com.daw.controller.dto.UserCreateDTO;
+import com.daw.security.GoogleTokenVerifier.GoogleUser;
+import java.util.UUID;
 import com.daw.controller.dto.UserDTO;
 import com.daw.controller.dto.UserUpdateDTO;
 import com.daw.controller.dto.mapper.UserCreateMapper;
@@ -101,6 +104,31 @@ public class UserService {
         user.setHomeTown(generalService.findTownById(dto.getIdHomeTown()));
         userRepository.save(user);
         return userMapper.toDto(user);
+    }
+
+    /**
+     * Registra un usuario autenticado con Google. El correo y el nombre vienen del token verificado
+     * y la contraseña se genera aleatoria (la cuenta solo se usa con Google hasta que la cambie).
+     *
+     * @param dto    datos de perfil que completa el usuario
+     * @param google datos verificados de la cuenta de Google
+     * @return {@link UserDTO} con el usuario creado
+     */
+    public UserDTO createFromGoogle(GoogleRegisterDTO dto, GoogleUser google) {
+        UserCreateDTO create = new UserCreateDTO();
+        create.setUsername(dto.getUsername());
+        create.setEmail(google.email());
+        create.setName(dto.getName() != null && !dto.getName().isBlank() ? dto.getName() : google.name());
+        create.setBirthdate(dto.getBirthdate());
+        create.setGenre(dto.getGenre());
+        create.setPhone(dto.getPhone());
+        create.setDrivingLicenseYear(dto.getDrivingLicenseYear());
+        create.setIdUsualCampus(dto.getIdUsualCampus());
+        create.setIdHomeTown(dto.getIdHomeTown());
+        create.setDescription(dto.getDescription());
+        create.setProfileImageUrl(google.picture());
+        create.setPassword(UUID.randomUUID() + "aA1!");
+        return create(create);
     }
 
     /**
