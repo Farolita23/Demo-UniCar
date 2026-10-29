@@ -299,7 +299,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="label">Localidad</label>
-                                    <select formControlName="idHomeTown"> @for (t of towns; track t.id) { <option [value]="t.id">{{ t.name }}</option>} </select>
+                                    <app-search-select formControlName="idHomeTown" [options]="towns" searchPlaceholder="Buscar localidad..."></app-search-select>
                                 </div>
                             </div>
                             <div class="form-row-2">

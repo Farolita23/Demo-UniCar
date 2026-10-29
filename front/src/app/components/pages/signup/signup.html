@@ -108,12 +108,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="label required">Pueblo / ciudad de origen</label>
-                                    <select formControlName="idHomeTown">
-                                        <option value="" selected disabled>Seleccionar localidad...</option>
-                                        @for (t of towns; track t.id) {
-                                            <option [value]="t.id">{{ t.name }}</option>
-                                        }
-                                    </select>
+                                    <app-search-select formControlName="idHomeTown" [options]="towns" placeholder="Seleccionar localidad..." searchPlaceholder="Buscar localidad..."></app-search-select>
                                     @if (form.get('idHomeTown')?.touched && form.get('idHomeTown')?.invalid) {
                                         <span class="error-msg">Este campo no puede estar vacio</span>
                                     }
@@ -307,12 +302,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="label required">Pueblo / ciudad de origen</label>
-                                <select formControlName="idHomeTown">
-                                    <option value="" selected disabled>Seleccionar localidad...</option>
-                                    @for (t of towns; track t.id) {
-                                        <option [value]="t.id">{{ t.name }}</option>
-                                    }
-                                </select>
+                                <app-search-select formControlName="idHomeTown" [options]="towns" placeholder="Seleccionar localidad..." searchPlaceholder="Buscar localidad..."></app-search-select>
                                 @let idHomeTown = form.get('idHomeTown');
                                 @if ((submited || (idHomeTown?.dirty || idHomeTown?.touched)) && idHomeTown?.invalid) {
                                     @if (idHomeTown?.hasError("required")) {

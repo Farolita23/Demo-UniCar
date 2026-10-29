@@ -6,6 +6,7 @@ import { GoogleSignupState } from '../../../services/google-auth';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
 import { AppIcon } from '../../elements/icon/icon';
+import { SearchSelect } from '../../elements/search-select/search-select';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 import { Campus } from '../../../models/campus.model';
@@ -37,7 +38,7 @@ function strongPassword(control: AbstractControl): ValidationErrors | null {
 @Component({
     selector: 'page-signup',
     standalone: true,
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, AppIcon],
+    imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, AppIcon, SearchSelect],
     templateUrl: './signup.html',
     styleUrl: './signup.css',
 })
