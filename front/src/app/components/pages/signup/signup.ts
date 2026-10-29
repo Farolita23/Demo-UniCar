@@ -2,6 +2,7 @@ import { Component, inject, OnInit, ChangeDetectorRef, PLATFORM_ID } from '@angu
 import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { GoogleSignupState } from '../../../services/google-auth';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
 import { AppIcon } from '../../elements/icon/icon';
@@ -50,6 +51,10 @@ export class Signup implements OnInit {
     cdr = inject(ChangeDetectorRef);
     platformId = inject(PLATFORM_ID);
 
+    // Registro con Google: datos de la cuenta recibidos desde la página de login
+    googleState: GoogleSignupState | null = null;
+    get googleMode(): boolean { return !!this.googleState; }
+
     // Variables para almacenar los campus y pueblos obtenidos de la API
     campuses: Campus[] = [];
     towns: Town[] = [];
@@ -82,6 +87,14 @@ export class Signup implements OnInit {
     // Método para inicializar el componente y cargar los datos necesarios
     ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) return;
+        const state = history.state as { google?: GoogleSignupState } | null;
+        if (state?.google) {
+            this.googleState = state.google;
+            // Sin contraseña propia: el acceso es con Google
+            (this.form as any).removeControl('password');
+            (this.form as any).removeControl('rePassword');
+            this.form.patchValue({ email: state.google.email, name: state.google.name });
+        }
         this.api.getCampuses().subscribe({
             next: c => { this.campuses = c; this.cdr.detectChanges(); },
             error: e => console.error('[Signup] getCampuses error:', e),
@@ -116,6 +129,27 @@ export class Signup implements OnInit {
             description: v.description,
             password: v.password,
         };
+        if (this.googleState) {
+            const { email, password, ...profile } = dto as any;
+            this.api.googleRegister({ ...profile, idToken: this.googleState.idToken }).subscribe({
+                next: (res) => {
+                    this.auth.saveToken(res.token);
+                    this.api.getMe().subscribe({
+                        next: (user) => { this.auth.saveUser(user); this.loading = false; this.router.navigate(['/']); },
+                        error: () => { this.loading = false; this.router.navigate(['/']); },
+                    });
+                },
+                error: e => {
+                    const fields = e?.error?.fields;
+                    this.error = fields
+                        ? 'Error: ' + Object.entries(fields).map(([k, v]) => `${k}: ${v}`).join(', ')
+                        : e?.error?.message || 'Error al registrarse con Google.';
+                    this.loading = false;
+                    this.cdr.detectChanges();
+                },
+            });
+            return;
+        }
         this.api.register(dto).subscribe({
             next: () => { this.loading = false; this.router.navigate(['/login']); },
             error: e => {

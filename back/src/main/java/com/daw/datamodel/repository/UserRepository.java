@@ -52,6 +52,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
     /**
+     * Busca un usuario por su correo electrónico.
+     *
+     * @param email correo a buscar
+     * @return {@link Optional} con el usuario si existe, vacío en caso contrario
+     */
+    Optional<User> findByEmail(String email);
+
+    /**
      * Recupera el propietario de un vehículo a partir del identificador del vehículo.
      *
      * @param idCar identificador del vehículo

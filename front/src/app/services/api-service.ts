@@ -31,6 +31,14 @@ export class ApiService {
         return this.http.post<{ token: string }>(`${this.URL}/api/auth/login`, { username, password }, { headers: this.jsonHeaders });
     }
 
+    googleLogin(idToken: string): Observable<{ token?: string; needsRegistration?: boolean; email?: string; name?: string; picture?: string }> {
+        return this.http.post<any>(`${this.URL}/api/auth/google`, { idToken }, { headers: this.jsonHeaders });
+    }
+
+    googleRegister(dto: any): Observable<{ token: string }> {
+        return this.http.post<{ token: string }>(`${this.URL}/api/auth/google/register`, dto, { headers: this.jsonHeaders });
+    }
+
     getMe(): Observable<User> {
         return this.http.get<User>(`${this.URL}/api/auth/me`, { headers: this.authHeaders() });
     }
