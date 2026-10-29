@@ -55,6 +55,16 @@ export class Signup implements OnInit {
     googleState: GoogleSignupState | null = null;
     get googleMode(): boolean { return !!this.googleState; }
 
+    // Registro con Google por fases: controles que se validan en cada paso
+    readonly googleSteps = [
+        { title: 'Elige tu usuario',       hint: 'Así te verán el resto de usuarios.',                          controls: ['username'] },
+        { title: 'Sobre ti',               hint: 'Tu fecha de nacimiento y tu género.',                         controls: ['birthdate', 'genre'] },
+        { title: 'Tu teléfono',            hint: 'Para que tus compañeros de viaje puedan contactarte.',        controls: ['phone'] },
+        { title: '¿Dónde te mueves?',      hint: 'Tu campus habitual y tu localidad de origen.',                controls: ['idUsualCampus', 'idHomeTown'] },
+        { title: 'Último paso (opcional)', hint: 'Si conduces, cuéntanos desde cuándo. Puedes dejarlo vacío.',  controls: ['drivingLicenseYear', 'description'] },
+    ];
+    step = 0;
+
     // Variables para almacenar los campus y pueblos obtenidos de la API
     campuses: Campus[] = [];
     towns: Town[] = [];
@@ -105,6 +115,19 @@ export class Signup implements OnInit {
         });
     }
 
+    // Avanza de fase si los campos de la actual son válidos; en la última, crea la cuenta
+    nextStep() {
+        const controls = this.googleSteps[this.step].controls.map(c => this.form.get(c)!);
+        controls.forEach(c => c.markAsTouched());
+        if (controls.some(c => c.invalid)) return;
+        if (this.step < this.googleSteps.length - 1) { this.step++; return; }
+        this.submit();
+    }
+
+    prevStep() {
+        if (this.step > 0) this.step--;
+    }
+
     // Variable para controlar si el formulario ha sido enviado
     submited = false;
 
@@ -112,7 +135,12 @@ export class Signup implements OnInit {
     submit() {
         this.submited = true;
 
-        if (this.form.invalid || this.loading) return;
+        if (this.form.invalid || this.loading) {
+            // En el registro por fases, volver al primer paso con errores
+            const first = this.googleSteps.findIndex(st => st.controls.some(c => this.form.get(c)?.invalid));
+            if (this.googleMode && first >= 0) this.step = first;
+            return;
+        }
 
         this.loading = true; this.error = '';
         const v = this.form.value;
@@ -144,6 +172,8 @@ export class Signup implements OnInit {
                     this.error = fields
                         ? 'Error: ' + Object.entries(fields).map(([k, v]) => `${k}: ${v}`).join(', ')
                         : e?.error?.message || 'Error al registrarse con Google.';
+                    // Usuario repetido: volver al paso del usuario
+                    if (e?.status === 409) this.step = 0;
                     this.loading = false;
                     this.cdr.detectChanges();
                 },
