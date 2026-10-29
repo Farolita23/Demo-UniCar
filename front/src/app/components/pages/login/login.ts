@@ -1,4 +1,4 @@
-import { Component, inject, ChangeDetectorRef, AfterViewInit, ElementRef, ViewChild, PLATFORM_ID } from '@angular/core';
+import { Component, inject, ChangeDetectorRef, AfterViewInit, ElementRef, ViewChild, PLATFORM_ID, NgZone } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -27,6 +27,7 @@ export class Login implements AfterViewInit {
     route = inject(ActivatedRoute);
     googleAuth = inject(GoogleAuthService);
     platformId = inject(PLATFORM_ID);
+    private zone = inject(NgZone);
 
     // Contenedor donde Google dibuja su botón
     @ViewChild('googleBtn') googleBtn?: ElementRef<HTMLElement>;
@@ -49,7 +50,7 @@ export class Login implements AfterViewInit {
     
     ngAfterViewInit(): void {
         if (!isPlatformBrowser(this.platformId) || !this.googleBtn) return;
-        this.googleAuth.renderButton(this.googleBtn.nativeElement, idToken => this.loginWithGoogle(idToken));
+        this.googleAuth.renderButton(this.googleBtn.nativeElement, idToken => this.zone.run(() => this.loginWithGoogle(idToken)));
     }
 
     // Inicia sesión con Google; si la cuenta no existe, lleva al registro con los datos prerrellenados
@@ -60,7 +61,10 @@ export class Login implements AfterViewInit {
             next: (res) => {
                 if (res.needsRegistration) {
                     this.loading = false;
-                    this.router.navigate(['/signup'], { state: { google: { idToken, email: res.email, name: res.name, picture: res.picture } } });
+                    const google = { idToken, email: res.email, name: res.name, picture: res.picture };
+                    // Copia en sessionStorage: sobrevive a recargas y a navegaciones sin state
+                    try { sessionStorage.setItem('unicar_google_signup', JSON.stringify({ ...google, at: Date.now() })); } catch { }
+                    this.router.navigate(['/signup'], { state: { google } });
                     return;
                 }
                 this.auth.saveToken(res.token!);
