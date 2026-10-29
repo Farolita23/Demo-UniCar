@@ -1,3 +1,34 @@
+<div align="center">
+
+# 🚗 UniCar
+
+Plataforma web de carpooling para estudiantes y profesores de centros de estudio de Sevilla.
+
+![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+
+</div>
+
+## Qué es
+UniCar permite que estudiantes y profesores coordinen trayectos compartidos al campus. Proyecto integrado de 2º de DAW, desarrollado en equipo con Javier Falcon Real y Moises Jr Perez.
+## Arquitectura
+```mermaid
+flowchart LR
+  A[Angular :4200] -->|HTTP / JWT| B[Spring Boot API :8080]
+  B -->|JPA / Hibernate| C[(MySQL)]
+```
+
+## Mi aportación
+- Viajes periódicos mediante un patrón plantilla-instancias: el conductor define horarios recurrentes y se generan viajes individuales automáticamente.
+- Sistema de sugerencia personalizada de viajes en la página principal, con nuevos endpoints y consultas de repositorio.
+- Autenticación y protección de rutas con JWT y Spring Security.
+- Resolución de problemas de lazy-loading y referencias circulares en JPA rediseñando los DTOs.
+
+---
+
+## Guía de instalación
 PROYECTO: UniCar - Aplicación Web Proyecto Integrado 2025/26
 1. INTRODUCCIÓN
 UniCar es una aplicación web desarrollada bajo una arquitectura de servicios desacoplados (Frontend y Backend). El proyecto está diseñado para alojar una aplicacion en tiempo real que facilite el echo de encontrar medio de transporte para un centro de estudios en sevilla.
