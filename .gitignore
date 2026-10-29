@@ -1,4 +1,4 @@
-# Compiled class file
+﻿# Compiled class file
 *.class
 
 # Log file
@@ -25,7 +25,7 @@ replay_pid*
 /.metadata/
 
 back/src/main/resources/application.properties
-back\target
+back/target
 back/logs
 logs
 .env
@@ -34,3 +34,15 @@ logs
 .github
 .settings
 .vscode
+# Build output / IDE (Eclipse)
+target/
+back/.metadata/
+.classpath
+.factorypath
+.project
+
+# Node / Angular
+node_modules/
+front/.angular/
+front/dist/
+
