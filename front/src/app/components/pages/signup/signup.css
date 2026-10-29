@@ -265,3 +265,33 @@ textarea {
     opacity: 0.8;
     white-space: nowrap;
 }
+
+/* Registro con Google por fases */
+:host .signup-card .wizard-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+:host .signup-card .wizard-bar {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+:host .signup-card .wizard-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--primary);
+    transition: width 0.25s ease;
+}
+:host .signup-card .wizard-count {
+    font-size: 12px;
+    opacity: 0.7;
+    text-align: right;
+}
+:host .signup-card .wizard-hint {
+    margin: -8px 0 0;
+    font-size: 14px;
+    opacity: 0.7;
+}
