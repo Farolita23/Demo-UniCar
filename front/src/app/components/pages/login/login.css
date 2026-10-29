@@ -158,3 +158,24 @@
         min-height: calc(100dvh - 16px * 2);
     }
 }
+:host .auth-card .google-sep {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0 16px;
+    color: var(--text-muted, #888);
+    font-size: 13px;
+}
+:host .auth-card .google-sep::before,
+:host .auth-card .google-sep::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.25;
+}
+:host .auth-card .google-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+}

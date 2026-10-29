@@ -1,0 +1,90 @@
+:host {
+    display: block;
+    position: relative;
+    width: 100%;
+}
+
+/* Mismo aspecto que los <select> e <input> globales (styles.css) */
+.ss-trigger {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    outline: none;
+    transition: var(--transition);
+}
+.ss-trigger.open,
+.ss-trigger:focus-visible {
+    border-color: var(--primary);
+    background: var(--surface-2);
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15);
+}
+.ss-trigger .placeholder {
+    color: var(--text-3);
+}
+.ss-arrow {
+    color: var(--text-3);
+    font-size: 12px;
+}
+
+.ss-panel {
+    box-sizing: border-box;
+    position: absolute;
+    z-index: 50;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface-2);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+}
+.ss-search {
+    box-sizing: border-box;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    padding: 8px 16px;
+    background: var(--surface);
+    box-shadow: none;
+}
+.ss-list {
+    list-style: none;
+    margin: 0;
+    padding: 4px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+.ss-option,
+.ss-empty {
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 15px;
+    color: var(--text);
+}
+.ss-option {
+    cursor: pointer;
+}
+.ss-option.active {
+    background: rgba(255, 255, 255, 0.08);
+}
+.ss-option.selected {
+    color: var(--primary-light);
+    font-weight: 600;
+}
+.ss-empty {
+    color: var(--text-3);
+}

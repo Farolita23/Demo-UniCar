@@ -1,0 +1,18 @@
+<button type="button" class="ss-trigger" [class.open]="open" [disabled]="disabled" (click)="toggle()">
+    <span [class.placeholder]="!selectedName">{{ selectedName || placeholder }}</span>
+    <span class="ss-arrow">▾</span>
+</button>
+@if (open) {
+    <div class="ss-panel">
+        <input type="text" class="ss-search" [placeholder]="searchPlaceholder" [value]="query"
+               (input)="onQuery($event)" (keydown)="onKeydown($event)" autocomplete="off">
+        <ul class="ss-list" role="listbox">
+            @for (o of filtered; track o.id; let i = $index) {
+                <li class="ss-option" role="option" [class.active]="i === active" [class.selected]="String(o.id) === value"
+                    (mousedown)="$event.preventDefault(); select(o)" (mouseenter)="active = i">{{ o.name }}</li>
+            } @empty {
+                <li class="ss-empty">Sin resultados</li>
+            }
+        </ul>
+    </div>
+}

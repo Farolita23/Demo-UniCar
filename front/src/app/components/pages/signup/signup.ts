@@ -2,9 +2,11 @@ import { Component, inject, OnInit, ChangeDetectorRef, PLATFORM_ID } from '@angu
 import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { GoogleSignupState } from '../../../services/google-auth';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
 import { AppIcon } from '../../elements/icon/icon';
+import { SearchSelect } from '../../elements/search-select/search-select';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 import { Campus } from '../../../models/campus.model';
@@ -36,7 +38,7 @@ function strongPassword(control: AbstractControl): ValidationErrors | null {
 @Component({
     selector: 'page-signup',
     standalone: true,
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, AppIcon],
+    imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, AppIcon, SearchSelect],
     templateUrl: './signup.html',
     styleUrl: './signup.css',
 })
@@ -49,6 +51,20 @@ export class Signup implements OnInit {
     router = inject(Router);
     cdr = inject(ChangeDetectorRef);
     platformId = inject(PLATFORM_ID);
+
+    // Registro con Google: datos de la cuenta recibidos desde la página de login
+    googleState: GoogleSignupState | null = null;
+    get googleMode(): boolean { return !!this.googleState; }
+
+    // Registro con Google por fases: controles que se validan en cada paso
+    readonly googleSteps = [
+        { title: 'Elige tu usuario',       hint: 'Así te verán el resto de usuarios.',                          controls: ['username'] },
+        { title: 'Sobre ti',               hint: 'Tu fecha de nacimiento y tu género.',                         controls: ['birthdate', 'genre'] },
+        { title: 'Tu teléfono',            hint: 'Para que tus compañeros de viaje puedan contactarte.',        controls: ['phone'] },
+        { title: '¿Dónde te mueves?',      hint: 'Tu campus habitual y tu localidad de origen.',                controls: ['idUsualCampus', 'idHomeTown'] },
+        { title: 'Último paso (opcional)', hint: 'Si conduces, cuéntanos desde cuándo. Puedes dejarlo vacío.',  controls: ['drivingLicenseYear', 'description'] },
+    ];
+    step = 0;
 
     // Variables para almacenar los campus y pueblos obtenidos de la API
     campuses: Campus[] = [];
@@ -82,6 +98,27 @@ export class Signup implements OnInit {
     // Método para inicializar el componente y cargar los datos necesarios
     ngOnInit(): void {
         if (!isPlatformBrowser(this.platformId)) return;
+        const state = history.state as { google?: GoogleSignupState } | null;
+        let google = state?.google ?? null;
+        // La copia guardada solo sirve al recargar la página en pleno registro con Google.
+        // En cualquier otra entrada (por ejemplo "Únete" tras volver atrás) se descarta,
+        // para que se vea el formulario normal.
+        const reloaded = (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined)?.type === 'reload';
+        if (!google && reloaded) {
+            try {
+                const saved = JSON.parse(sessionStorage.getItem('unicar_google_signup') || 'null');
+                // El ID token de Google caduca pronto: solo se reutiliza si es reciente (10 min)
+                google = saved && Date.now() - saved.at < 10 * 60 * 1000 ? saved : null;
+            } catch { google = null; }
+        }
+        if (!google) this.clearGoogleSignup();
+        if (google) {
+            this.googleState = google;
+            // Sin contraseña propia: el acceso es con Google
+            (this.form as any).removeControl('password');
+            (this.form as any).removeControl('rePassword');
+            this.form.patchValue({ email: google.email, name: google.name });
+        }
         this.api.getCampuses().subscribe({
             next: c => { this.campuses = c; this.cdr.detectChanges(); },
             error: e => console.error('[Signup] getCampuses error:', e),
@@ -92,6 +129,24 @@ export class Signup implements OnInit {
         });
     }
 
+    // Avanza de fase si los campos de la actual son válidos; en la última, crea la cuenta
+    nextStep() {
+        const controls = this.googleSteps[this.step].controls.map(c => this.form.get(c)!);
+        controls.forEach(c => c.markAsTouched());
+        if (controls.some(c => c.invalid)) return;
+        if (this.step < this.googleSteps.length - 1) { this.step++; return; }
+        this.submit();
+    }
+
+    // Descarta la cuenta de Google guardada (al cancelar o cambiar de cuenta)
+    clearGoogleSignup() {
+        try { sessionStorage.removeItem('unicar_google_signup'); } catch { }
+    }
+
+    prevStep() {
+        if (this.step > 0) this.step--;
+    }
+
     // Variable para controlar si el formulario ha sido enviado
     submited = false;
 
@@ -99,7 +154,12 @@ export class Signup implements OnInit {
     submit() {
         this.submited = true;
 
-        if (this.form.invalid || this.loading) return;
+        if (this.form.invalid || this.loading) {
+            // En el registro por fases, volver al primer paso con errores
+            const first = this.googleSteps.findIndex(st => st.controls.some(c => this.form.get(c)?.invalid));
+            if (this.googleMode && first >= 0) this.step = first;
+            return;
+        }
 
         this.loading = true; this.error = '';
         const v = this.form.value;
@@ -116,6 +176,30 @@ export class Signup implements OnInit {
             description: v.description,
             password: v.password,
         };
+        if (this.googleState) {
+            const { email, password, ...profile } = dto as any;
+            this.api.googleRegister({ ...profile, idToken: this.googleState.idToken }).subscribe({
+                next: (res) => {
+                    try { sessionStorage.removeItem('unicar_google_signup'); } catch { }
+                    this.auth.saveToken(res.token);
+                    this.api.getMe().subscribe({
+                        next: (user) => { this.auth.saveUser(user); this.loading = false; this.router.navigate(['/']); },
+                        error: () => { this.loading = false; this.router.navigate(['/']); },
+                    });
+                },
+                error: e => {
+                    const fields = e?.error?.fields;
+                    this.error = fields
+                        ? 'Error: ' + Object.entries(fields).map(([k, v]) => `${k}: ${v}`).join(', ')
+                        : e?.error?.message || 'Error al registrarse con Google.';
+                    // Usuario repetido: volver al paso del usuario
+                    if (e?.status === 409) this.step = 0;
+                    this.loading = false;
+                    this.cdr.detectChanges();
+                },
+            });
+            return;
+        }
         this.api.register(dto).subscribe({
             next: () => { this.loading = false; this.router.navigate(['/login']); },
             error: e => {
