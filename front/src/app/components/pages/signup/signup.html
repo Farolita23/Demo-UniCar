@@ -136,7 +136,7 @@
                     @if (step > 0) {
                         <button type="button" class="btn btn-ghost submit-btn" (click)="prevStep()" [disabled]="loading">Atrás</button>
                     } @else {
-                        <button type="button" class="btn btn-ghost submit-btn" routerLink="/login">Cancelar</button>
+                        <button type="button" class="btn btn-ghost submit-btn" routerLink="/login" (click)="clearGoogleSignup()">Cancelar</button>
                     }
                     <button type="submit" class="btn btn-primary submit-btn" [disabled]="loading">
                         @if (loading) { <span class="spinner"></span> }
@@ -145,7 +145,7 @@
                     </button>
                 </div>
             </form>
-            <p class="auth-link-bottom">¿No eres tú? <a routerLink="/login">Usar otra cuenta</a></p>
+            <p class="auth-link-bottom">¿No eres tú? <a routerLink="/login" (click)="clearGoogleSignup()">Usar otra cuenta</a></p>
             } @else {
                 <form [formGroup]="form" (ngSubmit)="submit()" class="signup-form">
                     <div class="form-section">
