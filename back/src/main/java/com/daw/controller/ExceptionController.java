@@ -21,6 +21,7 @@ import com.daw.exceptions.DuplicateZipCodeException;
 import com.daw.exceptions.EntityWithDependenciesException;
 import com.daw.exceptions.HasPassengersException;
 import com.daw.exceptions.InvalidRatingException;
+import com.daw.exceptions.InvalidImageException;
 import com.daw.exceptions.InvalidReportException;
 import com.daw.exceptions.PeriodicTripException;
 import com.daw.exceptions.PeriodicTripNotFoundException;
@@ -220,7 +221,33 @@ public class ExceptionController {
         return buildError(HttpStatus.UNAUTHORIZED, "Usuario o contraseña incorrectos");
     }
     
+    // ─── 400 Bad Request ──────────────────────────────────────────────────────
+
+    /** @see InvalidImageException */
+    @ExceptionHandler(InvalidImageException.class)
+    public ResponseEntity<Map<String, Object>> handleInvalidImage(InvalidImageException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    /** Foto o cuerpo que supera el tamaño máximo permitido. */
+    @ExceptionHandler(org.springframework.web.multipart.MaxUploadSizeExceededException.class)
+    public ResponseEntity<Map<String, Object>> handleMaxUpload(org.springframework.web.multipart.MaxUploadSizeExceededException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, "La imagen no debe superar los 5MB");
+    }
+
+    /** Archivo estático inexistente (p. ej. una foto de perfil borrada). */
+    @ExceptionHandler(org.springframework.web.servlet.resource.NoResourceFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNoResource(org.springframework.web.servlet.resource.NoResourceFoundException ex) {
+        return buildError(HttpStatus.NOT_FOUND, "Recurso no encontrado");
+    }
+
     // ─── 403 Forbidden (Spring Security) ──────────────────────────────────
+
+    /** @see org.springframework.security.access.AccessDeniedException */
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<Map<String, Object>> handleAccessDenied(org.springframework.security.access.AccessDeniedException ex) {
+        return buildError(HttpStatus.FORBIDDEN, ex.getMessage());
+    }
     
     /**@see UserIsBannedException */
     @ExceptionHandler(UserIsBannedException.class)

@@ -133,7 +133,7 @@
                         [class.rejecting]="rejectedIds.has(requester.id)">
                         <div class="person-info">
                             @if (requester.profileImageUrl) {
-                                <img [src]="requester.profileImageUrl" class="person-avatar" [alt]="requester.name">
+                                <img [src]="(requester.profileImageUrl) | avatarUrl" class="person-avatar" [alt]="requester.name">
                             } @else {
                                 <div class="person-avatar-init">{{ requester.name.charAt(0) }}</div>
                             }
@@ -190,7 +190,7 @@
                     <div class="person-card confirmed" [class.removing]="removedIds.has(passenger.id)">
                         <div class="person-info">
                             @if (passenger.profileImageUrl) {
-                                <img [src]="passenger.profileImageUrl" class="person-avatar" [alt]="passenger.name">
+                                <img [src]="(passenger.profileImageUrl) | avatarUrl" class="person-avatar" [alt]="passenger.name">
                             } @else {
                                 <div class="person-avatar-init confirmed-init">{{ passenger.name.charAt(0) }}</div>
                             }

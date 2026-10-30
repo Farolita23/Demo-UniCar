@@ -60,6 +60,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     /**
+     * Usuarios cuyo {@code profileImageUrl} empieza por el prefijo dado (p. ej. {@code data:} para fotos antiguas).
+     */
+    java.util.List<User> findByProfileImageUrlStartingWith(String prefix);
+
+    /**
      * Recupera el propietario de un vehículo a partir del identificador del vehículo.
      *
      * @param idCar identificador del vehículo

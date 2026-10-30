@@ -30,7 +30,7 @@
                             @for (user of searchResults; track user.id) {
                                 <div class="search-result-item" (click)="goToUserProfile(user)">
                                     @if (user.profileImageUrl) {
-                                        <img [src]="user.profileImageUrl" class="search-avatar">
+                                        <img [src]="(user.profileImageUrl) | avatarUrl" class="search-avatar">
                                     } @else {
                                         <div class="search-avatar-init">{{ user.name.charAt(0) }}</div>
                                     }
@@ -48,7 +48,7 @@
             <div class="profile-dropdown-wrap" (clickOutside)="showDropdown=false">
                 <button class="avatar-btn" (click)="toggleDropdown()">
                     @if (auth.getUser()?.profileImageUrl) {
-                        <img [src]="auth.getUser().profileImageUrl" alt="Perfil" class="avatar">
+                        <img [src]="(auth.getUser().profileImageUrl) | avatarUrl" alt="Perfil" class="avatar">
                     } @else {
                         <div class="avatar-initials">{{ auth.getUser()?.name?.charAt(0) || 'U' }}</div>
                     }

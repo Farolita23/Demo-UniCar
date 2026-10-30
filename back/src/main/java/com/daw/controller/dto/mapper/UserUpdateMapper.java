@@ -25,6 +25,7 @@ public interface UserUpdateMapper {
     @Mapping(target = "birthdate", ignore = true)
     @Mapping(target = "genre", ignore = true)
     @Mapping(target = "role", ignore = true)
+    @Mapping(target = "profileImageUrl", ignore = true)
     void updateEntityFromDto(UserUpdateDTO dto, @MappingTarget User entity);
 
 }

@@ -28,6 +28,9 @@ services:
       SPRING_DATASOURCE_PASSWORD: usuario
       JWT_SECRET: ${JWT_SECRET:-unaClaveSecretaMuyLargaYSegura1234567890}
       JWT_EXPIRATION: 86400000
+      UPLOAD_DIR: /app/uploads
+    volumes:
+      - unicar-uploads:/app/uploads
     ports:
       - "8081:8081"
     depends_on:
@@ -47,3 +50,4 @@ services:
 
 volumes:
   unicar-db-data:
+  unicar-uploads:

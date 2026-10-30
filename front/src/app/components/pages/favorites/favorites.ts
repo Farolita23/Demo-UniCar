@@ -23,6 +23,7 @@ import { AuthService } from '../../../services/auth-service';
 // Importaciones de modelos
 import { Favorite } from '../../../models/user.model';
 import { Trip } from '../../../models/trip.model';
+import { AvatarUrlPipe } from '../../../pipes/avatar-url.pipe';
 
 /**
  * Componente Favorites
@@ -36,7 +37,7 @@ import { Trip } from '../../../models/trip.model';
   // Componente standalone sin necesidad de módulo
   standalone: true,
   // Módulos y componentes importados
-  imports: [CommonModule, RouterLink, Header, Footer, TripCard, AppIcon],
+  imports: [AvatarUrlPipe, CommonModule, RouterLink, Header, Footer, TripCard, AppIcon],
   // Archivo HTML de la plantilla
   templateUrl: './favorites.html',
   // Archivo CSS de estilos

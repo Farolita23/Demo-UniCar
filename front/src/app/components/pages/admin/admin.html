@@ -50,7 +50,7 @@
             <div class="udp-top">
                 <div class="udp-avatar-wrap">
                     @if (selectedUser.profileImageUrl) {
-                    <img [src]="selectedUser.profileImageUrl" class="udp-avatar">
+                    <img [src]="(selectedUser.profileImageUrl) | avatarUrl" class="udp-avatar">
                     } @else {
                     <div class="udp-avatar-init">{{ selectedUser.name.charAt(0) }}</div>
                     }
@@ -96,7 +96,7 @@
             <div class="admin-user-row" (click)="selectUser(u)">
                 <div class="aur-info">
                     @if (u.profileImageUrl) {
-                    <img [src]="u.profileImageUrl" class="aur-avatar">
+                    <img [src]="(u.profileImageUrl) | avatarUrl" class="aur-avatar">
                     } @else {
                     <div class="aur-avatar-init">{{ u.name.charAt(0) }}</div>
                     }

@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.stereotype.Service;
 
 import com.daw.controller.dto.GoogleRegisterDTO;
@@ -21,6 +23,7 @@ import com.daw.datamodel.repository.UserRepository;
 import com.daw.exceptions.DuplicateEmailException;
 import com.daw.exceptions.DuplicateUsernameException;
 import com.daw.exceptions.EntityWithDependenciesException;
+import com.daw.exceptions.InvalidImageException;
 import com.daw.exceptions.UserNotFoundException;
 
 import jakarta.transaction.Transactional;
@@ -50,6 +53,7 @@ public class UserService {
     private final UserUpdateMapper userUpdateMapper;
     private final GeneralService generalService;
     private final PasswordEncoder passwordEncoder;
+    private final ProfilePhotoStorage photoStorage;
 
     /**
      * Recupera todos los usuarios registrados en el sistema.
@@ -132,6 +136,40 @@ public class UserService {
     }
 
     /**
+     * Sustituye la foto de perfil de un usuario por la imagen subida.
+     *
+     * La imagen se valida, se recorta a cuadrado y se guarda como archivo; en la base de datos solo
+     * queda su ruta. La foto anterior, si era un archivo propio, se borra del disco.
+     *
+     * @param id        identificador del usuario
+     * @param file      imagen subida
+     * @param requester nombre de usuario de quien hace la petición
+     * @param admin     {@code true} si quien hace la petición es administrador
+     * @return {@link UserDTO} con la nueva ruta de la foto
+     * @throws UserNotFoundException  si no existe el usuario
+     * @throws AccessDeniedException  si se intenta cambiar la foto de otro usuario sin ser administrador
+     * @throws InvalidImageException  si el archivo no es una imagen válida
+     */
+    public UserDTO updatePhoto(Long id, MultipartFile file, String requester, boolean admin) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
+        if (!admin && !user.getUsername().equals(requester)) {
+            throw new AccessDeniedException("Solo puedes cambiar tu propia foto");
+        }
+        byte[] bytes;
+        try {
+            bytes = file == null ? null : file.getBytes();
+        } catch (java.io.IOException e) {
+            throw new InvalidImageException("No se pudo leer la imagen");
+        }
+        String previous = user.getProfileImageUrl();
+        user.setProfileImageUrl(photoStorage.store(id, bytes));
+        userRepository.save(user);
+        photoStorage.delete(previous);
+        return userMapper.toDto(user);
+    }
+
+    /**
      * Actualiza los datos de perfil de un usuario existente.
      *
      * Si se envía una nueva contraseña, se cifra antes de persistirla.
@@ -180,7 +218,9 @@ public class UserService {
         boolean hasntTripsAsPassenger = user.getTripsAsAPassenger().isEmpty();
         if (!(hasntCars && hasntTripsAsPassenger))
             throw new EntityWithDependenciesException("User", id);
+        String photo = user.getProfileImageUrl();
         userRepository.delete(user);
+        photoStorage.delete(photo);
     }
 
     /**

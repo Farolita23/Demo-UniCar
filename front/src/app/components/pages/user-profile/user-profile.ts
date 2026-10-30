@@ -28,11 +28,12 @@ import {
 import {
     User, Rating
 } from '../../../models/user.model';
+import { AvatarUrlPipe } from '../../../pipes/avatar-url.pipe';
 
 @Component({
     selector: 'page-user-profile',
     standalone: true,
-    imports: [CommonModule, RouterLink, FormsModule, Header, Footer, AppIcon],
+    imports: [AvatarUrlPipe, CommonModule, RouterLink, FormsModule, Header, Footer, AppIcon],
     templateUrl: './user-profile.html',
     styleUrl: './user-profile.css',
 })
