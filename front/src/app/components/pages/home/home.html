@@ -41,6 +41,20 @@
         }
         </div>
     </section>
+    <!-- Franja de confianza: solo lo que la app ya hace de verdad -->
+    <section class="container trust-strip" aria-label="Por qué fiarte de UniCar">
+        <ul class="trust-list">
+            @for (item of trustItems; track item.title) {
+                <li class="trust-item">
+                    <span class="trust-icon" aria-hidden="true"><app-icon [icon]="item.icon" [size]="28"></app-icon></span>
+                    <span class="trust-text">
+                        <strong class="trust-title">{{ item.title }}</strong>
+                        <span class="trust-desc">{{ item.desc }}</span>
+                    </span>
+                </li>
+            }
+        </ul>
+    </section>
     <!-- Sección: Cómo funciona -->
     <section class="container how-section">
         <!-- Cabecera de sección -->

@@ -72,6 +72,13 @@ export class Home implements OnInit {
   campuses: Campus[] = [];
   boardTrips: Trip[] = [];
 
+  /** Franja de confianza bajo el hero: promesas que la app ya cumple hoy */
+  trustItems = [
+    { icon: 'ojo'      as IconName, title: 'Ves quién conduce antes de subirte', desc: 'Foto, nombre y valoraciones en cada viaje. Nada de montarse a ciegas.' },
+    { icon: 'estrella' as IconName, title: 'Valoraciones después de cada viaje', desc: 'Conductor y pasajeros se puntúan entre ellos, para bien o para mal.' },
+    { icon: 'prohibido' as IconName, title: '3 strikes y fuera', desc: 'Al tercer aviso de la moderación, la cuenta se bloquea sola.' },
+  ];
+
   /**
    * Array de características principales de la plataforma
    * Cada objeto contiene: icon, title, desc

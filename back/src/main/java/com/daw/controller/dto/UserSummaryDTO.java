@@ -17,4 +17,10 @@ public class UserSummaryDTO {
 
     private String profileImageUrl;
 
+
+    /** Valoración media recibida (null si aún no tiene valoraciones). Solo se rellena en el conductor de los viajes. */
+    private Double avgRating;
+
+    /** Número de valoraciones recibidas. Solo se rellena en el conductor de los viajes. */
+    private Long ratingsCount;
 }

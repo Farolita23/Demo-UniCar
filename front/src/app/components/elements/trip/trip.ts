@@ -5,11 +5,12 @@ import { Trip } from '../../../models/trip.model';
 import { AuthService } from '../../../services/auth-service';
 import { ApiService } from '../../../services/api-service';
 import { AppIcon } from '../icon/icon';
+import { AvatarUrlPipe } from '../../../pipes/avatar-url.pipe';
 
 @Component({
   selector: 'app-trip',
   standalone: true,
-  imports: [CommonModule, RouterLink, AppIcon],
+  imports: [CommonModule, RouterLink, AppIcon, AvatarUrlPipe],
   templateUrl: './trip.html',
   styleUrl: './trip.css',
 })
@@ -65,9 +66,40 @@ export class TripCard {
     return this.driverId === this.currentUserId;
   }
 
-  get avgRating(): number {
-    // placeholder
-    return 4.5;
+  /** Nombre corto del conductor: "Lucía M." (primera palabra + inicial de la última) */
+  get driverShortName(): string {
+    const parts = (this.data.driverDTO?.name || '').trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return this.data.driverDTO?.username ?? '';
+    if (parts.length === 1) return parts[0];
+    return `${parts[0]} ${parts[parts.length - 1][0].toUpperCase()}.`;
+  }
+
+  /** Iniciales para el avatar cuando no hay foto */
+  get driverInitials(): string {
+    const parts = (this.data.driverDTO?.name || this.data.driverDTO?.username || '?').trim().split(/\s+/);
+    return ((parts[0]?.[0] ?? '') + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
+  }
+
+  get ratingsCount(): number {
+    return this.data.driverDTO?.ratingsCount ?? 0;
+  }
+
+  /** Media con un decimal y coma: "4,8" */
+  get ratingLabel(): string {
+    const avg = this.data.driverDTO?.avgRating;
+    return avg == null ? '' : avg.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  }
+
+  get ratingsCountLabel(): string {
+    return this.ratingsCount === 1 ? '1 valoración' : `${this.ratingsCount} valoraciones`;
+  }
+
+  /** Nombre accesible de la fila del conductor */
+  get driverAriaLabel(): string {
+    const rating = this.ratingsCount > 0
+      ? `valoración ${this.ratingLabel} de 5, ${this.ratingsCountLabel}`
+      : 'nuevo en UniCar, sin valoraciones';
+    return `Ver perfil de ${this.driverShortName}, ${rating}`;
   }
 
   formatDate(d: string): string {

@@ -46,6 +46,31 @@
                 {{ data.carDTO.model }} · {{ data.carDTO.color }}
             </div>
         </div>
+
+        <!-- Quién conduce: lo primero que hay que saber antes de pedir plaza -->
+        @if (data.driverDTO) {
+            @if (isOwnTrip) {
+                <div class="trip-driver trip-driver--own">
+                    <app-icon icon="coche" [size]="16"></app-icon> Tu viaje
+                </div>
+            } @else {
+                <a class="trip-driver" [routerLink]="['/user', driverId]" [attr.aria-label]="driverAriaLabel">
+                    @if (data.driverDTO.profileImageUrl) {
+                        <img class="trip-driver__avatar" referrerpolicy="no-referrer" [src]="data.driverDTO.profileImageUrl | avatarUrl" alt="">
+                    } @else {
+                        <span class="trip-driver__avatar trip-driver__avatar--initials" aria-hidden="true">{{ driverInitials }}</span>
+                    }
+                    <span class="trip-driver__text">
+                        <span class="trip-driver__name">{{ driverShortName }}</span>
+                        @if (ratingsCount > 0) {
+                            <span class="trip-driver__rating"><span class="trip-driver__star" aria-hidden="true">★</span> {{ ratingLabel }} · {{ ratingsCountLabel }}</span>
+                        } @else {
+                            <span class="trip-driver__rating">Nuevo en UniCar</span>
+                        }
+                    </span>
+                </a>
+            }
+        }
     </div>
 
     <div class="trip-card__footer">
@@ -55,11 +80,6 @@
         </div>
 
         <div class="trip-card__actions">
-            @if (driverId && !isOwnTrip) {
-            <button class="btn btn-ghost trip-btn trip-btn-profile" (click)="goToDriverProfile($event)">
-                <app-icon icon="usuario" [size]="15"></app-icon> Perfil
-            </button>
-            }
             @if (auth.isLoggedIn()) {
             @if(isOwnTrip){
             <button class="btn btn-ghost trip-btn" (click)="goToManage()">

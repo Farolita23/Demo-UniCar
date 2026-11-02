@@ -185,6 +185,67 @@
     padding-bottom: 64px;
 }
 
+/* ========================================
+   FRANJA DE CONFIANZA
+   ======================================== */
+
+/* Tres promesas en fila, sin tarjetas: se leen de un vistazo antes de bajar a los pasos */
+:host .trust-strip {
+    margin-top: -24px;
+    margin-bottom: 40px;
+}
+
+:host .trust-strip .trust-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 32px;
+}
+
+:host .trust-strip .trust-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+:host .trust-strip .trust-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(230, 57, 70, 0.08);
+    border: 1px solid rgba(230, 57, 70, 0.18);
+}
+
+:host .trust-strip .trust-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+:host .trust-strip .trust-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+:host .trust-strip .trust-desc {
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--text-2);
+    text-wrap: pretty;
+}
+
+@media (max-width: 768px) {
+    :host .trust-strip .trust-list {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+    }
+}
+
 /* Grid de 3 columnas para tarjetas de pasos */
 :host .how-section .steps-grid {
     display: grid;
