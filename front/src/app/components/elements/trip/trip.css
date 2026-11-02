@@ -184,3 +184,12 @@ a.trip-driver:focus-visible {
   font-weight: 600;
   padding-left: 10px;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .trip-card {
+    animation: none;
+  }
+  .trip-card:hover {
+    transform: none;
+  }
+}

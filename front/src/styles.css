@@ -543,3 +543,14 @@ button:focus:not(:focus-visible) {
     border-color: var(--danger);
     background: rgba(230, 57, 70, 0.06);
 }
+/* Movimiento reducido: las entradas aparecen ya en su sitio y los bucles decorativos se detienen.
+   Las transiciones de estado (hover, foco) se mantienen porque comunican feedback */
+@media (prefers-reduced-motion: reduce) {
+    .animate-fadeUp,
+    .anim-fade-in,
+    .anim-slide-up,
+    .anim-flash-pop,
+    .anim-pulse {
+        animation: none !important;
+    }
+}

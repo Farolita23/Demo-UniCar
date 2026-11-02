@@ -463,3 +463,21 @@
         display: none;
     }
 }
+/* Enlace para saltar al contenido: invisible hasta que llega el foco del teclado */
+:host .skip-link {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 3000;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--primary-dark);
+    color: #fff;
+    font-weight: 600;
+    transform: translateY(-200%);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+:host .skip-link:focus-visible {
+    transform: translateY(0);
+    color: #fff;
+}

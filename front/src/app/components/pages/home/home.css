@@ -585,3 +585,7 @@
         width: calc(100% - 32px * 2);
     }
 }
+/* El contenido principal recibe el foco al usar "Saltar al contenido"; sin anillo, es solo un destino */
+:host main:focus {
+    outline: none;
+}
