@@ -27,7 +27,7 @@
             <aside class="up-sidebar">
                 <div class="up-avatar-wrap">
                     @if (user.profileImageUrl) {
-                    <img [src]="user.profileImageUrl" class="up-avatar" [alt]="user.name">
+                    <img referrerpolicy="no-referrer" [src]="(user.profileImageUrl) | avatarUrl" class="up-avatar" [alt]="user.name">
                     } @else {
                     <div class="up-avatar-init">{{ user.name.charAt(0) }}</div>
                     }
@@ -123,7 +123,7 @@
                         <div class="up-rating-item">
                             <div class="up-rating-user">
                                 @if (r.userRateDTO?.profileImageUrl) {
-                                <img [src]="r.userRateDTO?.profileImageUrl" class="up-rating-avatar">
+                                <img referrerpolicy="no-referrer" [src]="(r.userRateDTO?.profileImageUrl) | avatarUrl" class="up-rating-avatar">
                                 } @else {
                                 <div class="up-rating-avatar-init">{{ r.userRateDTO?.name?.charAt(0) || '?' }}</div>
                                 }

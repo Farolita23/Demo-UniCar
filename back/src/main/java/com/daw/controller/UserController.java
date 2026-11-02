@@ -6,6 +6,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.daw.controller.dto.UserCreateDTO;
@@ -52,6 +56,19 @@ public class UserController {
     public ResponseEntity<UserDTO> update(@RequestBody @Validated UserUpdateDTO dto,
                                           @PathVariable Long id) {
         return ResponseEntity.ok(userService.update(dto, id));
+    }
+
+    /**
+     * Sube la foto de perfil de un usuario (multipart, campo {@code file}). Solo el propio usuario
+     * o un administrador pueden cambiarla.
+     */
+    @PostMapping(value = "/{id}/photo", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UserDTO> uploadPhoto(@PathVariable Long id,
+                                               @RequestPart("file") MultipartFile file,
+                                               Authentication authentication) {
+        boolean admin = authentication.getAuthorities().stream()
+                .anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
+        return ResponseEntity.ok(userService.updatePhoto(id, file, authentication.getName(), admin));
     }
 
     @DeleteMapping("/{id}")

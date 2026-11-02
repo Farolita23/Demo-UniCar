@@ -9,11 +9,12 @@ import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 import { Trip } from '../../../models/trip.model';
 import { User, UserSummary, Rating } from '../../../models/user.model';
+import { AvatarUrlPipe } from '../../../pipes/avatar-url.pipe';
 
 @Component({
     selector: 'page-manage-trip',
     standalone: true,
-    imports: [CommonModule, RouterLink, Header, Footer, AppIcon],
+    imports: [AvatarUrlPipe, CommonModule, RouterLink, Header, Footer, AppIcon],
     templateUrl: './manage-trip.html',
     styleUrl: './manage-trip.css',
 })

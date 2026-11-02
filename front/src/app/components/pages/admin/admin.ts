@@ -23,6 +23,7 @@ import { AuthService } from '../../../services/auth-service';
 
 // Importaciones de modelos
 import { User, Report } from '../../../models/user.model';
+import { AvatarUrlPipe } from '../../../pipes/avatar-url.pipe';
 
 /**
  * Componente Admin
@@ -36,7 +37,7 @@ import { User, Report } from '../../../models/user.model';
     // Componente standalone sin necesidad de módulo
     standalone: true,
     // Módulos y componentes importados
-    imports: [CommonModule, FormsModule, RouterLink, Header, Footer, AppIcon],
+    imports: [AvatarUrlPipe, CommonModule, FormsModule, RouterLink, Header, Footer, AppIcon],
     // Archivo HTML de la plantilla
     templateUrl: './admin.html',
     // Archivo CSS de estilos

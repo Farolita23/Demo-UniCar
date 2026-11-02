@@ -10,13 +10,30 @@
             <aside class="profile-sidebar">
                 <div class="profile-card">
                     <div class="avatar-wrap">
-                        @if (user.profileImageUrl) {
-                            <img [src]="user.profileImageUrl" alt="Perfil" class="profile-avatar">
-                        } @else {
-                            <div class="profile-avatar-init">{{ user.name[0] }}</div>
-                        }
+                        <!-- La foto es un botón: al pulsarla se elige una imagen y se sube al momento -->
+                        <button type="button" class="avatar-btn" [class.uploading]="photoUploading" [disabled]="photoUploading"
+                                (click)="quickPhotoInput.click()" aria-label="Cambiar foto de perfil" title="Cambiar foto de perfil">
+                            @if (user.profileImageUrl) {
+                                <img referrerpolicy="no-referrer" [src]="(user.profileImageUrl) | avatarUrl" alt="" class="profile-avatar">
+                            } @else {
+                                <div class="profile-avatar-init">{{ user.name[0] }}</div>
+                            }
+                            <span class="avatar-overlay">
+                                @if (photoUploading) {
+                                    <span class="spinner"></span>
+                                } @else {
+                                    <app-icon icon="camara" [size]="22"></app-icon>
+                                    <small>Cambiar</small>
+                                }
+                            </span>
+                            <span class="avatar-cam" aria-hidden="true"><app-icon icon="camara" [size]="13"></app-icon></span>
+                        </button>
+                        <input #quickPhotoInput type="file" accept="image/*" hidden (change)="onQuickPhotoSelected($event)">
                         <div class="rating-badge">★ {{ avgRating }}</div>
                     </div>
+                    @if (photoError) {
+                        <span class="avatar-error" role="alert">{{ photoError }}</span>
+                    }
                     <h2 class="profile-name">{{ user.name }}</h2>
                     <span class="profile-username">&#64;{{ user.username }}</span>
 
@@ -172,7 +189,7 @@
                             <div class="rating-card-profile">
                                 <div class="rating-card-user">
                                     @if (r.userRateDTO?.profileImageUrl) {
-                                    <img [src]="r.userRateDTO?.profileImageUrl" class="rating-card-avatar"
+                                    <img referrerpolicy="no-referrer" [src]="(r.userRateDTO?.profileImageUrl) | avatarUrl" class="rating-card-avatar"
                                         [alt]="r.userRateDTO?.name">
                                     } @else {
                                     <div class="rating-card-avatar-init">{{ r.userRateDTO?.name?.charAt(0) || '?' }}</div>
@@ -207,7 +224,7 @@
                             <div class="rating-card-profile">
                                 <div class="rating-card-user">
                                     @if (r.ratedUserDTO?.profileImageUrl) {
-                                    <img [src]="r.ratedUserDTO?.profileImageUrl" class="rating-card-avatar"
+                                    <img referrerpolicy="no-referrer" [src]="(r.ratedUserDTO?.profileImageUrl) | avatarUrl" class="rating-card-avatar"
                                         [alt]="r.ratedUserDTO?.name">
                                     } @else {
                                     <div class="rating-card-avatar-init">{{ r.ratedUserDTO?.name?.charAt(0) || '?' }}</div>
@@ -307,13 +324,13 @@
                                     <label class="label">Foto de perfil</label>
                                     <div class="image-upload-area" (click)="profileFileInput.click()">
                                         @if ((editPreviewUrl || user.profileImageUrl)) {
-                                            <img [src]="editPreviewUrl || user.profileImageUrl" class="preview-img" alt="Vista previa">
+                                            <img referrerpolicy="no-referrer" [src]="(editPreviewUrl || user.profileImageUrl) | avatarUrl" class="preview-img" alt="Vista previa">
                                             <div class="preview-overlay">Cambiar foto</div>
                                         } @else {
                                             <div class="upload-placeholder">
                                                 <span class="upload-icon"><app-icon icon="camara" [size]="32"></app-icon></span>
                                                 <span>Haz clic para subir una imagen</span>
-                                                <small>JPG, PNG, GIF — máx. 5MB</small>
+                                                <small>JPG, PNG, GIF, WebP — máx. 10MB</small>
                                             </div>
                                         }
                                     </div>

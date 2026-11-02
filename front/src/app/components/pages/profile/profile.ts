@@ -15,6 +15,7 @@ import { Car } from '../../../models/car.model';
 import { Trip } from '../../../models/trip.model';
 import { Campus } from '../../../models/campus.model';
 import { Town } from '../../../models/town.model';
+import { AvatarUrlPipe } from '../../../pipes/avatar-url.pipe';
 
 // Validador personalizado para el formato de matrícula de coche
 function plateValidator(control: AbstractControl): ValidationErrors | null {
@@ -31,7 +32,7 @@ function plateValidator(control: AbstractControl): ValidationErrors | null {
 @Component({
     selector: 'page-profile',
     standalone: true,
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, Header, Footer, TripCard, AppIcon, SearchSelect],
+    imports: [AvatarUrlPipe, ReactiveFormsModule, CommonModule, RouterLink, Header, Footer, TripCard, AppIcon, SearchSelect],
     templateUrl: './profile.html',
     styleUrl: './profile.css',
 })
@@ -66,6 +67,8 @@ export class Profile implements OnInit {
     editSuccess = false;
     editError = '';
     editPreviewUrl: string | null = null;
+    // Foto elegida y ya reducida; se sube al guardar el perfil (no viaja dentro del formulario)
+    private pendingPhoto: Blob | null = null;
 
     // Estados y controles para gestión de vehículos
     showCarModal = false;
@@ -87,7 +90,6 @@ export class Profile implements OnInit {
         email: ['', [Validators.required, Validators.email]],
         phone: ['', [Validators.required, Validators.pattern(/^\d{9}$/)]],
         description: [''],
-        profileImageUrl: [''],
         idUsualCampus: ['' as string],
         idHomeTown: ['' as string],
     });
@@ -181,42 +183,84 @@ export class Profile implements OnInit {
             name: u.name,
             phone: u.phone,
             description: u.description || '',
-            profileImageUrl: u.profileImageUrl || '',
             idUsualCampus: u.usualCampusDTO?.id != null ? String(u.usualCampusDTO.id) : '',
             idHomeTown: u.homeTownDTO?.id != null ? String(u.homeTownDTO.id) : '',
         });
     }
 
-    // Manejar selección de nueva imagen de perfil y mostrar vista previa
-    onProfileFileSelected(event: Event) {
-        const file = (event.target as HTMLInputElement).files?.[0];
-        if (!file) return;
+    // Prepara una foto para subirla: valida el archivo, la recorta al centro y la reduce a 512 px
+    // en el navegador para subir poco. El servidor vuelve a validarla y la deja en 256 px.
+    private prepareAvatar(file: File): Promise<Blob> {
         const allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        if (!allowedFormats.includes(file.type)) { this.editError = 'Solo se permiten archivos de imagen (JPEG, PNG, GIF, WebP).'; return; }
-        if (file.size > 5 * 1024 * 1024) { this.editError = 'La imagen no debe superar los 5MB.'; return; }
-        const reader = new FileReader();
-        reader.onload = (e) => {
+        if (!allowedFormats.includes(file.type)) return Promise.reject(new Error('Solo se permiten archivos de imagen (JPEG, PNG, GIF, WebP).'));
+        if (file.size > 10 * 1024 * 1024) return Promise.reject(new Error('La imagen no debe superar los 10MB.'));
+        return new Promise((resolve, reject) => {
+            const objectUrl = URL.createObjectURL(file);
             const img = new Image();
             img.onload = () => {
-                const MAX_PX = 800;
-                let { width, height } = img;
-                if (width > MAX_PX || height > MAX_PX) {
-                    if (width > height) { height = Math.round(height * MAX_PX / width); width = MAX_PX; }
-                    else { width = Math.round(width * MAX_PX / height); height = MAX_PX; }
-                }
+                URL.revokeObjectURL(objectUrl);
+                const SIDE = 512;
+                const side = Math.min(img.width, img.height);
                 const canvas = document.createElement('canvas');
-                canvas.width = width; canvas.height = height;
-                canvas.getContext('2d')!.drawImage(img, 0, 0, width, height);
-                const compressed = canvas.toDataURL('image/jpeg', 0.75);
-                this.zone.run(() => {
-                    this.editPreviewUrl = compressed;
-                    this.editForm.get('profileImageUrl')?.setValue(compressed);
-                    this.cdr.detectChanges();
-                });
+                canvas.width = canvas.height = Math.min(SIDE, side);
+                const ctx = canvas.getContext('2d')!;
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('No se pudo procesar la imagen.')), 'image/jpeg', 0.85);
             };
-            img.src = e.target?.result as string;
-        };
-        reader.readAsDataURL(file);
+            img.onerror = () => {
+                URL.revokeObjectURL(objectUrl);
+                reject(new Error('No se pudo leer la imagen.'));
+            };
+            img.src = objectUrl;
+        });
+    }
+
+    // Foto elegida en "Editar perfil": se muestra la vista previa y se sube al guardar
+    onProfileFileSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        const file = input.files?.[0];
+        input.value = '';
+        if (!file) return;
+        this.prepareAvatar(file).then(blob => this.zone.run(() => {
+            if (this.editPreviewUrl) URL.revokeObjectURL(this.editPreviewUrl);
+            this.pendingPhoto = blob;
+            this.editPreviewUrl = URL.createObjectURL(blob);
+            this.editError = '';
+            this.cdr.detectChanges();
+        })).catch((e: Error) => this.zone.run(() => { this.editError = e.message; this.cdr.detectChanges(); }));
+    }
+
+    // Cambio rápido desde la foto de la tarjeta: se sube en el momento, sin pasar por "Editar perfil"
+    photoUploading = false;
+    photoError = '';
+    onQuickPhotoSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        const file = input.files?.[0];
+        input.value = '';
+        if (!file || !this.user || this.photoUploading) return;
+        const userId = this.user.id;
+        this.photoError = '';
+        this.photoUploading = true;
+        this.cdr.detectChanges();
+        this.prepareAvatar(file)
+            .then(blob => this.zone.run(() => this.api.uploadPhoto(userId, blob).subscribe({
+                next: u => {
+                    this.user = u;
+                    this.auth.saveUser(u);
+                    this.photoUploading = false;
+                    this.cdr.detectChanges();
+                },
+                error: e => this.quickPhotoFailed(e?.error?.message || 'No se pudo subir la foto.'),
+            })))
+            .catch((e: Error) => this.zone.run(() => this.quickPhotoFailed(e.message)));
+    }
+
+    private quickPhotoFailed(message: string) {
+        this.photoError = message;
+        this.photoUploading = false;
+        this.cdr.detectChanges();
     }
 
     // Guardar cambios en el perfil del usuario
@@ -232,7 +276,6 @@ export class Profile implements OnInit {
             name: v.name,
             phone: v.phone,
             description: v.description,
-            profileImageUrl: v.profileImageUrl,
             idUsualCampus: v.idUsualCampus ? Number(v.idUsualCampus) : null,
             idHomeTown: v.idHomeTown ? Number(v.idHomeTown) : null,
             birthdate: this.user.birthdate,
@@ -240,19 +283,23 @@ export class Profile implements OnInit {
             drivingLicenseYear: this.user.drivingLicenseYear,
             password: '',
         };
-        this.api.updateUser(this.user.id, dto).subscribe({
+        const userId = this.user.id;
+        this.api.updateUser(userId, dto).subscribe({
             next: u => {
-                let usernameHasChanged = this.auth.getUser().username !== v.username;
-                this.user = u;
-                this.auth.saveUser(u);
-                this.editSuccess = true;
-                this.saving = false;
-                this.cdr.detectChanges();
-                if(usernameHasChanged){
-                    alert("El nombre de usuario ha cambiado, porfavor vuelva a loguearse");
-                    this.auth.logout();
-                    this.router.navigate(["/login"]);
-                }
+                // Si hay foto nueva, se sube aparte (archivo) y la respuesta ya trae su ruta
+                if (!this.pendingPhoto) { this.finishSave(u, v.username!); return; }
+                this.api.uploadPhoto(userId, this.pendingPhoto).subscribe({
+                    next: withPhoto => {
+                        this.pendingPhoto = null;
+                        if (this.editPreviewUrl) { URL.revokeObjectURL(this.editPreviewUrl); this.editPreviewUrl = null; }
+                        this.finishSave(withPhoto, v.username!);
+                    },
+                    error: e => {
+                        this.editError = e?.error?.message || 'El perfil se guardó, pero no se pudo subir la foto.';
+                        this.saving = false;
+                        this.cdr.detectChanges();
+                    },
+                });
             },
             error: e => {
                 this.editError = e?.error?.message || 'Error al guardar.';
@@ -260,6 +307,21 @@ export class Profile implements OnInit {
                 this.cdr.detectChanges();
             },
         });
+    }
+
+    // Actualiza el estado local tras guardar el perfil
+    private finishSave(u: any, username: string) {
+        const usernameHasChanged = this.auth.getUser().username !== username;
+        this.user = u;
+        this.auth.saveUser(u);
+        this.editSuccess = true;
+        this.saving = false;
+        this.cdr.detectChanges();
+        if (usernameHasChanged) {
+            alert("El nombre de usuario ha cambiado, porfavor vuelva a loguearse");
+            this.auth.logout();
+            this.router.navigate(["/login"]);
+        }
     }
 
     // Abrir modal para agregar un nuevo coche

@@ -56,6 +56,16 @@ export class ApiService {
         return this.http.put<User>(`${this.URL}/api/user/${id}`, dto, { headers: this.authHeaders() });
     }
 
+    /** POST /api/user/{id}/photo — sube la foto de perfil (multipart); el servidor la recorta y la guarda como archivo */
+    uploadPhoto(id: number, photo: Blob): Observable<User> {
+        const form = new FormData();
+        form.append('file', photo, 'avatar.jpg');
+        let headers = new HttpHeaders();
+        const token = this.authService.getToken();
+        if (token) headers = headers.set('Authorization', 'Bearer ' + token);
+        return this.http.post<User>(`${this.URL}/api/user/${id}/photo`, form, { headers });
+    }
+
     /** GET /api/user/car-owner/{carId} — obtiene el conductor de un coche */
     getCarOwner(carId: number): Observable<User> {
         return this.http.get<User>(`${this.URL}/api/user/car-owner/${carId}`, { headers: this.authHeaders() });

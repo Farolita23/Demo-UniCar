@@ -39,7 +39,7 @@
             <div class="fav-card anim-slide-up">
                 <div class="fav-card__info" (click)="goToProfile(fav.favoriteUserDTO.id)">
                     @if (fav.favoriteUserDTO.profileImageUrl) {
-                    <img [src]="fav.favoriteUserDTO.profileImageUrl" class="fav-avatar">
+                    <img referrerpolicy="no-referrer" [src]="(fav.favoriteUserDTO.profileImageUrl) | avatarUrl" class="fav-avatar">
                     } @else {
                     <div class="fav-avatar-init">{{ fav.favoriteUserDTO.name.charAt(0) }}</div>
                     }

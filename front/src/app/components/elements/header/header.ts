@@ -9,6 +9,7 @@ import { ApiService } from '../../../services/api-service';
 import { User } from '../../../models/user.model';
 import { Subject, debounceTime, switchMap, of } from 'rxjs';
 import { AppIcon } from '../icon/icon';
+import { AvatarUrlPipe } from '../../../pipes/avatar-url.pipe';
 
 /**
  * Componente de encabezado global de la aplicación.
@@ -17,7 +18,7 @@ import { AppIcon } from '../icon/icon';
 @Component({
     selector: 'app-header',
     standalone: true,
-    imports: [RouterLink, RouterLinkActive, CommonModule, FormsModule, AppIcon],
+    imports: [AvatarUrlPipe, RouterLink, RouterLinkActive, CommonModule, FormsModule, AppIcon],
     templateUrl: './header.html',
     styleUrl: './header.css',
 })

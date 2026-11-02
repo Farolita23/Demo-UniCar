@@ -72,6 +72,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/auth/google").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/auth/google/register").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api/auth/me").authenticated()
+                // Fotos de perfil (archivos estáticos)
+                .requestMatchers(HttpMethod.GET,  "/uploads/**").permitAll()
                 // Endpoints públicos de consulta
                 .requestMatchers(HttpMethod.GET,  "/api/trip").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api/trip/{id}").permitAll()
