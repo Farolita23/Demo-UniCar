@@ -3,17 +3,16 @@
 <!-- Contenedor principal de la página -->
 <div class="page-wrapper">
     <!-- Sección HERO (presentación principal) -->
-    <section class="hero" (mousemove)="onHeroMouseMove($event, heroCanvas)" (mouseleave)="onHeroMouseLeave()">
-        <!-- Fondo interactivo: red de nodos que se conectan entre sí y con el cursor -->
+    <section class="hero">
         <div class="hero-bg">
-            <canvas class="hero-canvas" #heroCanvas></canvas>
             <!-- Grano cinematográfico sutil -->
             <div class="hero-grain"></div>
             <!-- Viñeta que enmarca la escena y da profundidad -->
             <div class="hero-vignette"></div>
         </div>
-        <!-- Contenido principal del hero -->
-        <div class="container hero-content">
+        <!-- Contenido principal del hero: texto a la izquierda, tablero de rutas reales a la derecha -->
+        <div class="container hero-layout">
+        <div class="hero-content">
             <!-- Título principal -->
             <h1 class="hero-title">Comparte el camino<br><span class="hero-highlight">hacia la uni</span></h1>
             <!-- Subtítulo -->
@@ -36,12 +35,16 @@
                 <a routerLink="/trip" class="btn btn-ghost hero-btn">Ofrecer viaje →</a>
             </div>
         </div>
+        <!-- Tablero: localidades con viajes publicados hacia los campus de Sevilla -->
+        @if (campuses.length) {
+            <app-route-board class="hero-board" [trips]="boardTrips" [campuses]="campuses"></app-route-board>
+        }
+        </div>
     </section>
     <!-- Sección: Cómo funciona -->
     <section class="container how-section">
         <!-- Cabecera de sección -->
         <div class="section-head">
-            <span class="section-badge">Pasos simples</span>
             <h2 class="section-title">¿Cómo funciona?</h2>
             <p class="section-sub">En tres pasos empiezas a compartir viaje</p>
         </div>
@@ -54,7 +57,7 @@
                     <!-- Icono y número -->
                     <div class="step-icon-wrap">
                         <app-icon [icon]="feat.icon" [size]="54"></app-icon>
-                        <span class="step-num">0{{ i + 1 }}</span>
+                        <span class="step-num" aria-hidden="true">{{ i + 1 }}</span>
                     </div>
                     <!-- Título del paso -->
                     <h3 class="step-title">{{ feat.title }}</h3>
