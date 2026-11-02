@@ -33,12 +33,12 @@
   border-radius: 100px;
   font-size: 0.75rem;
 }
-.free-seats.low { background: rgba(230,57,70,0.15); color: var(--danger); }
-.free-seats.full-seats { background: rgba(230,57,70,0.2); color: var(--danger); font-weight: 700; }
+.free-seats.low { background: rgba(230,57,70,0.15); color: var(--primary-light); }
+.free-seats.full-seats { background: rgba(230,57,70,0.2); color: var(--primary-light); font-weight: 700; }
 
 .periodic-badge {
-  background: rgba(99,102,241,0.16);
-  color: #a5b4fc;
+  background: var(--surface-2);
+  color: var(--text-2);
   padding: 2px 8px;
   border-radius: 100px;
   font-size: 0.7rem;
@@ -102,8 +102,8 @@
   gap: 1rem;
 }
 .price { display: flex; align-items: baseline; gap: 4px; }
-.price-amount { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--accent); }
-.price-label { font-size: 0.75rem; color: var(--text-3); }
+.price-amount { font-family: 'DM Sans', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+.price-label { font-size: 0.75rem; color: var(--text-2); }
 .trip-card__actions { display: flex; align-items: center; gap: 6px; }
 .trip-btn { padding: 7px 18px; font-size: 0.82rem; }
 .trip-btn.pending { border-color: var(--warning); color: var(--warning); }

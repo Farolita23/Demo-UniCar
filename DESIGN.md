@@ -5,6 +5,7 @@ colors:
   rojo-piloto: "#E63946"
   rojo-piloto-hondo: "#C1121F"
   rojo-piloto-claro: "#FF6B6B"
+  rojo-piloto-profundo: "#A30F1A"
   ambar-intermitente: "#FFB703"
   ambar-intermitente-hondo: "#FB8500"
   noche: "#0D0D0D"
@@ -55,12 +56,12 @@ spacing:
   xl: "32px"
 components:
   button-primary:
-    backgroundColor: "{colors.rojo-piloto}"
+    backgroundColor: "{colors.rojo-piloto-hondo}"
     textColor: "#FFFFFF"
     rounded: "{rounded.md}"
     padding: "0.7rem 1.5rem"
   button-primary-hover:
-    backgroundColor: "{colors.rojo-piloto-hondo}"
+    backgroundColor: "{colors.rojo-piloto-profundo}"
   button-ghost:
     backgroundColor: "transparent"
     textColor: "{colors.texto}"
@@ -110,9 +111,10 @@ La interfaz es oscura y de capas: no hay superficies claras. La profundidad se c
 Una noche casi negra con dos luces de coche: el rojo de los pilotos traseros y el ámbar del intermitente.
 
 ### Primary
-- **Rojo Piloto** (`rojo-piloto`): la acción principal (Buscar viaje, Únete, Acceder), enlaces, pestaña activa, foco de los campos, marca obligatoria de los labels y el resaltado de los titulares ("hacia la uni"). También es el color de peligro: el mismo rojo avisa de errores y plazas agotadas.
-- **Rojo Piloto Hondo** (`rojo-piloto-hondo`): estado hover/pulsado de los botones rojos.
-- **Rojo Piloto Claro** (`rojo-piloto-claro`): hover de enlaces y textos de error sobre fondo oscuro.
+- **Rojo Piloto** (`rojo-piloto`): pestaña activa, foco de los campos, puntos y rutas, marca obligatoria de los labels y el resaltado de los titulares grandes ("hacia la uni"). No se usa como relleno de botones con texto blanco ni como color de texto pequeño: no llega a 4.5:1.
+- **Rojo Piloto Hondo** (`rojo-piloto-hondo`): relleno de los botones rojos y de cualquier superficie roja con texto blanco (5,9:1).
+- **Rojo Piloto Profundo** (`rojo-piloto-profundo`): hover de los botones rojos.
+- **Rojo Piloto Claro** (`rojo-piloto-claro`): enlaces, textos de error y avisos en rojo sobre fondo oscuro, y el anillo de foco.
 
 ### Secondary
 - **Ámbar Intermitente** (`ambar-intermitente`): botón de acento, la valoración con estrella y los avisos (estado "warning"). Lleva texto oscuro encima.
@@ -179,8 +181,8 @@ Formas amables y redondeadas. Botones y tarjetas a 16px, campos de formulario a 
 ### Buttons
 Redondeados, con peso y que responden al tacto.
 - **Shape:** bordes de 16px.
-- **Primary:** fondo Rojo Piloto, texto blanco, DM Sans 600 a 0.9rem con un ligero espaciado (0.02em), relleno de 0.7rem × 1.5rem.
-- **Hover / Focus:** pasa a Rojo Piloto Hondo, sube 1px y gana el brillo rojo; transición de 0.25s con curva `cubic-bezier(0.4, 0, 0.2, 1)`.
+- **Primary:** fondo Rojo Piloto Hondo, texto blanco, DM Sans 600 a 0.9rem con un ligero espaciado (0.02em), relleno de 0.7rem × 1.5rem.
+- **Hover / Focus:** pasa a Rojo Piloto Profundo, sube 1px y gana el brillo rojo; transición de 0.25s con curva `cubic-bezier(0.4, 0, 0.2, 1)`. Con teclado, anillo de 2px en Rojo Piloto Claro separado 2px.
 - **Ghost:** transparente, borde de 1.5px en `linea`; en hover el borde y el texto se vuelven rojos sobre un tinte rojo muy suave.
 - **Accent:** fondo Ámbar Intermitente con texto oscuro en 700; en hover, ámbar hondo y brillo ámbar.
 - **Danger:** rojo sólido para confirmar acciones destructivas, o versión con borde rojo para la acción secundaria.
@@ -210,6 +212,7 @@ La pieza más característica de la app. Una franja superior con el sentido del 
 ## Do's and Don'ts
 
 ### Do:
+- **Do** dar a todo lo interactivo el anillo de foco de la marca (`:focus-visible`, 2px en Rojo Piloto Claro); nunca `outline: none` sin alternativa.
 - **Do** usar solo los colores del frontmatter a través de sus variables (`--primary`, `--accent`, `--surface`...); no introducir hex nuevos.
 - **Do** dar a cada elemento pulsable una respuesta visible en hover y foco: subida de 1-2px, cambio de tono y brillo suave, en 0.25s.
 - **Do** mantener una sola acción principal en Rojo Piloto por vista (The Una Luz Roja Rule).

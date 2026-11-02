@@ -218,6 +218,11 @@
         "role": "neutral",
         "displayName": "Línea",
         "canonical": "rgba(255, 255, 255, 0.07)"
+      },
+      "rojo-piloto-profundo": {
+        "role": "primary",
+        "displayName": "Rojo Piloto Profundo",
+        "canonical": "#A30F1A"
       }
     },
     "typographyMeta": {
@@ -310,7 +315,7 @@
       "refersTo": "button-primary",
       "description": "La acción principal de cada vista (Buscar viaje, Únete, Acceder).",
       "html": "<button class=\"ds-btn-primary\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/></svg>Buscar viaje</button>",
-      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 0.7rem 1.5rem; border: none; border-radius: 16px; background: #E63946; color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.02em; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-primary:hover { background: #C1121F; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(230, 57, 70, 0.35); } .ds-btn-primary:focus-visible { outline: 3px solid #FF6B6B; outline-offset: 2px; }"
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 0.7rem 1.5rem; border: none; border-radius: 16px; background: #C1121F; color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.02em; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-primary:hover { background: #A30F1A; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(230, 57, 70, 0.35); } .ds-btn-primary:focus-visible { outline: 3px solid #FF6B6B; outline-offset: 2px; }"
     },
     {
       "name": "Botón fantasma",
@@ -358,7 +363,7 @@
       "refersTo": "card",
       "description": "La pieza característica: sentido, plazas, trayecto, fecha, coche, precio y acciones.",
       "html": "<article class=\"ds-trip\"><header class=\"ds-trip__dir\"><span>Hacia campus</span><span class=\"ds-trip__seats\">5 plazas libres</span></header><div class=\"ds-trip__body\"><div class=\"ds-trip__route\"><span><i class=\"ds-dot ds-dot--from\"></i>Bormujos</span><span class=\"ds-trip__line\"></span><span><i class=\"ds-dot ds-dot--to\"></i>Cartuja</span></div><p class=\"ds-trip__meta\">lun, 1 mar · 07:45 · Citroën C4 Picasso</p><footer class=\"ds-trip__foot\"><strong class=\"ds-trip__price\">2.50€ <small>por persona</small></strong><button class=\"ds-trip__btn\">Ver viaje</button></footer></div></article>",
-      "css": ".ds-trip { width: 320px; background: #222222; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 16px; overflow: hidden; font-family: 'DM Sans', sans-serif; color: #F2F2F2; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-trip:hover { border-color: rgba(230, 57, 70, 0.25); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); } .ds-trip__dir { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(6, 214, 160, 0.06); border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 0.8rem; font-weight: 600; color: #A0A0A0; } .ds-trip__seats { background: rgba(6, 214, 160, 0.15); color: #06D6A0; padding: 2px 8px; border-radius: 100px; font-size: 0.75rem; } .ds-trip__body { padding: 1.25rem; } .ds-trip__route { display: flex; align-items: center; gap: 8px; font-weight: 600; } .ds-trip__line { flex: 1; height: 1px; background: rgba(255, 255, 255, 0.15); } .ds-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; } .ds-dot--from { background: #E63946; } .ds-dot--to { background: #06D6A0; } .ds-trip__meta { margin: 12px 0; font-size: 0.85rem; color: #A0A0A0; } .ds-trip__foot { display: flex; justify-content: space-between; align-items: center; } .ds-trip__price { color: #FFB703; font-size: 1.4rem; } .ds-trip__price small { font-size: 0.75rem; color: #666666; font-weight: 400; } .ds-trip__btn { padding: 0.5rem 1rem; border: none; border-radius: 16px; background: #E63946; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-trip__btn:hover { background: #C1121F; }"
+      "css": ".ds-trip { width: 320px; background: #222222; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 16px; overflow: hidden; font-family: 'DM Sans', sans-serif; color: #F2F2F2; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-trip:hover { border-color: rgba(230, 57, 70, 0.25); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); } .ds-trip__dir { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(6, 214, 160, 0.06); border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 0.8rem; font-weight: 600; color: #A0A0A0; } .ds-trip__seats { background: rgba(6, 214, 160, 0.15); color: #06D6A0; padding: 2px 8px; border-radius: 100px; font-size: 0.75rem; } .ds-trip__body { padding: 1.25rem; } .ds-trip__route { display: flex; align-items: center; gap: 8px; font-weight: 600; } .ds-trip__line { flex: 1; height: 1px; background: rgba(255, 255, 255, 0.15); } .ds-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; } .ds-dot--from { background: #E63946; } .ds-dot--to { background: #06D6A0; } .ds-trip__meta { margin: 12px 0; font-size: 0.85rem; color: #A0A0A0; } .ds-trip__foot { display: flex; justify-content: space-between; align-items: center; } .ds-trip__price { color: #FFB703; font-size: 1.4rem; } .ds-trip__price small { font-size: 0.75rem; color: #666666; font-weight: 400; } .ds-trip__btn { padding: 0.5rem 1rem; border: none; border-radius: 16px; background: #C1121F; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-trip__btn:hover { background: #A30F1A; }"
     }
   ],
   "narrative": {
@@ -395,6 +400,7 @@
       }
     ],
     "dos": [
+      "**Do** dar a todo lo interactivo el anillo de foco de la marca (`:focus-visible`, 2px en Rojo Piloto Claro); nunca `outline: none` sin alternativa.",
       "**Do** usar solo los colores del frontmatter a través de sus variables (`--primary`, `--accent`, `--surface`...); no introducir hex nuevos.",
       "**Do** dar a cada elemento pulsable una respuesta visible en hover y foco: subida de 1-2px, cambio de tono y brillo suave, en 0.25s.",
       "**Do** mantener una sola acción principal en Rojo Piloto por vista (The Una Luz Roja Rule).",

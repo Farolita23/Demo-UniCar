@@ -186,7 +186,7 @@
     width:  32px;
     height: 32px;
     border-radius: 50%;
-    background: var(--primary);
+    background: var(--primary-dark);
     color: #fff;
     display: flex;
     align-items: center;
@@ -261,7 +261,7 @@
     width:  30px;
     height: 30px;
     border-radius: 50%;
-    background: var(--primary);
+    background: var(--primary-dark);
     color: #fff;
     display: flex;
     align-items: center;

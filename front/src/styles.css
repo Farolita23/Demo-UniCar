@@ -8,6 +8,8 @@
     --primary: #E63946;
     --primary-dark: #C1121F;
     --primary-light: #FF6B6B;
+    /* Hover de los botones rojos: el relleno base ya es --primary-dark para que el texto blanco cumpla AA */
+    --primary-deep: #A30F1A;
     --accent: #FFB703;
     --accent-dark: #FB8500;
     --bg: #0D0D0D;
@@ -63,12 +65,18 @@ h5 {
 }
 
 a {
-    color: var(--primary);
+    color: var(--primary-light);
     text-decoration: none;
 }
 
 a:hover {
-    color: var(--primary-light);
+    color: var(--text);
+}
+
+/* Foco visible y de la marca en todo lo interactivo al navegar con teclado */
+:focus-visible {
+    outline: 2px solid var(--primary-light);
+    outline-offset: 2px;
 }
 
 * input,
@@ -93,7 +101,8 @@ a:hover {
 
 input::placeholder,
 textarea::placeholder {
-    color: var(--text-3);
+    color: var(--text-2);
+    opacity: 0.85;
 }
 
 input:focus,
@@ -108,8 +117,11 @@ button {
     font-family: 'DM Sans', sans-serif;
     cursor: pointer;
     border: none;
-    outline: none;
     transition: var(--transition);
+}
+
+button:focus:not(:focus-visible) {
+    outline: none;
 }
 
 .btn {
@@ -124,12 +136,12 @@ button {
 }
 
 .btn-primary {
-    background: var(--primary);
+    background: var(--primary-dark);
     color: #fff;
 }
 
 .btn-primary:hover {
-    background: var(--primary-dark);
+    background: var(--primary-deep);
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(230, 57, 70, 0.35);
 }
@@ -338,7 +350,7 @@ button {
 }
 
 .page-wrapper .tabs .tab .tab-badge {
-    background: var(--primary);
+    background: var(--primary-dark);
     color: #fff;
     font-size: 12px;
     font-weight: 700;
@@ -511,12 +523,12 @@ button {
 
 /* ── Extra button variants ─────────────────────────────── */
 .btn-danger {
-    background: var(--danger);
+    background: var(--primary-dark);
     color: #fff;
 }
 
 .btn-danger:hover {
-    background: var(--primary-dark);
+    background: var(--primary-deep);
     transform: translateY(-1px);
     box-shadow: 0 6px 20px rgba(230, 57, 70, 0.35);
 }
