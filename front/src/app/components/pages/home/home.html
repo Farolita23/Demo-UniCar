@@ -17,8 +17,8 @@
             <h1 class="hero-title">Comparte el camino<br><span class="hero-highlight">hacia la uni</span></h1>
             <!-- Subtítulo -->
             <p class="hero-sub">
-                Conecta con compañeros que van a tu campus. Ahorra dinero, reduce emisiones y conoce
-                gente nueva en cada trayecto.
+                Busca quién sale de tu pueblo hacia tu campus, comparte gastos y olvídate de pelearte
+                con el bus de las 7:30.
             </p>
             <!-- Botones de acción -->
             <div class="hero-actions">
@@ -32,7 +32,7 @@
                     Buscar viaje
                 </a>
                 <!-- Botón ofrecer viaje -->
-                <a routerLink="/trip" class="btn btn-ghost hero-btn">Ofrecer viaje →</a>
+                <a routerLink="/trip" class="btn btn-ghost hero-btn">Publicar viaje</a>
             </div>
         </div>
         <!-- Tablero: localidades con viajes publicados hacia los campus de Sevilla -->
@@ -46,7 +46,7 @@
         <!-- Cabecera de sección -->
         <div class="section-head">
             <h2 class="section-title">¿Cómo funciona?</h2>
-            <p class="section-sub">En tres pasos empiezas a compartir viaje</p>
+            <p class="section-sub">Tres pasos y estás dentro del coche</p>
         </div>
         <!-- Grid de pasos -->
         <div class="steps-grid">
@@ -61,6 +61,7 @@
                     </div>
                     <!-- Título del paso -->
                     <h3 class="step-title">{{ feat.title }}</h3>
+                    <p class="step-desc">{{ feat.desc }}</p>
                     
                 </div>
             }
@@ -72,28 +73,33 @@
         <div class="section-head">
             <!-- Caso: usuario logueado con sugerencias -->
             @if (isSuggested && auth.isLoggedIn()) {
-                <span class="section-badge section-badge-accent">Para ti</span>
-                <h2 class="section-title">Quizá te interese</h2>
+                <h2 class="section-title">Pensados para tu ruta</h2>
                 <p class="section-sub">Viajes que coinciden con tus rutas habituales</p>
             <!-- Caso: listado general -->
             } @else {
-                <span class="section-badge">Próximos viajes</span>
-                <h2 class="section-title">Viajes disponibles</h2>
-                <p class="section-sub">Los próximos trayectos publicados por la comunidad</p>
+                <h2 class="section-title">Próximos viajes</h2>
+                <p class="section-sub">Lo que ha publicado la peña para los próximos días</p>
             }
         </div>
         <!-- Estado: cargando -->
         @if (loadingTrips) {
             <div class="trips-loading">
                 <div class="spinner"></div>
-                <span>Buscando viajes...</span>
+                <span>Buscando viajes…</span>
+            </div>
+        <!-- Estado: error al cargar (no es lo mismo que no haber viajes) -->
+        } @else if (tripsError) {
+            <div class="trips-empty" role="alert">
+                <h3>No hemos podido cargar los viajes</h3>
+                <p>Comprueba tu conexión y vuelve a intentarlo.</p>
+                <button type="button" class="btn btn-primary" (click)="reloadTrips()">Reintentar</button>
             </div>
         <!-- Estado: vacío -->
         } @else if (suggestedTrips.length === 0) {
             <div class="trips-empty">
                 <div class="trips-empty-icon"><app-icon icon="lupa" [size]="82"></app-icon></div>
-                <h3>No hay viajes disponibles ahora</h3>
-                <p>Sé el primero en publicar un viaje para tu campus.</p>
+                <h3>Ahora mismo no hay viajes publicados</h3>
+                <p>Si vas al campus en coche, estrénalo tú: publica tu viaje y que se suba la peña.</p>
                 <a routerLink="/trip" class="btn btn-primary">Publicar viaje</a>
             </div>
         <!-- Estado: con datos -->
@@ -116,11 +122,11 @@
         <div class="cta-inner">
             <!-- Texto CTA -->
             <div class="cta-text">
-                <h2>¿Tienes plazas libres?</h2>
-                <p>Comparte tu trayecto al campus, ayuda al planeta y gana algo de dinero por el camino.</p>
+                <h2>¿Vas al campus con el coche medio vacío?</h2>
+                <p>Publica tu viaje y comparte la gasolina con gente de la uni. Menos coches en la SE-30 y más compañía por el camino.</p>
             </div>
             <!-- Botón CTA -->
-            <a routerLink="/trip" class="btn btn-accent cta-action">Publicar un viaje →</a>
+            <a routerLink="/trip" class="btn btn-accent cta-action">Publicar viaje</a>
         </div>
     </section>
     <!-- Componente de pie de página -->

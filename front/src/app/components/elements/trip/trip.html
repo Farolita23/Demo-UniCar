@@ -11,7 +11,7 @@
         }
         <span class="free-seats" [class.low]="freeSeats <= 1" [class.full-seats]="freeSeats <= 0">
             <app-icon icon="asiento" [size]="14"></app-icon>
-            @if (freeSeats <= 0) { Completo } @else { {{ freeSeats }} plazas libres } </span>
+            @if (freeSeats <= 0) { Completo } @else { {{ seatsLabel }} } </span>
     </div>
 
     <div class="trip-card__body">
@@ -39,7 +39,7 @@
             </div>
             <div class="meta-item">
                 <app-icon icon="reloj" [size]="16"></app-icon>
-                {{ data.departureTime }}
+                {{ timeLabel }}
             </div>
             <div class="meta-item">
                 <app-icon icon="coche" [size]="16"></app-icon>
@@ -50,7 +50,7 @@
 
     <div class="trip-card__footer">
         <div class="price">
-            <span class="price-amount">{{ data.price | number:'1.2-2' }}€</span>
+            <span class="price-amount">{{ priceLabel }}</span>
             <span class="price-label">por persona</span>
         </div>
 

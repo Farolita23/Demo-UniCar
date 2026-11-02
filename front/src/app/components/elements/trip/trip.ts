@@ -26,6 +26,21 @@ export class TripCard {
     return (this.data.carDTO?.capacity ?? 0) - (this.data.passengersDTO?.length ?? 0);
   }
 
+  /** "1 plaza libre" / "3 plazas libres" */
+  get seatsLabel(): string {
+    return this.freeSeats === 1 ? '1 plaza libre' : `${this.freeSeats} plazas libres`;
+  }
+
+  /** Hora sin segundos: "07:50" */
+  get timeLabel(): string {
+    return (this.data.departureTime || '').slice(0, 5);
+  }
+
+  /** Precio en formato español: "2,20 €" */
+  get priceLabel(): string {
+    return Number(this.data.price ?? 0).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
+  }
+
   get direction(): string {
     return this.data.isToCampus ? 'Hacia campus' : 'Desde campus';
   }

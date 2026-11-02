@@ -62,6 +62,9 @@ export class Home implements OnInit {
   /** Indicador de carga de viajes sugeridos */
   loadingTrips = true;
   
+  /** La carga de viajes falló (se distingue de "no hay viajes") */
+  tripsError = false;
+
   /** Indica si los viajes son personalizados (true) o generales (false) */
   isSuggested  = false;
 
@@ -74,9 +77,9 @@ export class Home implements OnInit {
    * Cada objeto contiene: icon, title, desc
    */
 features = [
-  { icon: 'lupa'    as IconName, title: 'Busca viajes',    desc: 'Filtra por campus, localidad, fecha y dirección para encontrar tu pana de viaje perfecto.' },
-  { icon: 'coche'   as IconName, title: 'Publica el tuyo', desc: 'Ofrece plazas libres en tu coche, fija un precio y gestiona quién viaja contigo.' },
-  { icon: 'estrella' as IconName, title: 'Confirma y viaja', desc: 'Solicita plaza, el conductor acepta y compartes el camino. Así de fácil.' },
+  { icon: 'lupa'    as IconName, title: 'Busca viajes',     desc: 'Elige tu campus y tu pueblo, y mira quién sale a tu hora.' },
+  { icon: 'coche'   as IconName, title: 'Publica el tuyo',  desc: '¿Vas solo en el coche? Pon tus plazas libres, el precio por persona y elige quién se sube.' },
+  { icon: 'estrella' as IconName, title: 'Confirma y viaja', desc: "Pides plaza, el conductor te acepta y p'alante. Al llegar, os valoráis." },
 ];
 
   /**
@@ -125,10 +128,18 @@ features = [
    */
   private loadFutureTrips() {
     this.isSuggested = false;
+    this.tripsError = false;
     this.api.getFutureTrips(0, 6).subscribe({
       next: p => { this.suggestedTrips = p.content; this.loadingTrips = false; this.cdr.detectChanges(); },
-      error: () => { this.loadingTrips = false; this.cdr.detectChanges(); },
+      error: () => { this.tripsError = true; this.loadingTrips = false; this.cdr.detectChanges(); },
     });
+  }
+
+  /** Vuelve a pedir los viajes tras un error de carga */
+  reloadTrips() {
+    this.loadingTrips = true;
+    this.cdr.detectChanges();
+    this.loadFutureTrips();
   }
 
   /**
