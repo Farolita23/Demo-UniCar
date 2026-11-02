@@ -1,19 +1,6 @@
 import { Routes } from '@angular/router';
+// Solo la portada va en el paquete inicial; el resto de páginas se descargan al visitarlas
 import { Home } from './components/pages/home/home';
-import { Faq } from './components/pages/faq/faq';
-import { About } from './components/pages/about/about';
-import { Profile } from './components/pages/profile/profile';
-import { SearchTrip } from './components/pages/search-trip/search-trip';
-import { Signup } from './components/pages/signup/signup';
-import { Login } from './components/pages/login/login';
-import { Logout } from './components/pages/logout/logout';
-import { PageTrip } from './components/pages/trip/trip';
-import { TripDetail } from './components/pages/trip-detail/trip-detail';
-import { MyTrips } from './components/pages/my-trips/my-trips';
-import { ManageTrip } from './components/pages/manage-trip/manage-trip';
-import { UserProfile } from './components/pages/user-profile/user-profile';
-import { Favorites } from './components/pages/favorites/favorites';
-import { Admin } from './components/pages/admin/admin';
 import { NoAuthGuard } from './guards/no-auth-guard';
 import { AuthGuard } from './guards/auth-guard';
 import { NoBannedGuard } from './guards/no-banned-guard';
@@ -24,31 +11,31 @@ export const routes: Routes = [
         canActivateChild: [NoBannedGuard],
         children: [
             { path: '', component: Home, pathMatch: 'full' },
-            { path: 'faq', component: Faq },
-            { path: 'about', component: About },
-            { path: 'trip-detail/:id', component: TripDetail },
-            { path: 'user/:id', component: UserProfile },
+            { path: 'faq', loadComponent: () => import('./components/pages/faq/faq').then(m => m.Faq) },
+            { path: 'about', loadComponent: () => import('./components/pages/about/about').then(m => m.About) },
+            { path: 'trip-detail/:id', loadComponent: () => import('./components/pages/trip-detail/trip-detail').then(m => m.TripDetail) },
+            { path: 'user/:id', loadComponent: () => import('./components/pages/user-profile/user-profile').then(m => m.UserProfile) },
             // Buscar viajes es público (solo lectura): pedir plaza o publicar sí piden cuenta
-            { path: 'search-trip', component: SearchTrip },
+            { path: 'search-trip', loadComponent: () => import('./components/pages/search-trip/search-trip').then(m => m.SearchTrip) },
             {
                 path: '',
                 canActivate: [NoAuthGuard],
                 children: [
-                    { path: 'login', component: Login },
-                    { path: 'signup', component: Signup },
+                    { path: 'login', loadComponent: () => import('./components/pages/login/login').then(m => m.Login) },
+                    { path: 'signup', loadComponent: () => import('./components/pages/signup/signup').then(m => m.Signup) },
                 ],
             },
             {
                 path: '',
                 canActivate: [AuthGuard],
                 children: [
-                    { path: 'profile', component: Profile },
-                    { path: 'logout', component: Logout },
-                    { path: 'trip', component: PageTrip },
-                    { path: 'my-trips', component: MyTrips },
-                    { path: 'manage-trip/:id', component: ManageTrip },
-                    { path: 'favorites', component: Favorites },
-                    { path: 'admin', component: Admin },
+                    { path: 'profile', loadComponent: () => import('./components/pages/profile/profile').then(m => m.Profile) },
+                    { path: 'logout', loadComponent: () => import('./components/pages/logout/logout').then(m => m.Logout) },
+                    { path: 'trip', loadComponent: () => import('./components/pages/trip/trip').then(m => m.PageTrip) },
+                    { path: 'my-trips', loadComponent: () => import('./components/pages/my-trips/my-trips').then(m => m.MyTrips) },
+                    { path: 'manage-trip/:id', loadComponent: () => import('./components/pages/manage-trip/manage-trip').then(m => m.ManageTrip) },
+                    { path: 'favorites', loadComponent: () => import('./components/pages/favorites/favorites').then(m => m.Favorites) },
+                    { path: 'admin', loadComponent: () => import('./components/pages/admin/admin').then(m => m.Admin) },
                 ],
             },
             { path: '**', redirectTo: '' },
