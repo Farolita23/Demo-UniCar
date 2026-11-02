@@ -21,6 +21,36 @@ interface BoardRoute {
     toCampus: boolean;
     begin: string;
     dur: string;
+    /** Coche del viaje, para el resumen accesible (p. ej. "Seat Leon blanco") */
+    car: string;
+    /** Id del filtro que pinta la carrocería del color del coche real; null deja el rojo del logo */
+    paint: string | null;
+}
+
+/**
+ * Pinturas de carrocería por color de coche. Cada una tiñe solo las zonas rojas del dibujo
+ * (cristales, ruedas y faros se quedan igual): color de destino y ganancia sobre la luminosidad
+ * del rojo original, para conservar brillos y sombras.
+ */
+const CAR_PAINTS: Record<string, { rgb: [number, number, number]; gain: number }> = {
+    blanco: { rgb: [0.96, 0.96, 0.97], gain: 2.6 },
+    gris: { rgb: [0.55, 0.57, 0.6], gain: 2.1 },
+    plata: { rgb: [0.78, 0.8, 0.84], gain: 2.4 },
+    'gris plata': { rgb: [0.78, 0.8, 0.84], gain: 2.4 },
+    negro: { rgb: [0.22, 0.23, 0.26], gain: 1.4 },
+    azul: { rgb: [0.2, 0.45, 0.95], gain: 2.3 },
+    'azul oscuro': { rgb: [0.12, 0.2, 0.55], gain: 2.2 },
+    verde: { rgb: [0.15, 0.7, 0.4], gain: 2.3 },
+    amarillo: { rgb: [1, 0.83, 0.12], gain: 2.7 },
+    naranja: { rgb: [1, 0.5, 0.1], gain: 2.5 },
+    blanca: { rgb: [0.96, 0.96, 0.97], gain: 2.6 },
+};
+
+/** Normaliza un nombre de color ("Azul Oscuro", "gris  plata") para buscarlo en CAR_PAINTS */
+function paintKey(color?: string): string | null {
+    if (!color) return null;
+    const key = color.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+    return key in CAR_PAINTS ? key : null;
 }
 
 /**
@@ -62,7 +92,19 @@ export class RouteBoard implements OnChanges, AfterViewInit, OnDestroy {
 
     get summary(): string {
         if (!this.routes.length) return 'Campus de destino: ' + this.campuses.map(c => c.name).join(', ') + '.';
-        return 'Rutas con viajes publicados: ' + this.routes.map(r => `${r.town} a ${r.campus} a las ${r.time}`).join('; ') + '.';
+        return 'Rutas con viajes publicados: ' + this.routes
+            .map(r => `${r.town} a ${r.campus} a las ${r.time}${r.car ? ' (' + r.car + ')' : ''}`).join('; ') + '.';
+    }
+
+    /** Filtros de pintura que usan los coches del tablero, uno por color distinto */
+    get paints(): { id: string; recolor: string }[] {
+        const used = [...new Set(this.routes.map(r => r.paint).filter((p): p is string => !!p))];
+        return used.map(id => {
+            const { rgb, gain } = CAR_PAINTS[id.slice('rb-paint-'.length).replace(/-/g, ' ')];
+            // Cada canal de salida = color de destino × ganancia × luminosidad del píxel original
+            const row = (c: number) => [0.3, 0.59, 0.11].map(w => (c * gain * w).toFixed(3)).join(' ') + ' 0 0';
+            return { id, recolor: `${row(rgb[0])} ${row(rgb[1])} ${row(rgb[2])} 0 0 0 1 0` };
+        });
     }
 
     ngAfterViewInit(): void {
@@ -152,6 +194,8 @@ export class RouteBoard implements OnChanges, AfterViewInit, OnDestroy {
                 toCampus: t.isToCampus !== false,
                 begin: `${((i * durSec) / tripList.length).toFixed(2)}s`,
                 dur: `${durSec}s`,
+                car: [t.carDTO?.model, t.carDTO?.color?.toLowerCase()].filter(Boolean).join(' '),
+                paint: (k => k ? 'rb-paint-' + k.replace(/ /g, '-') : null)(paintKey(t.carDTO?.color)),
             };
         });
         this.cdr.detectChanges();
