@@ -120,6 +120,10 @@ export class Header implements OnInit {
     // Alterna la visibilidad del menú de navegación móvil 
     alternateNav() { this.showNav = !this.showNav; }
 
+    // Escape cierra el menú móvil
+    @HostListener('document:keydown.escape')
+    closeNav() { this.showNav = false; }
+
     // Alterna la visibilidad del menú desplegable de usuario
     toggleDropdown() { this.showDropdown = !this.showDropdown; }
 

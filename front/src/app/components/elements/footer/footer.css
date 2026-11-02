@@ -94,3 +94,10 @@
     }
 
 }
+/* En móvil, enlaces del pie con al menos 44px de alto para tocarlos con el dedo */
+@media (max-width: 768px) {
+    .footer-links a {
+        display: block;
+        padding: 12px 0;
+    }
+}

@@ -490,6 +490,16 @@
 
 /* Tablets (768px o menos) - Una columna */
 @media (max-width: 768px) {
+    /* Hero más compacto en móvil: menos aire arriba y abajo para llegar antes a los viajes */
+    :host .hero {
+        padding: 40px 16px;
+        margin-bottom: 40px;
+    }
+
+    :host .hero .hero-layout {
+        gap: 32px;
+    }
+
     /* Reducir tamaño del título hero */
     :host .hero .hero-content .hero-title {
         font-size: 48px;
@@ -498,6 +508,20 @@
     /* Subtítulo hero con ancho completo */
     :host .hero .hero-content .hero-sub {
         max-width: 100%;
+        margin-bottom: 16px;
+    }
+
+    :host .trust-strip {
+        margin-top: 0;
+        margin-bottom: 24px;
+    }
+
+    :host .how-section {
+        padding-bottom: 40px;
+    }
+
+    :host .how-section .steps-grid {
+        gap: 8px;
     }
 
     /* Grid de pasos en una sola columna */
@@ -505,9 +529,30 @@
         flex-direction: column;
     }
 
-    /* Tarjetas de pasos a ancho completo */
+    /* Tarjetas de pasos a ancho completo y en fila: icono a la izquierda, texto al lado.
+       Así los tres pasos ocupan mucho menos y el primer viaje queda más arriba */
     :host .how-section .steps-grid .step-card {
-        width: calc((100% - 16px * 0 - 1px * 2 - 32px * 2) / 1);
+        width: calc(100% - 20px * 2 - 1px * 2);
+        padding: 20px;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        column-gap: 16px;
+        row-gap: 4px;
+        align-items: center;
+    }
+
+    :host .how-section .steps-grid .step-card .step-icon-wrap {
+        grid-row: span 2;
+    }
+
+    :host .how-section .steps-grid .step-card .step-title {
+        font-size: 20px;
+    }
+
+    :host .how-section .steps-grid .step-card .step-desc {
+        margin-top: 0;
+        text-align: left;
+        max-width: none;
     }
 
     /* Viajes en una sola columna */

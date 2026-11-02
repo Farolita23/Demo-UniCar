@@ -2,16 +2,20 @@
 
     <a routerLink="/" class="logo">Uni<span class="logo-accent">Car</span><span class="logo-city">SEVILLA</span></a>
 
-    <nav class="main-nav" [class.open]="showNav">
+    <nav class="main-nav" id="main-nav" [class.open]="showNav" aria-label="Navegación principal">
         <a routerLink="/"            routerLinkActive="active" (click)="showNav=false" [routerLinkActiveOptions]="{exact:true}">Inicio</a>
         <a routerLink="/search-trip" routerLinkActive="active" (click)="showNav=false">Buscar viaje</a>
         <a routerLink="/about"       routerLinkActive="active" (click)="showNav=false">Nosotros</a>
         <a routerLink="/faq"         routerLinkActive="active" (click)="showNav=false">FAQ</a>
+        @if (!auth.isLoggedIn()) {
+            <!-- En móvil "Acceder" vive dentro del menú para que la cabecera quepa -->
+            <a routerLink="/login" class="nav-login" (click)="showNav=false">Acceder</a>
+        }
     </nav>
 
     <div class="header-actions">
         @if (!auth.isLoggedIn()) {
-            <a routerLink="/login" class="btn btn-ghost btn-sm">Acceder</a>
+            <a routerLink="/login" class="btn btn-ghost btn-sm header-login">Acceder</a>
             <a routerLink="/signup" class="btn btn-primary btn-sm">Únete</a>
         } @else {
             <!-- Person search bar -->
@@ -73,7 +77,8 @@
                 }
             </div>
         }
-        <button class="hamburger" (click)="alternateNav()" [class.open]="showNav">
+        <button type="button" class="hamburger" (click)="alternateNav()" [class.open]="showNav"
+                aria-controls="main-nav" [attr.aria-expanded]="showNav" [attr.aria-label]="showNav ? 'Cerrar menú' : 'Abrir menú'">
             <span></span>
             <span></span>
             <span></span>
