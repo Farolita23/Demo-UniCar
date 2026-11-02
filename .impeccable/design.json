@@ -1,0 +1,419 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-02T16:10:47+00:00",
+  "title": "Design System: UniCar",
+  "extensions": {
+    "colorMeta": {
+      "rojo-piloto": {
+        "role": "primary",
+        "displayName": "Rojo Piloto",
+        "canonical": "#E63946",
+        "tonalRamp": [
+          "#3B1215",
+          "#66191F",
+          "#951D26",
+          "#C81E2B",
+          "#E14752",
+          "#E38289",
+          "#EBBCC0",
+          "#F8ECED"
+        ]
+      },
+      "rojo-piloto-hondo": {
+        "role": "primary",
+        "displayName": "Rojo Piloto Hondo",
+        "canonical": "#C1121F",
+        "tonalRamp": [
+          "#3C1114",
+          "#69171D",
+          "#991923",
+          "#CE1825",
+          "#E6414E",
+          "#E77E86",
+          "#EDBABE",
+          "#F9ECED"
+        ]
+      },
+      "rojo-piloto-claro": {
+        "role": "primary",
+        "displayName": "Rojo Piloto Claro",
+        "canonical": "#FF6B6B",
+        "tonalRamp": [
+          "#400C0C",
+          "#710E0E",
+          "#A60C0C",
+          "#E00505",
+          "#F73131",
+          "#F17474",
+          "#F2B5B5",
+          "#FAEBEB"
+        ]
+      },
+      "ambar-intermitente": {
+        "role": "secondary",
+        "displayName": "Ámbar Intermitente",
+        "canonical": "#FFB703",
+        "tonalRamp": [
+          "#40310C",
+          "#71550E",
+          "#A67A0C",
+          "#E0A205",
+          "#F7BE31",
+          "#F1CD74",
+          "#F2E1B5",
+          "#FAF6EB"
+        ]
+      },
+      "ambar-intermitente-hondo": {
+        "role": "secondary",
+        "displayName": "Ámbar Intermitente Hondo",
+        "canonical": "#FB8500",
+        "tonalRamp": [
+          "#40280C",
+          "#71430E",
+          "#A65E0C",
+          "#E07905",
+          "#F79A31",
+          "#F1B674",
+          "#F2D5B5",
+          "#FAF3EB"
+        ]
+      },
+      "verde-plaza": {
+        "role": "tertiary",
+        "displayName": "Verde Plaza",
+        "canonical": "#06D6A0",
+        "tonalRamp": [
+          "#0D3F32",
+          "#116E56",
+          "#10A27C",
+          "#0BDAA5",
+          "#36F2C1",
+          "#77EECF",
+          "#B7F0E2",
+          "#EBF9F6"
+        ]
+      },
+      "noche": {
+        "role": "neutral",
+        "displayName": "Noche",
+        "canonical": "#0D0D0D",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#949494",
+          "#B2B2B2",
+          "#D4D4D4",
+          "#F2F2F2"
+        ]
+      },
+      "noche-2": {
+        "role": "neutral",
+        "displayName": "Noche 2",
+        "canonical": "#141414",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#949494",
+          "#B2B2B2",
+          "#D4D4D4",
+          "#F2F2F2"
+        ]
+      },
+      "noche-3": {
+        "role": "neutral",
+        "displayName": "Noche 3",
+        "canonical": "#1C1C1C",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#949494",
+          "#B2B2B2",
+          "#D4D4D4",
+          "#F2F2F2"
+        ]
+      },
+      "asfalto": {
+        "role": "neutral",
+        "displayName": "Asfalto",
+        "canonical": "#222222",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#949494",
+          "#B2B2B2",
+          "#D4D4D4",
+          "#F2F2F2"
+        ]
+      },
+      "asfalto-claro": {
+        "role": "neutral",
+        "displayName": "Asfalto Claro",
+        "canonical": "#2A2A2A",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#949494",
+          "#B2B2B2",
+          "#D4D4D4",
+          "#F2F2F2"
+        ]
+      },
+      "texto": {
+        "role": "neutral",
+        "displayName": "Texto",
+        "canonical": "#F2F2F2",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#949494",
+          "#B2B2B2",
+          "#D4D4D4",
+          "#F2F2F2"
+        ]
+      },
+      "texto-2": {
+        "role": "neutral",
+        "displayName": "Texto 2",
+        "canonical": "#A0A0A0",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#949494",
+          "#B2B2B2",
+          "#D4D4D4",
+          "#F2F2F2"
+        ]
+      },
+      "texto-3": {
+        "role": "neutral",
+        "displayName": "Texto 3",
+        "canonical": "#666666",
+        "tonalRamp": [
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#949494",
+          "#B2B2B2",
+          "#D4D4D4",
+          "#F2F2F2"
+        ]
+      },
+      "linea": {
+        "role": "neutral",
+        "displayName": "Línea",
+        "canonical": "rgba(255, 255, 255, 0.07)"
+      },
+      "rojo-piloto-profundo": {
+        "role": "primary",
+        "displayName": "Rojo Piloto Profundo",
+        "canonical": "#A30F1A"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Titular de la portada (48px en móvil)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Títulos de sección."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Títulos de tarjetas y paneles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texto corrido, formularios y datos del viaje."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Etiquetas de formulario y antetítulos en mayúsculas."
+      }
+    },
+    "shadows": [
+      {
+        "name": "sombra-flotante",
+        "value": "0 8px 32px rgba(0, 0, 0, 0.4)",
+        "purpose": "Menús y paneles que flotan."
+      },
+      {
+        "name": "brillo-rojo-hover",
+        "value": "0 6px 20px rgba(230, 57, 70, 0.35)",
+        "purpose": "Botones rojos en hover."
+      },
+      {
+        "name": "halo-tarjeta",
+        "value": "0 8px 32px rgba(230, 57, 70, 0.08)",
+        "purpose": "Tarjetas en hover."
+      },
+      {
+        "name": "anillo-foco",
+        "value": "0 0 0 3px rgba(230, 57, 70, 0.15)",
+        "purpose": "Campos de formulario enfocados."
+      }
+    ],
+    "motion": [
+      {
+        "name": "transicion-base",
+        "value": "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Transición por defecto de estados (hover, foco)."
+      },
+      {
+        "name": "elevacion-hover",
+        "value": "translateY(-1px) en botones, translateY(-2px) en tarjetas",
+        "purpose": "Respuesta física al pasar el ratón."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "movil-pequeno",
+        "value": "384px"
+      },
+      {
+        "name": "movil-pequeno-amplio",
+        "value": "512px"
+      },
+      {
+        "name": "movil",
+        "value": "768px"
+      },
+      {
+        "name": "tablet",
+        "value": "896px"
+      },
+      {
+        "name": "tablet-amplio",
+        "value": "1024px"
+      },
+      {
+        "name": "contenedor",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "La acción principal de cada vista (Buscar viaje, Únete, Acceder).",
+      "html": "<button class=\"ds-btn-primary\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/></svg>Buscar viaje</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 0.7rem 1.5rem; border: none; border-radius: 16px; background: #C1121F; color: #fff; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; letter-spacing: 0.02em; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-primary:hover { background: #A30F1A; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(230, 57, 70, 0.35); } .ds-btn-primary:focus-visible { outline: 3px solid #FF6B6B; outline-offset: 2px; }"
+    },
+    {
+      "name": "Botón fantasma",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Acciones secundarias junto a la principal (Ofrecer viaje, Volver, Acceder).",
+      "html": "<button class=\"ds-btn-ghost\">Ofrecer viaje →</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 8px; padding: 0.7rem 1.5rem; border: 1.5px solid rgba(255, 255, 255, 0.07); border-radius: 16px; background: transparent; color: #F2F2F2; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-ghost:hover { border-color: #E63946; color: #E63946; background: rgba(230, 57, 70, 0.06); } .ds-btn-ghost:focus-visible { outline: 3px solid #FF6B6B; outline-offset: 2px; }"
+    },
+    {
+      "name": "Botón ámbar",
+      "kind": "button",
+      "refersTo": "button-accent",
+      "description": "Acento puntual que pide atención sin ser la acción principal.",
+      "html": "<button class=\"ds-btn-accent\">Valorar viaje</button>",
+      "css": ".ds-btn-accent { display: inline-flex; align-items: center; gap: 8px; padding: 0.7rem 1.5rem; border: none; border-radius: 16px; background: #FFB703; color: #0D0D0D; font-family: 'DM Sans', sans-serif; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-accent:hover { background: #FB8500; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255, 183, 3, 0.35); } .ds-btn-accent:focus-visible { outline: 3px solid #FFB703; outline-offset: 2px; }"
+    },
+    {
+      "name": "Campo de texto",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Campos de formulario con label en mayúsculas y foco rojo.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-label\">Usuario <b>*</b></span><input class=\"ds-input\" placeholder=\"Tu nombre de usuario\"></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 4px; width: 280px; } .ds-label { font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; color: #A0A0A0; text-transform: uppercase; letter-spacing: 1px; } .ds-label b { color: #E63946; } .ds-input { font-family: 'DM Sans', sans-serif; font-size: 16px; padding: 8px 16px; background: #222222; color: #F2F2F2; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 8px; outline: none; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-input::placeholder { color: #666666; } .ds-input:focus { border-color: #E63946; background: #2A2A2A; box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15); }"
+    },
+    {
+      "name": "Chips de estado",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Plazas libres, viaje periódico y estados de solicitudes.",
+      "html": "<div class=\"ds-chips\"><span class=\"ds-chip ds-chip--ok\">5 plazas libres</span><span class=\"ds-chip ds-chip--warn\">Pendiente</span><span class=\"ds-chip ds-chip--danger\">Completo</span></div>",
+      "css": ".ds-chips { display: flex; gap: 8px; } .ds-chip { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 700; } .ds-chip--ok { background: rgba(6, 214, 160, 0.15); color: #06D6A0; border: 1px solid rgba(6, 214, 160, 0.2); } .ds-chip--warn { background: rgba(255, 183, 3, 0.15); color: #FFB703; border: 1px solid rgba(255, 183, 3, 0.2); } .ds-chip--danger { background: rgba(230, 57, 70, 0.15); color: #E63946; border: 1px solid rgba(230, 57, 70, 0.2); }"
+    },
+    {
+      "name": "Pestañas",
+      "kind": "nav",
+      "refersTo": "tabs",
+      "description": "Navegación entre secciones de una página (perfil, mis viajes).",
+      "html": "<nav class=\"ds-tabs\"><button class=\"ds-tab ds-tab--active\">Como conductor</button><button class=\"ds-tab\">Como pasajero</button></nav>",
+      "css": ".ds-tabs { display: flex; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.07); } .ds-tab { padding: 8px 16px; background: none; border: none; border-bottom: 2px solid transparent; color: #A0A0A0; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-tab:hover { color: #F2F2F2; } .ds-tab:focus-visible { outline: 2px solid #FF6B6B; outline-offset: 2px; } .ds-tab--active { color: #E63946; border-bottom-color: #E63946; }"
+    },
+    {
+      "name": "Tarjeta de viaje",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "La pieza característica: sentido, plazas, trayecto, fecha, coche, precio y acciones.",
+      "html": "<article class=\"ds-trip\"><header class=\"ds-trip__dir\"><span>Hacia campus</span><span class=\"ds-trip__seats\">5 plazas libres</span></header><div class=\"ds-trip__body\"><div class=\"ds-trip__route\"><span><i class=\"ds-dot ds-dot--from\"></i>Bormujos</span><span class=\"ds-trip__line\"></span><span><i class=\"ds-dot ds-dot--to\"></i>Cartuja</span></div><p class=\"ds-trip__meta\">lun, 1 mar · 07:45 · Citroën C4 Picasso</p><footer class=\"ds-trip__foot\"><strong class=\"ds-trip__price\">2.50€ <small>por persona</small></strong><button class=\"ds-trip__btn\">Ver viaje</button></footer></div></article>",
+      "css": ".ds-trip { width: 320px; background: #222222; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 16px; overflow: hidden; font-family: 'DM Sans', sans-serif; color: #F2F2F2; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-trip:hover { border-color: rgba(230, 57, 70, 0.25); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); } .ds-trip__dir { display: flex; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(6, 214, 160, 0.06); border-bottom: 1px solid rgba(255, 255, 255, 0.07); font-size: 0.8rem; font-weight: 600; color: #A0A0A0; } .ds-trip__seats { background: rgba(6, 214, 160, 0.15); color: #06D6A0; padding: 2px 8px; border-radius: 100px; font-size: 0.75rem; } .ds-trip__body { padding: 1.25rem; } .ds-trip__route { display: flex; align-items: center; gap: 8px; font-weight: 600; } .ds-trip__line { flex: 1; height: 1px; background: rgba(255, 255, 255, 0.15); } .ds-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; } .ds-dot--from { background: #E63946; } .ds-dot--to { background: #06D6A0; } .ds-trip__meta { margin: 12px 0; font-size: 0.85rem; color: #A0A0A0; } .ds-trip__foot { display: flex; justify-content: space-between; align-items: center; } .ds-trip__price { color: #FFB703; font-size: 1.4rem; } .ds-trip__price small { font-size: 0.75rem; color: #666666; font-weight: 400; } .ds-trip__btn { padding: 0.5rem 1rem; border: none; border-radius: 16px; background: #C1121F; color: #fff; font-weight: 600; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); } .ds-trip__btn:hover { background: #A30F1A; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "La peña del coche",
+    "overview": "UniCar es la pandilla que comparte coche cada mañana camino del campus: cercana, de barrio y con guasa. El fondo es casi negro, como la carretera a primera hora, para que brillen la gente y los viajes. Sobre él, el Rojo Piloto marca lo importante y el Ámbar Intermitente avisa de lo que pide atención. Los titulares van anchos y con carácter en Syne, y el texto corrido es limpio y legible en DM Sans.\n\nLa interfaz es oscura y de capas: no hay superficies claras. La profundidad se construye con escalones de gris sobre el negro y con un brillo rojo suave cuando algo se puede tocar. La personalidad está en el tono y en la interacción, que tiende a lo juguetón: los elementos responden, suben y se iluminan al pasar por encima. La información del viaje (origen, campus, hora, precio, plazas) nunca compite con la decoración.",
+    "keyCharacteristics": [
+      "Tema oscuro único, de capas grises sobre negro casi puro.",
+      "Un solo acento fuerte (Rojo Piloto) y un acento secundario de aviso (Ámbar Intermitente).",
+      "Titulares anchos en Syne; cuerpo en DM Sans.",
+      "Formas redondeadas: tarjetas y botones a 16px, chips en píldora.",
+      "Interacción viva: elevación de 1-2px y brillo rojo suave en hover.",
+      "Pensado primero para móvil."
+    ],
+    "rules": [
+      {
+        "name": "The Una Luz Roja Rule",
+        "body": "En cada vista hay una única acción principal en Rojo Piloto; el resto de botones son fantasma o ámbar. Si dos botones rojos compiten, uno sobra.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ámbar Avisa Rule",
+        "body": "El Ámbar Intermitente señala atención (valoración, avisos, acento puntual); no se usa como relleno decorativo ni para acciones destructivas.",
+        "section": "colors"
+      },
+      {
+        "name": "The Syne Para Titulares Rule",
+        "body": "Syne solo en titulares (h1-h5); nunca en botones, campos, precios ni texto largo, que van en DM Sans.",
+        "section": "typography"
+      },
+      {
+        "name": "The Plano En Reposo Rule",
+        "body": "Nada lleva sombra en reposo salvo lo que flota (menús, modales, cabecera con desenfoque). La sombra y el brillo son la respuesta a \"esto se puede tocar\".",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** dar a todo lo interactivo el anillo de foco de la marca (`:focus-visible`, 2px en Rojo Piloto Claro); nunca `outline: none` sin alternativa.",
+      "**Do** usar solo los colores del frontmatter a través de sus variables (`--primary`, `--accent`, `--surface`...); no introducir hex nuevos.",
+      "**Do** dar a cada elemento pulsable una respuesta visible en hover y foco: subida de 1-2px, cambio de tono y brillo suave, en 0.25s.",
+      "**Do** mantener una sola acción principal en Rojo Piloto por vista (The Una Luz Roja Rule).",
+      "**Do** mostrar siempre a la vista los datos que deciden subirse a un coche: origen, campus, fecha, hora, precio y plazas.",
+      "**Do** desactivar animaciones decorativas con `prefers-reduced-motion`, como ya hace el fondo de la portada.",
+      "**Do** diseñar primero a 375px de ancho y comprobar el contraste AA del texto gris sobre Asfalto."
+    ],
+    "donts": [
+      "**Don't** introducir superficies claras ni un tema claro: UniCar es solo oscuro.",
+      "**Don't** usar Syne en botones, campos, precios o párrafos.",
+      "**Don't** usar esquinas rectas: el mínimo son 8px, y las etiquetas siempre en píldora.",
+      "**Don't** usar el Ámbar Intermitente para acciones destructivas ni el verde para algo que no sea éxito o plazas libres.",
+      "**Don't** usar `texto-3` (#666666) para información que haya que leer; solo para placeholders y detalles prescindibles."
+    ]
+  }
+}

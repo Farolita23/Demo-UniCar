@@ -11,7 +11,7 @@
         }
         <span class="free-seats" [class.low]="freeSeats <= 1" [class.full-seats]="freeSeats <= 0">
             <app-icon icon="asiento" [size]="14"></app-icon>
-            @if (freeSeats <= 0) { Completo } @else { {{ freeSeats }} plazas libres } </span>
+            @if (freeSeats <= 0) { Completo } @else { {{ seatsLabel }} } </span>
     </div>
 
     <div class="trip-card__body">
@@ -39,27 +39,47 @@
             </div>
             <div class="meta-item">
                 <app-icon icon="reloj" [size]="16"></app-icon>
-                {{ data.departureTime }}
+                {{ timeLabel }}
             </div>
             <div class="meta-item">
                 <app-icon icon="coche" [size]="16"></app-icon>
                 {{ data.carDTO.model }} · {{ data.carDTO.color }}
             </div>
         </div>
+
+        <!-- Quién conduce: lo primero que hay que saber antes de pedir plaza -->
+        @if (data.driverDTO) {
+            @if (isOwnTrip) {
+                <div class="trip-driver trip-driver--own">
+                    <app-icon icon="coche" [size]="16"></app-icon> Tu viaje
+                </div>
+            } @else {
+                <a class="trip-driver" [routerLink]="['/user', driverId]" [attr.aria-label]="driverAriaLabel">
+                    @if (data.driverDTO.profileImageUrl) {
+                        <img class="trip-driver__avatar" referrerpolicy="no-referrer" [src]="data.driverDTO.profileImageUrl | avatarUrl" alt="">
+                    } @else {
+                        <span class="trip-driver__avatar trip-driver__avatar--initials" aria-hidden="true">{{ driverInitials }}</span>
+                    }
+                    <span class="trip-driver__text">
+                        <span class="trip-driver__name">{{ driverShortName }}</span>
+                        @if (ratingsCount > 0) {
+                            <span class="trip-driver__rating"><span class="trip-driver__star" aria-hidden="true">★</span> {{ ratingLabel }} · {{ ratingsCountLabel }}</span>
+                        } @else {
+                            <span class="trip-driver__rating">Nuevo en UniCar</span>
+                        }
+                    </span>
+                </a>
+            }
+        }
     </div>
 
     <div class="trip-card__footer">
         <div class="price">
-            <span class="price-amount">{{ data.price | number:'1.2-2' }}€</span>
+            <span class="price-amount">{{ priceLabel }}</span>
             <span class="price-label">por persona</span>
         </div>
 
         <div class="trip-card__actions">
-            @if (driverId && !isOwnTrip) {
-            <button class="btn btn-ghost trip-btn trip-btn-profile" (click)="goToDriverProfile($event)">
-                <app-icon icon="usuario" [size]="15"></app-icon> Perfil
-            </button>
-            }
             @if (auth.isLoggedIn()) {
             @if(isOwnTrip){
             <button class="btn btn-ghost trip-btn" (click)="goToManage()">
@@ -80,8 +100,10 @@
             } @else {
             <span class="badge badge-danger">Completo</span>
             }
+            } @else if (freeSeats > 0) {
+            <a [routerLink]="['/trip-detail', data.id]" class="btn btn-primary trip-btn">Ver viaje</a>
             } @else {
-            <a routerLink="/login" class="btn btn-primary trip-btn">Ver viaje</a>
+            <span class="badge badge-danger">Completo</span>
             }
         </div>
     </div>

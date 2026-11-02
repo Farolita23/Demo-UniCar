@@ -5,14 +5,14 @@
     </div>
     <div class="footer-links">
         <div>
-            <h4>Plataforma</h4>
+            <h2 class="footer-heading">Plataforma</h2>
             <a routerLink="/">Inicio</a>
             <a routerLink="/search-trip">Buscar viaje</a>
             <a routerLink="/about">Nosotros</a>
             <a routerLink="/faq">FAQ</a>
         </div>
         <div>
-            <h4>Cuenta</h4>
+            <h2 class="footer-heading">Cuenta</h2>
             @if (!auth.isLoggedIn()){
                 <a routerLink="/signup">Registrarse</a>
                 <a routerLink="/login">Iniciar sesión</a>

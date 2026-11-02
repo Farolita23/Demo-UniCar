@@ -49,9 +49,9 @@ section.paginator button.active:hover {
 /* Página actual (no tiene clase active = ya está seleccionada) */
 section.paginator .pages button:not(.active) {
     background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-    color: #fff;
+    color: var(--bg);
     border-color: var(--accent);
-    box-shadow: 0 2px 10px rgba(59,158,255,.35);
+    box-shadow: 0 2px 10px rgba(255, 183, 3, 0.35);
     cursor: default;
 }
 

@@ -74,7 +74,7 @@
     font-size: 16px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--primary);
+    color: var(--primary-light);
     font-family: 'DM Sans', sans-serif;
     font-weight: 700;
 }
@@ -141,7 +141,7 @@ textarea {
 
 /* ESTILOS DEL ENLACE DE INICIO DE SESION EN LA PARTE INFERIOR DEL PANEL DE REGISTRO */
 :host .signup-card .auth-link-bottom a {
-    color: var(--primary);
+    color: var(--primary-light);
 }
 
 /* ESTILOS DE LOS MENSAJES DE ALERTA EN EL PANEL DE REGISTRO */

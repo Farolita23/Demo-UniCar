@@ -8,6 +8,7 @@ import { AppIcon } from '../../elements/icon/icon';
 import { ApiService } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 import { GoogleAuthService } from '../../../services/google-auth';
+import { safeReturnUrl, returnUrlHint } from '../../../services/return-url';
 
 @Component({
     selector: 'page-login',
@@ -28,6 +29,14 @@ export class Login implements AfterViewInit {
     googleAuth = inject(GoogleAuthService);
     platformId = inject(PLATFORM_ID);
     private zone = inject(NgZone);
+
+    // A dónde volver tras entrar (lo pone el guard o la página que pidió iniciar sesión)
+    returnUrl = safeReturnUrl(this.route.snapshot.queryParamMap.get('returnUrl'));
+    returnHint = returnUrlHint(this.returnUrl);
+
+    private goAfterLogin() {
+        this.router.navigateByUrl(this.returnUrl ?? '/');
+    }
 
     // Contenedor donde Google dibuja su botón
     @ViewChild('googleBtn') googleBtn?: ElementRef<HTMLElement>;
@@ -64,13 +73,13 @@ export class Login implements AfterViewInit {
                     const google = { idToken, email: res.email, name: res.name, picture: res.picture };
                     // Copia en sessionStorage: sobrevive a recargas y a navegaciones sin state
                     try { sessionStorage.setItem('unicar_google_signup', JSON.stringify({ ...google, at: Date.now() })); } catch { }
-                    this.router.navigate(['/signup'], { state: { google } });
+                    this.router.navigate(['/signup'], { state: { google }, queryParams: this.returnUrl ? { returnUrl: this.returnUrl } : {} });
                     return;
                 }
                 this.auth.saveToken(res.token!);
                 this.api.getMe().subscribe({
-                    next: (user) => { this.auth.saveUser(user); this.loading = false; this.router.navigate(['/']); },
-                    error: () => { this.loading = false; this.router.navigate(['/']); }
+                    next: (user) => { this.auth.saveUser(user); this.loading = false; this.goAfterLogin(); },
+                    error: () => { this.loading = false; this.goAfterLogin(); }
                 });
             },
             error: (e) => {
@@ -98,12 +107,12 @@ export class Login implements AfterViewInit {
                     next: (user) => {
                         this.auth.saveUser(user);
                         this.loading = false;
-                        this.router.navigate(["/"]);
+                        this.goAfterLogin();
                     },
                     error: () => {
                         // Token guardado aunque falle el /me — el perfil cargará igualmente
                         this.loading = false;
-                        this.router.navigate(["/"]);
+                        this.goAfterLogin();
                     }
                 });
             },

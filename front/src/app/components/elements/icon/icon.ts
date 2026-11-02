@@ -44,6 +44,8 @@ export type IconName =
       xmlns="http://www.w3.org/2000/svg"
       [style.display]="'inline-block'"
       [style.vertical-align]="'middle'"
+      aria-hidden="true"
+      focusable="false"
     >
       <ng-container [ngSwitch]="icon">
 

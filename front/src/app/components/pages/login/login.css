@@ -127,7 +127,7 @@
 
 /* Enlace individual */
 :host .auth-card .auth-links a {
-    color: var(--primary);
+    color: var(--primary-light);
 }
 
 /* Responsive móvil */
@@ -178,4 +178,16 @@
     display: flex;
     justify-content: center;
     margin-bottom: 8px;
+}
+
+/* Por qué se le pide entrar: "Entra para pedir plaza en este viaje." */
+:host .auth-card .auth-brand .return-hint {
+    margin-top: 12px;
+    padding: 8px 14px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 183, 3, 0.1);
+    border: 1px solid rgba(255, 183, 3, 0.25);
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 600;
 }

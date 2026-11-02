@@ -31,7 +31,8 @@
     box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.15);
 }
 .ss-trigger .placeholder {
-    color: var(--text-3);
+    color: var(--text-2);
+    opacity: 0.85;
 }
 .ss-arrow {
     color: var(--text-3);
