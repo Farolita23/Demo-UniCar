@@ -3,6 +3,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { GoogleSignupState } from '../../../services/google-auth';
+import { ActivatedRoute } from '@angular/router';
+import { safeReturnUrl } from '../../../services/return-url';
 import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
 import { AppIcon } from '../../elements/icon/icon';
@@ -65,6 +67,9 @@ export class Signup implements OnInit {
         { title: 'Último paso (opcional)', hint: 'Si conduces, cuéntanos desde cuándo. Puedes dejarlo vacío.',  controls: ['drivingLicenseYear', 'description'] },
     ];
     step = 0;
+
+    // A dónde volver al terminar el registro
+    private returnUrl = safeReturnUrl(inject(ActivatedRoute).snapshot.queryParamMap.get('returnUrl'));
 
     // Variables para almacenar los campus y pueblos obtenidos de la API
     campuses: Campus[] = [];
@@ -183,8 +188,8 @@ export class Signup implements OnInit {
                     try { sessionStorage.removeItem('unicar_google_signup'); } catch { }
                     this.auth.saveToken(res.token);
                     this.api.getMe().subscribe({
-                        next: (user) => { this.auth.saveUser(user); this.loading = false; this.router.navigate(['/']); },
-                        error: () => { this.loading = false; this.router.navigate(['/']); },
+                        next: (user) => { this.auth.saveUser(user); this.loading = false; this.router.navigateByUrl(this.returnUrl ?? '/'); },
+                        error: () => { this.loading = false; this.router.navigateByUrl(this.returnUrl ?? '/'); },
                     });
                 },
                 error: e => {
@@ -201,7 +206,7 @@ export class Signup implements OnInit {
             return;
         }
         this.api.register(dto).subscribe({
-            next: () => { this.loading = false; this.router.navigate(['/login']); },
+            next: () => { this.loading = false; this.router.navigate(['/login'], { queryParams: this.returnUrl ? { returnUrl: this.returnUrl } : {} }); },
             error: e => {
                 const fields = e?.error?.fields;
                 this.error = fields

@@ -28,6 +28,8 @@ export const routes: Routes = [
             { path: 'about', component: About },
             { path: 'trip-detail/:id', component: TripDetail },
             { path: 'user/:id', component: UserProfile },
+            // Buscar viajes es público (solo lectura): pedir plaza o publicar sí piden cuenta
+            { path: 'search-trip', component: SearchTrip },
             {
                 path: '',
                 canActivate: [NoAuthGuard],
@@ -40,7 +42,6 @@ export const routes: Routes = [
                 path: '',
                 canActivate: [AuthGuard],
                 children: [
-                    { path: 'search-trip', component: SearchTrip },
                     { path: 'profile', component: Profile },
                     { path: 'logout', component: Logout },
                     { path: 'trip', component: PageTrip },

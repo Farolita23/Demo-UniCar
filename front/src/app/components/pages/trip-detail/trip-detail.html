@@ -306,7 +306,8 @@
                     </div>
                     }
                     } @else {
-                    <a routerLink="/login" class="btn btn-primary cta-btn">Inicia sesión para solicitar</a>
+                    <a routerLink="/login" [queryParams]="{ returnUrl: '/trip-detail/' + trip.id }" class="btn btn-primary cta-btn">Entra para pedir plaza</a>
+                    <p class="cta-hint">¿Primera vez? <a routerLink="/signup" [queryParams]="{ returnUrl: '/trip-detail/' + trip.id }">Crea tu cuenta en un minuto</a></p>
                     }
 
                     @if (actionError) {

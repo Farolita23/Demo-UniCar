@@ -100,8 +100,10 @@
             } @else {
             <span class="badge badge-danger">Completo</span>
             }
+            } @else if (freeSeats > 0) {
+            <a [routerLink]="['/trip-detail', data.id]" class="btn btn-primary trip-btn">Ver viaje</a>
             } @else {
-            <a routerLink="/login" class="btn btn-primary trip-btn">Ver viaje</a>
+            <span class="badge badge-danger">Completo</span>
             }
         </div>
     </div>

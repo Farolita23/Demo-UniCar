@@ -14,6 +14,9 @@
                 <h1>Bienvenido de nuevo</h1>
                 <!-- Subtítulo -->
                 <p>Accede a tu cuenta de UniCar</p>
+                @if (returnHint) {
+                    <p class="return-hint">{{ returnHint }}</p>
+                }
             </div>
             <!-- Formulario reactivo -->
             <form [formGroup]="form" (ngSubmit)="submit()" class="auth-form">
@@ -75,7 +78,7 @@
             <div class="google-sep"><span>o</span></div>
             <div class="google-wrap"><div #googleBtn></div></div>
             <!-- Enlaces secundarios -->
-            <div class="auth-links">¿No tienes cuenta? <a routerLink="/signup">¡Registrate!</a></div>
+            <div class="auth-links">¿No tienes cuenta? <a routerLink="/signup" [queryParams]="returnUrl ? { returnUrl } : {}">¡Regístrate!</a></div>
         </div>
     </div>
 </div>
