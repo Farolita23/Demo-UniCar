@@ -11,7 +11,7 @@
                 <div class="profile-card">
                     <div class="avatar-wrap">
                         @if (user.profileImageUrl) {
-                            <img [src]="(user.profileImageUrl) | avatarUrl" alt="Perfil" class="profile-avatar">
+                            <img referrerpolicy="no-referrer" [src]="(user.profileImageUrl) | avatarUrl" alt="Perfil" class="profile-avatar">
                         } @else {
                             <div class="profile-avatar-init">{{ user.name[0] }}</div>
                         }
@@ -172,7 +172,7 @@
                             <div class="rating-card-profile">
                                 <div class="rating-card-user">
                                     @if (r.userRateDTO?.profileImageUrl) {
-                                    <img [src]="(r.userRateDTO?.profileImageUrl) | avatarUrl" class="rating-card-avatar"
+                                    <img referrerpolicy="no-referrer" [src]="(r.userRateDTO?.profileImageUrl) | avatarUrl" class="rating-card-avatar"
                                         [alt]="r.userRateDTO?.name">
                                     } @else {
                                     <div class="rating-card-avatar-init">{{ r.userRateDTO?.name?.charAt(0) || '?' }}</div>
@@ -207,7 +207,7 @@
                             <div class="rating-card-profile">
                                 <div class="rating-card-user">
                                     @if (r.ratedUserDTO?.profileImageUrl) {
-                                    <img [src]="(r.ratedUserDTO?.profileImageUrl) | avatarUrl" class="rating-card-avatar"
+                                    <img referrerpolicy="no-referrer" [src]="(r.ratedUserDTO?.profileImageUrl) | avatarUrl" class="rating-card-avatar"
                                         [alt]="r.ratedUserDTO?.name">
                                     } @else {
                                     <div class="rating-card-avatar-init">{{ r.ratedUserDTO?.name?.charAt(0) || '?' }}</div>
@@ -307,7 +307,7 @@
                                     <label class="label">Foto de perfil</label>
                                     <div class="image-upload-area" (click)="profileFileInput.click()">
                                         @if ((editPreviewUrl || user.profileImageUrl)) {
-                                            <img [src]="(editPreviewUrl || user.profileImageUrl) | avatarUrl" class="preview-img" alt="Vista previa">
+                                            <img referrerpolicy="no-referrer" [src]="(editPreviewUrl || user.profileImageUrl) | avatarUrl" class="preview-img" alt="Vista previa">
                                             <div class="preview-overlay">Cambiar foto</div>
                                         } @else {
                                             <div class="upload-placeholder">
