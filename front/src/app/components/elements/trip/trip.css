@@ -193,3 +193,15 @@ a.trip-driver:focus-visible {
     transform: none;
   }
 }
+
+/* En móvil los botones de la tarjeta miden al menos 44px de alto para tocarlos con el dedo */
+@media (max-width: 768px) {
+  .trip-btn {
+    min-height: 44px;
+    padding: 0 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+}

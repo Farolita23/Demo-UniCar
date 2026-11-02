@@ -443,6 +443,20 @@
         padding: 14px 16px;
         border-radius: var(--radius-sm);
     }
+    /* El logo también es un enlace: 44px de alto en móvil */
+    :host .content .logo {
+        height: 44px;
+        line-height: 44px;
+    }
+    /* "Únete" con altura táctil de 44px (la cabecera mide 72px, cabe sin desbordar) */
+    :host .content .header-actions .btn-sm {
+        height: 44px;
+        box-sizing: border-box;
+        padding: 0 18px;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+    }
     /* La cabecera solo deja "Únete" y el menú; "Acceder" pasa dentro del menú */
     :host .content .header-actions .header-login {
         display: none;

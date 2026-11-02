@@ -524,6 +524,11 @@
         gap: 8px;
     }
 
+    :host .trips-see-all .btn {
+        min-height: 44px;
+        box-sizing: border-box;
+    }
+
     /* Grid de pasos en una sola columna */
     :host .how-section .steps-grid {
         flex-direction: column;
