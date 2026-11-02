@@ -188,44 +188,79 @@ export class Profile implements OnInit {
         });
     }
 
-    // Elegir una foto: se recorta al centro y se reduce en el navegador (512 px) para subir poco.
-    // El servidor vuelve a validarla y la deja en 256 px; aquí solo se guarda el Blob para subirlo al guardar.
+    // Prepara una foto para subirla: valida el archivo, la recorta al centro y la reduce a 512 px
+    // en el navegador para subir poco. El servidor vuelve a validarla y la deja en 256 px.
+    private prepareAvatar(file: File): Promise<Blob> {
+        const allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedFormats.includes(file.type)) return Promise.reject(new Error('Solo se permiten archivos de imagen (JPEG, PNG, GIF, WebP).'));
+        if (file.size > 10 * 1024 * 1024) return Promise.reject(new Error('La imagen no debe superar los 10MB.'));
+        return new Promise((resolve, reject) => {
+            const objectUrl = URL.createObjectURL(file);
+            const img = new Image();
+            img.onload = () => {
+                URL.revokeObjectURL(objectUrl);
+                const SIDE = 512;
+                const side = Math.min(img.width, img.height);
+                const canvas = document.createElement('canvas');
+                canvas.width = canvas.height = Math.min(SIDE, side);
+                const ctx = canvas.getContext('2d')!;
+                ctx.fillStyle = '#fff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, canvas.width, canvas.height);
+                canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('No se pudo procesar la imagen.')), 'image/jpeg', 0.85);
+            };
+            img.onerror = () => {
+                URL.revokeObjectURL(objectUrl);
+                reject(new Error('No se pudo leer la imagen.'));
+            };
+            img.src = objectUrl;
+        });
+    }
+
+    // Foto elegida en "Editar perfil": se muestra la vista previa y se sube al guardar
     onProfileFileSelected(event: Event) {
         const input = event.target as HTMLInputElement;
         const file = input.files?.[0];
         input.value = '';
         if (!file) return;
-        const allowedFormats = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-        if (!allowedFormats.includes(file.type)) { this.editError = 'Solo se permiten archivos de imagen (JPEG, PNG, GIF, WebP).'; return; }
-        if (file.size > 10 * 1024 * 1024) { this.editError = 'La imagen no debe superar los 10MB.'; return; }
-        const objectUrl = URL.createObjectURL(file);
-        const img = new Image();
-        img.onload = () => {
-            URL.revokeObjectURL(objectUrl);
-            const SIDE = 512;
-            const side = Math.min(img.width, img.height);
-            const canvas = document.createElement('canvas');
-            canvas.width = canvas.height = Math.min(SIDE, side);
-            const ctx = canvas.getContext('2d')!;
-            ctx.fillStyle = '#fff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, canvas.width, canvas.height);
-            canvas.toBlob(blob => {
-                this.zone.run(() => {
-                    if (!blob) { this.editError = 'No se pudo procesar la imagen.'; this.cdr.detectChanges(); return; }
-                    if (this.editPreviewUrl) URL.revokeObjectURL(this.editPreviewUrl);
-                    this.pendingPhoto = blob;
-                    this.editPreviewUrl = URL.createObjectURL(blob);
-                    this.editError = '';
+        this.prepareAvatar(file).then(blob => this.zone.run(() => {
+            if (this.editPreviewUrl) URL.revokeObjectURL(this.editPreviewUrl);
+            this.pendingPhoto = blob;
+            this.editPreviewUrl = URL.createObjectURL(blob);
+            this.editError = '';
+            this.cdr.detectChanges();
+        })).catch((e: Error) => this.zone.run(() => { this.editError = e.message; this.cdr.detectChanges(); }));
+    }
+
+    // Cambio rápido desde la foto de la tarjeta: se sube en el momento, sin pasar por "Editar perfil"
+    photoUploading = false;
+    photoError = '';
+    onQuickPhotoSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        const file = input.files?.[0];
+        input.value = '';
+        if (!file || !this.user || this.photoUploading) return;
+        const userId = this.user.id;
+        this.photoError = '';
+        this.photoUploading = true;
+        this.cdr.detectChanges();
+        this.prepareAvatar(file)
+            .then(blob => this.zone.run(() => this.api.uploadPhoto(userId, blob).subscribe({
+                next: u => {
+                    this.user = u;
+                    this.auth.saveUser(u);
+                    this.photoUploading = false;
                     this.cdr.detectChanges();
-                });
-            }, 'image/jpeg', 0.85);
-        };
-        img.onerror = () => {
-            URL.revokeObjectURL(objectUrl);
-            this.zone.run(() => { this.editError = 'No se pudo leer la imagen.'; this.cdr.detectChanges(); });
-        };
-        img.src = objectUrl;
+                },
+                error: e => this.quickPhotoFailed(e?.error?.message || 'No se pudo subir la foto.'),
+            })))
+            .catch((e: Error) => this.zone.run(() => this.quickPhotoFailed(e.message)));
+    }
+
+    private quickPhotoFailed(message: string) {
+        this.photoError = message;
+        this.photoUploading = false;
+        this.cdr.detectChanges();
     }
 
     // Guardar cambios en el perfil del usuario

@@ -64,8 +64,80 @@
     border: 3px solid var(--primary);
 }
 
+/* LA FOTO DE PERFIL COMO BOTON PARA CAMBIARLA */
+:host .profile-sidebar .profile-card .avatar-wrap .avatar-btn {
+    position: relative;
+    display: block;
+    padding: 0;
+    border: none;
+    background: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+:host .profile-sidebar .profile-card .avatar-wrap .avatar-btn:disabled {
+    cursor: progress;
+}
+
+:host .profile-sidebar .profile-card .avatar-wrap .avatar-btn:focus-visible {
+    outline: 3px solid var(--primary-light);
+    outline-offset: 3px;
+}
+
+:host .profile-sidebar .profile-card .avatar-wrap .avatar-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(13, 13, 13, 0.6);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+:host .profile-sidebar .profile-card .avatar-wrap .avatar-btn:hover .avatar-overlay,
+:host .profile-sidebar .profile-card .avatar-wrap .avatar-btn:focus-visible .avatar-overlay,
+:host .profile-sidebar .profile-card .avatar-wrap .avatar-btn.uploading .avatar-overlay {
+    opacity: 1;
+}
+
+:host .profile-sidebar .profile-card .avatar-wrap .avatar-overlay .spinner {
+    width: 24px;
+    height: 24px;
+}
+
+/* Icono de camara siempre visible: pista de que se puede pulsar (tambien en movil, sin hover) */
+:host .profile-sidebar .profile-card .avatar-wrap .avatar-cam {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--surface);
+}
+
+:host .profile-sidebar .profile-card .avatar-error {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--primary-light);
+}
+
 /* ESTILOS DE LA VALORACION */
 :host .profile-sidebar .profile-card .avatar-wrap .rating-badge {
+    pointer-events: none;
     position: absolute;
     bottom: 0;
     right: 0;

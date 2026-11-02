@@ -10,13 +10,30 @@
             <aside class="profile-sidebar">
                 <div class="profile-card">
                     <div class="avatar-wrap">
-                        @if (user.profileImageUrl) {
-                            <img referrerpolicy="no-referrer" [src]="(user.profileImageUrl) | avatarUrl" alt="Perfil" class="profile-avatar">
-                        } @else {
-                            <div class="profile-avatar-init">{{ user.name[0] }}</div>
-                        }
+                        <!-- La foto es un botón: al pulsarla se elige una imagen y se sube al momento -->
+                        <button type="button" class="avatar-btn" [class.uploading]="photoUploading" [disabled]="photoUploading"
+                                (click)="quickPhotoInput.click()" aria-label="Cambiar foto de perfil" title="Cambiar foto de perfil">
+                            @if (user.profileImageUrl) {
+                                <img referrerpolicy="no-referrer" [src]="(user.profileImageUrl) | avatarUrl" alt="" class="profile-avatar">
+                            } @else {
+                                <div class="profile-avatar-init">{{ user.name[0] }}</div>
+                            }
+                            <span class="avatar-overlay">
+                                @if (photoUploading) {
+                                    <span class="spinner"></span>
+                                } @else {
+                                    <app-icon icon="camara" [size]="22"></app-icon>
+                                    <small>Cambiar</small>
+                                }
+                            </span>
+                            <span class="avatar-cam" aria-hidden="true"><app-icon icon="camara" [size]="13"></app-icon></span>
+                        </button>
+                        <input #quickPhotoInput type="file" accept="image/*" hidden (change)="onQuickPhotoSelected($event)">
                         <div class="rating-badge">★ {{ avgRating }}</div>
                     </div>
+                    @if (photoError) {
+                        <span class="avatar-error" role="alert">{{ photoError }}</span>
+                    }
                     <h2 class="profile-name">{{ user.name }}</h2>
                     <span class="profile-username">&#64;{{ user.username }}</span>
 
