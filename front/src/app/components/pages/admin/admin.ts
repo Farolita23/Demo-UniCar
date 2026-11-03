@@ -18,11 +18,11 @@ import { Footer } from '../../elements/footer/footer';
 import { AppIcon } from '../../elements/icon/icon';
 
 // Importaciones de servicios
-import { ApiService } from '../../../services/api-service';
+import { ApiService, UserListItem } from '../../../services/api-service';
 import { AuthService } from '../../../services/auth-service';
 
 // Importaciones de modelos
-import { User, Report } from '../../../models/user.model';
+import { Report } from '../../../models/user.model';
 import { AvatarUrlPipe } from '../../../pipes/avatar-url.pipe';
 
 /**
@@ -62,7 +62,7 @@ export class Admin implements OnInit {
     // ========================================
     
     /** Lista de usuarios filtrados por búsqueda */
-    filteredUsers: User[] = [];
+    filteredUsers: UserListItem[] = [];
     
     /** Número total de usuarios (para paginación) */
     totalUsers = 0;
@@ -97,7 +97,7 @@ export class Admin implements OnInit {
     // ========================================
     
     /** Usuario actualmente seleccionado para ver detalles */
-    selectedUser: User | null = null;
+    selectedUser: UserListItem | null = null;
 
     // ========================================
     // Propiedades de retroalimentación de acciones
@@ -147,6 +147,7 @@ export class Admin implements OnInit {
      * Si no hay búsqueda, muestra todos los usuarios
      */
     searchUsers(page = 0) {
+        // El servidor devuelve siempre una página (máx. 100); sin texto equivale al listado paginado
         this.api.adminSearchUsers(this.userSearch.trim() || "", page).subscribe({
             next: (pageable) => {
                 this.filteredUsers = pageable.content; 
@@ -181,7 +182,7 @@ export class Admin implements OnInit {
      * Selecciona un usuario para mostrar sus detalles
      * @param u - Usuario a seleccionar
      */
-    selectUser(u: User) {
+    selectUser(u: UserListItem) {
         this.selectedUser = u;
     }
 
@@ -287,7 +288,16 @@ export class Admin implements OnInit {
      * Obtiene un array con los números de página para la paginación
      * @returns Array de números de página
      */
-    userPages(): number[] { return Array.from({ length: this.totalUserPages }, (_, i) => i); }
+    userPages(): number[] { return this.pageWindow(this.currentUserPage, this.totalUserPages); }
+
+    /**
+     * Ventana de números de página alrededor de la actual (máx. 5), para no pintar miles de botones
+     */
+    private pageWindow(current: number, total: number): number[] {
+        const start = Math.max(0, Math.min(current - 2, total - 5));
+        const end = Math.min(total, start + 5);
+        return Array.from({ length: end - start }, (_, i) => start + i);
+    }
 
     /**
      * Obtiene un array con los números de página para la paginación de reportes

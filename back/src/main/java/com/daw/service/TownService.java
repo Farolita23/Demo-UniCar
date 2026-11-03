@@ -2,8 +2,11 @@ package com.daw.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.daw.config.CacheConfig;
 import com.daw.controller.dto.TownCreateDTO;
 import com.daw.controller.dto.TownDTO;
 import com.daw.controller.dto.mapper.TownCreateMapper;
@@ -43,6 +46,7 @@ public class TownService {
 	 *
 	 * @return lista de {@link TownDTO} con todas las localidades disponibles
 	 */
+	@Cacheable(CacheConfig.TOWN)
 	public List<TownDTO> findAll() {
 		return townMapper.toListDto(townRepository.findAllByOrderByNameAsc());
 	}
@@ -64,6 +68,7 @@ public class TownService {
 	 * @param dto datos de la localidad a crear
 	 * @return {@link TownDTO} con los datos de la localidad recién creada
 	 */
+	@CacheEvict(value = CacheConfig.TOWN, allEntries = true)
 	public TownDTO create(TownCreateDTO dto) {
 		Town town = townCreateMapper.toEntity(dto);
 		townRepository.save(town);
@@ -78,6 +83,7 @@ public class TownService {
 	 * @return {@link TownDTO} con los datos de la localidad actualizada
 	 * @throws com.daw.exceptions.TownNotFoundException si no existe una localidad con ese identificador
 	 */
+	@CacheEvict(value = CacheConfig.TOWN, allEntries = true)
 	public TownDTO update(TownCreateDTO dto, Long id) {
 		Town town = generalService.findTownById(id);
 		townCreateMapper.updateEntityFromDto(dto, town);
@@ -92,6 +98,7 @@ public class TownService {
 	 * @throws com.daw.exceptions.TownNotFoundException si no existe una localidad con ese identificador
 	 * @throws EntityWithDependenciesException          si la localidad tiene viajes o usuarios vinculados
 	 */
+	@CacheEvict(value = CacheConfig.TOWN, allEntries = true)
 	public void delete(Long id) {
 		Town town = generalService.findTownById(id);
 		boolean hasntTrips = town.getTrips() == null || town.getTrips().isEmpty();

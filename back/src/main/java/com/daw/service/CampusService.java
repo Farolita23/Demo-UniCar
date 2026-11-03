@@ -2,8 +2,11 @@ package com.daw.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import com.daw.config.CacheConfig;
 import com.daw.controller.dto.CampusCreateDTO;
 import com.daw.controller.dto.CampusDTO;
 import com.daw.controller.dto.mapper.CampusCreateMapper;
@@ -42,6 +45,7 @@ public class CampusService {
 	 *
 	 * @return lista de {@link CampusDTO} con todos los campus disponibles
 	 */
+	@Cacheable(CacheConfig.CAMPUS)
 	public List<CampusDTO> findAll() {
 		return campusMapper.toListDto(campusRepository.findAllByOrderByNameAsc());
 	}
@@ -63,6 +67,7 @@ public class CampusService {
 	 * @param dto datos del campus a crear
 	 * @return {@link CampusDTO} con los datos del campus recién creado
 	 */
+	@CacheEvict(value = CacheConfig.CAMPUS, allEntries = true)
 	public CampusDTO create(CampusCreateDTO dto) {
 		Campus campus = campusCreateMapper.toEntity(dto);
 		Campus createdCampus = campusRepository.save(campus);
@@ -77,6 +82,7 @@ public class CampusService {
 	 * @return {@link CampusDTO} con los datos del campus actualizado
 	 * @throws com.daw.exceptions.CampusNotFoundException si no existe un campus con ese identificador
 	 */
+	@CacheEvict(value = CacheConfig.CAMPUS, allEntries = true)
 	public CampusDTO update(CampusCreateDTO dto, Long id) {
 		Campus campus = generalService.findCampusById(id);
 		campusCreateMapper.updateEntityFromDto(dto, campus);
@@ -91,6 +97,7 @@ public class CampusService {
 	 * @throws com.daw.exceptions.CampusNotFoundException      si no existe un campus con ese identificador
 	 * @throws EntityWithDependenciesException si el campus tiene viajes o usuarios vinculados
 	 */
+	@CacheEvict(value = CacheConfig.CAMPUS, allEntries = true)
 	public void delete(Long id) {
 		Campus campus = generalService.findCampusById(id);
 		boolean hasntTrips = campus.getTrips() == null || campus.getTrips().isEmpty();

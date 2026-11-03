@@ -26,7 +26,9 @@ import lombok.Setter;
  * @see User
  */
 @Entity
-@Table(name = "rating")
+@Table(name = "rating", indexes = {
+    @jakarta.persistence.Index(name = "idx_rating_rated_user_rating", columnList = "rated_user_id, rating")
+})
 @Getter
 @Setter
 public class Rating {

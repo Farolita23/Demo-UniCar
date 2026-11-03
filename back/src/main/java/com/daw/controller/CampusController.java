@@ -2,6 +2,9 @@ package com.daw.controller;
 
 import java.util.List;
 
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +33,9 @@ public class CampusController {
 
     @GetMapping
     public ResponseEntity<List<CampusDTO>> findAll() {
-        return ResponseEntity.ok(campusService.findAll());
+        return ResponseEntity.ok()
+                .cacheControl(CacheControl.maxAge(30, TimeUnit.SECONDS).cachePublic())
+                .body(campusService.findAll());
     }
 
     @GetMapping("/{id}")

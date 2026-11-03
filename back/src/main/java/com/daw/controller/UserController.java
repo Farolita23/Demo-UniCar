@@ -1,7 +1,5 @@
 package com.daw.controller;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -24,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.daw.controller.dto.UserCreateDTO;
 import com.daw.controller.dto.UserDTO;
+import com.daw.controller.dto.UserListDTO;
 import com.daw.controller.dto.UserUpdateDTO;
 import com.daw.service.UserService;
 
@@ -38,8 +37,8 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll() {
-        return ResponseEntity.ok(userService.findAll());
+    public ResponseEntity<Page<UserListDTO>> findAll(@PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return ResponseEntity.ok(userService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
@@ -118,7 +117,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Page<UserDTO>> search(
+    public ResponseEntity<Page<UserListDTO>> search(
         @RequestParam String q,
         @PageableDefault(size = 10, sort = "name") Pageable pageable) {
         return ResponseEntity.ok(userService.searchUsers(q, pageable));

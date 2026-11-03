@@ -21,6 +21,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.BatchSize;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -109,6 +110,7 @@ public class PeriodicTrip {
     @CollectionTable(name = "periodic_trip_days", joinColumns = @JoinColumn(name = "periodic_trip_id"))
     @Column(name = "day_of_week")
     @Enumerated(EnumType.STRING)
+    @BatchSize(size = 100)
     private Set<DayOfWeek> daysOfWeek = EnumSet.noneOf(DayOfWeek.class);
 
     /** Repetir cada N semanas (1 = cada semana). */

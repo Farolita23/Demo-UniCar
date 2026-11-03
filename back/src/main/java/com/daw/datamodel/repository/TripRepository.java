@@ -12,7 +12,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.daw.datamodel.entities.Trip;
-import com.daw.datamodel.entities.User;
 
 /**
  * Repositorio de acceso a datos para la entidad {@link Trip}.
@@ -51,21 +50,25 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      *
      * @param campusId identificador del campus habitual del usuario
      * @param townId   identificador de la localidad habitual del usuario
-     * @param user     entidad del usuario para calcular afinidad por historial
+     * @param userId   identificador del usuario para calcular afinidad por historial
      * @param pageable configuración de paginación y ordenación
      * @return página de viajes recomendados
      */
-    @Query("SELECT t FROM Trip t WHERE " +
+    @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
+    @Query(value = "SELECT t FROM Trip t WHERE " +
                "t.campus.id = :campusId AND t.town.id = :townId " +
                "AND t.departureDate >= CURRENT_DATE " +
                "ORDER BY " +
-               "(SELECT COUNT(pt) FROM Trip pt " +
-               " WHERE :user MEMBER OF pt.passengers " +
-               " AND pt.car.driver = t.car.driver) DESC, " +
-               "t.departureDate ASC, t.departureTime ASC")
+               "(SELECT COUNT(pt) FROM Trip pt JOIN pt.passengers pp " +
+               " WHERE pp.id = :userId " +
+               " AND pt.car.driver.id = t.car.driver.id) DESC, " +
+               "t.departureDate ASC, t.departureTime ASC, t.id ASC",
+           countQuery = "SELECT COUNT(t) FROM Trip t WHERE " +
+               "t.campus.id = :campusId AND t.town.id = :townId " +
+               "AND t.departureDate >= CURRENT_DATE")
     Page<Trip> findRecommendedTrips(@Param("campusId") Long campusId,
                                     @Param("townId") Long townId,
-                                    @Param("user") User user,
+                                    @Param("userId") Long userId,
                                     Pageable pageable);
 
     /**
@@ -78,9 +81,9 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      * @param pageable configuración de paginación
      * @return página de viajes como conductor
      */
-    @EntityGraph(attributePaths = {"passengers", "requesters", "car", "campus", "town"})
+    @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
     @Query("SELECT t FROM Trip t WHERE t.car.driver.id = :idDriver AND t.departureDate > CURRENT_DATE " +
-           "ORDER BY t.departureDate DESC, t.departureTime DESC")
+           "ORDER BY t.departureDate DESC, t.departureTime DESC, t.id DESC")
     Page<Trip> findTripsAsADriver(@Param("idDriver") Long idDriver, Pageable pageable);
 
     /**
@@ -91,8 +94,10 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      * @param pageable    configuración de paginación
      * @return página de viajes como pasajero
      */
-    @Query("SELECT t FROM Trip t JOIN t.passengers p WHERE p.id = :idPassenger " +
-           "ORDER BY t.departureDate DESC, t.departureTime DESC")
+    @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
+    @Query(value = "SELECT t FROM Trip t JOIN t.passengers p WHERE p.id = :idPassenger " +
+           "ORDER BY t.departureDate DESC, t.departureTime DESC, t.id DESC",
+           countQuery = "SELECT COUNT(t) FROM Trip t JOIN t.passengers p WHERE p.id = :idPassenger")
     Page<Trip> findTripsAsAPassenger(@Param("idPassenger") Long idPassenger, Pageable pageable);
 
     /**
@@ -102,8 +107,10 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      * @param pageable configuración de paginación
      * @return página de viajes futuros disponibles
      */
-    @Query("SELECT t FROM Trip t WHERE t.departureDate >= CURRENT_DATE " +
-           "ORDER BY t.departureDate ASC, t.departureTime ASC")
+    @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
+    @Query(value = "SELECT t FROM Trip t WHERE t.departureDate >= CURRENT_DATE " +
+           "ORDER BY t.departureDate ASC, t.departureTime ASC, t.id ASC",
+           countQuery = "SELECT COUNT(t) FROM Trip t WHERE t.departureDate >= CURRENT_DATE")
     Page<Trip> findFutureTrips(Pageable pageable);
 
     /**
@@ -115,9 +122,12 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      * @param pageable  configuración de paginación
      * @return página de viajes sugeridos
      */
-    @Query("SELECT DISTINCT t FROM Trip t WHERE t.departureDate >= CURRENT_DATE " +
+    @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
+    @Query(value = "SELECT t FROM Trip t WHERE t.departureDate >= CURRENT_DATE " +
            "AND (t.campus.id IN :campusIds OR t.town.id IN :townIds) " +
-           "ORDER BY t.departureDate ASC, t.departureTime ASC")
+           "ORDER BY t.departureDate ASC, t.departureTime ASC, t.id ASC",
+           countQuery = "SELECT COUNT(t) FROM Trip t WHERE t.departureDate >= CURRENT_DATE " +
+           "AND (t.campus.id IN :campusIds OR t.town.id IN :townIds)")
     Page<Trip> findSuggestedTrips(@Param("campusIds") List<Long> campusIds,
                                    @Param("townIds") List<Long> townIds,
                                    Pageable pageable);
@@ -165,8 +175,10 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      * @param pageable configuración de paginación
      * @return página de viajes generados
      */
-    @Query("SELECT t FROM Trip t WHERE t.periodicTrip.id = :periodicTripId " +
-           "ORDER BY t.departureDate ASC, t.departureTime ASC")
+    @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
+    @Query(value = "SELECT t FROM Trip t WHERE t.periodicTrip.id = :periodicTripId " +
+           "ORDER BY t.departureDate ASC, t.departureTime ASC, t.id ASC",
+           countQuery = "SELECT COUNT(t) FROM Trip t WHERE t.periodicTrip.id = :periodicTripId")
     Page<Trip> findByPeriodicTripId(@Param("periodicTripId") Long periodicTripId, Pageable pageable);
 
     /**
@@ -176,5 +188,26 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      * @return número de viajes vinculados a esa plantilla
      */
     long countByPeriodicTripId(Long periodicTripId);
+
+    /**
+     * Cuenta, en una sola consulta, los viajes generados por cada plantilla periódica indicada.
+     *
+     * @param ids identificadores de las plantillas
+     * @return filas {@code [periodicTripId, total]} (las plantillas sin viajes no aparecen)
+     */
+    @Query("SELECT t.periodicTrip.id, COUNT(t) FROM Trip t WHERE t.periodicTrip.id IN :ids GROUP BY t.periodicTrip.id")
+    List<Object[]> countByPeriodicTripIds(@Param("ids") java.util.Collection<Long> ids);
+
+    /** Carga un viaje con su coche, conductor, campus y localidad en una sola consulta. */
+    @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
+    java.util.Optional<Trip> findDetailedById(Long id);
+
+    @Override
+    @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
+    Page<Trip> findAll(Pageable pageable);
+
+    @Override
+    @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
+    Page<Trip> findAll(org.springframework.data.jpa.domain.Specification<Trip> spec, Pageable pageable);
 
 }
