@@ -29,6 +29,7 @@ services:
       JWT_SECRET: ${JWT_SECRET:-unaClaveSecretaMuyLargaYSegura1234567890}
       JWT_EXPIRATION: 86400000
       UPLOAD_DIR: /app/uploads
+      SHOW_SQL: ${SHOW_SQL:-false}
     volumes:
       - unicar-uploads:/app/uploads
     ports:
