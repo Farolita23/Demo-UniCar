@@ -39,7 +39,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticatedUserCache {
 
     private static final String QUERY =
-            "select u.username, u.role from User u where u.username = :username";
+            "select u.username, u.role, u.banned from User u where u.username = :username";
 
     /** Marcador: UserDetails exige una contrasena, pero el filtro JWT no la utiliza. */
     private static final String NO_PASSWORD = "[no-disponible]";
@@ -71,10 +71,12 @@ public class AuthenticatedUserCache {
             throw new UsernameNotFoundException("Usuario no encontrado: " + username);
         }
         Object[] row = rows.get(0);
+        boolean banned = Boolean.TRUE.equals(row[2]);
         UserDetails details = org.springframework.security.core.userdetails.User
                 .withUsername((String) row[0])
                 .password(NO_PASSWORD)   // el filtro no usa credenciales: el hash no se guarda en memoria
                 .roles((String) row[1])
+                .disabled(banned)        // un usuario baneado queda deshabilitado aunque su token siga sin caducar
                 .build();
         cache.put(username, details);
         return details;

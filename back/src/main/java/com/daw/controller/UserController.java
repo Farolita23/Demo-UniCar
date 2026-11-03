@@ -36,14 +36,27 @@ public class UserController {
 
     private final UserService userService;
 
+    /** Indica si la autenticacion actual tiene rol de administrador. {@code null} = peticion anonima. */
+    private static boolean isAdmin(Authentication authentication) {
+        return authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> "ROLE_ADMIN".equals(a.getAuthority()));
+    }
+
+    private static String requesterName(Authentication authentication) {
+        return authentication == null ? null : authentication.getName();
+    }
+
     @GetMapping
-    public ResponseEntity<Page<UserListDTO>> findAll(@PageableDefault(size = 20, sort = "id") Pageable pageable) {
-        return ResponseEntity.ok(userService.findAll(pageable));
+    public ResponseEntity<Page<UserListDTO>> findAll(@PageableDefault(size = 20, sort = "id") Pageable pageable,
+                                                     Authentication authentication) {
+        return ResponseEntity.ok(
+                userService.findAll(pageable, requesterName(authentication), isAdmin(authentication)));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id));
+    public ResponseEntity<UserDTO> findById(@PathVariable Long id, Authentication authentication) {
+        return ResponseEntity.ok(
+                userService.findById(id, requesterName(authentication), isAdmin(authentication)));
     }
 
     @PostMapping
@@ -53,8 +66,10 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> update(@RequestBody @Validated UserUpdateDTO dto,
-                                          @PathVariable Long id) {
-        return ResponseEntity.ok(userService.update(dto, id));
+                                          @PathVariable Long id,
+                                          Authentication authentication) {
+        return ResponseEntity.ok(
+                userService.update(dto, id, authentication.getName(), isAdmin(authentication)));
     }
 
     /**
@@ -71,8 +86,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        userService.delete(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id, Authentication authentication) {
+        userService.delete(id, authentication.getName(), isAdmin(authentication));
         return ResponseEntity.noContent().build();
     }
     
@@ -119,7 +134,9 @@ public class UserController {
     @GetMapping("/search")
     public ResponseEntity<Page<UserListDTO>> search(
         @RequestParam String q,
-        @PageableDefault(size = 10, sort = "name") Pageable pageable) {
-        return ResponseEntity.ok(userService.searchUsers(q, pageable));
+        @PageableDefault(size = 10, sort = "name") Pageable pageable,
+        Authentication authentication) {
+        return ResponseEntity.ok(
+                userService.searchUsers(q, pageable, requesterName(authentication), isAdmin(authentication)));
     }
 }
