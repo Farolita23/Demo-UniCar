@@ -15,7 +15,10 @@ import com.daw.datamodel.repository.RatingRepository;
 import com.daw.exceptions.InvalidRatingException;
 import com.daw.exceptions.RatingAlreadyExistsException;
 
-import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -46,8 +49,10 @@ public class RatingService {
 	 *
 	 * @return lista de {@link RatingDTO} con todas las valoraciones disponibles
 	 */
-	public List<RatingDTO> findAll() {
-		return ratingMapper.toListDto(ratingRepository.findAll());
+	@Transactional(readOnly = true)
+	public List<RatingDTO> findAll(int page, int size) {
+		Pageable pageable = PageRequest.of(Math.max(page, 0), Math.min(Math.max(size, 1), CarService.MAX_PAGE_SIZE), Sort.by("id"));
+		return ratingMapper.toListDto(ratingRepository.findAll(pageable).getContent());
 	}
 
 	/**
@@ -57,6 +62,7 @@ public class RatingService {
 	 * @return {@link RatingDTO} con los datos de la valoración encontrada
 	 * @throws com.daw.exceptions.RatingNotFoundException si no existe una valoración con ese identificador
 	 */
+	@Transactional(readOnly = true)
 	public RatingDTO findById(Long id) {
 		return ratingMapper.toDto(generalService.findRatingById(id));
 	}

@@ -1,5 +1,6 @@
 package com.daw.datamodel.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,7 +28,13 @@ public interface PeriodicTripRepository extends JpaRepository<PeriodicTrip, Long
      * @param pageable configuración de paginación
      * @return página de plantillas periódicas del conductor
      */
-    @Query("SELECT pt FROM PeriodicTrip pt WHERE pt.car.driver.id = :driverId " +
-           "ORDER BY pt.startDate DESC")
+    @EntityGraph(attributePaths = {"car", "campus", "town"})
+    @Query(value = "SELECT pt FROM PeriodicTrip pt WHERE pt.car.driver.id = :driverId " +
+           "ORDER BY pt.startDate DESC",
+           countQuery = "SELECT COUNT(pt) FROM PeriodicTrip pt WHERE pt.car.driver.id = :driverId")
     Page<PeriodicTrip> findByDriverId(@Param("driverId") Long driverId, Pageable pageable);
+
+    @Override
+    @EntityGraph(attributePaths = {"car", "campus", "town"})
+    Page<PeriodicTrip> findAll(Pageable pageable);
 }
