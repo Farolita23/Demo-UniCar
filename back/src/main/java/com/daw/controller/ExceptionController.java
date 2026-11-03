@@ -241,6 +241,18 @@ public class ExceptionController {
         return buildError(HttpStatus.NOT_FOUND, "Recurso no encontrado");
     }
 
+    /** Falta un parametro obligatorio de la peticion (por ejemplo {@code q} en una busqueda). */
+    @ExceptionHandler(org.springframework.web.bind.MissingServletRequestParameterException.class)
+    public ResponseEntity<Map<String, Object>> handleMissingParam(org.springframework.web.bind.MissingServletRequestParameterException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, "Falta el parámetro obligatorio: " + ex.getParameterName());
+    }
+
+    /** Parametro con un tipo incorrecto (por ejemplo {@code size=abc}). */
+    @ExceptionHandler(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Map<String, Object>> handleTypeMismatch(org.springframework.web.method.annotation.MethodArgumentTypeMismatchException ex) {
+        return buildError(HttpStatus.BAD_REQUEST, "Parámetro no válido: " + ex.getName());
+    }
+
     // ─── 403 Forbidden (Spring Security) ──────────────────────────────────
 
     /** @see org.springframework.security.access.AccessDeniedException */

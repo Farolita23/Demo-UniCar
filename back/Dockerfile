@@ -20,6 +20,6 @@ RUN mkdir -p /app/uploads
 ENV UPLOAD_DIR=/app/uploads
 # Heap proporcional a la memoria del contenedor. Con 1-2 vCPU la JVM elige SerialGC (menos hilos y memoria
 # que G1); para mas CPU basta con definir JAVA_OPTS=-XX:+UseG1GC. Se pueden anadir flags con JAVA_OPTS.
-ENV JAVA_OPTS="-XX:MaxRAMPercentage=75 -XX:InitialRAMPercentage=25 -XX:+ExitOnOutOfMemoryError -Djava.security.egd=file:/dev/./urandom"
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=50 -XX:InitialRAMPercentage=25 -XX:+ExitOnOutOfMemoryError -Djava.security.egd=file:/dev/./urandom"
 EXPOSE 8081
 ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS org.springframework.boot.loader.launch.JarLauncher"]

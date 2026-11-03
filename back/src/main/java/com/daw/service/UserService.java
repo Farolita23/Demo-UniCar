@@ -65,9 +65,14 @@ public class UserService {
      * Acota una peticion de pagina: tamano entre 1 y {@link #MAX_PAGE_SIZE} y orden estable
      * (el identificador se anade como desempate para que las paginas no se solapen).
      */
+    private static final java.util.Set<String> SORTABLE_FIELDS = java.util.Set.of("id", "name", "username");
+
     private Pageable bounded(Pageable pageable) {
         int size = Math.max(1, Math.min(pageable.getPageSize(), MAX_PAGE_SIZE));
-        Sort sort = pageable.getSort().isSorted() ? pageable.getSort() : Sort.unsorted();
+        // Solo se puede ordenar por campos publicos; cualquier otro (inexistente o sensible) se ignora
+        Sort sort = Sort.by(pageable.getSort().stream()
+                .filter(order -> SORTABLE_FIELDS.contains(order.getProperty()))
+                .toList());
         if (sort.getOrderFor("id") == null) sort = sort.and(Sort.by("id"));
         return PageRequest.of(pageable.getPageNumber(), size, sort);
     }

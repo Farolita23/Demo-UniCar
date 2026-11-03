@@ -34,7 +34,7 @@ public class TripController {
 
     @GetMapping
     public ResponseEntity<Page<TripDTO>> findAll(
-            @PageableDefault(size = 10, sort = "departureDate") Pageable pageable) {
+            @PageableDefault(size = 10, sort = {"departureDate", "departureTime", "id"}) Pageable pageable) {
         return ResponseEntity.ok(driverStats.enrich(tripService.findAll(pageable)));
     }
 
@@ -46,7 +46,7 @@ public class TripController {
     @GetMapping("/recommended/{idUser}")
     public ResponseEntity<Page<TripDTO>> findRecommended(
             @PathVariable Long idUser,
-            @PageableDefault(size = 10, sort = "departureDate") Pageable pageable) {
+            @PageableDefault(size = 10, sort = {"departureDate", "departureTime", "id"}) Pageable pageable) {
         return ResponseEntity.ok(driverStats.enrich(tripService.findRecommendedTrips(idUser, pageable)));
     }
 
@@ -84,7 +84,7 @@ public class TripController {
     @PostMapping("/search")
     public ResponseEntity<Page<TripDTO>> searchTrips(
         @RequestBody TripSearchDTO filters,
-        @PageableDefault(size = 10, sort = "departureDate") Pageable pageable) {
+        @PageableDefault(size = 10, sort = {"departureDate", "departureTime", "id"}) Pageable pageable) {
         return ResponseEntity.ok(driverStats.enrich(tripService.searchTrips(filters, pageable)));
     }
 
@@ -150,7 +150,7 @@ public class TripController {
     @GetMapping("/suggested/{userId}")
     public ResponseEntity<Page<TripDTO>> findSuggestedTrips(
             @PathVariable Long userId,
-            @PageableDefault(size = 6, sort = "departureDate") Pageable pageable) {
+            @PageableDefault(size = 6, sort = {"departureDate", "departureTime", "id"}) Pageable pageable) {
         return ResponseEntity.ok(driverStats.enrich(tripService.findSuggestedTrips(userId, pageable)));
     }
 
@@ -160,7 +160,7 @@ public class TripController {
      */
     @GetMapping("/future")
     public ResponseEntity<Page<TripDTO>> findFutureTrips(
-            @PageableDefault(size = 6, sort = "departureDate") Pageable pageable) {
+            @PageableDefault(size = 6, sort = {"departureDate", "departureTime", "id"}) Pageable pageable) {
         return ResponseEntity.ok(driverStats.enrich(tripService.findFutureTrips(pageable)));
     }
     

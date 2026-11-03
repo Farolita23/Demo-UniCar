@@ -124,11 +124,11 @@
         </div>
         
         <div class="pagination">
-            <button class="page-btn" [disabled]="currentUserPage === 0" (click)="searchUsers(currentUserPage - 1)">‹</button>
+            <button class="page-btn" [disabled]="currentUserPage === 0" (click)="searchUsers(currentUserPage - 1)" aria-label="Página anterior">‹</button>
             @for (p of userPages(); track p) {
             <button class="page-btn" [class.active]="p === currentUserPage" (click)="searchUsers(p)">{{ p + 1 }}</button>
             }
-            <button class="page-btn" [disabled]="currentUserPage + 1 >= totalUserPages" (click)="searchUsers(currentUserPage + 1)">›</button>
+            <button class="page-btn" [disabled]="currentUserPage + 1 >= totalUserPages" (click)="searchUsers(currentUserPage + 1)" aria-label="Página siguiente">›</button>
         </div>
         }
         }

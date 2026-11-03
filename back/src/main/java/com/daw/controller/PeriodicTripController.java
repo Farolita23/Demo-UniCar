@@ -116,8 +116,7 @@ public class PeriodicTripController {
     public ResponseEntity<Page<TripDTO>> findGeneratedTrips(
             @PathVariable Long periodicTripId,
             @PageableDefault(size = 20, sort = "departureDate") Pageable pageable) {
-        Page<Trip> generatedTrips = periodicTripService.findGeneratedTrips(periodicTripId, pageable);
-        Page<TripDTO> tripDtos = generatedTrips.map(tripMapper::toDto);
+        Page<TripDTO> tripDtos = periodicTripService.findGeneratedTripDtos(periodicTripId, pageable);
         return ResponseEntity.ok(driverStats.enrich(tripDtos));
     }
 }

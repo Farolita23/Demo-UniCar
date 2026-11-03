@@ -62,7 +62,7 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
                "(SELECT COUNT(pt) FROM Trip pt JOIN pt.passengers pp " +
                " WHERE pp.id = :userId " +
                " AND pt.car.driver.id = t.car.driver.id) DESC, " +
-               "t.departureDate ASC, t.departureTime ASC",
+               "t.departureDate ASC, t.departureTime ASC, t.id ASC",
            countQuery = "SELECT COUNT(t) FROM Trip t WHERE " +
                "t.campus.id = :campusId AND t.town.id = :townId " +
                "AND t.departureDate >= CURRENT_DATE")
@@ -83,7 +83,7 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      */
     @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
     @Query("SELECT t FROM Trip t WHERE t.car.driver.id = :idDriver AND t.departureDate > CURRENT_DATE " +
-           "ORDER BY t.departureDate DESC, t.departureTime DESC")
+           "ORDER BY t.departureDate DESC, t.departureTime DESC, t.id DESC")
     Page<Trip> findTripsAsADriver(@Param("idDriver") Long idDriver, Pageable pageable);
 
     /**
@@ -96,7 +96,7 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      */
     @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
     @Query(value = "SELECT t FROM Trip t JOIN t.passengers p WHERE p.id = :idPassenger " +
-           "ORDER BY t.departureDate DESC, t.departureTime DESC",
+           "ORDER BY t.departureDate DESC, t.departureTime DESC, t.id DESC",
            countQuery = "SELECT COUNT(t) FROM Trip t JOIN t.passengers p WHERE p.id = :idPassenger")
     Page<Trip> findTripsAsAPassenger(@Param("idPassenger") Long idPassenger, Pageable pageable);
 
@@ -109,7 +109,7 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      */
     @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
     @Query(value = "SELECT t FROM Trip t WHERE t.departureDate >= CURRENT_DATE " +
-           "ORDER BY t.departureDate ASC, t.departureTime ASC",
+           "ORDER BY t.departureDate ASC, t.departureTime ASC, t.id ASC",
            countQuery = "SELECT COUNT(t) FROM Trip t WHERE t.departureDate >= CURRENT_DATE")
     Page<Trip> findFutureTrips(Pageable pageable);
 
@@ -125,7 +125,7 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
     @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
     @Query(value = "SELECT t FROM Trip t WHERE t.departureDate >= CURRENT_DATE " +
            "AND (t.campus.id IN :campusIds OR t.town.id IN :townIds) " +
-           "ORDER BY t.departureDate ASC, t.departureTime ASC",
+           "ORDER BY t.departureDate ASC, t.departureTime ASC, t.id ASC",
            countQuery = "SELECT COUNT(t) FROM Trip t WHERE t.departureDate >= CURRENT_DATE " +
            "AND (t.campus.id IN :campusIds OR t.town.id IN :townIds)")
     Page<Trip> findSuggestedTrips(@Param("campusIds") List<Long> campusIds,
@@ -177,7 +177,7 @@ public interface TripRepository extends JpaRepository<Trip, Long>, JpaSpecificat
      */
     @EntityGraph(attributePaths = {"car", "car.driver", "campus", "town"})
     @Query(value = "SELECT t FROM Trip t WHERE t.periodicTrip.id = :periodicTripId " +
-           "ORDER BY t.departureDate ASC, t.departureTime ASC",
+           "ORDER BY t.departureDate ASC, t.departureTime ASC, t.id ASC",
            countQuery = "SELECT COUNT(t) FROM Trip t WHERE t.periodicTrip.id = :periodicTripId")
     Page<Trip> findByPeriodicTripId(@Param("periodicTripId") Long periodicTripId, Pageable pageable);
 

@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import com.daw.controller.dto.PeriodicTripCreateDTO;
 import com.daw.controller.dto.PeriodicTripDTO;
+import com.daw.controller.dto.TripDTO;
 import com.daw.controller.dto.mapper.PeriodicTripCreateMapper;
+import com.daw.controller.dto.mapper.TripMapper;
 import com.daw.controller.dto.mapper.PeriodicTripMapper;
 import com.daw.datamodel.entities.Car;
 import com.daw.datamodel.entities.Campus;
@@ -52,6 +54,7 @@ public class PeriodicTripService {
 
     private final PeriodicTripRepository periodicTripRepository;
     private final TripRepository tripRepository;
+    private final TripMapper tripMapper;
     private final PeriodicTripMapper periodicTripMapper;
     private final PeriodicTripCreateMapper periodicTripCreateMapper;
     private final GeneralService generalService;
@@ -215,6 +218,15 @@ public class PeriodicTripService {
     public Page<Trip> findGeneratedTrips(Long periodicTripId, Pageable pageable) {
         findEntityById(periodicTripId); // valida existencia -> 404 coherente
         return tripRepository.findByPeriodicTripId(periodicTripId, pageable);
+    }
+
+    /**
+     * Igual que {@link #findGeneratedTrips}, pero ya convertido a DTO dentro de la transaccion
+     * (con {@code open-in-view=false} las colecciones perezosas no se pueden leer fuera de ella).
+     */
+    @Transactional(readOnly = true)
+    public Page<TripDTO> findGeneratedTripDtos(Long periodicTripId, Pageable pageable) {
+        return findGeneratedTrips(periodicTripId, pageable).map(tripMapper::toDto);
     }
 
     /**

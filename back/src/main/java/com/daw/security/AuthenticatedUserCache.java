@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * Carga, para cada peticion con JWT, los datos minimos del usuario necesarios para autenticarla
- * (nombre, contrasena cifrada y rol) sin leer el resto de columnas de la fila.
+ * (nombre y rol; nunca la contrasena) sin leer el resto de columnas de la fila.
  *
  * El resultado se guarda en una cache en memoria de vida corta. Para que los cambios de un usuario
  * (rol, contrasena, baneo, strikes, borrado...) surtan efecto de inmediato, se registra un listener de
@@ -39,7 +39,10 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticatedUserCache {
 
     private static final String QUERY =
-            "select u.username, u.password, u.role from User u where u.username = :username";
+            "select u.username, u.role from User u where u.username = :username";
+
+    /** Marcador: UserDetails exige una contrasena, pero el filtro JWT no la utiliza. */
+    private static final String NO_PASSWORD = "[no-disponible]";
 
     private final EntityManagerFactory entityManagerFactory;
 
@@ -70,8 +73,8 @@ public class AuthenticatedUserCache {
         Object[] row = rows.get(0);
         UserDetails details = org.springframework.security.core.userdetails.User
                 .withUsername((String) row[0])
-                .password((String) row[1])
-                .roles((String) row[2])
+                .password(NO_PASSWORD)   // el filtro no usa credenciales: el hash no se guarda en memoria
+                .roles((String) row[1])
                 .build();
         cache.put(username, details);
         return details;

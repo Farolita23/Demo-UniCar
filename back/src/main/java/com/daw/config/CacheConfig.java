@@ -18,7 +18,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
  * Cache en memoria de los catalogos que casi nunca cambian (campus y localidades).
  *
  * Las entradas se invalidan al crear, modificar o borrar (con efecto tras el commit de la
- * transaccion, para no volver a cachear datos antiguos) y caducan solas pasados 10 minutos.
+ * transaccion, para no volver a cachear datos antiguos) y caducan solas pasados 2 minutos.
  * Ademas, los GET publicos de listado llevan ETag para que el navegador pueda revalidar con 304.
  */
 @Configuration
@@ -33,7 +33,7 @@ public class CacheConfig {
         CaffeineCacheManager manager = new CaffeineCacheManager(CAMPUS, TOWN);
         manager.setCaffeine(Caffeine.newBuilder()
                 .maximumSize(100)
-                .expireAfterWrite(Duration.ofMinutes(10)));
+                .expireAfterWrite(Duration.ofMinutes(2)));
         return new TransactionAwareCacheManagerProxy(manager);
     }
 
