@@ -1,10 +1,7 @@
 package com.daw.controller.dto.mapper;
 
-import java.util.List;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.springframework.data.domain.Page;
 
 import com.daw.controller.dto.UserDTO;
 import com.daw.datamodel.entities.User;
@@ -17,10 +14,4 @@ public interface UserMapper {
     @Mapping(target = "ratingsReceivedDTO",   source = "ratingsReceived")
     @Mapping(target = "ratingsDoneDTO",       source = "ratingsDone")
     UserDTO toDto(User user);
-
-    List<UserDTO> toListDto(List<User> users);
-
-    default Page<UserDTO> toPageDto(Page<User> users) {
-        return users.map(this::toDto);
-    }
 }

@@ -2,6 +2,7 @@ package com.daw.datamodel.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,6 +35,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return {@code true} si ya está en uso, {@code false} en caso contrario
      */
     boolean existsByUsername(String username);
+
+    /** Pagina de usuarios con campus y localidad en la misma consulta (evita una consulta por usuario). */
+    @Override
+    @EntityGraph(attributePaths = {"usualCampus", "homeTown"})
+    Page<User> findAll(Pageable pageable);
+
+    /** Usuario con campus, localidad y valoraciones recibidas (con sus autores) en una sola consulta. */
+    @Query("SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.usualCampus LEFT JOIN FETCH u.homeTown "
+         + "LEFT JOIN FETCH u.ratingsReceived rr LEFT JOIN FETCH rr.userRate LEFT JOIN FETCH rr.ratedUser WHERE u.id = :id")
+    Optional<User> findDetailById(@Param("id") Long id);
+
+    /** Inicializa en el contexto de persistencia las valoraciones hechas por el usuario (con sus receptores). */
+    @Query("SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.ratingsDone rd LEFT JOIN FETCH rd.userRate LEFT JOIN FETCH rd.ratedUser WHERE u.id = :id")
+    Optional<User> fetchRatingsDone(@Param("id") Long id);
 
     /**
      * Comprueba si existe un usuario con el correo electrónico indicado.
@@ -112,6 +127,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param pageable información de paginación y ordenamiento
      * @return lista de usuarios coincidentes; vacía si no hay resultados
      */
+    @EntityGraph(attributePaths = {"usualCampus", "homeTown"})
     @Query("SELECT u FROM User u WHERE LOWER(u.name) LIKE LOWER(CONCAT('%', :q, '%')) OR LOWER(u.username) LIKE LOWER(CONCAT('%', :q, '%'))")
     Page<User> searchByNameOrUsername(@Param("q") String query, Pageable pageable);
 
