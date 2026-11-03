@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" rx="14" fill="#0D0D0D"/>
+  <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central"
+        font-family="'Segoe UI', Arial, sans-serif" font-weight="800" font-size="30"
+        letter-spacing="-1">
+    <tspan fill="#F2F2F2">U</tspan><tspan fill="#E63946">C</tspan>
+  </text>
+</svg>

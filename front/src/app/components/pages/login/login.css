@@ -25,11 +25,19 @@
     margin-bottom: 32px;
 }
 
-/* Logo */
+/* Logo: wordmark UniCar (Uni en blanco, Car en rojo) */
 :host .auth-card .auth-brand .auth-logo {
-    width: 64px;
-    height: 64px;
-    margin: auto;
+    display: inline-block;
+    margin: 0 auto 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 40px;
+    line-height: 1;
+    letter-spacing: -1px;
+    color: var(--text);
+}
+:host .auth-card .auth-brand .auth-logo .logo-accent {
+    color: var(--primary);
 }
 
 /* Título */
