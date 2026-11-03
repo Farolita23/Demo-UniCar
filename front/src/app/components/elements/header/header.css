@@ -25,6 +25,7 @@
 }
 /* Estilos del logo */
 :host .content .logo {
+    flex-shrink: 0;
     height: 40px;
     font-size: 24px;
     line-height: 40px;
@@ -37,13 +38,13 @@
     color: var(--primary);
 }
 :host .content .logo .logo-city {
-    font-size: 8px;
+    font-size: 11px;
     font-weight: 800;
     font-family: 'Syne', sans-serif;
-    letter-spacing: 0px;
+    letter-spacing: 0.5px;
     vertical-align: baseline;
-    margin-left: 3px;
-    color: var(--text-muted);
+    margin-left: 4px;
+    color: var(--text-2);
 }
 /* Estilos de la barra de navegacion */
 :host .content .main-nav {
@@ -70,6 +71,14 @@
 :host .content .main-nav a.active {
     color: var(--text);
     background: var(--surface);
+}
+:host .content .main-nav a:focus-visible {
+    outline: 2px solid var(--primary-light);
+    outline-offset: 2px;
+}
+/* "Acceder" dentro del menú solo existe en móvil */
+:host .content .main-nav .nav-login {
+    display: none;
 }
 /* Estilos de las acciones del header */
 :host .content .header-actions {
@@ -177,7 +186,7 @@
     width:  32px;
     height: 32px;
     border-radius: 50%;
-    background: var(--primary);
+    background: var(--primary-dark);
     color: #fff;
     display: flex;
     align-items: center;
@@ -252,7 +261,7 @@
     width:  30px;
     height: 30px;
     border-radius: 50%;
-    background: var(--primary);
+    background: var(--primary-dark);
     color: #fff;
     display: flex;
     align-items: center;
@@ -341,9 +350,10 @@
 }
 /* Estilos del boton desplegable de dispositivo movil */
 :host .content .header-actions .hamburger {
-    margin: 4px;
-    width:  calc(40px - (1px + 4px) * 2);
-    height: calc(40px - (1px + 4px) * 2);
+    margin: 0 0 0 4px;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
     display: none;
     gap: 4px;
     background: none;
@@ -363,8 +373,12 @@
     position: absolute;
     pointer-events: none;
 }
+:host .content .header-actions .hamburger:focus-visible {
+    outline: 2px solid var(--primary-light);
+    outline-offset: 2px;
+}
 :host .content .header-actions .hamburger:not(.open) span:nth-child(1) {
-    top: 8px;
+    top: 13px;
 }
 :host .content .header-actions .hamburger:not(.open) span:nth-child(2) {
     top: calc(100% / 2);
@@ -372,7 +386,7 @@
     transform: translateY(-50%);
 }
 :host .content .header-actions .hamburger:not(.open) span:nth-child(3) {
-    bottom: 8px;
+    bottom: 13px;
 }
 :host .content .header-actions .hamburger.open span {
     top: calc((100% - 3px) / 2);
@@ -425,7 +439,59 @@
         display: flex;
     }
     :host .content .main-nav a {
-        padding: 12px 16px;
+        height: auto;
+        padding: 14px 16px;
         border-radius: var(--radius-sm);
     }
+    /* El logo también es un enlace: 44px de alto en móvil */
+    :host .content .logo {
+        height: 44px;
+        line-height: 44px;
+    }
+    /* "Únete" con altura táctil de 44px (la cabecera mide 72px, cabe sin desbordar) */
+    :host .content .header-actions .btn-sm {
+        height: 44px;
+        box-sizing: border-box;
+        padding: 0 18px;
+        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+    }
+    /* La cabecera solo deja "Únete" y el menú; "Acceder" pasa dentro del menú */
+    :host .content .header-actions .header-login {
+        display: none;
+    }
+    :host .content .main-nav .nav-login {
+        display: block;
+        margin-top: 8px;
+        border-top: 1px solid var(--border);
+        border-radius: 0;
+        padding-top: 18px;
+        color: var(--text);
+    }
+}
+
+/* Móviles estrechos: "SEVILLA" se queda solo en pantallas con sitio */
+@media (max-width: 400px) {
+    :host .content .logo .logo-city {
+        display: none;
+    }
+}
+/* Enlace para saltar al contenido: invisible hasta que llega el foco del teclado */
+:host .skip-link {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 3000;
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    background: var(--primary-dark);
+    color: #fff;
+    font-weight: 600;
+    transform: translateY(-200%);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+:host .skip-link:focus-visible {
+    transform: translateY(0);
+    color: #fff;
 }

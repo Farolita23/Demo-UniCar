@@ -82,6 +82,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET,  "/api/campus").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api/town").permitAll()
                 .requestMatchers(HttpMethod.GET,  "/api").permitAll()
+                // Alta, edicion y borrado de catalogos: solo administradores
+                .requestMatchers(HttpMethod.POST,   "/api/campus/**", "/api/town/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT,    "/api/campus/**", "/api/town/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/campus/**", "/api/town/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET,  "/api/user/car-owner/{idCar}").permitAll()
                 // Búsqueda de usuarios (requiere autenticación)
                 .requestMatchers(HttpMethod.GET, "/api/user/search").authenticated()

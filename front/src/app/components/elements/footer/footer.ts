@@ -10,6 +10,7 @@ import { ApiService } from '../../../services/api-service';
     imports: [RouterLink, FormsModule],
     templateUrl: './footer.html',
     styleUrl: './footer.css',
+    host: { role: 'contentinfo' },
 })
 export class Footer {
     auth = inject(AuthService);

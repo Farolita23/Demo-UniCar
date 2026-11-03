@@ -392,9 +392,9 @@
 
 /* Estilos para el botón de página activo */
 :host .pagination .page-btn.active {
-    background: var(--primary);
+    background: var(--primary-dark);
     color: #fff;
-    border-color: var(--primary);
+    border-color: var(--primary-dark);
 }
 
 /* Efecto hover en botones de página (excepto el activo) */
@@ -654,4 +654,9 @@
     :host .admin-users-list {
         grid-template-columns: repeat(1, 1fr);
     }
+}
+/* Botones de página desactivados (anterior/siguiente en los extremos) */
+:host .pagination .page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
 }

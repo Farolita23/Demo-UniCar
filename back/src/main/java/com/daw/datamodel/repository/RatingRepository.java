@@ -1,6 +1,14 @@
 package com.daw.datamodel.repository;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.EntityGraph;
+import java.util.Collection;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.daw.datamodel.entities.Rating;
@@ -25,6 +33,19 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
      * @param ratedUserId identificador del usuario receptor de la valoración
      * @return {@code true} si ya existe la valoración, {@code false} en caso contrario
      */
+    @Override
+    @EntityGraph(attributePaths = {"userRate", "ratedUser"})
+    Page<Rating> findAll(Pageable pageable);
+
     boolean existsByUserRateIdAndRatedUserId(Long userRateId, Long ratedUserId);
+
+    /**
+     * Valoración media y número de valoraciones recibidas por cada usuario indicado.
+     *
+     * @param ids identificadores de los usuarios valorados
+     * @return filas {@code [idUsuario, media, número]}; los usuarios sin valoraciones no aparecen
+     */
+    @Query("select r.ratedUser.id, avg(r.rating), count(r) from Rating r where r.ratedUser.id in :ids group by r.ratedUser.id")
+    List<Object[]> statsForRatedUsers(@Param("ids") Collection<Long> ids);
 
 }

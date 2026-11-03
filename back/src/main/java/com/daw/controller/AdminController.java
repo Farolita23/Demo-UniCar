@@ -1,15 +1,14 @@
 package com.daw.controller;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.daw.controller.dto.ReportDTO;
-import com.daw.controller.dto.UserDTO;
+import com.daw.controller.dto.UserListDTO;
 import com.daw.service.ReportService;
 import com.daw.service.UserService;
 
@@ -36,13 +35,15 @@ public class AdminController {
     private final ReportService reportService;
 
     /**
-     * Recupera la lista completa de usuarios registrados en el sistema.
+     * Recupera una pagina de los usuarios registrados (tamano maximo 100, orden por id por defecto).
      *
-     * @return {@code 200 OK} con la lista de {@link UserDTO}
+     * @param pageable informacion de paginacion y ordenacion
+     * @return {@code 200 OK} con la pagina de {@link UserListDTO}
      */
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        return ResponseEntity.ok(userService.findAll());
+    public ResponseEntity<Page<UserListDTO>> getAllUsers(@PageableDefault(size = 20, sort = "id") Pageable pageable,
+                                                         Authentication authentication) {
+        return ResponseEntity.ok(userService.findAll(pageable, authentication.getName(), true));
     }
 
     /**
@@ -50,13 +51,14 @@ public class AdminController {
      *
      * @param q término de búsqueda parcial
      * @param pageable información de paginación y ordenación
-     * @return {@code 200 OK} con la lista de {@link UserDTO} coincidentes
+     * @return {@code 200 OK} con la pagina de {@link UserListDTO} coincidentes
      */
     @GetMapping("/users/search")
-    public ResponseEntity<Page<UserDTO>> searchUsers(
+    public ResponseEntity<Page<UserListDTO>> searchUsers(
         @RequestParam String q,
-        @PageableDefault(size = 2, sort = "name") Pageable pageable) {
-        return ResponseEntity.ok(userService.searchUsers(q, pageable));
+        @PageableDefault(size = 2, sort = "name") Pageable pageable,
+        Authentication authentication) {
+        return ResponseEntity.ok(userService.searchUsers(q, pageable, authentication.getName(), true));
     }
 
     /**
@@ -114,8 +116,8 @@ public class AdminController {
      * @return {@code 204 No Content} si la eliminación se realizó correctamente
      */
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.delete(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id, Authentication authentication) {
+        userService.delete(id, authentication.getName(), true);
         return ResponseEntity.noContent().build();
     }
 

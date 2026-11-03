@@ -13,6 +13,9 @@ export interface UserSummary {
     username: string;
     name: string;
     profileImageUrl?: string;
+    /** Solo en el conductor de un viaje: valoración media (null si no tiene) y número de valoraciones */
+    avgRating?: number | null;
+    ratingsCount?: number;
 }
 
 export interface User {

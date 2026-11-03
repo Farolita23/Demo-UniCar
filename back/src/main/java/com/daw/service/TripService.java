@@ -21,7 +21,8 @@ import com.daw.exceptions.HasPassengersException;
 import com.daw.exceptions.TripActionException;
 
 import org.hibernate.Hibernate;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+import com.daw.exceptions.TripNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -54,6 +55,7 @@ public class TripService {
      * @param pageable configuración de paginación y ordenación
      * @return página de {@link TripDTO} con los viajes disponibles
      */
+    @Transactional(readOnly = true)
     public Page<TripDTO> findAll(Pageable pageable) {
         return tripMapper.toPageDto(tripRepository.findAll(pageable));
     }
@@ -66,8 +68,9 @@ public class TripService {
      * @return {@link TripDTO} con los datos completos del viaje
      * @throws com.daw.exceptions.TripNotFoundException si no existe un viaje con ese identificador
      */
+    @Transactional(readOnly = true)
     public TripDTO findById(Long id) {
-        Trip trip = generalService.findTripById(id);
+        Trip trip = loadTrip(id);
         Hibernate.initialize(trip.getPassengers());
         Hibernate.initialize(trip.getRequesters());
         return tripMapper.toDto(trip);
@@ -81,11 +84,12 @@ public class TripService {
      * @param pageable configuración de paginación
      * @return página de {@link TripDTO} con los viajes recomendados
      */
+    @Transactional(readOnly = true)
     public Page<TripDTO> findRecommendedTrips(Long idUser, Pageable pageable) {
         User user = generalService.findUserById(idUser);
         Long campusId = user.getUsualCampus().getId();
         Long townId = user.getHomeTown().getId();
-        return tripMapper.toPageDto(tripRepository.findRecommendedTrips(campusId, townId, user, pageable));
+        return tripMapper.toPageDto(tripRepository.findRecommendedTrips(campusId, townId, idUser, pageable));
     }
 
     /**
@@ -112,7 +116,7 @@ public class TripService {
      * @throws com.daw.exceptions.TripNotFoundException si no existe un viaje con ese identificador
      */
     public TripDTO update(TripCreateDTO dto, Long id) {
-        Trip trip = generalService.findTripById(id);
+        Trip trip = loadTrip(id);
         tripCreateMapper.updateEntityFromDto(dto, trip);
         trip.setCampus(generalService.findCampusById(dto.getIdCampus()));
         trip.setTown(generalService.findTownById(dto.getIdTown()));
@@ -129,7 +133,7 @@ public class TripService {
      * @throws HasPassengersException                   si el viaje tiene pasajeros confirmados
      */
     public void delete(Long id) {
-        Trip trip = generalService.findTripById(id);
+        Trip trip = loadTrip(id);
         boolean hasPassengers = !trip.getPassengers().isEmpty();
         if (hasPassengers) {
             throw new HasPassengersException(id);
@@ -144,6 +148,7 @@ public class TripService {
      * @param pageable configuración de paginación
      * @return página de {@link TripDTO} de viajes como conductor
      */
+    @Transactional(readOnly = true)
     public Page<TripDTO> getTripsAsADriver(Long idDriver, Pageable pageable) {
         return tripMapper.toPageDto(tripRepository.findTripsAsADriver(idDriver, pageable));
     }
@@ -155,6 +160,7 @@ public class TripService {
      * @param pageable    configuración de paginación
      * @return página de {@link TripDTO} de viajes como pasajero
      */
+    @Transactional(readOnly = true)
     public Page<TripDTO> getTripsAsAPassenger(Long idPassenger, Pageable pageable) {
         return tripMapper.toPageDto(tripRepository.findTripsAsAPassenger(idPassenger, pageable));
     }
@@ -169,6 +175,7 @@ public class TripService {
      * @param pageable configuración de paginación
      * @return página de {@link TripDTO} con los resultados filtrados
      */
+    @Transactional(readOnly = true)
     public Page<TripDTO> searchTrips(TripSearchDTO filters, Pageable pageable) {
         return tripMapper.toPageDto(
             tripRepository.findAll(TripSpecification.withFilters(filters), pageable)
@@ -185,7 +192,7 @@ public class TripService {
      *                             ya es pasajero o no hay plazas libres
      */
     public TripDTO requestJoin(Long tripId, Long userId) {
-        Trip trip = generalService.findTripById(tripId);
+        Trip trip = loadTrip(tripId);
         User user = generalService.findUserById(userId);
 
         boolean isDriver = trip.getCar().getDriver().getId().equals(userId);
@@ -221,7 +228,7 @@ public class TripService {
      * @throws TripActionException si el usuario no tiene una solicitud pendiente en el viaje
      */
     public TripDTO cancelRequest(Long tripId, Long userId) {
-        Trip trip = generalService.findTripById(tripId);
+        Trip trip = loadTrip(tripId);
         boolean removed = trip.getRequesters().removeIf(u -> u.getId().equals(userId));
         if (!removed) {
             throw new TripActionException("No tienes una solicitud pendiente en este viaje.");
@@ -239,7 +246,7 @@ public class TripService {
      * @throws TripActionException si el usuario no tiene solicitud pendiente, no hay plazas o ya es pasajero
      */
     public TripDTO acceptPassenger(Long tripId, Long requesterId) {
-        Trip trip = generalService.findTripById(tripId);
+        Trip trip = loadTrip(tripId);
         User requester = generalService.findUserById(requesterId);
 
         boolean isRequester = trip.getRequesters().stream()
@@ -272,7 +279,7 @@ public class TripService {
      * @throws TripActionException si el usuario no tiene una solicitud pendiente
      */
     public TripDTO rejectPassenger(Long tripId, Long requesterId) {
-        Trip trip = generalService.findTripById(tripId);
+        Trip trip = loadTrip(tripId);
         boolean removed = trip.getRequesters().removeIf(u -> u.getId().equals(requesterId));
         if (!removed) {
             throw new TripActionException("Este usuario no tiene una solicitud pendiente.");
@@ -290,7 +297,7 @@ public class TripService {
      * @throws TripActionException si el usuario no es pasajero del viaje
      */
     public TripDTO leaveTrip(Long tripId, Long userId) {
-        Trip trip = generalService.findTripById(tripId);
+        Trip trip = loadTrip(tripId);
         boolean removed = trip.getPassengers().removeIf(u -> u.getId().equals(userId));
         if (!removed) {
             throw new TripActionException("No eres pasajero de este viaje.");
@@ -310,6 +317,7 @@ public class TripService {
      * @param pageable configuración de paginación
      * @return página de {@link TripDTO} con los viajes sugeridos o futuros como fallback
      */
+    @Transactional(readOnly = true)
     public Page<TripDTO> findSuggestedTrips(Long userId, Pageable pageable) {
         List<Long> campusIds = Stream.concat(
                 tripRepository.findCampusIdsByPassenger(userId).stream(),
@@ -352,6 +360,7 @@ public class TripService {
      * @param pageable configuración de paginación
      * @return página de {@link TripDTO} con viajes futuros disponibles
      */
+    @Transactional(readOnly = true)
     public Page<TripDTO> findFutureTrips(Pageable pageable) {
         return tripMapper.toPageDto(tripRepository.findFutureTrips(pageable));
     }
@@ -363,7 +372,13 @@ public class TripService {
      * @param pageable configuración de paginación
      * @return página de {@link TripDTO} generados
      */
+    @Transactional(readOnly = true)
     public Page<TripDTO> findByPeriodicTripId(Long periodicTripId, Pageable pageable) {
         return tripMapper.toPageDto(tripRepository.findByPeriodicTripId(periodicTripId, pageable));
+    }
+
+    /** Carga el viaje con coche, conductor, campus y localidad en una sola consulta. */
+    private Trip loadTrip(Long id) {
+        return tripRepository.findDetailedById(id).orElseThrow(() -> new TripNotFoundException(id));
     }
 }

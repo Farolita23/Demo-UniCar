@@ -1,8 +1,8 @@
 package com.daw.service;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,8 +14,10 @@ import com.daw.controller.dto.UserCreateDTO;
 import com.daw.security.GoogleTokenVerifier.GoogleUser;
 import java.util.UUID;
 import com.daw.controller.dto.UserDTO;
+import com.daw.controller.dto.UserListDTO;
 import com.daw.controller.dto.UserUpdateDTO;
 import com.daw.controller.dto.mapper.UserCreateMapper;
+import com.daw.controller.dto.mapper.UserListMapper;
 import com.daw.controller.dto.mapper.UserMapper;
 import com.daw.controller.dto.mapper.UserUpdateMapper;
 import com.daw.datamodel.entities.User;
@@ -49,19 +51,66 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final UserListMapper userListMapper;
     private final UserCreateMapper userCreateMapper;
     private final UserUpdateMapper userUpdateMapper;
     private final GeneralService generalService;
     private final PasswordEncoder passwordEncoder;
     private final ProfilePhotoStorage photoStorage;
 
+    /** Tamano maximo de pagina admitido en los listados de usuarios. */
+    public static final int MAX_PAGE_SIZE = 100;
+
     /**
-     * Recupera todos los usuarios registrados en el sistema.
-     *
-     * @return lista de {@link UserDTO} con todos los usuarios disponibles
+     * Acota una peticion de pagina: tamano entre 1 y {@link #MAX_PAGE_SIZE} y orden estable
+     * (el identificador se anade como desempate para que las paginas no se solapen).
      */
-    public List<UserDTO> findAll() {
-        return userMapper.toListDto(userRepository.findAll());
+    private static final java.util.Set<String> SORTABLE_FIELDS = java.util.Set.of("id", "name", "username");
+
+    private Pageable bounded(Pageable pageable) {
+        int size = Math.max(1, Math.min(pageable.getPageSize(), MAX_PAGE_SIZE));
+        // Solo se puede ordenar por campos publicos; cualquier otro (inexistente o sensible) se ignora
+        Sort sort = Sort.by(pageable.getSort().stream()
+                .filter(order -> SORTABLE_FIELDS.contains(order.getProperty()))
+                .toList());
+        if (sort.getOrderFor("id") == null) sort = sort.and(Sort.by("id"));
+        return PageRequest.of(pageable.getPageNumber(), size, sort);
+    }
+
+    /**
+     * Oculta los datos de contacto (correo y telefono) salvo que quien consulta sea el propio
+     * usuario o un administrador. Evita exponer informacion personal en perfiles y listados.
+     *
+     * @param dto       datos del usuario consultado
+     * @param requester nombre de usuario de quien consulta, o {@code null} si es anonimo
+     * @param admin     {@code true} si quien consulta es administrador
+     * @return el mismo DTO, con correo y telefono a {@code null} si no procede mostrarlos
+     */
+    private UserDTO maskContact(UserDTO dto, String requester, boolean admin) {
+        if (!admin && (requester == null || !requester.equals(dto.getUsername()))) {
+            dto.setEmail(null);
+            dto.setPhone(null);
+        }
+        return dto;
+    }
+
+    private UserListDTO maskContact(UserListDTO dto, String requester, boolean admin) {
+        if (!admin && (requester == null || !requester.equals(dto.getUsername()))) {
+            dto.setEmail(null);
+            dto.setPhone(null);
+        }
+        return dto;
+    }
+
+    /**
+     * Recupera una pagina de usuarios (nunca el listado completo).
+     *
+     * @param pageable pagina solicitada; el tamano se limita a {@link #MAX_PAGE_SIZE}
+     * @return pagina de {@link UserListDTO}, sin valoraciones
+     */
+    public Page<UserListDTO> findAll(Pageable pageable, String requester, boolean admin) {
+        return userListMapper.toPageDto(userRepository.findAll(bounded(pageable)))
+                .map(dto -> maskContact(dto, requester, admin));
     }
 
     /**
@@ -71,10 +120,11 @@ public class UserService {
      * @return {@link UserDTO} con los datos del usuario encontrado
      * @throws UserNotFoundException si no existe un usuario con ese identificador
      */
-    public UserDTO findById(Long id) {
-        User user = userRepository.findById(id)
+    public UserDTO findById(Long id, String requester, boolean admin) {
+        User user = userRepository.findDetailById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-        return userMapper.toDto(user);
+        userRepository.fetchRatingsDone(id);
+        return maskContact(userMapper.toDto(user), requester, admin);
     }
 
     /**
@@ -182,9 +232,12 @@ public class UserService {
      * @throws DuplicateUsernameException si el nuevo nombre de usuario ya está en uso por otro usuario
      * @throws DuplicateEmailException    si el nuevo correo electrónico ya está registrado por otro usuario
      */
-    public UserDTO update(UserUpdateDTO dto, Long id) {
+    public UserDTO update(UserUpdateDTO dto, Long id, String requester, boolean admin) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+
+        if (!admin && !user.getUsername().equals(requester))
+            throw new AccessDeniedException("Solo puedes editar tu propio perfil");
 
         if (!user.getUsername().equals(dto.getUsername()) && generalService.existsByUsername(dto.getUsername()))
             throw new DuplicateUsernameException();
@@ -212,8 +265,10 @@ public class UserService {
      * @throws UserNotFoundException           si no existe un usuario con ese identificador
      * @throws EntityWithDependenciesException si el usuario tiene vehículos o viajes como pasajero vinculados
      */
-    public void delete(Long id) {
+    public void delete(Long id, String requester, boolean admin) {
         User user = generalService.findUserById(id);
+        if (!admin && !user.getUsername().equals(requester))
+            throw new AccessDeniedException("Solo puedes eliminar tu propia cuenta");
         boolean hasntCars             = user.getCars().isEmpty();
         boolean hasntTripsAsPassenger = user.getTripsAsAPassenger().isEmpty();
         if (!(hasntCars && hasntTripsAsPassenger))
@@ -284,10 +339,10 @@ public class UserService {
      * @param query término de búsqueda (parcial, sin distinción de mayúsculas/minúsculas)
      * @return lista de {@link UserDTO} coincidentes; vacía si no hay resultados
      */
-    public Page<UserDTO> searchUsers(String query, Pageable pageable) {
-        return userMapper.toPageDto(
-            userRepository.searchByNameOrUsername(query, pageable)
-        );
+    public Page<UserListDTO> searchUsers(String query, Pageable pageable, String requester, boolean admin) {
+        return userListMapper.toPageDto(
+            userRepository.searchByNameOrUsername(query, bounded(pageable))
+        ).map(dto -> maskContact(dto, requester, admin));
     }
 
     /**

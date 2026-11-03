@@ -18,6 +18,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.BatchSize;
 import java.util.Objects;
 
 import lombok.Getter;
@@ -40,7 +41,9 @@ import lombok.ToString;
  * @see User
  */
 @Entity
-@Table(name = "trip")
+@Table(name = "trip", indexes = {
+    @jakarta.persistence.Index(name = "idx_trip_departure", columnList = "departure_date, departure_time")
+})
 @Getter
 @Setter
 @ToString(exclude = {"passengers", "requesters", "periodicTrip"})
@@ -97,6 +100,7 @@ public class Trip {
         joinColumns = @JoinColumn(name = "trip_id"),
         inverseJoinColumns = @JoinColumn(name = "passenger_id")
     )
+    @BatchSize(size = 100)
     private Set<User> passengers = new HashSet<>();
 
     /** Conjunto de usuarios que han solicitado una plaza y están pendientes de aprobación. */
@@ -105,6 +109,7 @@ public class Trip {
         joinColumns = @JoinColumn(name = "trip_id"),
         inverseJoinColumns = @JoinColumn(name = "requester_id")
     )
+    @BatchSize(size = 100)
     private Set<User> requesters = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)

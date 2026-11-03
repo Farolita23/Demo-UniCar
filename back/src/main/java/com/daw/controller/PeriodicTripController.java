@@ -19,6 +19,7 @@ import com.daw.controller.dto.PeriodicTripDTO;
 import com.daw.controller.dto.TripDTO;
 import com.daw.controller.dto.mapper.TripMapper;
 import com.daw.datamodel.entities.Trip;
+import com.daw.service.DriverStatsService;
 import com.daw.service.PeriodicTripService;
 
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PeriodicTripController {
 
+
+    private final DriverStatsService driverStats;
     private final PeriodicTripService periodicTripService;
     private final TripMapper tripMapper;
 
@@ -113,8 +116,7 @@ public class PeriodicTripController {
     public ResponseEntity<Page<TripDTO>> findGeneratedTrips(
             @PathVariable Long periodicTripId,
             @PageableDefault(size = 20, sort = "departureDate") Pageable pageable) {
-        Page<Trip> generatedTrips = periodicTripService.findGeneratedTrips(periodicTripId, pageable);
-        Page<TripDTO> tripDtos = generatedTrips.map(tripMapper::toDto);
-        return ResponseEntity.ok(tripDtos);
+        Page<TripDTO> tripDtos = periodicTripService.findGeneratedTripDtos(periodicTripId, pageable);
+        return ResponseEntity.ok(driverStats.enrich(tripDtos));
     }
 }

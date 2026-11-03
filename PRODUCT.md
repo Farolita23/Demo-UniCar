@@ -44,7 +44,7 @@ Carpooling hiperlocal y cerrado a la comunidad universitaria de Sevilla: los tra
 
 ## Brand Commitments
 
-- El nombre **UniCar** y el logo actual (el coche rojo, `front/public/assets/media/icon-dark.png` e `icon-light.png`) se mantienen.
+- El nombre **UniCar** y el logo actual se mantienen: el wordmark tipográfico «Uni**Car**» con «Car» en Rojo Piloto (y el favicon «UC» a juego). El antiguo dibujo del coche rojo se retiró del proyecto y no debe volver a usarse.
 - **Voz sevillana y gamberra:** tuteo, humor local y desenfadado como seña de identidad (por ejemplo "Ve con un notas a la universidad"). El humor no debe tapar la información que el usuario necesita para actuar (fechas, precios, plazas, errores).
 
 ## Evidence on Hand

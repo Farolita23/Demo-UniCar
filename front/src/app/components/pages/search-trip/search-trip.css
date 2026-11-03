@@ -67,7 +67,7 @@
 /* ESTILO DEL BOTÓN DE DIRECCIÓN ACTIVO (IDA/VUELTA) */
 :host .filters-panel .filter-group .dir-btns .dir-btn.active {
     border-color: var(--primary);
-    color: var(--primary);
+    color: var(--primary-light);
     background: rgba(230, 57, 70, 0.08);
 }
 
@@ -196,9 +196,9 @@
 
 /* ESTILO DEL BOTÓN DE PAGINACIÓN ACTIVO EN EL PANEL DE RESULTADOS */
 :host .results-panel .pagination .page-btn.active {
-    background: var(--primary);
+    background: var(--primary-dark);
     color: #fff;
-    border-color: var(--primary);
+    border-color: var(--primary-dark);
 }
 
 /* ESTILO DE LOS BOTONES DE PAGINACIÓN AL PASAR EL RATÓN EN EL PANEL DE RESULTADOS */

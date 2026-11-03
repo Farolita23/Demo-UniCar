@@ -30,9 +30,17 @@
 
 /* ESTILOS DEL LOGO EN LA CABECERA DEL PANEL DE REGISTRO */
 :host .signup-card .auth-brand .auth-logo {
-    width: 64px;
-    height: 64px;
-    margin: auto;
+    display: inline-block;
+    margin: 0 auto 12px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 40px;
+    line-height: 1;
+    letter-spacing: -1px;
+    color: var(--text);
+}
+:host .signup-card .auth-brand .auth-logo .logo-accent {
+    color: var(--primary);
 }
 
 /* ESTILOS DEL TITULO EN LA CABECERA DEL PANEL DE REGISTRO */
@@ -74,7 +82,7 @@
     font-size: 16px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: var(--primary);
+    color: var(--primary-light);
     font-family: 'DM Sans', sans-serif;
     font-weight: 700;
 }
@@ -141,7 +149,7 @@ textarea {
 
 /* ESTILOS DEL ENLACE DE INICIO DE SESION EN LA PARTE INFERIOR DEL PANEL DE REGISTRO */
 :host .signup-card .auth-link-bottom a {
-    color: var(--primary);
+    color: var(--primary-light);
 }
 
 /* ESTILOS DE LOS MENSAJES DE ALERTA EN EL PANEL DE REGISTRO */

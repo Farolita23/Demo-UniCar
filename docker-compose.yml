@@ -26,9 +26,10 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/UniCarDB?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: usuario
       SPRING_DATASOURCE_PASSWORD: usuario
-      JWT_SECRET: ${JWT_SECRET:-unaClaveSecretaMuyLargaYSegura1234567890}
-      JWT_EXPIRATION: 86400000
+      JWT_SECRET: ${JWT_SECRET:-}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
       UPLOAD_DIR: /app/uploads
+      SHOW_SQL: ${SHOW_SQL:-false}
     volumes:
       - unicar-uploads:/app/uploads
     ports:

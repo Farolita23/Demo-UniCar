@@ -21,6 +21,7 @@ import { AvatarUrlPipe } from '../../../pipes/avatar-url.pipe';
     imports: [AvatarUrlPipe, RouterLink, RouterLinkActive, CommonModule, FormsModule, AppIcon],
     templateUrl: './header.html',
     styleUrl: './header.css',
+    host: { role: 'banner' },
 })
 export class Header implements OnInit {
 
@@ -119,6 +120,24 @@ export class Header implements OnInit {
 
     // Alterna la visibilidad del menú de navegación móvil 
     alternateNav() { this.showNav = !this.showNav; }
+
+    // "Saltar al contenido": lleva el foco al contenido principal de la página actual
+    // (el <main> de la página o, si no lo tiene, el área con scroll bajo la cabecera)
+    skipToContent(event: Event) {
+        event.preventDefault();
+        // En orden de preferencia (un selector combinado devolvería el primero del documento, que es el contenedor)
+        const target = ['#contenido', 'main', '.page-wrapper']
+            .map(sel => document.querySelector<HTMLElement>(sel))
+            .find((el): el is HTMLElement => !!el);
+        if (!target) return;
+        if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+        target.focus();
+        target.scrollIntoView({ block: 'start' });
+    }
+
+    // Escape cierra el menú móvil
+    @HostListener('document:keydown.escape')
+    closeNav() { this.showNav = false; }
 
     // Alterna la visibilidad del menú desplegable de usuario
     toggleDropdown() { this.showDropdown = !this.showDropdown; }

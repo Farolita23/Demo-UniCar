@@ -9,7 +9,7 @@ import com.daw.controller.dto.mapper.FavoriteMapper;
 import com.daw.datamodel.entities.Favorite;
 import com.daw.datamodel.repository.FavoriteRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -39,6 +39,7 @@ public class FavoriteService {
      * @param userId identificador del usuario propietario de la lista de favoritos
      * @return lista de {@link FavoriteDTO} con las relaciones de favorito del usuario
      */
+    @Transactional(readOnly = true)
     public List<FavoriteDTO> getFavorites(Long userId) {
         return favoriteMapper.toListDto(favoriteRepository.findByUserId(userId));
     }
@@ -82,6 +83,7 @@ public class FavoriteService {
      * @param favoriteUserId identificador del usuario que se comprueba si es favorito
      * @return {@code true} si existe la relación de favorito, {@code false} en caso contrario
      */
+    @Transactional(readOnly = true)
     public boolean isFavorite(Long userId, Long favoriteUserId) {
         return favoriteRepository.existsByUserIdAndFavoriteUserId(userId, favoriteUserId);
     }

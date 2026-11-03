@@ -5,6 +5,9 @@ import { AuthService } from './auth-service';
 import { env } from '../../environments/env';
 import { Trip, Page } from '../models/trip.model';
 import { User, Favorite, Report } from '../models/user.model';
+
+/** Usuario de un listado: igual que User pero sin las valoraciones (solo vienen en el detalle) */
+export type UserListItem = Omit<User, 'ratingsReceivedDTO' | 'ratingsDoneDTO'>;
 import { Campus } from '../models/campus.model';
 import { Town } from '../models/town.model';
 import { Car } from '../models/car.model';
@@ -233,13 +236,15 @@ export class ApiService {
     }
 
     // ── ADMIN ─────────────────────────────────────────────────────────────────
-    adminGetAllUsers(): Observable<User[]> {
-        return this.http.get<User[]>(`${this.URL}/api/admin/users`, { headers: this.authHeaders() });
+    /** GET /api/admin/users — pagina de usuarios (el servidor limita el tamano a 100) */
+    getAdminUsers(page: number, size = 10): Observable<Page<UserListItem>> {
+        const params = new HttpParams().set('page', page).set('size', size);
+        return this.http.get<Page<UserListItem>>(`${this.URL}/api/admin/users`, { headers: this.authHeaders(), params });
     }
 
-    adminSearchUsers(q: string, page: number): Observable<Page<User>> {
+    adminSearchUsers(q: string, page: number): Observable<Page<UserListItem>> {
         const params = new HttpParams().set('q', q).set('page', page).set('size', 10);
-        return this.http.get<Page<User>>(`${this.URL}/api/admin/users/search`, { headers: this.authHeaders(), params });
+        return this.http.get<Page<UserListItem>>(`${this.URL}/api/admin/users/search`, { headers: this.authHeaders(), params });
     }
 
     adminSearchReports(page: number): Observable<Page<Report>> {
