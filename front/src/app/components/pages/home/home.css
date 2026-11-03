@@ -126,6 +126,166 @@
 }
 
 /* ========================================
+   BLOB BUTTON (CTA primario del hero)
+   Efecto gooey rojo al hover + respuesta táctil al pulsar
+   ======================================== */
+
+/* Contenedor del botón: pastilla clara con texto e icono rojos */
+:host .blob-btn {
+    --blob-color: #fff;
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 0 0 rgba(230, 57, 70, 0);
+    /* El "squish" al pulsar usa una curva con rebote para que se sienta elástico */
+    transition: color 0.5s, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
+}
+
+/* Etiqueta (icono + texto) por encima de los blobs */
+:host .blob-btn .blob-btn__label {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Borde rojo de la pastilla */
+:host .blob-btn::before {
+    content: "";
+    z-index: 1;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--primary);
+    border-radius: 30px;
+    pointer-events: none;
+}
+
+/* Capa auxiliar que se desplaza al hover (profundidad) */
+:host .blob-btn::after {
+    content: "";
+    z-index: -2;
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    transition: all 0.3s 0.2s;
+}
+
+/* Fondo interior rojo donde "flotan" los blobs blancos */
+:host .blob-btn .blob-btn__inner {
+    z-index: -1;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 30px;
+    background: var(--primary);
+}
+
+/* Contenedor de blobs con el filtro gooey */
+:host .blob-btn .blob-btn__blobs {
+    position: relative;
+    display: block;
+    height: 100%;
+    filter: url('#goo');
+}
+
+/* Cada gota roja, oculta abajo hasta el hover */
+:host .blob-btn .blob-btn__blob {
+    position: absolute;
+    top: 2px;
+    width: 25%;
+    height: 100%;
+    background: var(--blob-color);
+    border-radius: 100%;
+    transform: translate3d(0, 150%, 0) scale(1.7);
+    transition: transform 0.45s;
+}
+
+@supports (filter: url('#goo')) {
+    :host .blob-btn .blob-btn__blob {
+        transform: translate3d(0, 150%, 0) scale(1.4);
+    }
+}
+
+:host .blob-btn .blob-btn__blob:nth-child(1) { left: 0%;  transition-delay: 0s; }
+:host .blob-btn .blob-btn__blob:nth-child(2) { left: 30%; transition-delay: 0.08s; }
+:host .blob-btn .blob-btn__blob:nth-child(3) { left: 60%; transition-delay: 0.16s; }
+:host .blob-btn .blob-btn__blob:nth-child(4) { left: 90%; transition-delay: 0.24s; }
+
+/* Hover: las gotas blancas llenan el botón y el texto pasa a rojo */
+:host .blob-btn:hover {
+    color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(230, 57, 70, 0.4);
+}
+
+:host .blob-btn:hover::after {
+    transition: all 0.3s;
+    left: 0;
+    top: 0;
+}
+
+:host .blob-btn:hover .blob-btn__blob {
+    transform: translateZ(0) scale(1.7);
+}
+
+@supports (filter: url('#goo')) {
+    :host .blob-btn:hover .blob-btn__blob {
+        transform: translateZ(0) scale(1.4);
+    }
+}
+
+/* Al pulsar: se "aplasta" y el glow se contrae (respuesta táctil) */
+:host .blob-btn:active {
+    transform: translateY(1px) scale(0.95);
+    box-shadow: 0 2px 10px rgba(230, 57, 70, 0.3);
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+/* Foco accesible por teclado */
+:host .blob-btn:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+}
+
+/* Respeta la preferencia de menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+    :host .blob-btn,
+    :host .blob-btn:hover,
+    :host .blob-btn:active {
+        transform: none;
+        transition: color 0.3s, box-shadow 0.3s;
+    }
+    :host .blob-btn .blob-btn__blob {
+        transition: none;
+    }
+}
+
+/* ========================================
    ENCABEZADOS DE SECCIÓN
    ======================================== */
 
