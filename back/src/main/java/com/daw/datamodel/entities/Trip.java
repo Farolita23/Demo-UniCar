@@ -40,7 +40,9 @@ import lombok.ToString;
  * @see User
  */
 @Entity
-@Table(name = "trip")
+@Table(name = "trip", indexes = {
+    @jakarta.persistence.Index(name = "idx_trip_departure", columnList = "departure_date, departure_time")
+})
 @Getter
 @Setter
 @ToString(exclude = {"passengers", "requesters", "periodicTrip"})
