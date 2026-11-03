@@ -1,5 +1,6 @@
 package com.daw.datamodel.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
      * @param userId identificador del usuario que tiene los favoritos
      * @return lista de relaciones de favorito del usuario
      */
+    @EntityGraph(attributePaths = {"user", "favoriteUser"})
     List<Favorite> findByUserId(Long userId);
 
     /**

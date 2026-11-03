@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.daw.controller.dto.CarCreateDTO;
@@ -29,8 +30,10 @@ public class CarController {
     private final CarService carService;
 
     @GetMapping
-    public ResponseEntity<List<CarDTO>> findAll() {
-        return ResponseEntity.ok(carService.findAll());
+    public ResponseEntity<List<CarDTO>> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "100") int size) {
+        return ResponseEntity.ok(carService.findAll(page, size));
     }
 
     @GetMapping("/{id}")

@@ -1,5 +1,8 @@
 package com.daw.datamodel.repository;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.EntityGraph;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,6 +33,10 @@ public interface RatingRepository extends JpaRepository<Rating, Long> {
      * @param ratedUserId identificador del usuario receptor de la valoración
      * @return {@code true} si ya existe la valoración, {@code false} en caso contrario
      */
+    @Override
+    @EntityGraph(attributePaths = {"userRate", "ratedUser"})
+    Page<Rating> findAll(Pageable pageable);
+
     boolean existsByUserRateIdAndRatedUserId(Long userRateId, Long ratedUserId);
 
     /**
