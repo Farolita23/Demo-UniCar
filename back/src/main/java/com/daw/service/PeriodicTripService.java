@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,7 +26,7 @@ import com.daw.datamodel.repository.TripRepository;
 import com.daw.exceptions.PeriodicTripException;
 import com.daw.exceptions.PeriodicTripNotFoundException;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -59,8 +62,9 @@ public class PeriodicTripService {
      * @param pageable configuración de paginación y ordenación
      * @return página de {@link PeriodicTripDTO} con los viajes periódicos disponibles
      */
+    @Transactional(readOnly = true)
     public Page<PeriodicTripDTO> findAll(Pageable pageable) {
-        return periodicTripRepository.findAll(pageable).map(this::toDtoWithCount);
+        return withCounts(periodicTripRepository.findAll(pageable));
     }
 
     /**
@@ -70,8 +74,9 @@ public class PeriodicTripService {
      * @param pageable configuración de paginación
      * @return página de {@link PeriodicTripDTO} del conductor
      */
+    @Transactional(readOnly = true)
     public Page<PeriodicTripDTO> findByDriver(Long driverId, Pageable pageable) {
-        return periodicTripRepository.findByDriverId(driverId, pageable).map(this::toDtoWithCount);
+        return withCounts(periodicTripRepository.findByDriverId(driverId, pageable));
     }
 
     /**
@@ -81,6 +86,7 @@ public class PeriodicTripService {
      * @return {@link PeriodicTripDTO} con los datos del viaje periódico
      * @throws PeriodicTripNotFoundException si no existe un viaje periódico con ese identificador
      */
+    @Transactional(readOnly = true)
     public PeriodicTripDTO findById(Long id) {
         return toDtoWithCount(findEntityById(id));
     }
@@ -205,6 +211,7 @@ public class PeriodicTripService {
      * @return página de {@link Trip} generados
      * @throws PeriodicTripNotFoundException si no existe un viaje periódico con ese identificador
      */
+    @Transactional(readOnly = true)
     public Page<Trip> findGeneratedTrips(Long periodicTripId, Pageable pageable) {
         findEntityById(periodicTripId); // valida existencia -> 404 coherente
         return tripRepository.findByPeriodicTripId(periodicTripId, pageable);
@@ -244,5 +251,21 @@ public class PeriodicTripService {
         PeriodicTripDTO dto = periodicTripMapper.toDto(periodicTrip);
         dto.setTripsGenerated((int) tripRepository.countByPeriodicTripId(periodicTrip.getId()));
         return dto;
+    }
+
+    /** Convierte la página a DTO calculando con una única consulta los viajes generados de todas las plantillas. */
+    private Page<PeriodicTripDTO> withCounts(Page<PeriodicTrip> page) {
+        List<Long> ids = page.getContent().stream().map(PeriodicTrip::getId).toList();
+        Map<Long, Long> counts = new HashMap<>();
+        if (!ids.isEmpty()) {
+            for (Object[] row : tripRepository.countByPeriodicTripIds(ids)) {
+                counts.put((Long) row[0], ((Number) row[1]).longValue());
+            }
+        }
+        return page.map(pt -> {
+            PeriodicTripDTO dto = periodicTripMapper.toDto(pt);
+            dto.setTripsGenerated(counts.getOrDefault(pt.getId(), 0L).intValue());
+            return dto;
+        });
     }
 }

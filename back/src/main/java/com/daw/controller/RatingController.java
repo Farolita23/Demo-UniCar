@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.daw.controller.dto.RatingCreateDTO;
@@ -30,8 +31,10 @@ public class RatingController {
     private final RatingService ratingService;
 
     @GetMapping
-    public ResponseEntity<List<RatingDTO>> findAll() {
-        return ResponseEntity.ok(ratingService.findAll());
+    public ResponseEntity<List<RatingDTO>> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "100") int size) {
+        return ResponseEntity.ok(ratingService.findAll(page, size));
     }
 
     @GetMapping("/{id}")

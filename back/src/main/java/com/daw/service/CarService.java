@@ -13,7 +13,10 @@ import com.daw.datamodel.repository.CarRepository;
 import com.daw.exceptions.CarNotFoundException;
 import com.daw.exceptions.EntityWithDependenciesException;
 
-import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -33,6 +36,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CarService {
 
+    /** Tamaño máximo (y por defecto del controlador) de las listas completas: ninguna respuesta es ilimitada. */
+    public static final int MAX_PAGE_SIZE = 500;
+
     private final CarRepository carRepository;
     private final CarMapper carMapper;
     private final CarCreateMapper carCreateMapper;
@@ -43,8 +49,10 @@ public class CarService {
      *
      * @return lista de {@link CarDTO} con todos los vehículos disponibles
      */
-    public List<CarDTO> findAll() {
-        return carMapper.toListDto(carRepository.findAll());
+    @Transactional(readOnly = true)
+    public List<CarDTO> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(Math.max(page, 0), Math.min(Math.max(size, 1), MAX_PAGE_SIZE), Sort.by("id"));
+        return carMapper.toListDto(carRepository.findAll(pageable).getContent());
     }
 
     /**
@@ -54,6 +62,7 @@ public class CarService {
      * @return {@link CarDTO} con los datos del vehículo encontrado
      * @throws CarNotFoundException si no existe un vehículo con ese identificador
      */
+    @Transactional(readOnly = true)
     public CarDTO findById(Long id) {
         Car car = carRepository.findById(id)
                 .orElseThrow(() -> new CarNotFoundException(id));
@@ -66,6 +75,7 @@ public class CarService {
      * @param driverId identificador del usuario conductor
      * @return lista de {@link CarDTO} del conductor; vacía si no tiene ningún vehículo registrado
      */
+    @Transactional(readOnly = true)
     public List<CarDTO> findByDriverId(Long driverId) {
         return carMapper.toListDto(carRepository.findByDriverId(driverId));
     }

@@ -14,7 +14,7 @@ import com.daw.datamodel.entities.Report;
 import com.daw.datamodel.repository.ReportRepository;
 import com.daw.exceptions.InvalidReportException;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -46,6 +46,7 @@ public class ReportService {
 	 * @param pageable información de paginación y ordenación
 	 * @return paginacion con la lista de {@link ReportDTO}
 	 */
+	@Transactional(readOnly = true)
 	public Page<ReportDTO> findAll(Pageable pageable) {
 		return reportMapper.toPageDto(reportRepository.findAll(pageable));
 	}
@@ -57,6 +58,7 @@ public class ReportService {
 	 * @return {@link ReportDTO} con los datos del reporte encontrado
 	 * @throws com.daw.exceptions.ReportNotFoundException si no existe un reporte con ese identificador
 	 */
+	@Transactional(readOnly = true)
 	public ReportDTO findById(Long id) {
 		return reportMapper.toDto(generalService.findReportById(id));
 	}
