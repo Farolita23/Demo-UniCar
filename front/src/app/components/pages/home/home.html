@@ -11,11 +11,10 @@
             <!-- Viñeta que enmarca la escena y da profundidad -->
             <div class="hero-vignette"></div>
         </div>
-        <!-- Contenido principal del hero: texto a la izquierda, tablero de rutas reales a la derecha -->
-        <div class="container hero-layout">
-        <div class="hero-content">
-            <!-- Título principal -->
-            <h1 class="hero-title">Comparte el camino<br><span class="hero-highlight">hacia la uni</span></h1>
+        <!-- Contenido principal del hero: el titular es el protagonista -->
+        <div class="container hero-content">
+            <!-- Título principal: "hacia la uni" se pinta de rojo mientras se traza debajo la línea de la carretera -->
+            <h1 class="hero-title">Comparte<br>el camino<br><span class="hero-paint">hacia la uni<span class="hero-road" aria-hidden="true"></span></span></h1>
             <!-- Subtítulo -->
             <p class="hero-sub">
                 Busca quién sale de tu pueblo hacia tu campus, comparte gastos y olvídate de pelearte
@@ -45,11 +44,6 @@
                 <!-- Botón ofrecer viaje -->
                 <a routerLink="/trip" class="btn btn-ghost hero-btn">Publicar viaje</a>
             </div>
-        </div>
-        <!-- Tablero: localidades con viajes publicados hacia los campus de Sevilla -->
-        @if (campuses.length) {
-            <app-route-board class="hero-board" [trips]="boardTrips" [campuses]="campuses"></app-route-board>
-        }
         </div>
         <!-- Filtro gooey para el efecto de blobs del botón (referenciado por filter: url(#goo)) -->
         <svg class="goo-defs" aria-hidden="true" focusable="false" width="0" height="0">

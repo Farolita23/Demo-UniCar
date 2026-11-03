@@ -2,11 +2,12 @@
    SECCIÓN HERO PRINCIPAL
    ======================================== */
 
-/* Contenedor hero con fondo decorativo y bordes */
+/* Contenedor hero con fondo decorativo y bordes; el margen lateral lo pone el .container,
+   así el titular queda alineado con las secciones de debajo */
 :host .hero {
     position: relative;
     overflow: hidden;
-    padding: 64px 32px;
+    padding: 88px 0 72px;
     border-bottom: 1px solid var(--border);
     margin-bottom: 64px;
 }
@@ -49,57 +50,99 @@
     pointer-events: none;
 }
 
-/* Respeto por preferencias de movimiento reducido: el grano deja de parpadear;
-   el tablero de rutas detecta la preferencia y deja los coches quietos */
-@media (prefers-reduced-motion: reduce) {
-    :host .hero .hero-bg .hero-grain {
-        animation: none;
-    }
-}
-
-/* Hero en dos columnas: el mensaje y, a su lado, las rutas reales hacia los campus */
-:host .hero .hero-layout {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    align-items: center;
-    gap: 48px;
-}
-
-:host .hero .hero-layout .hero-board {
-    min-width: 0;
-}
-
-/* Columna de texto del hero */
+/* Contenido del hero en una sola columna. Es contenedor de consultas para que el titular
+   se mida con su ancho real (cqi) y no con el de la ventana */
 :host .hero .hero-content {
     position: relative;
     z-index: 1;
+    container-type: inline-size;
     display: flex;
     flex-direction: column;
     gap: 16px;
     align-items: start;
-    padding: 0;
 }
 
-/* Punto pulsante dentro del badge */
-:host .hero .hero-content .hero-badge .badge-dot {
-    width: 7px;
-    height: 7px;
-    background: var(--primary);
-    border-radius: 50%;
-    animation: pulseRing 2s ease infinite;
-}
-
-/* Título principal del hero con tamaño grande */
+/* Titular protagonista en tres líneas. El tamaño sale del ancho de "hacia la uni" (8,5em):
+   así la frase pintada ocupa casi todo el ancho y nunca se parte, del móvil al escritorio */
 :host .hero .hero-content .hero-title {
-    font-size: 64px;
-    line-height: 1.05;
+    font-size: clamp(32px, 11.4cqi, 112px);
+    font-weight: 800;
+    line-height: 0.98;
+    letter-spacing: -0.035em;
+    margin-bottom: 8px;
 }
 
-/* Texto destacado dentro del título */
-:host .hero .hero-content .hero-title .hero-highlight {
+/* Frase pintada, con la línea de la carretera debajo. Sin soporte de background-clip: text
+   se queda en rojo, como el titular de siempre */
+:host .hero .hero-paint {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+    padding-bottom: 0.2em;
     color: var(--primary);
+}
+
+/* Un único texto: empieza solo con el contorno, como la carretera antes de pintarla, y un fondo
+   rojo recortado a las letras la recorre de izquierda a derecha con el borde difuminado.
+   El fondo mide 2,24 veces la frase (el doble más el difuminado, un 24%): en 100% queda justo fuera
+   y en 0 la cubre entera, y su borde avanza al ritmo de la línea. Al final se apaga el contorno */
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+    :host .hero .hero-paint {
+        color: transparent;
+        -webkit-text-stroke: max(1px, 0.012em) rgba(242, 242, 242, 0.3);
+        background: linear-gradient(90deg, var(--primary) 44.5%, transparent 55.5%) 100% 0 / 224% 100% no-repeat;
+        -webkit-background-clip: text;
+        background-clip: text;
+        animation: hero-paint 1.9s cubic-bezier(0.65, 0, 0.35, 1) 0.3s forwards;
+    }
+}
+
+@keyframes hero-paint {
+    85% {
+        -webkit-text-stroke-color: rgba(242, 242, 242, 0.3);
+    }
+
+    to {
+        background-position: 0 0;
+        -webkit-text-stroke-color: transparent;
+    }
+}
+
+/* Línea discontinua de la carretera: se traza un poco por delante del rojo, como si lo fuera pintando */
+:host .hero .hero-road {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.04em;
+    height: max(3px, 0.035em);
+    background: repeating-linear-gradient(90deg, var(--accent) 0 0.16em, transparent 0.16em 0.3em);
+    clip-path: inset(0 100% 0 0);
+    animation: hero-road 1.9s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+}
+
+@keyframes hero-road {
+    to {
+        clip-path: inset(0 0 0 0);
+    }
+}
+
+/* Respeto por preferencias de movimiento reducido: el grano deja de parpadear
+   y el titular aparece ya pintado, con la línea completa */
+@media (prefers-reduced-motion: reduce) {
+    :host .hero .hero-bg .hero-grain {
+        animation: none;
+    }
+
+    :host .hero .hero-paint {
+        animation: none;
+        background-position: 0 0;
+        -webkit-text-stroke-color: transparent;
+    }
+
+    :host .hero .hero-road {
+        animation: none;
+        clip-path: none;
+    }
 }
 
 /* Subtítulo descriptivo del hero */
@@ -119,8 +162,9 @@
     gap: 16px;
 }
 
-/* Botones de acción dentro del hero */
+/* Botones de acción dentro del hero; texto centrado también cuando se estiran a todo el ancho */
 :host .hero .hero-content .hero-actions .hero-btn {
+    justify-content: center;
     padding: 16px 32px;
     font-size: 16px;
 }
@@ -601,14 +645,6 @@
    ======================================== */
 
 /* Tablets grandes (1024px o menos) - Cambios en layout */
-@media (max-width: calc(768px + 128px)) {
-    /* El tablero pasa debajo del mensaje */
-    :host .hero .hero-layout {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 40px;
-    }
-}
-
 @media (max-width: calc(768px + 256px)) {
     /* Grid de pasos en flex */
     :host .how-section .steps-grid {
@@ -652,17 +688,8 @@
 @media (max-width: 768px) {
     /* Hero más compacto en móvil: menos aire arriba y abajo para llegar antes a los viajes */
     :host .hero {
-        padding: 40px 16px;
+        padding: 48px 0 40px;
         margin-bottom: 40px;
-    }
-
-    :host .hero .hero-layout {
-        gap: 32px;
-    }
-
-    /* Reducir tamaño del título hero */
-    :host .hero .hero-content .hero-title {
-        font-size: 48px;
     }
 
     /* Subtítulo hero con ancho completo */

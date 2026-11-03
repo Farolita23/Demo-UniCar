@@ -21,9 +21,10 @@ colors:
 typography:
   display:
     fontFamily: "Syne, sans-serif"
-    fontSize: "64px"
-    fontWeight: 700
-    lineHeight: 1.05
+    fontSize: "clamp(32px, 11.4cqi, 112px)"
+    fontWeight: 800
+    lineHeight: 0.98
+    letterSpacing: "-0.035em"
   headline:
     fontFamily: "Syne, sans-serif"
     fontSize: "clamp(1.8rem, 4vw, 2.8rem)"
@@ -144,7 +145,7 @@ Una noche casi negra con dos luces de coche: el rojo de los pilotos traseros y e
 **Character:** Syne es ancha, geométrica y algo gamberra: pone el carácter en los titulares. DM Sans es neutra y muy legible, y carga con todos los datos del viaje.
 
 ### Hierarchy
-- **Display** (700, 64px, 48px en móvil, interlineado 1.05): el titular de la portada.
+- **Display** (800, fluido de 32px a 112px según el ancho del contenedor, interlineado 0.98, espaciado -0.035em): el titular de la portada en tres líneas. «hacia la uni» entra en contorno y se pinta de Rojo Piloto mientras se traza debajo una línea discontinua ámbar; con `prefers-reduced-motion` aparece ya pintado.
 - **Headline** (700, clamp de 1.8rem a 2.8rem, 1.15): títulos de sección ("Viajes disponibles", "¿Cómo funciona?").
 - **Title** (700, 24px, 1.15): títulos de tarjetas y paneles.
 - **Body** (400, 16px): texto corrido, campos de formulario y datos del viaje; 14px en información secundaria.

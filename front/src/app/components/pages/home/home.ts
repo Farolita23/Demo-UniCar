@@ -18,7 +18,6 @@ import { CommonModule } from '@angular/common';
 import { Header } from '../../elements/header/header';
 import { Footer } from '../../elements/footer/footer';
 import { TripCard } from '../../elements/trip/trip';
-import { RouteBoard } from '../../elements/route-board/route-board';
 
 // Importaciones de servicios
 import { ApiService } from '../../../services/api-service';
@@ -26,7 +25,6 @@ import { AuthService } from '../../../services/auth-service';
 
 // Importaciones de modelos
 import { Trip } from '../../../models/trip.model';
-import { Campus } from '../../../models/campus.model';
 
 //Importacion iconos
 import { AppIcon, IconName } from '../../elements/icon/icon';
@@ -43,7 +41,7 @@ import { AppIcon, IconName } from '../../elements/icon/icon';
   // Componente standalone sin necesidad de módulo
   standalone: true,
   // Módulos y componentes importados
-  imports: [RouterLink, CommonModule, Header, Footer, TripCard, AppIcon, RouteBoard],
+  imports: [RouterLink, CommonModule, Header, Footer, TripCard, AppIcon],
   // Archivo HTML de la plantilla
   templateUrl: './home.html',
   // Archivo CSS de estilos
@@ -67,10 +65,6 @@ export class Home implements OnInit {
 
   /** Indica si los viajes son personalizados (true) o generales (false) */
   isSuggested  = false;
-
-  /** Campus de destino y viajes publicados que alimentan el tablero de rutas del hero */
-  campuses: Campus[] = [];
-  boardTrips: Trip[] = [];
 
   /** Franja de confianza bajo el hero: promesas que la app ya cumple hoy */
   trustItems = [
@@ -97,16 +91,6 @@ features = [
   ngOnInit(): void {
     // Verificar si estamos en el navegador (no en servidor)
     if (!isPlatformBrowser(this.platformId)) { this.loadingTrips = false; return; }
-
-    // Datos del tablero de rutas: los campus y los próximos viajes publicados (rutas reales)
-    this.api.getCampuses().subscribe({
-      next: c => { this.campuses = c; this.cdr.detectChanges(); },
-      error: () => {},
-    });
-    this.api.getFutureTrips(0, 40).subscribe({
-      next: p => { this.boardTrips = p.content; this.cdr.detectChanges(); },
-      error: () => {},
-    });
 
     // Obtener usuario autenticado
     const user = this.auth.getUser();
