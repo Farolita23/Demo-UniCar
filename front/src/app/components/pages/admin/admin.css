@@ -655,3 +655,8 @@
         grid-template-columns: repeat(1, 1fr);
     }
 }
+/* Botones de página desactivados (anterior/siguiente en los extremos) */
+:host .pagination .page-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}

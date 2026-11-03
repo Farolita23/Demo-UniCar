@@ -1,8 +1,8 @@
 package com.daw.service;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,8 +14,10 @@ import com.daw.controller.dto.UserCreateDTO;
 import com.daw.security.GoogleTokenVerifier.GoogleUser;
 import java.util.UUID;
 import com.daw.controller.dto.UserDTO;
+import com.daw.controller.dto.UserListDTO;
 import com.daw.controller.dto.UserUpdateDTO;
 import com.daw.controller.dto.mapper.UserCreateMapper;
+import com.daw.controller.dto.mapper.UserListMapper;
 import com.daw.controller.dto.mapper.UserMapper;
 import com.daw.controller.dto.mapper.UserUpdateMapper;
 import com.daw.datamodel.entities.User;
@@ -49,19 +51,35 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final UserListMapper userListMapper;
     private final UserCreateMapper userCreateMapper;
     private final UserUpdateMapper userUpdateMapper;
     private final GeneralService generalService;
     private final PasswordEncoder passwordEncoder;
     private final ProfilePhotoStorage photoStorage;
 
+    /** Tamano maximo de pagina admitido en los listados de usuarios. */
+    public static final int MAX_PAGE_SIZE = 100;
+
     /**
-     * Recupera todos los usuarios registrados en el sistema.
-     *
-     * @return lista de {@link UserDTO} con todos los usuarios disponibles
+     * Acota una peticion de pagina: tamano entre 1 y {@link #MAX_PAGE_SIZE} y orden estable
+     * (el identificador se anade como desempate para que las paginas no se solapen).
      */
-    public List<UserDTO> findAll() {
-        return userMapper.toListDto(userRepository.findAll());
+    private Pageable bounded(Pageable pageable) {
+        int size = Math.max(1, Math.min(pageable.getPageSize(), MAX_PAGE_SIZE));
+        Sort sort = pageable.getSort().isSorted() ? pageable.getSort() : Sort.unsorted();
+        if (sort.getOrderFor("id") == null) sort = sort.and(Sort.by("id"));
+        return PageRequest.of(pageable.getPageNumber(), size, sort);
+    }
+
+    /**
+     * Recupera una pagina de usuarios (nunca el listado completo).
+     *
+     * @param pageable pagina solicitada; el tamano se limita a {@link #MAX_PAGE_SIZE}
+     * @return pagina de {@link UserListDTO}, sin valoraciones
+     */
+    public Page<UserListDTO> findAll(Pageable pageable) {
+        return userListMapper.toPageDto(userRepository.findAll(bounded(pageable)));
     }
 
     /**
@@ -72,8 +90,9 @@ public class UserService {
      * @throws UserNotFoundException si no existe un usuario con ese identificador
      */
     public UserDTO findById(Long id) {
-        User user = userRepository.findById(id)
+        User user = userRepository.findDetailById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+        userRepository.fetchRatingsDone(id);
         return userMapper.toDto(user);
     }
 
@@ -284,9 +303,9 @@ public class UserService {
      * @param query término de búsqueda (parcial, sin distinción de mayúsculas/minúsculas)
      * @return lista de {@link UserDTO} coincidentes; vacía si no hay resultados
      */
-    public Page<UserDTO> searchUsers(String query, Pageable pageable) {
-        return userMapper.toPageDto(
-            userRepository.searchByNameOrUsername(query, pageable)
+    public Page<UserListDTO> searchUsers(String query, Pageable pageable) {
+        return userListMapper.toPageDto(
+            userRepository.searchByNameOrUsername(query, bounded(pageable))
         );
     }
 
