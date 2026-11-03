@@ -4,9 +4,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
@@ -26,19 +30,50 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
+    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
+
+    /** Longitud minima del secreto para HS256 (256 bits = 32 bytes). */
+    private static final int MIN_SECRET_BYTES = 32;
+
+    @Value("${jwt.secret:}")
     private String secret;
 
     @Value("${jwt.expiration}")
     private Long expiration;
 
+    /** Clave de firma HMAC, construida una sola vez al arrancar. */
+    private Key signingKey;
+
     /**
-     * Construye la clave de firma HMAC a partir del secreto configurado.
+     * Resuelve la clave de firma al iniciar la aplicacion. Si no se ha configurado un secreto
+     * (propiedad {@code jwt.secret} / variable {@code JWT_SECRET}), se genera uno aleatorio seguro
+     * para este arranque: la aplicacion sigue funcionando, pero los tokens dejan de ser validos al
+     * reiniciar. En produccion debe definirse {@code JWT_SECRET} para que los tokens sean estables.
+     */
+    @PostConstruct
+    void initSigningKey() {
+        if (secret == null || secret.isBlank()) {
+            signingKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+            log.warn("No se ha configurado JWT_SECRET: se usa una clave aleatoria temporal. "
+                    + "Define JWT_SECRET (>= {} bytes) para que los tokens sobrevivan a un reinicio.",
+                    MIN_SECRET_BYTES);
+            return;
+        }
+        byte[] bytes = secret.getBytes(StandardCharsets.UTF_8);
+        if (bytes.length < MIN_SECRET_BYTES) {
+            throw new IllegalStateException(
+                    "JWT_SECRET demasiado corto: se requieren al menos " + MIN_SECRET_BYTES + " bytes para HS256");
+        }
+        signingKey = Keys.hmacShaKeyFor(bytes);
+    }
+
+    /**
+     * Devuelve la clave de firma HMAC resuelta al arrancar.
      *
      * @return clave criptográfica lista para firmar o verificar tokens
      */
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes());
+        return signingKey;
     }
 
     /**

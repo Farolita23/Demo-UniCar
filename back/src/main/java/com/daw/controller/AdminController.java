@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.daw.controller.dto.ReportDTO;
@@ -40,8 +41,9 @@ public class AdminController {
      * @return {@code 200 OK} con la pagina de {@link UserListDTO}
      */
     @GetMapping("/users")
-    public ResponseEntity<Page<UserListDTO>> getAllUsers(@PageableDefault(size = 20, sort = "id") Pageable pageable) {
-        return ResponseEntity.ok(userService.findAll(pageable));
+    public ResponseEntity<Page<UserListDTO>> getAllUsers(@PageableDefault(size = 20, sort = "id") Pageable pageable,
+                                                         Authentication authentication) {
+        return ResponseEntity.ok(userService.findAll(pageable, authentication.getName(), true));
     }
 
     /**
@@ -54,8 +56,9 @@ public class AdminController {
     @GetMapping("/users/search")
     public ResponseEntity<Page<UserListDTO>> searchUsers(
         @RequestParam String q,
-        @PageableDefault(size = 2, sort = "name") Pageable pageable) {
-        return ResponseEntity.ok(userService.searchUsers(q, pageable));
+        @PageableDefault(size = 2, sort = "name") Pageable pageable,
+        Authentication authentication) {
+        return ResponseEntity.ok(userService.searchUsers(q, pageable, authentication.getName(), true));
     }
 
     /**
@@ -113,8 +116,8 @@ public class AdminController {
      * @return {@code 204 No Content} si la eliminación se realizó correctamente
      */
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.delete(id);
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id, Authentication authentication) {
+        userService.delete(id, authentication.getName(), true);
         return ResponseEntity.noContent().build();
     }
 

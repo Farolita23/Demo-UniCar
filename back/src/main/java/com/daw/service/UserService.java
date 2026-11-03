@@ -78,13 +78,39 @@ public class UserService {
     }
 
     /**
+     * Oculta los datos de contacto (correo y telefono) salvo que quien consulta sea el propio
+     * usuario o un administrador. Evita exponer informacion personal en perfiles y listados.
+     *
+     * @param dto       datos del usuario consultado
+     * @param requester nombre de usuario de quien consulta, o {@code null} si es anonimo
+     * @param admin     {@code true} si quien consulta es administrador
+     * @return el mismo DTO, con correo y telefono a {@code null} si no procede mostrarlos
+     */
+    private UserDTO maskContact(UserDTO dto, String requester, boolean admin) {
+        if (!admin && (requester == null || !requester.equals(dto.getUsername()))) {
+            dto.setEmail(null);
+            dto.setPhone(null);
+        }
+        return dto;
+    }
+
+    private UserListDTO maskContact(UserListDTO dto, String requester, boolean admin) {
+        if (!admin && (requester == null || !requester.equals(dto.getUsername()))) {
+            dto.setEmail(null);
+            dto.setPhone(null);
+        }
+        return dto;
+    }
+
+    /**
      * Recupera una pagina de usuarios (nunca el listado completo).
      *
      * @param pageable pagina solicitada; el tamano se limita a {@link #MAX_PAGE_SIZE}
      * @return pagina de {@link UserListDTO}, sin valoraciones
      */
-    public Page<UserListDTO> findAll(Pageable pageable) {
-        return userListMapper.toPageDto(userRepository.findAll(bounded(pageable)));
+    public Page<UserListDTO> findAll(Pageable pageable, String requester, boolean admin) {
+        return userListMapper.toPageDto(userRepository.findAll(bounded(pageable)))
+                .map(dto -> maskContact(dto, requester, admin));
     }
 
     /**
@@ -94,11 +120,11 @@ public class UserService {
      * @return {@link UserDTO} con los datos del usuario encontrado
      * @throws UserNotFoundException si no existe un usuario con ese identificador
      */
-    public UserDTO findById(Long id) {
+    public UserDTO findById(Long id, String requester, boolean admin) {
         User user = userRepository.findDetailById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
         userRepository.fetchRatingsDone(id);
-        return userMapper.toDto(user);
+        return maskContact(userMapper.toDto(user), requester, admin);
     }
 
     /**
@@ -206,9 +232,12 @@ public class UserService {
      * @throws DuplicateUsernameException si el nuevo nombre de usuario ya está en uso por otro usuario
      * @throws DuplicateEmailException    si el nuevo correo electrónico ya está registrado por otro usuario
      */
-    public UserDTO update(UserUpdateDTO dto, Long id) {
+    public UserDTO update(UserUpdateDTO dto, Long id, String requester, boolean admin) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+
+        if (!admin && !user.getUsername().equals(requester))
+            throw new AccessDeniedException("Solo puedes editar tu propio perfil");
 
         if (!user.getUsername().equals(dto.getUsername()) && generalService.existsByUsername(dto.getUsername()))
             throw new DuplicateUsernameException();
@@ -236,8 +265,10 @@ public class UserService {
      * @throws UserNotFoundException           si no existe un usuario con ese identificador
      * @throws EntityWithDependenciesException si el usuario tiene vehículos o viajes como pasajero vinculados
      */
-    public void delete(Long id) {
+    public void delete(Long id, String requester, boolean admin) {
         User user = generalService.findUserById(id);
+        if (!admin && !user.getUsername().equals(requester))
+            throw new AccessDeniedException("Solo puedes eliminar tu propia cuenta");
         boolean hasntCars             = user.getCars().isEmpty();
         boolean hasntTripsAsPassenger = user.getTripsAsAPassenger().isEmpty();
         if (!(hasntCars && hasntTripsAsPassenger))
@@ -308,10 +339,10 @@ public class UserService {
      * @param query término de búsqueda (parcial, sin distinción de mayúsculas/minúsculas)
      * @return lista de {@link UserDTO} coincidentes; vacía si no hay resultados
      */
-    public Page<UserListDTO> searchUsers(String query, Pageable pageable) {
+    public Page<UserListDTO> searchUsers(String query, Pageable pageable, String requester, boolean admin) {
         return userListMapper.toPageDto(
             userRepository.searchByNameOrUsername(query, bounded(pageable))
-        );
+        ).map(dto -> maskContact(dto, requester, admin));
     }
 
     /**

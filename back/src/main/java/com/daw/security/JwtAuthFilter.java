@@ -76,7 +76,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = authenticatedUserCache.load(username);
 
-            if (jwtUtil.validateToken(jwt, userDetails.getUsername())) {
+            // Un usuario baneado no se autentica aunque su token siga siendo válido y no haya caducado
+            if (userDetails.isEnabled() && jwtUtil.validateToken(jwt, userDetails.getUsername())) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
