@@ -3,75 +3,158 @@
     <div class="container">
 
         <!-- FILTERS SIDEBAR -->
-        <aside class="filters-panel">
+        <!-- BOTON DE FILTROS (SOLO MOVIL) -->
+        <button type="button" class="filters-toggle" (click)="openFilters()" aria-controls="filters-panel"
+            [attr.aria-expanded]="filtersOpen">
+            <app-icon icon="ajustes" [size]="18"></app-icon>
+            <span>Filtros</span>
+            @if (activeFilters > 0) {
+            <span class="filters-badge">{{ activeFilters }}</span>
+            }
+        </button>
+
+        <!-- FONDO OSCURO TRAS LOS FILTROS EN MOVIL -->
+        <div class="filters-backdrop" [class.open]="filtersOpen" (click)="closeFilters()"></div>
+
+        <aside id="filters-panel" class="filters-panel" [class.open]="filtersOpen" aria-label="Filtros de búsqueda">
             <div class="filters-header">
-                <h2>Filtros</h2>
-                <button class="btn btn-ghost btn-sm" (click)="reset()">Resetear</button>
-            </div>
-
-            <div class="filter-group">
-                <label class="label">Campus</label>
-                <input type="text" list="campus" [(ngModel)]="filters.campus" placeholder="Selecciona el campus">
-                <datalist id="campus">
-                    @for (c of campuses; track c.id) {
-                    <option [ngValue]="c.id">{{ c.name }}</option>
+                <div class="filters-title">
+                    <h2>Filtros</h2>
+                    @if (activeFilters > 0) {
+                    <span class="filters-badge">{{ activeFilters }}</span>
                     }
-                </datalist>
-            </div>
-
-            <div class="filter-group">
-                <label class="label">Localidad</label>
-                <input type="text" list="towns" [(ngModel)]="filters.town" placeholder="Selecciona la localidad">
-                <datalist id="towns">
-                    @for (t of towns; track t.id) {
-                    <option [ngValue]="t.id">{{ t.name }}</option>
-                    }
-                </datalist>
-            </div>
-
-            <div class="filter-group">
-                <label class="label">Dirección</label>
-                <div class="dir-btns">
-                    <button class="dir-btn" [class.active]="filters.isToCampus === null"
-                        (click)="setDirection(null)">Todos</button>
-                    <button class="dir-btn" [class.active]="filters.isToCampus === true"
-                        (click)="setDirection(true)"><app-icon icon="birrete" [size]="16"></app-icon> Al campus</button>
-                    <button class="dir-btn" [class.active]="filters.isToCampus === false"
-                        (click)="setDirection(false)"><app-icon icon="casa" [size]="16"></app-icon> Desde
-                        campus</button>
+                </div>
+                <div class="filters-actions">
+                    <button type="button" class="filters-reset" (click)="reset()" [disabled]="activeFilters === 0">
+                        <app-icon icon="repetir" [size]="14"></app-icon> Limpiar
+                    </button>
+                    <button type="button" class="filters-close" (click)="closeFilters()" aria-label="Cerrar filtros">
+                        <app-icon icon="cerrar" [size]="18"></app-icon>
+                    </button>
                 </div>
             </div>
 
-            <div class="filter-group">
-                <label class="label">Tipo de viaje</label>
-                <div class="dir-btns">
-                    <button class="dir-btn" [class.active]="filters.tripType === 'all'"
-                        (click)="setTripType('all')">Todos</button>
-                    <button class="dir-btn" [class.active]="filters.tripType === 'single'"
-                        (click)="setTripType('single')"><app-icon icon="pin" [size]="16"></app-icon> Puntuales</button>
-                    <button class="dir-btn" [class.active]="filters.tripType === 'periodic'"
-                        (click)="setTripType('periodic')"><app-icon icon="calendario" [size]="16"></app-icon>
-                        Periódicos</button>
+            <!-- RUTA -->
+            <section class="filter-section">
+                <div class="filter-group">
+                    <label class="filter-label" for="f-campus">Campus</label>
+                    <div class="field">
+                        <app-icon class="field-icon" icon="birrete" [size]="16"></app-icon>
+                        <input id="f-campus" type="text" list="campus" [(ngModel)]="filters.campus"
+                            placeholder="Cualquier campus" autocomplete="off">
+                        @if (filters.campus) {
+                        <button type="button" class="field-clear" (click)="filters.campus = null"
+                            aria-label="Quitar campus"><app-icon icon="cerrar" [size]="14"></app-icon></button>
+                        }
+                    </div>
+                    <datalist id="campus">
+                        @for (c of campuses; track c.id) {
+                        <option [value]="c.name"></option>
+                        }
+                    </datalist>
                 </div>
-            </div>
 
-            <div class="filter-group">
-                <label class="label">Fecha de salida</label>
-                <input type="date" [(ngModel)]="filters.departureDate">
-            </div>
+                <div class="filter-group">
+                    <label class="filter-label" for="f-town">Localidad</label>
+                    <div class="field">
+                        <app-icon class="field-icon" icon="pin" [size]="16"></app-icon>
+                        <input id="f-town" type="text" list="towns" [(ngModel)]="filters.town"
+                            placeholder="Cualquier localidad" autocomplete="off">
+                        @if (filters.town) {
+                        <button type="button" class="field-clear" (click)="filters.town = null"
+                            aria-label="Quitar localidad"><app-icon icon="cerrar" [size]="14"></app-icon></button>
+                        }
+                    </div>
+                    <datalist id="towns">
+                        @for (t of towns; track t.id) {
+                        <option [value]="t.name"></option>
+                        }
+                    </datalist>
+                </div>
 
-            <div class="filter-group price">
-                <label class="label">Precio máximo (€)</label>
-                <p><input type="range" [(ngModel)]="filters.maxPrice" id="" min="0" step="0.01" max="100"
-                        value="100"><span> {{ filters.maxPrice }}€</span></p>
-            </div>
+                <div class="filter-group">
+                    <span class="filter-label" id="lbl-dir">Dirección</span>
+                    <div class="segmented" role="group" aria-labelledby="lbl-dir">
+                        <button type="button" class="seg-btn" [class.active]="filters.isToCampus === null"
+                            [attr.aria-pressed]="filters.isToCampus === null" (click)="setDirection(null)">
+                            <app-icon icon="repetir" [size]="16"></app-icon><span>Ambas</span>
+                        </button>
+                        <button type="button" class="seg-btn" [class.active]="filters.isToCampus === true"
+                            [attr.aria-pressed]="filters.isToCampus === true" (click)="setDirection(true)">
+                            <app-icon icon="birrete" [size]="16"></app-icon><span>Al campus</span>
+                        </button>
+                        <button type="button" class="seg-btn" [class.active]="filters.isToCampus === false"
+                            [attr.aria-pressed]="filters.isToCampus === false" (click)="setDirection(false)">
+                            <app-icon icon="casa" [size]="16"></app-icon><span>Desde campus</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
 
-            <div class="filter-group">
-                <label class="label">Plazas mínimas libres</label>
-                <input type="number" [(ngModel)]="filters.minFreeSeats" placeholder="1" min="1">
-            </div>
+            <!-- CUANDO -->
+            <section class="filter-section">
+                <div class="filter-group">
+                    <span class="filter-label" id="lbl-type">Tipo de viaje</span>
+                    <div class="segmented" role="group" aria-labelledby="lbl-type">
+                        <button type="button" class="seg-btn" [class.active]="filters.tripType === 'all'"
+                            [attr.aria-pressed]="filters.tripType === 'all'" (click)="setTripType('all')">
+                            <app-icon icon="coche" [size]="16"></app-icon><span>Todos</span>
+                        </button>
+                        <button type="button" class="seg-btn" [class.active]="filters.tripType === 'single'"
+                            [attr.aria-pressed]="filters.tripType === 'single'" (click)="setTripType('single')">
+                            <app-icon icon="pin" [size]="16"></app-icon><span>Puntual</span>
+                        </button>
+                        <button type="button" class="seg-btn" [class.active]="filters.tripType === 'periodic'"
+                            [attr.aria-pressed]="filters.tripType === 'periodic'" (click)="setTripType('periodic')">
+                            <app-icon icon="calendario" [size]="16"></app-icon><span>Periódico</span>
+                        </button>
+                    </div>
+                </div>
 
-            <button class="btn btn-primary filter-apply" (click)="search()">Buscar viajes</button>
+                <div class="filter-group">
+                    <label class="filter-label" for="f-date">Fecha de salida</label>
+                    <div class="field">
+                        <app-icon class="field-icon" icon="calendario" [size]="16"></app-icon>
+                        <input id="f-date" type="date" [(ngModel)]="filters.departureDate">
+                    </div>
+                </div>
+            </section>
+
+            <!-- PRECIO Y PLAZAS -->
+            <section class="filter-section">
+                <div class="filter-group">
+                    <div class="filter-label-row">
+                        <label class="filter-label" for="f-price">Precio máximo</label>
+                        <span class="price-value">
+                            @if ((filters.maxPrice ?? 100) >= 100) { Sin límite }
+                            @else { {{ filters.maxPrice | number:'1.0-2' }} € }
+                        </span>
+                    </div>
+                    <input id="f-price" class="range" type="range" [(ngModel)]="filters.maxPrice" min="0" step="0.5"
+                        max="100" [style.--pct]="(filters.maxPrice ?? 100) + '%'">
+                    <div class="range-scale"><span>0 €</span><span>50 €</span><span>100 €</span></div>
+                </div>
+
+                <div class="filter-group">
+                    <span class="filter-label" id="lbl-seats">Plazas libres mínimas</span>
+                    <div class="stepper" role="group" aria-labelledby="lbl-seats">
+                        <button type="button" class="step-btn" (click)="changeSeats(-1)"
+                            [disabled]="!filters.minFreeSeats" aria-label="Menos plazas">&minus;</button>
+                        <span class="step-value" aria-live="polite">
+                            <app-icon icon="asiento" [size]="16"></app-icon>
+                            {{ filters.minFreeSeats ? filters.minFreeSeats : 'Cualquiera' }}
+                        </span>
+                        <button type="button" class="step-btn" (click)="changeSeats(1)"
+                            [disabled]="(filters.minFreeSeats ?? 0) >= maxSeats" aria-label="Más plazas">+</button>
+                    </div>
+                </div>
+            </section>
+
+            <div class="filters-footer">
+                <button type="button" class="btn btn-primary filter-apply" (click)="applyFilters()">
+                    <app-icon icon="lupa" [size]="16"></app-icon> Buscar viajes
+                </button>
+            </div>
         </aside>
 
         <!-- RESULTS -->

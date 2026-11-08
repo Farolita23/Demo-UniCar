@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, ChangeDetectorRef, PLATFORM_ID, HostListener } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -106,6 +106,52 @@ export class SearchTrip implements OnInit, OnDestroy {
         this.filters.tripType = value;
     }
 
+    // En movil los filtros se muestran en una hoja desplegable
+    filtersOpen = false;
+
+    openFilters() {
+        this.filtersOpen = true;
+    }
+
+    closeFilters() {
+        this.filtersOpen = false;
+    }
+
+    // Cierra la hoja de filtros con la tecla Escape
+    @HostListener('document:keydown.escape')
+    onEscape() {
+        this.closeFilters();
+    }
+
+    // Busca con los filtros actuales y cierra la hoja en movil
+    applyFilters() {
+        this.search();
+        this.closeFilters();
+    }
+
+    // Máximo de plazas seleccionables en el contador
+    readonly maxSeats = 8;
+
+    // Método para subir o bajar las plazas mínimas; por debajo de 1 vuelve a "cualquiera"
+    changeSeats(delta: number) {
+        const next = (this.filters.minFreeSeats ?? 0) + delta;
+        this.filters.minFreeSeats = next < 1 ? null : Math.min(next, this.maxSeats);
+    }
+
+    // Número de filtros distintos de los valores por defecto
+    get activeFilters(): number {
+        const f = this.filters;
+        return [
+            !!f.campus,
+            !!f.town,
+            f.isToCampus !== null,
+            f.tripType !== 'all',
+            !!f.departureDate,
+            f.maxPrice !== null && +f.maxPrice < 100,
+            !!f.minFreeSeats,
+        ].filter(Boolean).length;
+    }
+
     // Método para realizar la búsqueda de viajes según los filtros actuales y la página especificada
     search(page = 0) {
         this.currentPage = page;
@@ -114,7 +160,8 @@ export class SearchTrip implements OnInit, OnDestroy {
         if (this.filters.town) f.townId = +this.towns.find(t => t.name === this.filters.town)?.id!;
         if (this.filters.isToCampus !== null) f.isToCampus = this.filters.isToCampus;
         if (this.filters.departureDate) f.departureDate = this.filters.departureDate;
-        if (this.filters.maxPrice) f.maxPrice = +this.filters.maxPrice;
+        // Con el deslizador al máximo no se limita el precio
+        if (this.filters.maxPrice !== null && +this.filters.maxPrice < 100) f.maxPrice = +this.filters.maxPrice;
         if (this.filters.minFreeSeats) f.minFreeSeats = +this.filters.minFreeSeats;
         if (this.filters.tripType === 'periodic') f.periodic = true;
         else if (this.filters.tripType === 'single') f.periodic = false;

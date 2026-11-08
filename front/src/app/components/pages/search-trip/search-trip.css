@@ -4,36 +4,112 @@
 /* ESTILOS PARA LA PÁGINA DE BÚSQUEDA DE VIAJES */
 :host .container {
     display: grid;
-    grid-template-columns: 256px 1fr;
+    grid-template-columns: 296px 1fr;
     gap: 32px;
     padding: 16px;
     align-items: start;
 }
 
 /* PANEL DE FILTROS */
+/* NUNCA ES MAS ALTO QUE LA VENTANA: SI NO CABE, SE DESPLAZA POR DENTRO */
 :host .filters-panel {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 16px;
+    padding: 0 20px;
     position: sticky;
     top: 16px;
+    max-height: calc(100dvh - var(--header-h) - 32px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--surface-2) transparent;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 0;
+    box-shadow: var(--shadow);
     animation: g-slideUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* CABECERA DEL PANEL DE FILTROS */
+/* CABECERA DEL PANEL DE FILTROS (FIJA ARRIBA AL DESPLAZAR) */
 :host .filters-panel .filters-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 20px 0 14px;
+    background: var(--surface);
 }
 
-/* TITULO DEL PANEL DE FILTROS */
+/* PIE CON EL BOTON DE BUSCAR (FIJO ABAJO AL DESPLAZAR) */
+:host .filters-panel .filters-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    padding: 14px 0 20px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+}
+
+/* TITULO Y CONTADOR DE FILTROS ACTIVOS */
+:host .filters-panel .filters-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 :host .filters-panel .filters-header h2 {
-    font-size: 24px;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+}
+
+:host .filters-panel .filters-badge {
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 99px;
+    background: var(--primary);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    animation: g-slideUp 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* BOTON DE LIMPIAR FILTROS */
+:host .filters-panel .filters-reset {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    color: var(--text-2);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+}
+
+:host .filters-panel .filters-reset:hover:not(:disabled) {
+    color: var(--primary-light);
+    background: rgba(230, 57, 70, 0.08);
+}
+
+:host .filters-panel .filters-reset:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+/* SECCIONES SEPARADAS POR UNA LINEA */
+:host .filters-panel .filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 14px 0 16px;
+    border-top: 1px solid var(--border);
 }
 
 /* GRUPOS DE FILTROS */
@@ -43,62 +119,255 @@
     gap: 8px;
 }
 
-/* BOTONES DE DIRECCIÓN (IDA/VUELTA) */
-:host .filters-panel .filter-group .dir-btns {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+/* ETIQUETAS */
+:host .filters-panel .filter-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
 }
 
-/* ESTILO DE LOS BOTONES DE DIRECCIÓN (IDA/VUELTA) */
-:host .filters-panel .filter-group .dir-btns .dir-btn {
-    background: var(--bg-3);
-    border: 1px solid var(--border);
-    color: var(--text-2);
-    padding: 8px 16px;
-    border-radius: var(--radius-sm);
+:host .filters-panel .filter-label-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+/* CAMPOS CON ICONO */
+:host .filters-panel .field {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+:host .filters-panel .field input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    padding: 0 36px 0 38px;
     font-size: 14px;
-    font-weight: 500;
-    text-align: left;
-    cursor: pointer;
+    background: var(--bg-2);
+    color-scheme: dark;
+}
+
+:host .filters-panel .field input:hover:not(:focus) {
+    border-color: rgba(255, 255, 255, 0.14);
+}
+
+:host .filters-panel .field .field-icon {
+    position: absolute;
+    left: 12px;
+    display: flex;
+    color: var(--text-3);
+    pointer-events: none;
     transition: var(--transition);
 }
 
-/* ESTILO DEL BOTÓN DE DIRECCIÓN ACTIVO (IDA/VUELTA) */
-:host .filters-panel .filter-group .dir-btns .dir-btn.active {
-    border-color: var(--primary);
+:host .filters-panel .field:focus-within .field-icon {
     color: var(--primary-light);
-    background: rgba(230, 57, 70, 0.08);
 }
 
-/* ESTILO DE LOS BOTONES DE DIRECCIÓN AL PASAR EL RATÓN (IDA/VUELTA) */
-:host .filters-panel .filter-group.price p {
+/* BOTON PARA VACIAR UN CAMPO */
+:host .filters-panel .field .field-clear {
+    position: absolute;
+    right: 8px;
+    width: 24px;
+    height: 24px;
     display: flex;
-    gap: 8px;
-}
-
-/* ESTILO DE LOS INPUTS DE PRECIO */
-:host .filters-panel .filter-group.price p input {
-    box-shadow: none;
-    padding-left: 0;
-    padding-right: 0;
-}
-
-/* ESTILO DE LOS SPANS DE PRECIO (MIN/MAX) */
-:host .filters-panel .filter-group.price p span {
-    display: block;
-    width: 96px;
-    text-align: end;
-    padding: 8px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-}
-
-/* ESTILO DEL BOTÓN DE APLICAR FILTROS */
-:host .filters-panel .filter-apply {
-    width: calc(100% - 16px * 2);
-    padding: 8px 16px;
+    align-items: center;
     justify-content: center;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-3);
+}
+
+:host .filters-panel .field .field-clear:hover {
+    color: var(--text);
+    background: var(--surface-2);
+}
+
+/* ICONO DEL CALENDARIO NATIVO */
+:host .filters-panel .field input[type="date"] {
+    padding-right: 10px;
+}
+
+:host .filters-panel .field input[type="date"]::-webkit-calendar-picker-indicator {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+:host .filters-panel .field input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+/* CONTROL SEGMENTADO (DIRECCION Y TIPO DE VIAJE) */
+:host .filters-panel .segmented {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 4px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+:host .filters-panel .seg-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 52px;
+    padding: 8px 4px;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-2);
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: center;
+}
+
+:host .filters-panel .seg-btn:hover:not(.active) {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.04);
+}
+
+:host .filters-panel .seg-btn.active {
+    background: rgba(230, 57, 70, 0.14);
+    color: var(--primary-light);
+    box-shadow: inset 0 0 0 1px rgba(230, 57, 70, 0.45);
+}
+
+/* VALOR DEL PRECIO */
+:host .filters-panel .price-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+}
+
+/* DESLIZADOR DE PRECIO */
+:host .filters-panel .range {
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    width: 100%;
+    height: 6px;
+    margin: 10px 0 4px;
+    padding: 0;
+    border: none;
+    border-radius: 99px;
+    background: linear-gradient(90deg, var(--accent-dark), var(--accent)) 0 / var(--pct, 100%) 100% no-repeat,
+        var(--surface-2);
+    cursor: pointer;
+}
+
+:host .filters-panel .range:focus {
+    box-shadow: none;
+}
+
+:host .filters-panel .range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--text);
+    border: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    transition: transform 0.15s ease;
+}
+
+:host .filters-panel .range::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--text);
+    border: 3px solid var(--accent);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+:host .filters-panel .range:hover::-webkit-slider-thumb,
+:host .filters-panel .range:active::-webkit-slider-thumb {
+    transform: scale(1.15);
+}
+
+:host .filters-panel .range:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px rgba(255, 183, 3, 0.3);
+}
+
+:host .filters-panel .range-scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-3);
+}
+
+/* CONTADOR DE PLAZAS */
+:host .filters-panel .stepper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px;
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+:host .filters-panel .step-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+:host .filters-panel .step-btn:hover:not(:disabled) {
+    background: var(--primary-dark);
+    color: #fff;
+}
+
+:host .filters-panel .step-btn:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+
+:host .filters-panel .step-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+
+/* BOTON DE APLICAR FILTROS */
+:host .filters-panel .filter-apply {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 16px;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+/* ACCIONES DE LA CABECERA (LIMPIAR Y CERRAR) */
+:host .filters-panel .filters-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ELEMENTOS SOLO PARA MOVIL: OCULTOS EN ESCRITORIO */
+:host .filters-toggle,
+:host .filters-backdrop,
+:host .filters-panel .filters-close {
+    display: none;
 }
 
 /* ESTILOS DEL PANEL DE RESULTADOS */
@@ -228,10 +497,129 @@
         grid-template-columns: repeat(1, 1fr);
     }
 
-    /* AJUSTE DEL PANEL DE FILTROS PARA TABLET (SE VUELVE RELATIVO PARA QUE NO SEA STICKY) */
+    /* BOTON QUE ABRE LOS FILTROS */
+    :host .filters-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-sizing: border-box;
+        width: 100%;
+        height: 48px;
+        margin-top: 8px;
+        border-radius: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    :host .filters-toggle:hover {
+        border-color: var(--primary);
+    }
+
+    :host .filters-toggle .filters-badge {
+        min-width: 20px;
+        height: 20px;
+        padding: 0 6px;
+        border-radius: 99px;
+        background: var(--primary);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* FONDO OSCURO */
+    :host .filters-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 2400;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+    }
+
+    :host .filters-backdrop.open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* EL PANEL SE CONVIERTE EN UNA HOJA QUE SUBE DESDE ABAJO */
     :host .container .filters-panel {
-        position: relative;
-        top: 0;
+        position: fixed;
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2500;
+        max-height: 85dvh;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        padding: 0 20px;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        border-bottom: none;
+        background: var(--surface);
+        box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.5);
+        animation: none;
+        transform: translateY(100%);
+        visibility: hidden;
+        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s linear 0.35s;
+    }
+
+    :host .container .filters-panel.open {
+        transform: translateY(0);
+        visibility: visible;
+        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), visibility 0s;
+    }
+
+    /* CABECERA CON TIRADOR */
+    :host .filters-panel .filters-header {
+        padding: 24px 0 14px;
+    }
+
+    :host .filters-panel .filters-header::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: 50%;
+        width: 40px;
+        height: 4px;
+        margin-left: -20px;
+        border-radius: 99px;
+        background: var(--surface-2);
+    }
+
+    :host .filters-panel .filters-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--surface-2);
+        color: var(--text);
+    }
+
+    /* PIE RESPETANDO LA ZONA SEGURA INFERIOR DEL MOVIL */
+    :host .filters-panel .filters-footer {
+        padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    }
+}
+
+/* EN PANTALLAS SIN ANIMACIONES LA HOJA APARECE SIN DESLIZAR */
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+
+    :host .container .filters-panel,
+    :host .container .filters-panel.open,
+    :host .filters-backdrop {
+        transition: none;
     }
 }
 
